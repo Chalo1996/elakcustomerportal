@@ -14,3 +14,4 @@
 
     2.1 Clone the repo
     2.2 Install all dependencies - npm i
+    2.3 npm start
