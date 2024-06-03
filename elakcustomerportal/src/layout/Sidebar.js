@@ -242,7 +242,7 @@ const TransactIcon = (props) => (
               key={item.key}
               icon={item.icon}
               style={menuItemStyle}
-              disabled={!item.selectable}
+             // disabled={!item.selectable}
             >
               {item.label}
             </Menu.Item>
