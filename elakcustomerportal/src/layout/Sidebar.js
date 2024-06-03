@@ -7,6 +7,7 @@ import {
   MoonOutlined,
 } from "@ant-design/icons";
 import { useTheme } from "../store/context/theme-context";
+import imgLogo from "../assets/Equity_Group_Logo.png";
 
 const Sidebar = ({ onSelect }) => {
   const { theme, toggleTheme } = useTheme();
@@ -16,6 +17,17 @@ const Sidebar = ({ onSelect }) => {
   };
 
   const items = [
+    // Logo item
+    {
+      key: "logo",
+      label: (
+        <img
+          src={imgLogo}
+          alt="Equity Bank"
+          style={{ width: 90, height: 50 }}
+        />
+      ),
+    },
     {
       key: "sub1",
       icon: <UserOutlined />,
