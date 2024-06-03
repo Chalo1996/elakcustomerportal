@@ -1,4 +1,3 @@
-import React from "react";
 import { Menu, Switch } from "antd";
 import {
   UserOutlined,
