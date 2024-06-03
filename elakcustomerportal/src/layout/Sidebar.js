@@ -9,6 +9,7 @@ import {
 } from "@ant-design/icons";
 import { useTheme } from "../store/context/theme-context";
 import imgLogo from "../assets/Equity_Group_Logo.png";
+import darkLogo from "../assets/dark-logo.png";
 import profileImg from "../assets/profile.png";
 
 const { SubMenu } = Menu;
@@ -26,7 +27,7 @@ const Sidebar = ({ onSelect }) => {
       selectable: false,
       label: (
         <img
-          src={imgLogo}
+          src={theme === "dark" ? darkLogo : imgLogo}
           alt="Equity Bank"
           style={{ width: 90, height: 60, marginTop: 20 }}
         />
@@ -104,7 +105,7 @@ const Sidebar = ({ onSelect }) => {
     <Menu
       onClick={handleClick}
       style={{ width: 256, height: "100vh" }}
-      defaultSelectedKeys={["1"]}
+      defaultSelectedKeys={["home"]}
       mode="inline"
       theme={theme}
     >
