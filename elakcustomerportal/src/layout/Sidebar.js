@@ -49,7 +49,7 @@ const Sidebar = ({ onSelect }) => {
                 onClick={toggleCollapsed}
                 style={{ marginRight: "auto", marginTop: 20 }}
               >
-                <span style={{ color: "maroon" }}>
+                <span style={{ color: theme === "dark" ? "white" : "maroon" }}>
                   <MenuOutlined />
                 </span>
               </Button>
