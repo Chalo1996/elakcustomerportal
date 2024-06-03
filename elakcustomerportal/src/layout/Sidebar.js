@@ -7,7 +7,7 @@ import {
   SunOutlined,
   MoonOutlined,
 } from "@ant-design/icons";
-import { useTheme } from "../store/theme-context";
+import { useTheme } from "../store/context/theme-context";
 
 const Sidebar = ({ onSelect }) => {
   const { theme, toggleTheme } = useTheme();

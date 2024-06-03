@@ -1,5 +1,5 @@
 import "./index.css";
-import { ThemeProvider } from "./store/theme-context";
+import { ThemeProvider } from "./store/context/theme-context";
 
 import MainLayout from "./layout/MainLayout";
 
