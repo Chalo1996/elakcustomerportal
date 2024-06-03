@@ -5,7 +5,8 @@ import {
   MoonOutlined,
   HomeOutlined,
   GlobalOutlined,
-  EllipsisOutlined,
+  SettingOutlined,
+  DashboardOutlined,
 } from "@ant-design/icons";
 import { useTheme } from "../store/context/theme-context";
 import imgLogo from "../assets/Equity_Group_Logo.png";
@@ -150,10 +151,22 @@ const TransactIcon = (props) => (
       divider: true,
     },
     {
+      key: "activity",
+      selectable: true,
+      icon: <DashboardOutlined />,
+      label: "Activity",
+    },
+    {
       key: "more",
       selectable: true,
-      icon: <EllipsisOutlined />,
-      label: "More",
+      icon: <SettingOutlined />,
+      label: "Settings & More",
+    },
+    {
+      key: "english",
+      selectable: true,
+      icon: <GlobalOutlined />,
+      label: "English",
     },
     {
       key: "accounts",
@@ -194,12 +207,6 @@ const TransactIcon = (props) => (
           />
         </div>
       ),
-    },
-    {
-      key: "english",
-      selectable: true,
-      icon: <GlobalOutlined />,
-      label: "English",
     },
     {
       key: "signout",
