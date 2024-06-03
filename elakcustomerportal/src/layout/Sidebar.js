@@ -149,25 +149,7 @@ const TransactIcon = (props) => (
     {
       key: "divider1",
       divider: true,
-    },
-    {
-      key: "activity",
-      selectable: true,
-      icon: <DashboardOutlined />,
-      label: "Activity",
-    },
-    {
-      key: "more",
-      selectable: true,
-      icon: <SettingOutlined />,
-      label: "Settings & More",
-    },
-    {
-      key: "english",
-      selectable: true,
-      icon: <GlobalOutlined />,
-      label: "English",
-    },
+    }, 
     {
       key: "accounts",
       icon: <AccountsIcon />,
@@ -192,6 +174,24 @@ const TransactIcon = (props) => (
       key: "insure",
       icon: <UmbrellaIcon />,
       label: "Insure",
+    },
+    {
+      key: "activity",
+      selectable: true,
+      icon: <DashboardOutlined />,
+      label: "Activity",
+    },
+    {
+      key: "more",
+      selectable: true,
+      icon: <SettingOutlined />,
+      label: "Settings & More",
+    },
+    {
+      key: "english",
+      selectable: true,
+      icon: <GlobalOutlined />,
+      label: "English",
     },
     {
       key: "theme",
