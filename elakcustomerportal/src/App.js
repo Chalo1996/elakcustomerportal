@@ -1,22 +1,29 @@
 import "./index.css";
 import { ConfigProvider } from "antd";
 import { ThemeProvider } from "./store/context/theme-context";
+import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
 
 import MainLayout from "./layout/MainLayout";
+import store from "./store/redux/store";
 
 function App() {
   return (
-    <ThemeProvider>
-      <ConfigProvider
-        theme={{
-          token: {
-            colorPrimary: "#800000",
-          },
-        }}
-      >
-        <MainLayout />
-      </ConfigProvider>
-    </ThemeProvider>
+    <Provider store={store}>
+      <BrowserRouter>
+        <ThemeProvider>
+          <ConfigProvider
+            theme={{
+              token: {
+                colorPrimary: "#800000",
+              },
+            }}
+          >
+            <MainLayout />
+          </ConfigProvider>
+        </ThemeProvider>
+      </BrowserRouter>
+    </Provider>
   );
 }
 
