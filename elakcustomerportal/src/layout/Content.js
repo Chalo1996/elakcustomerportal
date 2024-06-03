@@ -7,29 +7,24 @@ const Content = () => {
   const { theme } = useTheme();
 
   const handleMenuSelect = (key) => {
+    if (key === "theme") return;
     setSelectedKey(key);
   };
 
   const renderContent = () => {
     switch (selectedKey) {
-      case "1":
-        return <div className="p-4">Content for Tom</div>;
-      case "2":
-        return <div className="p-4">Content for Bill</div>;
-      case "3":
-        return <div className="p-4">Content for Alex</div>;
-      case "4":
-        return <div className="p-4">Content for Team 1</div>;
-      case "5":
-        return <div className="p-4">Content for Team 2</div>;
-      case "6":
-        return <div className="p-4">Content for Message 1</div>;
-      case "7":
-        return <div className="p-4">Content for Message 2</div>;
-      case "8":
-        return <div className="p-4">Content for Message 3</div>;
+      case "home":
+        return <div>Home</div>;
+      case "more":
+        return <div>More</div>;
+      case "english":
+        return <div>English</div>;
+      case "signout":
+        return <div>Sign Out</div>;
+      case "theme":
+        return;
       default:
-        return <div className="p-4">Select an item from the sidebar</div>;
+        return <div>Default</div>;
     }
   };
 
