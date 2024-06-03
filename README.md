@@ -9,6 +9,7 @@
     1.3 Axios - Api Calls
     1.4 Tailwind css - Styling
     1.5 React Router Dom - Routing
+    1.6 Node  v20.14.0 - Runtime
 
 ### 2. Set up
 
