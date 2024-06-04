@@ -4,7 +4,7 @@ import { ThemeProvider } from "./store/context/theme-context";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 
-import MainLayout from "./layout/MainLayout";
+import MainLayout from "./layout/main-layout/MainLayout";
 import store from "./store/redux/store";
 import Home from "./pages/Home";
 import PortalLayout from "./layout/PortalLayout";
@@ -18,7 +18,7 @@ function App() {
           <ConfigProvider
             theme={{
               token: {
-                colorPrimary: "#800000",
+                colorPrimary: "maroon",
               },
             }}
           >

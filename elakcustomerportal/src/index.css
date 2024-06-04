@@ -15,3 +15,30 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.non-interactive {
+  @apply cursor-default pointer-events-none text-inherit;
+}
+
+.ant-menu-item-selected {
+  border-right: 1px solid maroon;
+  border-radius: 0;
+}
+
+.sider-dark {
+  background-color: #001529;
+}
+
+.sider-light {
+  background-color: #f5f5f5;
+}
+
+.sider-light .ant-menu {
+  white-space: nowrap;
+  overflow: auto;
+}
+
+.sider-dark .ant-menu {
+  white-space: nowrap;
+  overflow: auto;
+}
