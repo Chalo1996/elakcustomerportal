@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Menu, Switch, Button, Divider } from "antd";
 import {
   LogoutOutlined,
@@ -21,16 +20,11 @@ import imgLogo from "../../assets/Equity_Group_Logo.png";
 import darkLogo from "../../assets/dark-logo.png";
 import profileImg from "../../assets/profile.png";
 
-const Sidebar = ({ onSelect }) => {
+const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
   const { theme, toggleTheme } = useTheme();
-  const [collapsed, setCollapsed] = useState(false);
 
   const handleClick = (e) => {
     onSelect(e.key);
-  };
-
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
   };
 
   const items = [
@@ -161,16 +155,10 @@ const Sidebar = ({ onSelect }) => {
   return (
     <Menu
       onClick={handleClick}
-      style={{
-        width: collapsed ? 80 : 256,
-        minHeight: "100vh",
-        height: "100%",
-      }}
       defaultSelectedKeys={["home"]}
       mode="inline"
       items={items}
       theme={theme}
-      inlineCollapsed={collapsed}
     />
   );
 };
