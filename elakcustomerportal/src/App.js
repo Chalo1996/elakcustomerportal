@@ -4,7 +4,7 @@ import { ThemeProvider } from "./store/context/theme-context";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 
-import MainLayout from "./layout/MainLayout";
+import MainLayout from "./layout/main-layout/MainLayout";
 import store from "./store/redux/store";
 
 function App() {
