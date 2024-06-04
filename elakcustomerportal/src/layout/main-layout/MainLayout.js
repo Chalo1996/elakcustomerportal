@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Layout } from "antd";
 import Sidebar from "./Sidebar";
-import { useTheme } from "../../store/context/theme-context";
 import ContentTrial from "./ContentTrial";
 
 const { Content, Sider } = Layout;
@@ -9,7 +8,6 @@ const { Content, Sider } = Layout;
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKey, setSelectedKey] = useState("home");
-  const { theme } = useTheme();
 
   const handleMenuSelect = (key) => {
     if (key === "theme" || key === "expanded" || key === "collapsed") return;
@@ -29,12 +27,13 @@ const MainLayout = () => {
         collapsedWidth={80}
         style={{
           overflow: "auto",
-          minHeight: "100vh",
-          height: "100%",
+          height: "100vh",
           position: "fixed",
-          whiteSpace: "nowrap",
+          left: 0,
+          top: 0,
+          bottom: 0,
+          margin: 0,
         }}
-        className={theme === "dark" ? "sider-dark" : "sider-light"}
       >
         <Sidebar
           onSelect={handleMenuSelect}

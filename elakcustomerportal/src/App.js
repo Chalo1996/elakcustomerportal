@@ -40,7 +40,7 @@ function App() {
                 path='education'
                 element={
                   <PortalLayout>
-                    <Home />
+                    <Education />
                   </PortalLayout>
                 }
               />
