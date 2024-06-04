@@ -1,7 +1,6 @@
-import React, { useState } from "react";
 import { useTheme } from "../store/context/theme-context";
 
-const Home = () => {
+const PortalLayout = ({ children }) => {
   const { theme } = useTheme();
 
   return (
@@ -11,10 +10,10 @@ const Home = () => {
           theme === "dark" ? "bg-gray-800 text-white" : "bg-gray-100"
         }`}
       >
-        Home
+        {children}
       </div>
     </div>
   );
 };
 
-export default Home;
+export default PortalLayout;

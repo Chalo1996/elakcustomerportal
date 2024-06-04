@@ -1,17 +1,9 @@
 import { Card, Button } from "antd";
 import { useTheme } from "../../store/context/theme-context";
-import gleImg from "../../assets/funeral-expense.jpg";
-
-const product = {
-  title: "Funeral Expense Cover",
-  image: gleImg,
-  description:
-    "Funeral expense solution is designed to help families deal with the burden of meeting immediate funeral related expenses on the death of a family member.",
-};
 
 const { Meta } = Card;
 
-const Product = () => {
+const Product = ({ product }) => {
   const { theme } = useTheme();
   return (
     <Card
@@ -23,11 +15,11 @@ const Product = () => {
           className="h-40 object-cover"
         />
       }
-      className={`${theme === "dark" ? "bg-gray-700 text-white" : ""} m-2`}
+      className={`${theme === "dark" ? "bg-gray-700 text-white" : ""} m-4`}
     >
       <Meta title={product.title} description={product.description} />
-      <div className="flex justify-start mt-4">
-        <Button className="border-0 shadow-none mr-3 text-[maroon]">
+      <div className="flex flex-col md:flex-row justify-start mt-4">
+        <Button className="border-0 mr-2 shadow-none text-[maroon]">
           Learn More
         </Button>
         <Button type="primary" className="border-0 shadow-none">
