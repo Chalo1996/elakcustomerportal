@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, Switch, Button } from "antd";
+import { Menu, Switch, Button, Divider } from "antd";
 import {
   LogoutOutlined,
   SunOutlined,
@@ -21,8 +21,6 @@ import imgLogo from "../assets/Equity_Group_Logo.png";
 import darkLogo from "../assets/dark-logo.png";
 import profileImg from "../assets/profile.png";
 
-// const { SubMenu } = Menu;
-
 const Sidebar = ({ onSelect }) => {
   const { theme, toggleTheme } = useTheme();
   const [collapsed, setCollapsed] = useState(false);
@@ -38,7 +36,7 @@ const Sidebar = ({ onSelect }) => {
   const items = [
     {
       key: collapsed ? "collapsed" : "expanded",
-      selectable: collapsed ? true : false,
+      style: { height: "auto" },
       label: (
         <div className="flex items-center">
           {collapsed && <MenuOutlined onClick={toggleCollapsed} />}
@@ -49,7 +47,7 @@ const Sidebar = ({ onSelect }) => {
                 onClick={toggleCollapsed}
                 style={{ marginRight: "auto", marginTop: 20 }}
               >
-                <span style={{ color: "maroon" }}>
+                <span style={{ color: theme === "dark" ? "white" : "maroon" }}>
                   <MenuOutlined />
                 </span>
               </Button>
@@ -65,7 +63,8 @@ const Sidebar = ({ onSelect }) => {
     },
     {
       key: "profile",
-      selectable: false,
+      className: "non-interactive",
+      style: { height: "auto" },
       label: !collapsed && (
         <div className="mt-7 flex w-full items-center justify-start">
           <div>
@@ -84,7 +83,6 @@ const Sidebar = ({ onSelect }) => {
     },
     {
       key: "home",
-      selectable: true,
       icon: <HomeOutlined />,
       label: "Home",
     },
@@ -94,47 +92,42 @@ const Sidebar = ({ onSelect }) => {
     },
     {
       key: "divider1",
-      divider: true,
+      style: { width: "100%" },
+      label: <Divider />,
+      className: "non-interactive",
     },
     {
       key: "more",
-      selectable: true,
       icon: <EllipsisOutlined />,
       label: "More",
     },
     {
       key: "accounts",
-      selectable: true,
       icon: <AccountsIcon />,
       label: "Accounts",
     },
     {
       key: "transact",
-      selectable: true,
       icon: <TransactIcon />,
       label: "Transact",
     },
     {
       key: "borrow",
-      selectable: true,
       icon: <BorrowIcon />,
       label: "Borrow",
     },
     {
       key: "save",
-      selectable: true,
       icon: <SaveIcon />,
       label: "Save",
     },
     {
       key: "insure",
-      selectable: true,
       icon: <UmbrellaIcon />,
       label: "Insure",
     },
     {
       key: "theme",
-      selectable: true,
       icon: theme === "dark" ? <MoonOutlined /> : <SunOutlined />,
       label: (
         <div className="flex items-center justify-between">
@@ -149,13 +142,11 @@ const Sidebar = ({ onSelect }) => {
     },
     {
       key: "english",
-      selectable: true,
       icon: <GlobalOutlined />,
       label: "English",
     },
     {
       key: "signout",
-      selectable: true,
       icon: <LogoutOutlined />,
       label: "Sign Out",
     },
@@ -171,30 +162,10 @@ const Sidebar = ({ onSelect }) => {
       }}
       defaultSelectedKeys={["home"]}
       mode="inline"
+      items={items}
       theme={theme}
       inlineCollapsed={collapsed}
-    >
-      {items.map((item) => {
-        const menuItemStyle = {
-          height: "auto",
-        };
-
-        if (item.divider) {
-          return <Menu.Divider key={item.key} />;
-        } else {
-          return (
-            <Menu.Item
-              key={item.key}
-              icon={item.icon}
-              style={menuItemStyle}
-              disabled={!item.selectable}
-            >
-              {item.label}
-            </Menu.Item>
-          );
-        }
-      })}
-    </Menu>
+    />
   );
 };
 
