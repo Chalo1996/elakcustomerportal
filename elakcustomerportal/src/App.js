@@ -37,7 +37,7 @@ function App() {
                 }
               />
               <Route
-                path='education'
+                path='Education'
                 element={
                   <PortalLayout>
                     <Education />
