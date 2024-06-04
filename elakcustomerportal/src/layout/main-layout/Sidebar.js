@@ -39,7 +39,12 @@ const Sidebar = ({ onSelect }) => {
       style: { height: "auto" },
       label: (
         <div className="flex items-center">
-          {collapsed && <MenuOutlined onClick={toggleCollapsed} />}
+          {collapsed && (
+            <MenuOutlined
+              style={{ margin: "auto" }}
+              onClick={toggleCollapsed}
+            />
+          )}
           {!collapsed && (
             <>
               <Button
@@ -89,6 +94,7 @@ const Sidebar = ({ onSelect }) => {
     {
       key: "space",
       label: "",
+      className: "non-interactive",
     },
     {
       key: "divider1",
