@@ -1,20 +1,21 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import { useTheme } from "../../store/context/theme-context";
+import Product from "../../components/InsuranceProducts/Product";
 
 const Content = () => {
   const [selectedKey, setSelectedKey] = useState("home");
   const { theme } = useTheme();
 
   const handleMenuSelect = (key) => {
-    if (key === "theme") return;
+    if (key === "theme" || key === "expanded" || key === "collapsed") return;
     setSelectedKey(key);
   };
 
   const renderContent = () => {
     switch (selectedKey) {
       case "home":
-        return <div>Home</div>;
+        return <Product />;
       case "more":
         return <div>More</div>;
       case "english":
@@ -33,7 +34,7 @@ const Content = () => {
       <Sidebar onSelect={handleMenuSelect} />
       <div
         className={`flex-1 ${
-          theme === "dark" ? "bg-gray-800 text-white" : "bg-gray-100"
+          theme === "dark" ? "bg-gray-800 text-white" : "bg-[#f5f5f5]"
         }`}
       >
         {renderContent()}
