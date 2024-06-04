@@ -19,7 +19,7 @@ const Product = ({ product }) => {
     >
       <Meta title={product.title} description={product.description} />
       <div className="flex flex-col md:flex-row justify-start mt-4">
-        <Button className="border-0 shadow-none text-[maroon]">
+        <Button className="border-0 mr-2 shadow-none text-[maroon]">
           Learn More
         </Button>
         <Button type="primary" className="border-0 shadow-none">
