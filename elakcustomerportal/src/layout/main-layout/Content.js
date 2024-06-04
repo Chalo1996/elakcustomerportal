@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import { useTheme } from "../../store/context/theme-context";
-import Product from "../../components/InsuranceProducts/Product";
+import ProductsList from "../../components/InsuranceProducts/ProductsList";
 
 const Content = () => {
   const [selectedKey, setSelectedKey] = useState("home");
@@ -15,7 +15,7 @@ const Content = () => {
   const renderContent = () => {
     switch (selectedKey) {
       case "home":
-        return <Product />;
+        return <ProductsList />;
       case "more":
         return <div>More</div>;
       case "english":
