@@ -19,3 +19,8 @@ code {
 .non-interactive {
   @apply cursor-default pointer-events-none text-inherit;
 }
+
+.ant-menu-item-selected {
+  border-right: 1px solid maroon;
+  border-radius: 0;
+}

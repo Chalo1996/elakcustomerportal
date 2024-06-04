@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar";
-import { useTheme } from "../store/context/theme-context";
+import { useTheme } from "../../store/context/theme-context";
 
 const Content = () => {
   const [selectedKey, setSelectedKey] = useState("home");

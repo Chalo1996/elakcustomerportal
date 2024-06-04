@@ -15,11 +15,11 @@ import {
   BorrowIcon,
   SaveIcon,
   UmbrellaIcon,
-} from "./icons/icons";
-import { useTheme } from "../store/context/theme-context";
-import imgLogo from "../assets/Equity_Group_Logo.png";
-import darkLogo from "../assets/dark-logo.png";
-import profileImg from "../assets/profile.png";
+} from "../icons/icons";
+import { useTheme } from "../../store/context/theme-context";
+import imgLogo from "../../assets/Equity_Group_Logo.png";
+import darkLogo from "../../assets/dark-logo.png";
+import profileImg from "../../assets/profile.png";
 
 const Sidebar = ({ onSelect }) => {
   const { theme, toggleTheme } = useTheme();
