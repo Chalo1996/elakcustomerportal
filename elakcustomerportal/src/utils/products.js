@@ -14,7 +14,7 @@ const products = [
       "Medical insurance provides comprehensive coverage for hospitalization, surgery, and outpatient treatments, ensuring you receive the best healthcare possible.",
   },
   {
-    title: "Life Insurance",
+    title: "Group Life Insurance",
     image: gleImg,
     description:
       "Life insurance offers financial security for your loved ones in the event of your untimely demise, ensuring they are taken care of even when you are not around.",
