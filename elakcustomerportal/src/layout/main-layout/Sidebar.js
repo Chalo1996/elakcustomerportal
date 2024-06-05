@@ -18,7 +18,6 @@ import {
 import { useTheme } from "../../store/context/theme-context";
 import imgLogo from "../../assets/Equity_Group_Logo.png";
 import darkLogo from "../../assets/dark-logo.png";
-import profileImg from "../../assets/profile.png";
 
 const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
   const { theme, toggleTheme } = useTheme();
@@ -65,17 +64,15 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
       className: "non-interactive",
       style: { height: "auto" },
       label: !collapsed && (
-        <div className="mt-7 flex w-full items-center justify-start">
-          <div>
-            <img
-              src={profileImg}
-              alt="Profile"
-              className="border-red-500 w-12 h-12 rounded-full"
-            />
+        <div className="flex items-center bg-gray-50 rounded-lg my-7 mx-0">
+          <div className="flex-shrink-0">
+            <div className="w-12 h-12 bg-[maroon] text-white flex items-center justify-center rounded-full">
+              PN
+            </div>
           </div>
-          <div className="ml-5">
-            <p className="font-bold">John Doe</p>
-            <p style={{ fontSize: 12, color: "#888" }}>Professional Title</p>
+          <div className="ml-3">
+            <p className="font-semibold leading-tight">Profile Name</p>
+            <p className="text-gray-500 leading-tight">Personal</p>
           </div>
         </div>
       ),
