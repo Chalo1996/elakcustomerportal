@@ -9,6 +9,7 @@ import store from "./store/redux/store";
 import Home from "./pages/Home";
 import PortalLayout from "./layout/PortalLayout";
 import Education from "./components/Education/Education";
+import GroupLifeAssurance from "./components/Group Life/GroupLife";
 
 function App() {
   return (
@@ -27,6 +28,9 @@ function App() {
               <Route path='about' element={<MainLayout />} />
               <Route path='contact' element={<MainLayout />} />
               <Route path='home' element={<Home />} />
+              <Route path='./Group Life' element={<GroupLifeAssurance />} />
+
+              {/*'group-life-assurance'*/}
 
               <Route
                 path='landing-page'
@@ -40,7 +44,7 @@ function App() {
                 path='education'
                 element={
                   <PortalLayout>
-                    <Home />
+                    <Education />
                   </PortalLayout>
                 }
               />
@@ -77,10 +81,10 @@ function App() {
                 }
               />
               <Route
-                path='group-life'
+                path='GroupLifeAssurance'
                 element={
                   <PortalLayout>
-                    <Home />
+                    <GroupLifeAssurance />
                   </PortalLayout>
                 }
               />
