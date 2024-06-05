@@ -20,7 +20,7 @@ function App() {
           <ConfigProvider
             theme={{
               token: {
-                colorPrimary: "maroon",
+                colorPrimary: "#A32A29",
               },
             }}
           >
@@ -104,7 +104,7 @@ function App() {
                   </PortalLayout>
                 }
               />
-              <Route path='*' element={<NotFound />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </ConfigProvider>
         </ThemeProvider>

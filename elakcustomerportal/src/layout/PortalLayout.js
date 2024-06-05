@@ -69,7 +69,7 @@ const PortalLayout = ({ children }) => {
         >
           <div
             className={`min-h-[100vh] h-[100%] p-30 ${
-              theme === "dark" ? "bg-gray-800 text-white" : "bg-[#f5f5f5]"
+              theme === "dark" ? "bg-gray-800 text-white" : "bg-[#F7F7F7]"
             }`}
           >
             {children}
