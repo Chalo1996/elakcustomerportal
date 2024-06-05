@@ -89,7 +89,7 @@ function App() {
                 }
               />
               <Route
-                path="GroupLifeAssurance"
+                path='GroupLifeAssurance'
                 element={
                   <PortalLayout>
                     <GroupLifeAssurance />
