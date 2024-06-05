@@ -14,12 +14,12 @@ const NotFound = () => {
       }}
     >
       <img
-        style={{ maxWidth: "100%", height: "auto" }}
-        src='/notfound-404.avif'
-        alt='Page Not Found'
+        style={{ maxWidth: "100%", height: 300 }}
+        src="/notfound-404.avif"
+        alt="Page Not Found"
       />
       <Link
-        to='/'
+        to="/"
         style={{
           marginTop: "20px",
           textDecoration: "none",
