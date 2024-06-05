@@ -1,16 +1,19 @@
 import { useState, useEffect } from "react";
 import { Layout } from "antd";
-import Sidebar from "./Sidebar";
+import Sidebar from "./main-layout/Sidebar";
+import { useTheme } from "../store/context/theme-context";
 
 const { Content, Sider } = Layout;
 
 const PortalLayout = ({ children }) => {
+  const [selectedKey, setSelectedKey] = useState("home");
   const [collapsed, setCollapsed] = useState(window.innerWidth < 768);
+  const { theme } = useTheme();
 
-  // const handleMenuSelect = (key) => {
-  //   if (key === "theme" || key === "expanded" || key === "collapsed") return;
-  //   setSelectedKey(key);
-  // };
+  const handleMenuSelect = (key) => {
+    if (key === "theme" || key === "expanded" || key === "collapsed") return;
+    setSelectedKey(key);
+  };
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
@@ -49,7 +52,7 @@ const PortalLayout = ({ children }) => {
         }}
       >
         <Sidebar
-          // onSelect={handleMenuSelect}
+          onSelect={handleMenuSelect}
           collapsed={collapsed}
           toggleCollapsed={toggleCollapsed}
         />
@@ -64,7 +67,13 @@ const PortalLayout = ({ children }) => {
             overflow: "initial",
           }}
         >
-          {children}
+          <div
+            className={`min-h-[100vh] h-[100%] p-30 ${
+              theme === "dark" ? "bg-gray-800 text-white" : "bg-[#f5f5f5]"
+            }`}
+          >
+            {children}
+          </div>
         </Content>
       </Layout>
     </Layout>

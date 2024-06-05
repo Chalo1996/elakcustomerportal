@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import PortalLayout from "./layout/PortalLayout";
 import Education from "./components/Education/Education";
 import GroupLifeAssurance from "./components/Group Life/GroupLife";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -24,16 +25,23 @@ function App() {
             }}
           >
             <Routes>
-              <Route path='/' element={<MainLayout />} />
-              <Route path='about' element={<MainLayout />} />
-              <Route path='contact' element={<MainLayout />} />
-              <Route path='home' element={<Home />} />
-              <Route path='./Group Life' element={<GroupLifeAssurance />} />
+              <Route
+                path="/"
+                element={
+                  <PortalLayout>
+                    <Home />
+                  </PortalLayout>
+                }
+              />
+              <Route path="about" element={<MainLayout />} />
+              <Route path="contact" element={<MainLayout />} />
+              <Route path="home" element={<Home />} />
+              <Route path="./Group Life" element={<GroupLifeAssurance />} />
 
               {/*'group-life-assurance'*/}
 
               <Route
-                path='landing-page'
+                path="landing-page"
                 element={
                   <PortalLayout>
                     <Home />
@@ -41,7 +49,7 @@ function App() {
                 }
               />
               <Route
-                path='Education'
+                path="Education"
                 element={
                   <PortalLayout>
                     <Education />
@@ -49,7 +57,7 @@ function App() {
                 }
               />
               <Route
-                path='group-credit'
+                path="group-credit"
                 element={
                   <PortalLayout>
                     <Home />
@@ -57,7 +65,7 @@ function App() {
                 }
               />
               <Route
-                path='funeral-expense'
+                path="funeral-expense"
                 element={
                   <PortalLayout>
                     <Home />
@@ -65,7 +73,7 @@ function App() {
                 }
               />
               <Route
-                path='goal-based'
+                path="goal-based"
                 element={
                   <PortalLayout>
                     <Home />
@@ -73,7 +81,7 @@ function App() {
                 }
               />
               <Route
-                path='critical-illness'
+                path="critical-illness"
                 element={
                   <PortalLayout>
                     <Home />
@@ -81,7 +89,7 @@ function App() {
                 }
               />
               <Route
-                path='group-life-assurance'
+                path='GroupLifeAssurance'
                 element={
                   <PortalLayout>
                     <GroupLifeAssurance />
@@ -89,13 +97,14 @@ function App() {
                 }
               />
               <Route
-                path='group-term-life'
+                path="group-term-life"
                 element={
                   <PortalLayout>
                     <Home />
                   </PortalLayout>
                 }
               />
+              <Route path='*' element={<NotFound />} />
             </Routes>
           </ConfigProvider>
         </ThemeProvider>
