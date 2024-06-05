@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Layout } from "antd";
 import Sidebar from "./Sidebar";
 import ContentTrial from "./ContentTrial";
@@ -6,7 +6,7 @@ import ContentTrial from "./ContentTrial";
 const { Content, Sider } = Layout;
 
 const MainLayout = () => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(window.innerWidth < 768);
   const [selectedKey, setSelectedKey] = useState("home");
 
   const handleMenuSelect = (key) => {
@@ -17,6 +17,21 @@ const MainLayout = () => {
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
+
+  const handleResize = () => {
+    if (window.innerWidth < 768) {
+      setCollapsed(true);
+    } else {
+      setCollapsed(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <Layout hasSider>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Steps, Form, Row, Input, InputNumber, Button, message, Col, Checkbox, Modal, DatePicker, Select, Radio } from 'antd';
+import { div, Steps, Form, Row, Input, InputNumber, Button, message, Col, Checkbox, Modal, DatePicker, Select, Radio } from 'antd';
 import 'tailwindcss/tailwind.css';
 
 const { Step } = Steps;
@@ -11,7 +11,7 @@ const GroupLifeAssurance = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [action, setAction] = useState('continue');
   const [formData, setFormData] = useState({
-    personalDetails: {},
+    contactDetails: {},
     companyDetails: {},
     insuredMembers: {},
     policyDetails: {}
@@ -20,7 +20,7 @@ const GroupLifeAssurance = () => {
   const onFormFinish = (values) => {
     const updatedFormData = { ...formData };
     if (currentStep === 0) {
-      updatedFormData.personalDetails = values;
+      updatedFormData.contactDetails = values;
       if (action === 'callback') {
         form.submit(); // Submit the form if requesting a callback
         return;
@@ -84,12 +84,12 @@ const GroupLifeAssurance = () => {
         </Checkbox>
       ]}
     >
-      <h3>Personal Details</h3>
-      <p><strong>First Name:</strong> {formData.personalDetails.firstName}</p>
-      <p><strong>Last Name:</strong> {formData.personalDetails.lastName}</p>
-      <p><strong>Email Address:</strong> {formData.personalDetails.email}</p>
-      <p><strong>Mobile Number:</strong> {formData.personalDetails.mobileNumber}</p>
-      <p><strong>Date of Birth:</strong> {formData.personalDetails.dob}</p>
+      <h3>Contact Details</h3>
+      <p><strong>First Name:</strong> {formData.contactDetails.firstName}</p>
+      <p><strong>Last Name:</strong> {formData.contactDetails.lastName}</p>
+      <p><strong>Email Address:</strong> {formData.contactDetails.email}</p>
+      <p><strong>Mobile Number:</strong> {formData.contactDetails.mobileNumber}</p>
+      <p><strong>Date of Birth:</strong> {formData.contactDetails.dob}</p>
   
       <h3>Company Details</h3>
       <p><strong>Company Name:</strong> {formData.companyDetails.companyName}</p>
@@ -120,9 +120,9 @@ const GroupLifeAssurance = () => {
 
   const steps = [
     {
-      title: 'Personal Details',
+      title: 'Contact Details',
       content: (
-        <Card>
+        <div>
           <Form layout="vertical" form={form} onFinish={onFormFinish}>
             <Row gutter={16}>
               <Col span={12}>
@@ -190,13 +190,13 @@ const GroupLifeAssurance = () => {
               </Form.Item>
             </Row>
           </Form>
-        </Card>
+        </div>
       ),
     },
     {
       title: 'Company Details',
       content: (
-        <Card>
+        <div>
       <Row gutter={16}>
             <Col span={12}>
               <Form.Item
@@ -255,13 +255,13 @@ const GroupLifeAssurance = () => {
               </Form.Item>
             </Col>
           </Row>
-        </Card>
+        </div>
       ),
     },
     {
       title: 'Insured Members',
       content: (
-        <Card>
+        <div>
          <Row gutter={16}>
             <Col span={12}>
               <Form.Item
@@ -313,13 +313,13 @@ const GroupLifeAssurance = () => {
               </Form.Item>
             </Col>
           </Row>
-        </Card>
+        </div>
       ),
     },
     {
       title: 'Policy Details',
       content: (
-        <Card>
+        <div>
 <Row gutter={16}>
   <Col span={12}>
     <Form.Item
@@ -429,7 +429,7 @@ const GroupLifeAssurance = () => {
               </Form.Item>
             </Col>
           </Row>
-        </Card>
+        </div>
       ),
     },
     {
