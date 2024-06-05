@@ -92,7 +92,7 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
     },
     {
       key: "divider1",
-      style: { width: "100%" },
+      width: "auto",
       label: <Divider />,
       className: "non-interactive",
     },
@@ -157,6 +157,10 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
       onClick={handleClick}
       defaultSelectedKeys={["home"]}
       mode="inline"
+      style={{
+        height: "100vh",
+        overflowY: "auto",
+      }}
       items={items}
       theme={theme}
     />
