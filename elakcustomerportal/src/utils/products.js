@@ -1,4 +1,6 @@
 import gleImg from "../assets/funeral-expense.jpg";
+import glaImg from "../assets/glaImg.png";
+
 
 const products = [
   {
@@ -15,9 +17,9 @@ const products = [
   },
   {
     title: "Group Life Insurance",
-    image: gleImg,
+    image: glaImg,
     description:
-      "Life insurance offers financial security for your loved ones in the event of your untimely demise, ensuring they are taken care of even when you are not around.",
+      "We offer group life insurance solutions to provide financial security to your employees' families in the event of an unexpected loss.",
   },
   {
     title: "Travel Insurance",
