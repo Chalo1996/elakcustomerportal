@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import PortalLayout from "./layout/PortalLayout";
 import Education from "./components/Education/Education";
 import GroupLifeAssurance from "./components/Group Life/GroupLife";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -96,6 +97,7 @@ function App() {
                   </PortalLayout>
                 }
               />
+              <Route path='*' element={<NotFound />} />
             </Routes>
           </ConfigProvider>
         </ThemeProvider>
