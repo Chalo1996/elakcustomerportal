@@ -38,10 +38,10 @@ function App() {
                 }
               />
               <Route
-                path='education'
+                path='Education'
                 element={
                   <PortalLayout>
-                    <Home />
+                    <Education />
                   </PortalLayout>
                 }
               />
