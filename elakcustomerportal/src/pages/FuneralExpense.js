@@ -27,7 +27,7 @@ const FuneralExpensePage = () => {
           </p>
         </div>
 
-        <div className="flex items-center justify-start gap-[24px]">
+        <div className="flex items-center justify-start gap-[24px] mt-5">
           <div className="flex items-center justify-between w-[335px] h-[81px]">
             <div className="flex flex-row items-center justify-center gap-3">
               <div className="bg-[#92949733] rounded-full p-3">
@@ -41,12 +41,12 @@ const FuneralExpensePage = () => {
             <div>
               <RightOutlined
                 className="text-[#A32A29]"
-                style={{ fontSize: "24px" }}
+                style={{ fontSize: "18px" }}
               />
             </div>
           </div>
 
-          <div className="flex items-center justify-between w-[335px] h-[81px] mt-5">
+          <div className="flex items-center justify-between w-[335px] h-[81px]">
             <div className="flex flex-row items-center justify-center gap-3">
               <div className="bg-[#92949733] rounded-full p-3">
                 <TeamOutlined
@@ -59,7 +59,7 @@ const FuneralExpensePage = () => {
             <div>
               <RightOutlined
                 className="text-[#A32A29]"
-                style={{ fontSize: "24px" }}
+                style={{ fontSize: "18px" }}
               />
             </div>
           </div>
