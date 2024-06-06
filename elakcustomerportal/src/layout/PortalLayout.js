@@ -61,15 +61,17 @@ const PortalLayout = ({ children }) => {
       <Layout
         style={{
           marginLeft: collapsed ? 80 : 256,
+          overflow: "auto",
         }}
       >
         <Content
           style={{
             overflow: "initial",
+            padding: "24px",
           }}
         >
           <div
-            className={`min-h-[100vh] h-[100%] p-30 ${
+            className={`min-h-[100vh] h-[100%] ${
               theme === "dark" ? "bg-gray-800 text-white" : "bg-[#F7F7F7]"
             }`}
           >
