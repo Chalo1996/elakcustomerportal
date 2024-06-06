@@ -28,7 +28,7 @@ const FuneralExpenseModal = ({ isModalOpen, onCancel, onOkay, product }) => {
             type="primary"
             className="shadow-none font-semibold text-lg leading-6 text-center text-white w-[177px] h-[48px] p-[12px_48px] gap-0 rounded-tl-lg "
           >
-            <NavLink to="/funeral-expense">Apply Now</NavLink>
+            <NavLink to="funeral-expense">Apply Now</NavLink>
           </Button>
         </Row>,
       ]}
