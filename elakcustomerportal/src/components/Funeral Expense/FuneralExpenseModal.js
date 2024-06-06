@@ -1,5 +1,6 @@
 import { Modal, Button, Row } from "antd";
 import Img from "../../assets/modal-image.png";
+import { NavLink } from "react-router-dom";
 
 const FuneralExpenseModal = ({ isModalOpen, onCancel, onOkay, product }) => {
   const customTitle = (
@@ -7,6 +8,7 @@ const FuneralExpenseModal = ({ isModalOpen, onCancel, onOkay, product }) => {
       Funeral Expense Cover
     </p>
   );
+
   return (
     <Modal
       title={customTitle}
@@ -25,9 +27,8 @@ const FuneralExpenseModal = ({ isModalOpen, onCancel, onOkay, product }) => {
             key="close"
             type="primary"
             className="shadow-none font-semibold text-lg leading-6 text-center text-white w-[177px] h-[48px] p-[12px_48px] gap-0 rounded-tl-lg "
-            onClick={onCancel}
           >
-            Apply Now
+            <NavLink to="/funeral-expense">Apply Now</NavLink>
           </Button>
         </Row>,
       ]}
