@@ -5,7 +5,7 @@ import products from "../../utils/products";
 const ProductsList = () => {
   return (
     <>
-      <div className="pt-5 pl-9">
+      <div className="pt-5 pl-4">
         <div className="mb-4">
           <span>
             <button className="mb-2 focus:outline-none hover:text-[#A32A29]">
