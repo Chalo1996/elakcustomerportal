@@ -1,10 +1,10 @@
 import gleImg from "../assets/funeral-expense.jpg";
 import glaImg from "../assets/glaImg.png";
 
-
 const products = [
   {
     title: "Funeral Expense Cover",
+    url: "funeral-expense",
     image: gleImg,
     description:
       "Funeral expense solution is designed to help families deal with the burden of meeting immediate funeral related expenses on the death of a family member.",
