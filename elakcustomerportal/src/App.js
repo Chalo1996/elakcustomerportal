@@ -1,4 +1,3 @@
-import "./index.css";
 import { ConfigProvider } from "antd";
 import { ThemeProvider } from "./store/context/theme-context";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -11,6 +10,8 @@ import PortalLayout from "./layout/PortalLayout";
 import Education from "./components/Education/Education";
 import GroupLifeAssurance from "./components/Group Life/GroupLife";
 import GroupCriticalIllness from "./components/Group Critical Illness/CriticalIlness";
+import NotFound from "./pages/NotFound";
+import FuneralExpensePage from "./pages/FuneralExpense";
 
 function App() {
   return (
@@ -20,85 +21,54 @@ function App() {
           <ConfigProvider
             theme={{
               token: {
-                colorPrimary: "maroon",
+                colorPrimary: "#A32A29",
               },
             }}
           >
             <Routes>
-            <Route path="/" element={<Navigate to="/home" />} />
-              {/* <Route path='about' element={<MainLayout />} /> */}
-              {/* <Route path='contact' element={<MainLayout />} /> */}
-              <Route path='home' element={<MainLayout />} />
-                {/* <Route index element={<MainLayout><Home /></MainLayout>} /> */}
-              <Route path='./Group Life' element={<GroupLifeAssurance />} />
-              <Route path='./Education' element={<Education />} />
+              {/* Redirect to /home */}
+              <Route path="/" element={<Navigate to="/home" />} />
 
-              {/*'group-life-assurance'*/}
+              {/* Home route */}
+              <Route
+                path="/home"
+                element={
+                  <PortalLayout>
+                    <Home />
+                  </PortalLayout>
+                }
+              />
 
+              {/* Routes under /home */}
               <Route
-                path='landing-page'
+                path="/home/*"
                 element={
                   <PortalLayout>
-                    <Home />
+                    <Routes>
+                      <Route path="education" element={<Education />} />
+                      <Route
+                        path="funeral-expense"
+                        element={<FuneralExpensePage />}
+                      />
+                      <Route
+                        path="group-life-assurance"
+                        element={<GroupLifeAssurance />}
+                      />
+
+                      <Route
+                        path="critical-illness"
+                        element={<GroupCriticalIllness />}
+                      />
+                      {/* Add more routes here */}
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
                   </PortalLayout>
                 }
               />
-              <Route
-                path='Education'
-                element={
-                  <PortalLayout>
-                    <Education />
-                  </PortalLayout>
-                }
-              />
-              <Route
-                path='group-credit'
-                element={
-                  <PortalLayout>
-                    <Home />
-                  </PortalLayout>
-                }
-              />
-              <Route
-                path='funeral-expense'
-                element={
-                  <PortalLayout>
-                    <Home />
-                  </PortalLayout>
-                }
-              />
-              <Route
-                path='goal-based'
-                element={
-                  <PortalLayout>
-                    <Home />
-                  </PortalLayout>
-                }
-              />
-              <Route
-                path='Critical Illness'
-                element={
-                  <PortalLayout>
-                    <GroupCriticalIllness />
-                  </PortalLayout>
-                }
-              />
-              <Route
-                path='GroupLifeAssurance'
-                element={
-                  <PortalLayout>
-                    <GroupLifeAssurance />
-                  </PortalLayout>
-                }
-              />
-              <Route
-                path='group-term-life'
-                element={
-                  <PortalLayout>
-                    <Home />
-                  </PortalLayout>
-                }
-              />
+
+              {/* Routes outside of /home */}
+              <Route path="landing-page" element={<MainLayout />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </ConfigProvider>
         </ThemeProvider>
