@@ -81,7 +81,7 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
     {
       key: "home",
       icon: <HomeOutlined />,
-      label: <Link to="/">Home</Link>,
+      label: <Link to="/home">Home</Link>,
     },
     {
       key: "space",
