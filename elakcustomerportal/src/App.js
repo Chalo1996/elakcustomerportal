@@ -1,7 +1,7 @@
 import "./index.css";
 import { ConfigProvider } from "antd";
 import { ThemeProvider } from "./store/context/theme-context";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Provider } from "react-redux";
 
 import MainLayout from "./layout/main-layout/MainLayout";
@@ -25,11 +25,13 @@ function App() {
             }}
           >
             <Routes>
-              <Route path='/' element={<MainLayout />} />
-              <Route path='about' element={<MainLayout />} />
-              <Route path='contact' element={<MainLayout />} />
-              <Route path='home' element={<Home />} />
+            <Route path="/" element={<Navigate to="/home" />} />
+              {/* <Route path='about' element={<MainLayout />} /> */}
+              {/* <Route path='contact' element={<MainLayout />} /> */}
+              <Route path='home' element={<MainLayout />} />
+                {/* <Route index element={<MainLayout><Home /></MainLayout>} /> */}
               <Route path='./Group Life' element={<GroupLifeAssurance />} />
+              <Route path='./Education' element={<Education />} />
 
               {/*'group-life-assurance'*/}
 

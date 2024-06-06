@@ -1,18 +1,73 @@
-import { useTheme } from "../store/context/theme-context";
+import { useState, useEffect } from "react";
+import { Layout } from "antd";
+import Sidebar from "./Sidebar";
+
+const { Content, Sider } = Layout;
 
 const PortalLayout = ({ children }) => {
-  const { theme } = useTheme();
+  const [collapsed, setCollapsed] = useState(window.innerWidth < 768);
+
+  // const handleMenuSelect = (key) => {
+  //   if (key === "theme" || key === "expanded" || key === "collapsed") return;
+  //   setSelectedKey(key);
+  // };
+
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
+
+  const handleResize = () => {
+    if (window.innerWidth < 768) {
+      setCollapsed(true);
+    } else {
+      setCollapsed(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
-    <div className={`flex ${theme === "dark" ? "dark" : ""}`}>
-      <div
-        className={`flex-1 ${
-          theme === "dark" ? "bg-gray-800 text-white" : "bg-gray-100"
-        }`}
+    <Layout hasSider>
+      <Sider
+        collapsed={collapsed}
+        onCollapse={setCollapsed}
+        width={256}
+        collapsedWidth={80}
+        style={{
+          overflow: "auto",
+          height: "100vh",
+          position: "fixed",
+          left: 0,
+          top: 0,
+          bottom: 0,
+          margin: 0,
+        }}
       >
-        {children}
-      </div>
-    </div>
+        <Sidebar
+          // onSelect={handleMenuSelect}
+          collapsed={collapsed}
+          toggleCollapsed={toggleCollapsed}
+        />
+      </Sider>
+      <Layout
+        style={{
+          marginLeft: collapsed ? 80 : 256,
+        }}
+      >
+        <Content
+          style={{
+            overflow: "initial",
+          }}
+        >
+          {children}
+        </Content>
+      </Layout>
+    </Layout>
   );
 };
 

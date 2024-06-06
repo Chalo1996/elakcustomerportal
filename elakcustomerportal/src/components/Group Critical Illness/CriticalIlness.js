@@ -4,11 +4,11 @@ import { Steps, Radio, Space, Button, Row, Col, Form, Input, Select, DatePicker,
 const { Step } = Steps;
 
 const IndividualCustomerDetailsModal = ({ visible, onCancel, onNext }) => {
-  const [checkedList, setCheckedList] = useState([]);
+  const [, setCheckedList] = useState([]);
   const [termsChecked, setTermsChecked] = useState(false);
 
-  const onCheckboxChange = (checkedValues) => {
-    setCheckedList(checkedValues);
+  const onCheckboxChange = (checkedList) => {
+    setCheckedList(checkedList);
   };
 
   const onTermsChange = (e) => {
@@ -200,12 +200,13 @@ const GroupCriticalIllness = () => {
 
   return (
     <>
+      <h1 style={{ textAlign: 'left', fontWeight: 'bold', fontSize: '24px', marginBottom: '20px' }}>Critical Illness Cover</h1>
       <Steps current={current}>
         {steps.map((step, index) => (
           <Step key={index} title={step.title} />
         ))}
       </Steps>
-      <div style={{ marginTop: 16 }}>
+      <div style={{ marginTop: 32 }}>
         {steps[current].content}
         <div className="steps-action" style={{ marginTop: 16 }}>
           {current > 0 && (
@@ -226,3 +227,4 @@ const GroupCriticalIllness = () => {
 };
 
 export default GroupCriticalIllness;
+
