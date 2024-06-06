@@ -11,6 +11,7 @@ import PortalLayout from "./layout/PortalLayout";
 import Education from "./components/Education/Education";
 import GroupLifeAssurance from "./components/Group Life/GroupLife";
 import NotFound from "./pages/NotFound";
+import FuneralExpensePage from "./pages/FuneralExpense";
 
 function App() {
   return (
@@ -68,7 +69,7 @@ function App() {
                 path="funeral-expense"
                 element={
                   <PortalLayout>
-                    <Home />
+                    <FuneralExpensePage />
                   </PortalLayout>
                 }
               />
@@ -89,7 +90,7 @@ function App() {
                 }
               />
               <Route
-                path='GroupLifeAssurance'
+                path="GroupLifeAssurance"
                 element={
                   <PortalLayout>
                     <GroupLifeAssurance />
