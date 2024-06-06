@@ -1,5 +1,7 @@
 import gleImg from "../assets/funeral-expense.jpg";
 import glaImg from "../assets/glaImg.png";
+import happyfamily from "../assets/happyfamily.png";
+
 
 const products = [
   {
@@ -28,10 +30,10 @@ const products = [
       "Travel insurance covers you against unexpected events while traveling, such as trip cancellations, lost luggage, medical emergencies, and more.",
   },
   {
-    title: "Home Insurance",
-    image: gleImg,
+    title: "Term Life Insurance",
+    image: happyfamily,
     description:
-      "Home insurance protects your property and belongings against damage or loss due to natural disasters, theft, and other unforeseen events.",
+      "Term life insurance is a type of life insurance policy that provides coverage for a specified period during  which if the policyholder dies, a death benefit is paid out to the designated beneficiaries.",
   },
   {
     title: "Auto Insurance",
@@ -42,3 +44,5 @@ const products = [
 ];
 
 export default products;
+
+
