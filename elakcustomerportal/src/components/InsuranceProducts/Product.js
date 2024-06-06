@@ -3,6 +3,7 @@ import { useTheme } from "../../store/context/theme-context";
 import { useState } from "react";
 
 import FuneralExpenseModal from "../Funeral Expense/FuneralExpenseModal";
+import { NavLink } from "react-router-dom";
 
 const { Meta } = Card;
 
@@ -69,7 +70,7 @@ const Product = ({ product, index }) => {
           Learn More
         </Button>
         <Button type="primary" className="border-0 shadow-none">
-          Get Cover
+          <NavLink to={product.url}>Get Cover</NavLink>
         </Button>
       </div>
       {renderModal()}
