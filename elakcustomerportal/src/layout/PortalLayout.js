@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { Layout } from "antd";
-import Sidebar from "./Sidebar";
-import ContentTrial from "./ContentTrial";
+import Sidebar from "./main-layout/Sidebar";
+import { useTheme } from "../store/context/theme-context";
 
 const { Content, Sider } = Layout;
 
-const MainLayout = () => {
-  const [collapsed, setCollapsed] = useState(window.innerWidth < 768);
+const PortalLayout = ({ children }) => {
   const [selectedKey, setSelectedKey] = useState("home");
+  const [collapsed, setCollapsed] = useState(window.innerWidth < 768);
+  const { theme } = useTheme();
 
   const handleMenuSelect = (key) => {
     if (key === "theme" || key === "expanded" || key === "collapsed") return;
@@ -66,11 +67,17 @@ const MainLayout = () => {
             overflow: "initial",
           }}
         >
-          <ContentTrial selectedKey={selectedKey} />
+          <div
+            className={`min-h-[100vh] h-[100%] p-30 ${
+              theme === "dark" ? "bg-gray-800 text-white" : "bg-[#F7F7F7]"
+            }`}
+          >
+            {children}
+          </div>
         </Content>
       </Layout>
     </Layout>
   );
 };
 
-export default MainLayout;
+export default PortalLayout;

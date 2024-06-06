@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Menu, Switch, Button, Divider } from "antd";
 import {
   LogoutOutlined,
@@ -19,18 +18,13 @@ import {
 import { useTheme } from "../../store/context/theme-context";
 import imgLogo from "../../assets/Equity_Group_Logo.png";
 import darkLogo from "../../assets/dark-logo.png";
-import profileImg from "../../assets/profile.png";
+import { Link } from "react-router-dom";
 
-const Sidebar = ({ onSelect }) => {
+const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
   const { theme, toggleTheme } = useTheme();
-  const [collapsed, setCollapsed] = useState(false);
 
   const handleClick = (e) => {
     onSelect(e.key);
-  };
-
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
   };
 
   const items = [
@@ -39,7 +33,12 @@ const Sidebar = ({ onSelect }) => {
       style: { height: "auto" },
       label: (
         <div className="flex items-center">
-          {collapsed && <MenuOutlined onClick={toggleCollapsed} />}
+          {collapsed && (
+            <MenuOutlined
+              style={{ margin: "auto" }}
+              onClick={toggleCollapsed}
+            />
+          )}
           {!collapsed && (
             <>
               <Button
@@ -66,17 +65,15 @@ const Sidebar = ({ onSelect }) => {
       className: "non-interactive",
       style: { height: "auto" },
       label: !collapsed && (
-        <div className="mt-7 flex w-full items-center justify-start">
-          <div>
-            <img
-              src={profileImg}
-              alt="Profile"
-              className="border-red-500 w-12 h-12 rounded-full"
-            />
+        <div className="flex items-center rounded-lg my-7 mx-0">
+          <div className="flex-shrink-0">
+            <div className="w-12 h-12 bg-[#A32A29] text-white flex items-center justify-center rounded-full">
+              PN
+            </div>
           </div>
-          <div className="ml-5">
-            <p className="font-bold">John Doe</p>
-            <p style={{ fontSize: 12, color: "#888" }}>Professional Title</p>
+          <div className="ml-3">
+            <p className="font-semibold leading-tight">Profile Name</p>
+            <p className="text-gray-500 leading-tight">Personal</p>
           </div>
         </div>
       ),
@@ -84,47 +81,48 @@ const Sidebar = ({ onSelect }) => {
     {
       key: "home",
       icon: <HomeOutlined />,
-      label: "Home",
+      label: <Link to="/">Home</Link>,
     },
     {
       key: "space",
       label: "",
+      className: "non-interactive",
     },
     {
       key: "divider1",
-      style: { width: "100%" },
+      width: "auto",
       label: <Divider />,
       className: "non-interactive",
     },
     {
       key: "more",
-      icon: <EllipsisOutlined />,
-      label: "More",
+      icon: <EllipsisOutlined className="rotate-90" />,
+      label: <Link to="/more">More</Link>,
     },
     {
       key: "accounts",
       icon: <AccountsIcon />,
-      label: "Accounts",
+      label: <Link to="/accounts">Accounts</Link>,
     },
     {
       key: "transact",
       icon: <TransactIcon />,
-      label: "Transact",
+      label: <Link to="/transact">Transact</Link>,
     },
     {
       key: "borrow",
       icon: <BorrowIcon />,
-      label: "Borrow",
+      label: <Link to="/borrow">Borrow</Link>,
     },
     {
       key: "save",
       icon: <SaveIcon />,
-      label: "Save",
+      label: <Link to="/save">Save</Link>,
     },
     {
       key: "insure",
       icon: <UmbrellaIcon />,
-      label: "Insure",
+      label: <Link to="/insure">Insure</Link>,
     },
     {
       key: "theme",
@@ -143,28 +141,26 @@ const Sidebar = ({ onSelect }) => {
     {
       key: "english",
       icon: <GlobalOutlined />,
-      label: "English",
+      label: <Link to="/english">English</Link>,
     },
     {
       key: "signout",
       icon: <LogoutOutlined />,
-      label: "Sign Out",
+      label: <Link to="/signout">Sign Out</Link>,
     },
   ];
 
   return (
     <Menu
       onClick={handleClick}
-      style={{
-        width: collapsed ? 80 : 256,
-        minHeight: "100vh",
-        height: "100%",
-      }}
       defaultSelectedKeys={["home"]}
       mode="inline"
+      style={{
+        height: "100vh",
+        overflowY: "auto",
+      }}
       items={items}
       theme={theme}
-      inlineCollapsed={collapsed}
     />
   );
 };
