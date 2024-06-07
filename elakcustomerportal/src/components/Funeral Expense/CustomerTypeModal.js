@@ -1,9 +1,10 @@
-import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Modal, Button, Checkbox } from "antd";
 import { useTheme } from "../../store/context/theme-context";
 
 const CustomerTypeModal = ({ isModalOpen, onOkay, onCancel, customerType }) => {
   const { theme } = useTheme();
+  const navigate = useNavigate();
   const customTitle = (
     <div className="relative w-[297px] h-[48px]">
       <p
@@ -15,6 +16,14 @@ const CustomerTypeModal = ({ isModalOpen, onOkay, onCancel, customerType }) => {
       </p>
     </div>
   );
+
+  const handleNavigate = () => {
+    if (customerType === "Personal") {
+      navigate("/home/funeral-expense/individual-customer");
+    } else if (customerType === "Group") {
+      navigate("/home/funeral-expense/group-customer");
+    }
+  };
 
   const modalStyle = {
     width: "354px",
@@ -43,7 +52,7 @@ const CustomerTypeModal = ({ isModalOpen, onOkay, onCancel, customerType }) => {
             <Button
               key="continue"
               type="primary"
-              onClick={onOkay}
+              onClick={handleNavigate}
               className="w-full h-[48px] px-8 py-2 shadow-none text-base text-center font-open-sans"
             >
               Continue

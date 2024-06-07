@@ -1,10 +1,8 @@
 import { ConfigProvider } from "antd";
 import { ThemeProvider } from "./store/context/theme-context";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
 import { Provider } from "react-redux";
 
-import MainLayout from "./layout/main-layout/MainLayout";
 import store from "./store/redux/store";
 import Home from "./pages/Home";
 import PortalLayout from "./layout/PortalLayout";
@@ -14,6 +12,7 @@ import GroupCriticalIllness from "./components/Group Critical Illness/CriticalIl
 import NotFound from "./pages/NotFound";
 import CustomerTypePage from "./pages/FuneralExpensePages/CustomerType";
 import LandingPage from "./pages/landingPage";
+import IndividualCustomer from "./pages/FuneralExpensePages/IndividualCustomer";
 
 function App() {
   return (
@@ -28,9 +27,9 @@ function App() {
             }}
           >
             <Routes>
-              {/*Landing Page Route*/}
+              {/* Landing Page Route */}
               <Route path="/landing-page" element={<LandingPage />} />
-              {/* Redirect to /landing page*/}
+              {/* Redirect to /landing-page */}
               <Route path="/" element={<Navigate to="/landing-page" />} />
 
               {/* Home route */}
@@ -51,8 +50,12 @@ function App() {
                     <Routes>
                       <Route path="education" element={<Education />} />
                       <Route
-                        path="funeral-expense"
+                        path="funeral-expense/select-customer-type"
                         element={<CustomerTypePage />}
+                      />
+                      <Route
+                        path="funeral-expense/individual-customer"
+                        element={<IndividualCustomer />}
                       />
                       <Route
                         path="group-life-assurance"
@@ -70,7 +73,6 @@ function App() {
               />
 
               {/* Routes outside of /home */}
-              <Route path="landing-page" element={<LandingPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </ConfigProvider>
