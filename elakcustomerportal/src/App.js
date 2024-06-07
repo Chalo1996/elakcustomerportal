@@ -33,11 +33,7 @@ function App() {
                   </PortalLayout>
                 }
               />
-              <Route path="about" element={<MainLayout />} />
-              <Route path="contact" element={<MainLayout />} />
               <Route path="home" element={<Home />} />
-              <Route path="./Group Life" element={<GroupLifeAssurance />} />
-
               {/*'group-life-assurance'*/}
 
               <Route
@@ -89,7 +85,7 @@ function App() {
                 }
               />
               <Route
-                path='GroupLifeAssurance'
+                path='group-life-assurance'
                 element={
                   <PortalLayout>
                     <GroupLifeAssurance />
