@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   LeftOutlined,
   UserOutlined,
@@ -5,8 +6,25 @@ import {
   RightOutlined,
 } from "@ant-design/icons";
 import { Divider } from "antd";
+import { useTheme } from "../store/context/theme-context";
+import CustomerTypeModal from "../components/Funeral Expense/CustomerTypeModal";
 
 const FuneralExpensePage = () => {
+  const { theme } = useTheme();
+  const [selectedSection, setSelectedSection] = useState(null);
+
+  const handleClick = (section) => {
+    setSelectedSection(section);
+  };
+
+  const handleOk = () => {
+    setSelectedSection(null);
+  };
+
+  const handleCancel = () => {
+    setSelectedSection(null);
+  };
+
   return (
     <div className="pt-5 pl-4">
       <div className="mb-4">
@@ -29,7 +47,10 @@ const FuneralExpensePage = () => {
         </div>
 
         <div className="flex flex-col items-start lg:flex-row lg:items-center lg:justify-start gap-[24px] mt-5">
-          <div>
+          <div
+            className="cursor-pointer"
+            onClick={() => handleClick("Personal")}
+          >
             <div className="flex items-center justify-between w-[335px] h-[81px]">
               <div className="flex flex-row items-center justify-center gap-3">
                 <div className="bg-[#92949733] rounded-full p-3">
@@ -47,10 +68,10 @@ const FuneralExpensePage = () => {
                 />
               </div>
             </div>
-            <Divider />
+            <Divider className={`${theme === "dark" ? "bg-gray-700" : ""}`} />
           </div>
 
-          <div>
+          <div className="cursor-pointer" onClick={() => handleClick("Group")}>
             <div className="flex items-center justify-between w-[335px] h-[81px]">
               <div className="flex flex-row items-center justify-center gap-3">
                 <div className="bg-[#92949733] rounded-full p-3">
@@ -68,10 +89,26 @@ const FuneralExpensePage = () => {
                 />
               </div>
             </div>
-            <Divider />
+            <Divider className={`${theme === "dark" ? "bg-gray-700" : ""}`} />
           </div>
         </div>
       </div>
+      {selectedSection === "Personal" && (
+        <CustomerTypeModal
+          isModalOpen={selectedSection === "Personal"}
+          onOkay={handleOk}
+          onCancel={handleCancel}
+          customerType="Personal"
+        />
+      )}
+      {selectedSection === "Group" && (
+        <CustomerTypeModal
+          isModalOpen={selectedSection === "Group"}
+          onOkay={handleOk}
+          onCancel={handleCancel}
+          customerType="Group"
+        />
+      )}
     </div>
   );
 };
