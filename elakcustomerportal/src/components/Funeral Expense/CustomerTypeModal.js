@@ -1,55 +1,82 @@
+import React from "react";
 import { Modal, Button, Checkbox } from "antd";
 import { useTheme } from "../../store/context/theme-context";
 
-const CustomerTypeModal = ({ isModalOpen, onOkay, onCancel }) => {
+const CustomerTypeModal = ({ isModalOpen, onOkay, onCancel, customerType }) => {
   const { theme } = useTheme();
   const customTitle = (
-    <p
-      className={`${
-        theme === "dark" ? "text-white bg-gray-800" : "text-black"
-      } text-lg font-medium text-left font-roboto `}
-    >
-      You'll need to provide the following personal details to continue
-    </p>
+    <div class="relative w-[297px] h-[48px]">
+      <p
+        className={`${
+          theme === "dark" ? "text-white bg-gray-800" : "text-[#929497]"
+        } font-medium text-left font-open-sans text-lg leading-6`}
+      >
+        You'll need to provide the following personal details to continue
+      </p>
+    </div>
   );
+
+  const modalStyle = {
+    width: "354px",
+    height: "364px",
+    gap: "0px",
+  };
 
   return (
     <Modal
       title={customTitle}
       open={isModalOpen}
+      style={modalStyle}
       className={theme === "dark" ? "dark-theme" : ""}
       onOk={onOkay}
       onCancel={onCancel}
       footer={[
-        <Button key="cancel" onClick={onCancel}>
-          Cancel
-        </Button>,
-        <Button key="submit" type="primary" onClick={onOkay}>
-          Continue
-        </Button>,
+        <div className="w-full h-[86px]">
+          <div className="flex justify-between items-center h-full gap-3">
+            <Button
+              onClick={onCancel}
+              className="w-full h-[48px] px-8 py-2 border-[#A32A29] text-[#A32A29] shadow-none text-base text-center font-open-sans"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="primary"
+              onClick={onOkay}
+              className="w-full h-[48px] px-8 py-2 shadow-none text-base text-center font-open-sans"
+            >
+              Continue
+            </Button>
+          </div>
+        </div>,
       ]}
     >
-      <Checkbox
-        defaultChecked
-        style={{ display: "block", marginBottom: "10px" }}
-      >
-        Full name
-      </Checkbox>
-      <Checkbox
-        defaultChecked
-        style={{ display: "block", marginBottom: "10px" }}
-      >
-        Email address
-      </Checkbox>
-      <Checkbox
-        defaultChecked
-        style={{ display: "block", marginBottom: "10px" }}
-      >
-        Phone number
-      </Checkbox>
-      <Checkbox style={{ display: "block", marginBottom: "10px" }}>
-        Date of Birth
-      </Checkbox>
+      <div className="flex flex-col gap-3 mt-7">
+        <Checkbox
+          defaultChecked
+          className="non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left"
+        >
+          Full name
+        </Checkbox>
+        <Checkbox
+          defaultChecked
+          className="non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left"
+        >
+          Email address
+        </Checkbox>
+        <Checkbox
+          defaultChecked
+          className="non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left"
+        >
+          Phone number
+        </Checkbox>
+        <Checkbox
+          defaultChecked
+          readOnly
+          className="non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left"
+        >
+          Date of Birth
+        </Checkbox>
+      </div>
     </Modal>
   );
 };
