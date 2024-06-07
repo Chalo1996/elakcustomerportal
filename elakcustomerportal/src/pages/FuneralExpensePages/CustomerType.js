@@ -66,7 +66,7 @@ const CustomerTypePage = () => {
                     style={{ fontSize: "24px" }}
                   />
                 </div>
-                <p className="w-[231px] h-[24px]">Personal</p>
+                <p className="mt-4">Personal</p>
               </div>
               <div>
                 <RightOutlined
@@ -87,7 +87,7 @@ const CustomerTypePage = () => {
                     style={{ fontSize: "24px" }}
                   />
                 </div>
-                <p className="w-[231px] h-[24px]">Group</p>
+                <p className="mt-4">Group</p>
               </div>
               <div>
                 <RightOutlined
