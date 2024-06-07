@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import PortalLayout from "./layout/PortalLayout";
 import Education from "./components/Education/Education";
 import GroupLifeAssurance from "./components/Group Life/GroupLife";
+import GroupCriticalIllness from "./components/Group Critical Illness/CriticalIlness";
 import NotFound from "./pages/NotFound";
 import FuneralExpensePage from "./pages/FuneralExpense";
 
@@ -52,6 +53,11 @@ function App() {
                       <Route
                         path="group-life-assurance"
                         element={<GroupLifeAssurance />}
+                      />
+
+                      <Route
+                        path="critical-illness"
+                        element={<GroupCriticalIllness />}
                       />
                       {/* Add more routes here */}
                       <Route path="*" element={<NotFound />} />

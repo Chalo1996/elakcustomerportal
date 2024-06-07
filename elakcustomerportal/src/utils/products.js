@@ -1,5 +1,6 @@
 import gleImg from "../assets/funeral-expense.jpg";
 import glaImg from "../assets/glaImg.png";
+import introImage from "../assets/introImage.jpg"
 import happyfamily from "../assets/happyfamily.png";
 
 
@@ -12,10 +13,11 @@ const products = [
       "Funeral expense solution is designed to help families deal with the burden of meeting immediate funeral related expenses on the death of a family member.",
   },
   {
-    title: "Medical Insurance",
-    image: gleImg,
+    title: "Critical Illness Cover",
+    image: introImage,
+    url: "critical-illness",
     description:
-      "Medical insurance provides comprehensive coverage for hospitalization, surgery, and outpatient treatments, ensuring you receive the best healthcare possible.",
+      "Critical Illness insurance provides comprehensive coverage for against chronic illnesses such as cancer, ensuring you receive the best healthcare possible.",
   },
   {
     title: "Group Life Insurance",
