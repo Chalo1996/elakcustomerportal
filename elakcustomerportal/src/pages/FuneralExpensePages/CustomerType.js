@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   LeftOutlined,
   UserOutlined,
@@ -12,6 +13,12 @@ import CustomerTypeModal from "../../components/Funeral Expense/CustomerTypeModa
 const CustomerTypePage = () => {
   const { theme } = useTheme();
   const [selectedSection, setSelectedSection] = useState(null);
+
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate(-1);
+  };
 
   const handleClick = (section) => {
     setSelectedSection(section);
@@ -30,7 +37,7 @@ const CustomerTypePage = () => {
       <div className="mb-4">
         <span>
           <button className="mb-2 focus:outline-none hover:text-[#A32A29]">
-            <LeftOutlined className="w-8 h-8" />
+            <LeftOutlined className="w-8 h-8" onClick={handleNavigate} />
           </button>
         </span>
         <span className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
