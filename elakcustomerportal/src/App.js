@@ -1,7 +1,7 @@
 import { ConfigProvider } from "antd";
 import { ThemeProvider } from "./store/context/theme-context";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
 import { Provider } from "react-redux";
  
 import MainLayout from "./layout/main-layout/MainLayout";
@@ -33,7 +33,7 @@ function App() {
               {/* Home route */}
               <Route
                 path="/home"
-                path="/home"
+                
                 element={
                   <PortalLayout>
                     <Home />
@@ -44,7 +44,7 @@ function App() {
               {/* Routes under /home */}
               <Route
                 path="/home/*"
-                path="/home/*"
+
                 element={
                   <PortalLayout>
                     <Routes>
