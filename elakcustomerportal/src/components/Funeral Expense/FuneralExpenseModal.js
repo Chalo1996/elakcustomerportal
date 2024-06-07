@@ -1,10 +1,16 @@
+import { NavLink } from "react-router-dom";
 import { Modal, Button, Row } from "antd";
 import Img from "../../assets/modal-image.png";
-import { NavLink } from "react-router-dom";
+import { useTheme } from "../../store/context/theme-context";
 
 const FuneralExpenseModal = ({ isModalOpen, onCancel, onOkay, product }) => {
+  const { theme } = useTheme();
   const customTitle = (
-    <p className="text-lg font-medium text-center font-roboto text-black">
+    <p
+      className={`${
+        theme === "dark" ? "text-white bg-gray-800" : "text-black"
+      } text-lg font-medium text-center font-roboto `}
+    >
       Funeral Expense Cover
     </p>
   );
@@ -15,6 +21,7 @@ const FuneralExpenseModal = ({ isModalOpen, onCancel, onOkay, product }) => {
       open={isModalOpen}
       onOk={onOkay}
       onCancel={onCancel}
+      className={theme === "dark" ? "dark-theme" : ""}
       style={{
         width: "741px",
         height: "710px",
@@ -26,7 +33,9 @@ const FuneralExpenseModal = ({ isModalOpen, onCancel, onOkay, product }) => {
           <Button
             key="close"
             type="primary"
-            className="shadow-none font-semibold text-lg leading-6 text-center text-white w-[177px] h-[48px] p-[12px_48px] gap-0 rounded-tl-lg "
+            className={`${
+              theme === "dark" ? "text-white" : ""
+            } shadow-none font-semibold text-lg leading-6 text-center w-[177px] h-[48px] p-[12px_48px] gap-0 rounded-tl-lg `}
           >
             <NavLink to="funeral-expense">Apply Now</NavLink>
           </Button>
@@ -40,7 +49,11 @@ const FuneralExpenseModal = ({ isModalOpen, onCancel, onOkay, product }) => {
           className="object-cover text-center rounded-[16px] h-[232px] w-[311px] m-auto"
         />
         <div className="py-3 px-0">
-          <p className="text-left text-[#221F1F] font-semibold text-[16px] leading-6">
+          <p
+            className={`${
+              theme === "dark" ? "text-white" : "text-[#221F1F]"
+            } text-left  font-semibold text-[16px] leading-6`}
+          >
             Life is a journey...
           </p>
           <p className="text-left font-normal text-[#929497] text-base leading-5 mb-4">
@@ -50,7 +63,11 @@ const FuneralExpenseModal = ({ isModalOpen, onCancel, onOkay, product }) => {
           </p>
         </div>
         <div className="py-3 px-0">
-          <p className="text-left text-[#221F1F] font-semibold text-[16px] leading-6">
+          <p
+            className={`${
+              theme === "dark" ? "text-white" : "text-[#221F1F]"
+            } text-left  font-semibold text-[16px] leading-6`}
+          >
             Our Funeral expense cover
           </p>
           <p className="text-left font-normal text-[#929497] text-base leading-5 mb-4">

@@ -63,7 +63,7 @@ const Product = ({ product, index }) => {
     >
       <Meta
         title={
-          <span style={{ color: theme === "dark" ? "gray" : "inherit" }}>
+          <span style={{ color: theme === "dark" ? "white" : "inherit" }}>
             {product.title}
           </span>
         }

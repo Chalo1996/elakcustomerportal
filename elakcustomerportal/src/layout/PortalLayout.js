@@ -61,6 +61,7 @@ const PortalLayout = ({ children }) => {
       <Layout
         style={{
           marginLeft: collapsed ? 80 : 256,
+          overflow: "auto",
         }}
       >
         <Content
@@ -69,9 +70,9 @@ const PortalLayout = ({ children }) => {
           }}
         >
           <div
-            className={`min-h-[100vh] h-[100%] p-30 ${
+            className={`${
               theme === "dark" ? "bg-gray-800 text-white" : "bg-[#F7F7F7]"
-            }`}
+            } min-h-[100vh] h-[100%] p-[24px]`}
           >
             {children}
           </div>

@@ -59,11 +59,13 @@ const MainLayout = () => {
       <Layout
         style={{
           marginLeft: collapsed ? 80 : 256,
+          overflow: "auto",
         }}
       >
         <Content
           style={{
-            overflow: "initial",
+            overflow: "auto",
+            padding: "24px",
           }}
         >
           <ContentTrial selectedKey={selectedKey} />
