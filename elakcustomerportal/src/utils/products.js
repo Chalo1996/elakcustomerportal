@@ -1,7 +1,11 @@
 import gleImg from "../assets/funeral-expense.jpg";
+<<<<<<< HEAD
 import glaImg from "../assets/glaImg.png";
 import edu from "../assets/edu.png";
 import goal from "../assets/goal.png";
+=======
+import glaImg from "../assets/glaImg.jpg";
+>>>>>>> 5192332dbe5b8e94e9fed71b84fe4392eba4ae64
 import introImage from "../assets/introImage.jpg"
 import happyfamily from "../assets/happyfamily.png";
 
