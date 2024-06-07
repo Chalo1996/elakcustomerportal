@@ -6,6 +6,7 @@ import { useTheme } from "../store/context/theme-context";
 const { Content, Sider } = Layout;
 
 const PortalLayout = ({ children }) => {
+  // eslint-disable-next-line no-unused-vars
   const [selectedKey, setSelectedKey] = useState("home");
   const [collapsed, setCollapsed] = useState(window.innerWidth < 768);
   const { theme } = useTheme();
@@ -60,6 +61,7 @@ const PortalLayout = ({ children }) => {
       <Layout
         style={{
           marginLeft: collapsed ? 80 : 256,
+          overflow: "auto",
         }}
       >
         <Content
@@ -68,9 +70,9 @@ const PortalLayout = ({ children }) => {
           }}
         >
           <div
-            className={`min-h-[100vh] h-[100%] p-30 ${
-              theme === "dark" ? "bg-gray-800 text-white" : "bg-[#f5f5f5]"
-            }`}
+            className={`${
+              theme === "dark" ? "bg-gray-800 text-white" : "bg-[#F7F7F7]"
+            } min-h-[100vh] h-[100%] p-[24px]`}
           >
             {children}
           </div>

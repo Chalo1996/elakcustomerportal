@@ -67,7 +67,7 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
       label: !collapsed && (
         <div className="flex items-center rounded-lg my-7 mx-0">
           <div className="flex-shrink-0">
-            <div className="w-12 h-12 bg-[maroon] text-white flex items-center justify-center rounded-full">
+            <div className="w-12 h-12 bg-[#A32A29] text-white flex items-center justify-center rounded-full">
               PN
             </div>
           </div>
@@ -81,7 +81,7 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
     {
       key: "home",
       icon: <HomeOutlined />,
-      label: <Link to="/">Home</Link>,
+      label: <Link to="/home">Home</Link>,
     },
     {
       key: "space",
@@ -96,7 +96,7 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
     },
     {
       key: "more",
-      icon: <EllipsisOutlined />,
+      icon: <EllipsisOutlined className="rotate-90" />,
       label: <Link to="/more">More</Link>,
     },
     {
