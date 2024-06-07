@@ -6,10 +6,10 @@ import {
   RightOutlined,
 } from "@ant-design/icons";
 import { Divider } from "antd";
-import { useTheme } from "../store/context/theme-context";
-import CustomerTypeModal from "../components/Funeral Expense/CustomerTypeModal";
+import { useTheme } from "../../store/context/theme-context";
+import CustomerTypeModal from "../../components/Funeral Expense/CustomerTypeModal";
 
-const FuneralExpensePage = () => {
+const CustomerTypePage = () => {
   const { theme } = useTheme();
   const [selectedSection, setSelectedSection] = useState(null);
 
@@ -113,4 +113,4 @@ const FuneralExpensePage = () => {
   );
 };
 
-export default FuneralExpensePage;
+export default CustomerTypePage;

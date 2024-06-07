@@ -3,7 +3,7 @@ import { ThemeProvider } from "./store/context/theme-context";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { Provider } from "react-redux";
- 
+
 import MainLayout from "./layout/main-layout/MainLayout";
 import store from "./store/redux/store";
 import Home from "./pages/Home";
@@ -12,8 +12,8 @@ import Education from "./components/Education/Education";
 import GroupLifeAssurance from "./components/Group Life/GroupLife";
 import GroupCriticalIllness from "./components/Group Critical Illness/CriticalIlness";
 import NotFound from "./pages/NotFound";
-import FuneralExpensePage from "./pages/FuneralExpense";
- 
+import CustomerTypePage from "./pages/FuneralExpensePages/CustomerType";
+
 function App() {
   return (
     <Provider store={store}>
@@ -29,35 +29,33 @@ function App() {
             <Routes>
               {/* Redirect to /home */}
               <Route path="/" element={<Navigate to="/home" />} />
- 
+
               {/* Home route */}
               <Route
                 path="/home"
-                
                 element={
                   <PortalLayout>
                     <Home />
                   </PortalLayout>
                 }
               />
- 
+
               {/* Routes under /home */}
               <Route
                 path="/home/*"
-
                 element={
                   <PortalLayout>
                     <Routes>
                       <Route path="education" element={<Education />} />
                       <Route
                         path="funeral-expense"
-                        element={<FuneralExpensePage />}
+                        element={<CustomerTypePage />}
                       />
                       <Route
                         path="group-life-assurance"
                         element={<GroupLifeAssurance />}
                       />
-                       <Route
+                      <Route
                         path="critical-illness"
                         element={<GroupCriticalIllness />}
                       />
@@ -67,7 +65,7 @@ function App() {
                   </PortalLayout>
                 }
               />
- 
+
               {/* Routes outside of /home */}
               <Route path="landing-page" element={<MainLayout />} />
               <Route path="*" element={<NotFound />} />
@@ -78,5 +76,5 @@ function App() {
     </Provider>
   );
 }
- 
+
 export default App;
