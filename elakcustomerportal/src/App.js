@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound";
 import CustomerTypePage from "./pages/FuneralExpensePages/CustomerType";
 import LandingPage from "./pages/landingPage";
 import IndividualCustomer from "./pages/FuneralExpensePages/IndividualCustomer";
+import GroupCustomerPage from "./pages/FuneralExpensePages/GroupCustomer";
 
 function App() {
   return (
@@ -56,6 +57,10 @@ function App() {
                       <Route
                         path="funeral-expense/individual-customer"
                         element={<IndividualCustomer />}
+                      />
+                      <Route
+                        path="funeral-expense/group-customer"
+                        element={<GroupCustomerPage />}
                       />
                       <Route
                         path="group-life-assurance"
