@@ -5,7 +5,7 @@ import { useTheme } from "../../store/context/theme-context";
 const CustomerTypeModal = ({ isModalOpen, onOkay, onCancel, customerType }) => {
   const { theme } = useTheme();
   const customTitle = (
-    <div class="relative w-[297px] h-[48px]">
+    <div className="relative w-[297px] h-[48px]">
       <p
         className={`${
           theme === "dark" ? "text-white bg-gray-800" : "text-[#929497]"
@@ -31,15 +31,17 @@ const CustomerTypeModal = ({ isModalOpen, onOkay, onCancel, customerType }) => {
       onOk={onOkay}
       onCancel={onCancel}
       footer={[
-        <div className="w-full h-[86px]">
+        <div className="w-full h-[86px]" key="footer-row">
           <div className="flex justify-between items-center h-full gap-3">
             <Button
+              key="close"
               onClick={onCancel}
               className="w-full h-[48px] px-8 py-2 border-[#A32A29] text-[#A32A29] shadow-none text-base text-center font-open-sans"
             >
               Cancel
             </Button>
             <Button
+              key="continue"
               type="primary"
               onClick={onOkay}
               className="w-full h-[48px] px-8 py-2 shadow-none text-base text-center font-open-sans"
