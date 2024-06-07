@@ -1,26 +1,18 @@
 import React, { useState } from "react";
-import { Steps, Radio, Space, Button, Row, Col, Form, Input, Select, DatePicker, Modal, Checkbox } from "antd";
+import { PersonalIcon, GroupIcon } from "../../layout/icons/icons";
+import { Steps, Radio, Space, Button, Row, Col, Form, Input, Select, DatePicker, Modal, Checkbox, InputNumber } from "antd";
 
 const { Step } = Steps;
 
 const IndividualCustomerDetailsModal = ({ visible, onCancel, onNext }) => {
   const [, setCheckedList] = useState([]);
-  const [termsChecked, setTermsChecked] = useState(false);
 
   const onCheckboxChange = (checkedList) => {
     setCheckedList(checkedList);
   };
 
-  const onTermsChange = (e) => {
-    setTermsChecked(e.target.checked);
-  };
-
   const handleOk = () => {
-    if (termsChecked) {
-      onNext(); // Call the onNext function passed from the parent component
-    } else {
-      alert("Please accept the terms and conditions");
-    }
+    onNext(); // Call the onNext function passed from the parent component
   };
 
   const handleCancel = () => {
@@ -29,7 +21,7 @@ const IndividualCustomerDetailsModal = ({ visible, onCancel, onNext }) => {
 
   return (
     <Modal
-      title="Individual Customer Details"
+      title="You will be required to provide the following details to continue"
       visible={visible}
       onCancel={handleCancel}
       onOk={handleOk}
@@ -39,29 +31,57 @@ const IndividualCustomerDetailsModal = ({ visible, onCancel, onNext }) => {
           Cancel
         </Button>,
         <Button key="ok" type="primary" onClick={handleOk}>
-          OK
+          Continue
         </Button>,
       ]}
     >
       <Form layout="vertical">
-        <Form.Item label="Personal Details">
-          <Space direction="vertical">
-            <Checkbox.Group onChange={onCheckboxChange} style={{ display: 'flex', flexDirection: 'column' }}>
-              <Checkbox value="name">Name</Checkbox>
-              <Checkbox value="gender">Gender</Checkbox>
-              <Checkbox value="dob">Date of Birth</Checkbox>
-              <Checkbox value="email">Email</Checkbox>
-              <Checkbox value="telNo">Mobile Number</Checkbox>
-            </Checkbox.Group>
-            <Checkbox
-              checked={termsChecked}
-              onChange={onTermsChange}
-            >
-              I accept the terms and conditions
-            </Checkbox>
-          </Space>
+        <Form.Item>
+          <Checkbox.Group onChange={onCheckboxChange} style={{ display: 'flex', flexDirection: 'column' }}>
+            <Checkbox value="name" style={{ marginBottom: '20px' }}>Full Name</Checkbox>
+            <Checkbox value="gender" style={{ marginBottom: '20px' }}>Gender</Checkbox>
+            <Checkbox value="dob" style={{ marginBottom: '20px' }}>Date of Birth</Checkbox>
+            <Checkbox value="email" style={{ marginBottom: '20px' }}>Email Address</Checkbox>
+            <Checkbox value="telNo" style={{ marginBottom: '20px' }}>Phone Number</Checkbox>
+          </Checkbox.Group>
         </Form.Item>
       </Form>
+    </Modal>
+  );
+};
+
+const ConfirmationModal = ({ visible, onCancel, onEdit, onGenerate, data }) => {
+  return (
+    <Modal
+      title="To continue, please confirm your insurance purchase details"
+      visible={visible}
+      onCancel={onCancel}
+      width={600}
+      footer={[
+        <Button key="edit" onClick={onEdit}>
+          Edit
+        </Button>,
+        <Button key="generate" type="primary" onClick={onGenerate}>
+          Generate Quote
+        </Button>,
+      ]}
+    >
+      <p>Please confirm your details before generating the quote.</p>
+      <div>
+        <p><strong>Customer Type:</strong> {data.selection}</p>
+        <p><strong>First Name:</strong> {data.firstName}</p>
+        <p><strong>Last Name:</strong> {data.lastName}</p>
+        <p><strong>Gender:</strong> {data.gender}</p>
+        <p><strong>Date of Birth:</strong> {data.dob}</p>
+        <p><strong>Email:</strong> {data.email}</p>
+        <p><strong>Phone Number:</strong> {data.telNo}</p>
+        <p><strong>Number of Spouses:</strong> {data.spouses}</p>
+        <p><strong>Number of Children:</strong> {data.children}</p>
+        <p><strong>SA % Payable to Principal:</strong> {data.saPrincipal}</p>
+        <p><strong>SA % Payable to Spouse:</strong> {data.saSpouse}</p>
+        <p><strong>SA % Payable to Children:</strong> {data.saChildren}</p>
+        <p><strong>Sum Assured:</strong> {data.sumAssured}</p>
+      </div>
     </Modal>
   );
 };
@@ -71,14 +91,25 @@ const GroupCriticalIllness = () => {
   const [selection, setSelection] = useState('individual');
   const [form] = Form.useForm();
   const [modalVisible, setModalVisible] = useState(false);
+  const [confirmModalVisible, setConfirmModalVisible] = useState(false);
+  const [termsChecked, setTermsChecked] = useState(false);
+  const [formData, setFormData] = useState({});
 
   const handleSelectionChange = (e) => {
     setSelection(e.target.value);
   };
 
-  const handleNextClick = () => {
-    if (selection === 'individual') {
+  const handleNextClick = async () => {
+    if (current === 1 && !termsChecked) {
+      alert("Please accept the terms and conditions");
+      return;
+    }
+    if (selection === 'individual' && current === 0) {
       setModalVisible(true);
+    } else if (current === steps.length - 2) {
+      const values = await form.validateFields();
+      setFormData({ ...values, selection });
+      setConfirmModalVisible(true);
     } else {
       setCurrent(current + 1);
     }
@@ -90,34 +121,52 @@ const GroupCriticalIllness = () => {
 
   const handleModalClose = () => {
     setModalVisible(false);
-    if (selection === 'individual') {
-      setCurrent(current + 1);
-    }
+    setCurrent(current + 1);
+  };
+
+  const handleConfirmModalClose = () => {
+    setConfirmModalVisible(false);
+  };
+
+  const handleGenerateQuote = () => {
+    setConfirmModalVisible(false);
+    setCurrent(current + 1);
+    // Add logic to generate the quote
   };
 
   const steps = [
     {
-      title: "Select Customer Type",
+      title: "Customer Type",
       content: (
         <Space direction="vertical">
           <div>Select:</div>
           <Radio.Group onChange={handleSelectionChange} value={selection}>
-            <Radio value="individual">Individual Customer</Radio>
-            <Radio value="group">Group Customer</Radio>
+            <Radio value="individual">
+              <Space>
+                <PersonalIcon />
+                <span>Individual Customer</span>
+              </Space>
+            </Radio>
+            <Radio value="group">
+              <Space>
+                <GroupIcon />
+                <span>Group Customer</span>
+              </Space>
+            </Radio>
           </Radio.Group>
         </Space>
       ),
     },
     {
-      title: "Enter your details",
+      title: "Personal details",
       content: (
-        <Form form={form} layout="vertical">
+        <Form form={form} layout="vertical" style={{ marginTop: '24px', padding: '16px' }}>
           <Row gutter={16}>
-            <Col xs={20} sm={20} md={10} lg={10} xl={10}>
+            <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
               <Form.Item
-                label="Name"
+                label="First Name"
                 rules={[{ required: true, message: "Please input Customer Name." }]}
-                name="name"
+                name="firstName"
                 required
               >
                 <Input
@@ -128,7 +177,7 @@ const GroupCriticalIllness = () => {
                       <Select.Option value="Ms.">Ms.</Select.Option>
                     </Select>
                   }
-                  id="name"
+                  id="firstName"
                   placeholder="Please type a customer name"
                 />
               </Form.Item>
@@ -145,8 +194,9 @@ const GroupCriticalIllness = () => {
                 </Select>
               </Form.Item>
 
-              <Form.Item label="Specify Date of Birth">
+              <Form.Item label="Date of Birth" name="dob">
                 <DatePicker
+                  style={{ width: '100%' }}
                   disabledDate={(current) => {
                     const today = new Date();
                     const eighteenYearsAgo = new Date(
@@ -160,9 +210,19 @@ const GroupCriticalIllness = () => {
               </Form.Item>
             </Col>
 
-            <Col xs={20} sm={20} md={10} lg={10} xl={10}>
+            <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
               <Form.Item
-                label="Email"
+                label="Last Name"
+                name="lastName"
+                required
+                rules={[
+                  { required: true, message: "Please input last name." },
+                ]}
+              >
+                <Input id="lastName" placeholder="Last name" />
+              </Form.Item>
+              <Form.Item
+                label="Email Address"
                 name="email"
                 required
                 rules={[
@@ -185,16 +245,87 @@ const GroupCriticalIllness = () => {
               </Form.Item>
             </Col>
           </Row>
+          <Form.Item>
+            <Checkbox
+              checked={termsChecked}
+              onChange={(e) => setTermsChecked(e.target.checked)}
+            >
+              I accept the terms and conditions
+            </Checkbox>
+          </Form.Item>
         </Form>
       ),
     },
     {
-      title: "Insurance Details",
-      content: <div>Insurance Details</div>,
+      title: "Insured Members",
+      content: (
+        <Form form={form} layout="vertical" style={{ marginTop: '24px', padding: '16px' }}>
+          <Row gutter={16}>
+            <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
+              <Form.Item label="SPOUSE" name="spouses">
+                <Input placeholder="Number of spouses" />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
+              <Form.Item label="CHILDREN" name="children">
+                <Input placeholder="Number of children" />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      ),
+    },
+    {
+      title: "Percentage of Cover Payable",
+      content: (
+        <Form form={form} layout="vertical" style={{ marginTop: '24px', padding: '16px' }}>
+          <Row gutter={16}>
+            <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
+              <Form.Item
+                label="SA % Payable to Principal"
+                name="saPrincipal"
+              >
+                <InputNumber
+                  style={{ width: "100%" }}
+                  formatter={(value) => `${value}%`}
+                  parser={(value) => value.replace("%", "")}
+                  step={0.1}
+                />
+              </Form.Item>
+              <Form.Item
+                label="SA % Payable to Spouse"
+                name="saSpouse"
+              >
+                <InputNumber
+                  style={{ width: "100%" }}
+                  formatter={(value) => `${value}%`}
+                  parser={(value) => value.replace("%", "")}
+                  step={0.1}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
+              <Form.Item label="SA % Payable to Children" name="saChildren">
+                <InputNumber
+                  style={{ width: "100%" }}
+                  formatter={(value) => `${value}%`}
+                  parser={(value) => value.replace("%", "")}
+                  step={0.1}
+                />
+              </Form.Item>
+              <Form.Item label="Sum Assured" name="sumAssured">
+                <InputNumber
+                  style={{ width: "100%" }}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      ),
     },
     {
       title: "Get Quotation",
-      content: <div>Get Quotation</div>,
+      content: <div>Quotation</div>
     },
   ];
 
@@ -222,9 +353,15 @@ const GroupCriticalIllness = () => {
         </div>
       </div>
       <IndividualCustomerDetailsModal visible={modalVisible} onCancel={() => setModalVisible(false)} onNext={handleModalClose} />
+      <ConfirmationModal
+        visible={confirmModalVisible}
+        onCancel={handleConfirmModalClose}
+        onEdit={handlePrevClick}
+        onGenerate={handleGenerateQuote}
+        data={formData}
+      />
     </>
   );
 };
 
 export default GroupCriticalIllness;
-

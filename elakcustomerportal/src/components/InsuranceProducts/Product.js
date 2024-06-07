@@ -3,6 +3,7 @@ import { useTheme } from "../../store/context/theme-context";
 import { useState } from "react";
 
 import FuneralExpenseModal from "../Funeral Expense/FuneralExpenseModal";
+import CriticalIllnessModal from "../Group Critical Illness/CriticalIllnessModal";
 import { NavLink } from "react-router-dom";
 
 const { Meta } = Card;
@@ -26,6 +27,16 @@ const Product = ({ product, index }) => {
       case 0:
         return (
           <FuneralExpenseModal
+            isModalOpen={isModalOpen}
+            onOkay={handleOk}
+            onCancel={handleCancel}
+            product={product}
+          />
+        );
+
+        case 1:
+        return (
+          <CriticalIllnessModal
             isModalOpen={isModalOpen}
             onOkay={handleOk}
             onCancel={handleCancel}
