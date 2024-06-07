@@ -21,6 +21,7 @@ const products = [
   },
   {
     title: "Group Life Insurance",
+    url: "group-life-assurance",
     image: glaImg,
     description:
       "We offer group life insurance solutions to provide financial security to your employees' families in the event of an unexpected loss.",

@@ -57,6 +57,10 @@ function App() {
                         path="group-life-assurance"
                         element={<GroupLifeAssurance />}
                       />
+                       <Route
+                        path="critical-illness"
+                        element={<GroupCriticalIllness />}
+                      />
                       {/* Add more routes here */}
                       <Route path="*" element={<NotFound />} />
                     </Routes>

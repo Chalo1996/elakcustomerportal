@@ -54,7 +54,6 @@ const GroupLifeAssurance = () => {
   const [form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [action, setAction] = useState('continue');
-  const [button, setButton] = useState();
   const [formData, setFormData] = useState({
     contactDetails: {},
     companyDetails: {},
@@ -67,9 +66,9 @@ const GroupLifeAssurance = () => {
   const [email, setEmail] = useState();
   const[dateOfBirth, setDateOfBirth] = useState();
 
-  const [currencySymbol, setCurrencySymbol] = React.useState("KSh");
+  const [currencySymbol, ] = React.useState("KSh");
   const [phoneArea, setPhoneArea] = React.useState("+254");
-  const [country, setCountry] = React.useState("Kenya");
+  const [ setCountry] = React.useState("Kenya");
   const [industry, setIndustry] = useState('pleaseSelect');
   const [isFlatAmount, setIsFlatAmount] = useState(false);
   const [levelOfCover, SetLevelOfCover] = useState("pleaseSelect");
@@ -339,7 +338,7 @@ const GroupLifeAssurance = () => {
       rules={[{ validator: (_, value) => value ? Promise.resolve() : Promise.reject('Should accept terms and privacy policy') }]}
     >
       <Checkbox>
-        I accept the <a href="#">terms</a> and <a href="#">privacy policy</a>
+        I accept the <a href="./">terms</a> and <a href="./">privacy policy</a>
       </Checkbox>
     </Form.Item>
   </Row>
