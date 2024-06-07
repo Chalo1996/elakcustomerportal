@@ -1,5 +1,5 @@
 import gleImg from "../assets/funeral-expense.jpg";
-import glaImg from "../assets/glaImg.png";
+import glaImg from "../assets/glaImg.jpg";
 import introImage from "../assets/introImage.jpg"
 import happyfamily from "../assets/happyfamily.png";
 

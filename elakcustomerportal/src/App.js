@@ -13,6 +13,7 @@ import GroupLifeAssurance from "./components/Group Life/GroupLife";
 import GroupCriticalIllness from "./components/Group Critical Illness/CriticalIlness";
 import NotFound from "./pages/NotFound";
 import CustomerTypePage from "./pages/FuneralExpensePages/CustomerType";
+import LandingPage from "./pages/landingPage";
 
 function App() {
   return (
@@ -27,8 +28,10 @@ function App() {
             }}
           >
             <Routes>
-              {/* Redirect to /home */}
-              <Route path="/" element={<Navigate to="/home" />} />
+              {/*Landing Page Route*/}
+              <Route path="/landing-page" element={<LandingPage />} />
+              {/* Redirect to /landing page*/}
+              <Route path="/" element={<Navigate to="/landing-page" />} />
 
               {/* Home route */}
               <Route
@@ -67,7 +70,7 @@ function App() {
               />
 
               {/* Routes outside of /home */}
-              <Route path="landing-page" element={<MainLayout />} />
+              <Route path="landing-page" element={<LandingPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </ConfigProvider>
