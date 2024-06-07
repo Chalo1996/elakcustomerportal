@@ -146,7 +146,7 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
     {
       key: "signout",
       icon: <LogoutOutlined />,
-      label: <Link to="/signout">Sign Out</Link>,
+      label: <Link to="/">Sign Out</Link>,
     },
   ];
 
