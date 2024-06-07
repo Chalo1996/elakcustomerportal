@@ -1,9 +1,14 @@
-import { Row } from "antd";
-import { LeftOutlined } from "@ant-design/icons";
+import {
+  LeftOutlined,
+  UserOutlined,
+  TeamOutlined,
+  RightOutlined,
+} from "@ant-design/icons";
+import { Divider } from "antd";
 
 const FuneralExpensePage = () => {
   return (
-    <Row align="middle" gutter={8} className="pt-10 pl-9">
+    <div className="pt-5 pl-4">
       <div className="mb-4">
         <span>
           <button className="mb-2 focus:outline-none hover:text-[#A32A29]">
@@ -18,9 +23,56 @@ const FuneralExpensePage = () => {
           <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
             Please select the type of customer
           </p>
+          <p className="text-sm font-normal font-open-sans text-left text-[#929497]">
+            Select the type of customer to proceed
+          </p>
+        </div>
+
+        <div className="flex flex-col items-start lg:flex-row lg:items-center lg:justify-start gap-[24px] mt-5">
+          <div>
+            <div className="flex items-center justify-between w-[335px] h-[81px]">
+              <div className="flex flex-row items-center justify-center gap-3">
+                <div className="bg-[#92949733] rounded-full p-3">
+                  <UserOutlined
+                    className="text-[#A32A29]"
+                    style={{ fontSize: "24px" }}
+                  />
+                </div>
+                <p className="w-[231px] h-[24px]">Personal</p>
+              </div>
+              <div>
+                <RightOutlined
+                  className="text-[#A32A29]"
+                  style={{ fontSize: "18px" }}
+                />
+              </div>
+            </div>
+            <Divider />
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between w-[335px] h-[81px]">
+              <div className="flex flex-row items-center justify-center gap-3">
+                <div className="bg-[#92949733] rounded-full p-3">
+                  <TeamOutlined
+                    className="text-[#A32A29]"
+                    style={{ fontSize: "24px" }}
+                  />
+                </div>
+                <p className="w-[231px] h-[24px]">Group</p>
+              </div>
+              <div>
+                <RightOutlined
+                  className="text-[#A32A29]"
+                  style={{ fontSize: "18px" }}
+                />
+              </div>
+            </div>
+            <Divider />
+          </div>
         </div>
       </div>
-    </Row>
+    </div>
   );
 };
 
