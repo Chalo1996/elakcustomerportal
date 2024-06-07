@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import FuneralExpenseModal from "../Funeral Expense/FuneralExpenseModal";
 import CriticalIllnessModal from "../Group Critical Illness/CriticalIllnessModal";
+import Educamodal from "../Education/Educamodal"
+import Goalbasedmodal from "../Goal Based/Goalbasedmodal";
 import { NavLink } from "react-router-dom";
 
 const { Meta } = Card;
@@ -43,6 +45,24 @@ const Product = ({ product, index }) => {
             product={product}
           />
         );
+        case 3:
+          return (
+            <Educamodal
+              isModalOpen={isModalOpen}
+              onOkay={handleOk}
+              onCancel={handleCancel}
+              product={product}
+            />
+          );
+          case 5:
+            return (
+              <Goalbasedmodal
+                isModalOpen={isModalOpen}
+                onOkay={handleOk}
+                onCancel={handleCancel}
+                product={product}
+              />
+            );
       // Add cases for additional product modals here...
       default:
         return null;

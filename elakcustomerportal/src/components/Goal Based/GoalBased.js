@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Steps, Form, Input, DatePicker, Button, Row, Col, Select, Modal } from "antd";
+import { Steps, Form, Input, DatePicker, Button, Row, Col, Select, Modal,InputNumber, Checkbox} from "antd";
 import moment from "moment";
 
 const { Step } = Steps;
@@ -11,6 +11,8 @@ const Goal = () => {
   const [periodOfDuration, setPeriodOfDuration] = useState(null);
   const [coverStartDate, setCoverStartDate] = useState(null);
   const [coverEndDate, setCoverEndDate] = useState(null);
+  const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
+  const [isPrivacyModalVisible, setIsPrivacyModalVisible] = useState(false);
   const [form] = Form.useForm();
 
   const next = () => {
@@ -62,6 +64,30 @@ const Goal = () => {
 ;
 
 
+const showTermsModal = () => {
+  setIsTermsModalVisible(true);
+};
+
+const handleTermsModalOk = () => {
+  setIsTermsModalVisible(false);
+};
+
+const handleTermsModalCancel = () => {
+  setIsTermsModalVisible(false);
+};
+
+const showPrivacyModal = () => {
+  setIsPrivacyModalVisible(true);
+};
+
+const handlePrivacyModalOk = () => {
+  setIsPrivacyModalVisible(false);
+};
+
+const handlePrivacyModalCancel = () => {
+  setIsPrivacyModalVisible(false);
+};
+
   return (
     <>
     <Steps current={current}>
@@ -75,17 +101,18 @@ const Goal = () => {
         {current === 0 && (
           <>
             <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item label="Investment Premium" name="investmentPremium" rules={[{ required: true, message: 'Please select the investment premium' }]}>
-                  <Select>
-                    {[...Array(10)].map((_, i) => (
-                      <Option key={i} value={1000 * (i + 1)}>
-                        {1000 * (i + 1)}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
+            <Col span={12}>
+            <Form.Item label="Investment Premium" name="investmentPremium" rules={[{ required: true, message: 'Please enter the investment premium' }]}>
+  <InputNumber
+    style={{ width: '100%' }}
+    formatter={value => `KES ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+    parser={value => value.replace(/^KES\s?|(,*)/g, '')} // Changed the regex to keep commas
+    placeholder="Enter the investment premium"
+  />
+</Form.Item>
+
+                </Col>
+
               <Col span={12}>
                 <Form.Item label="Date of Birth" name="dateOfBirth" rules={[{ required: true, message: 'Please enter your date of birth' }]}>
                   <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} />
@@ -94,15 +121,16 @@ const Goal = () => {
             </Row>
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item label="Cover Duration">
-                  <Input
-                    readOnly
-                    onClick={showCoverDurationModal}
-                    placeholder="Select duration"
-                    value={periodOfDuration ? `${periodOfDuration} years` : "Select duration"}
-                    style={{ cursor: 'pointer' }}
-                  />
-                </Form.Item>
+              <Form.Item label="Cover Duration" name="coverDuration" rules={[{ required: true, message: 'Please select a cover duration to continue' }]}>
+  <Input
+    readOnly
+    onClick={showCoverDurationModal}
+    placeholder="Select duration"
+    value={periodOfDuration ? `${periodOfDuration} years` : "Select duration"}
+    style={{ cursor: 'pointer' }}
+  />
+</Form.Item>
+
               
               </Col>
               <Col span={12}>
@@ -117,6 +145,13 @@ const Goal = () => {
                 </Form.Item>
               </Col>
             </Row>
+            <Row gutter={16}>
+                <Col span={24}>
+                  <Form.Item name="termsCheckbox" valuePropName="checked" rules={[{ required: true, message: 'Please accept the terms and privacy policies' }]}>
+                    <Checkbox>I accept the <a href="#" onClick={showTermsModal}>terms</a> & <a href="#" onClick={showPrivacyModal}>privacy policies</a></Checkbox>
+                  </Form.Item>
+                </Col>
+              </Row>
           </>
         )}
         {current === 1 && (
@@ -172,49 +207,66 @@ const Goal = () => {
         </div>
       </Form>
     </div>
-  
-  <Modal
-    title={<b>Cover Duration</b>}
-    visible={isCoverDurationModalVisible}
-    onOk={handleCoverDurationOk}
-    onCancel={handleCoverDurationCancel}
-  >
-    <Form layout="vertical" form={form}>
-      <Form.Item label="Period of Duration" name="periodOfDuration" rules={[{ required: true, message: 'Please select the period of duration' }]}>
-        <Select onChange={(value) => form.setFieldsValue({ coverDuration: value })}>
-          {[...Array(13)].map((_, i) => (
-            <Option key={i + 3} value={i + 3}>{i + 3} years</Option>
-          ))}
-        </Select>
-      </Form.Item>
-      <Form.Item label="Cover Duration" name="coverDuration" hidden>
-        <Input readOnly />
-      </Form.Item>
-      <Form.Item
-        label="Cover Start Date"
-        name="coverStartDate"
-        rules={[{ required: true, message: 'Please enter the cover start date' }]}
+    <Modal
+        title="Terms"
+        visible={isTermsModalVisible}
+        onOk={handleTermsModalOk}
+        onCancel={handleTermsModalCancel}
       >
-        <DatePicker
-          style={{ width: '100%' }}
-          onChange={(date) => {
-            form.setFieldsValue({ coverStartDate: date });
-            handleStartDateChange(date); // Call handleStartDateChange on date change
-          }}
-        />
-      </Form.Item>
-      <Form.Item
-        label="Cover End Date"
-        name="coverEndDate"
-      >
-        <Input readOnly value={coverEndDate ? coverEndDate.format('YYYY-MM-DD') : ''} />
-      </Form.Item>
-      </Form>
-  </Modal>
-  </>
-);
-}
+        <p>Terms and conditions go here...</p>
+      </Modal>
 
+      <Modal
+        title="Privacy Policies"
+        visible={isPrivacyModalVisible}
+        onOk={handlePrivacyModalOk}
+        onCancel={handlePrivacyModalCancel}
+      >
+        <p>Privacy policies go here...</p>
+      </Modal>
+    
+
+
+    <Modal
+        title={<b>Cover Duration</b>}
+        visible={isCoverDurationModalVisible}
+        onOk={handleCoverDurationOk}
+        onCancel={handleCoverDurationCancel}
+      >
+        <Form layout="vertical" form={form}>
+          <Form.Item label="Period of Duration" name="periodOfDuration" rules={[{ required: true, message: 'Please select the period of duration' }]}>
+            <Select onChange={(value) => form.setFieldsValue({ coverDuration: value })}>
+              {[...Array(13)].map((_, i) => (
+                <Option key={i + 3} value={i + 3}>{i + 3} years</Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item label="Cover Duration" name="coverDuration" hidden>
+            <Input readOnly />
+          </Form.Item>
+          <Form.Item
+            label="Cover Start Date"
+            name="coverStartDate"
+            rules={[{ required: true, message: 'Please enter the cover start date' }]}
+          >
+            <DatePicker
+              style={{ width: '100%' }}
+              onChange={(date) => {
+                form.setFieldsValue({ coverStartDate: date });
+                handleStartDateChange(date); // Call handleStartDateChange on date change
+              }}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Cover End Date"
+            name="coverEndDate"
+          >
+            <Input readOnly value={coverEndDate ? coverEndDate.format('YYYY-MM-DD') : ''} />
+          </Form.Item>
+        </Form>
+      </Modal>
+    </>
+  );
+};
 
 export default Goal;
-
