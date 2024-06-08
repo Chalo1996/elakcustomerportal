@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { Steps, Form, Row, Input, InputNumber, Button, message, Col, Checkbox, Modal, DatePicker, Select, Space, Radio, Divider, Typography } from 'antd';
 import 'tailwindcss/tailwind.css';
+import sspFlag from '../../assets/flags/ssp.png';
+import cdfFlag from '../../assets/flags/cdf.png';
+import rwfFlag from '../../assets/flags/rwf.png';
+import kesFlag from '../../assets/flags/kes.png';
+import tzsFlag from '../../assets/flags/tzs.png';
+import ugxFlag from '../../assets/flags/ugx.png';
 
 const { Step } = Steps;
 const { Option } = Select;
@@ -40,12 +46,12 @@ const disabledTodayDate = (current) => {
 };
 
 const PhoneAreas = [
-  { code: "+211", flag: "ssp", country: "South Sudan" },
-  { code: "+243", flag: "cdf", country: "DRC" },
-  { code: "+250", flag: "rwf", country: "Rwanda" },
-  { code: "+254", flag: "kes", country: "Kenya" },
-  { code: "+255", flag: "tzs", country: "Tanzania" },
-  { code: "+256", flag: "ugx", country: "Uganda" },
+  { code: "+211", flag: sspFlag, country: "South Sudan" },
+  { code: "+243", flag: cdfFlag, country: "DRC" },
+  { code: "+250", flag: rwfFlag, country: "Rwanda" },
+  { code: "+254", flag: kesFlag, country: "Kenya" },
+  { code: "+255", flag: tzsFlag, country: "Tanzania" },
+  { code: "+256", flag: ugxFlag, country: "Uganda" },
 ];
 
 
@@ -92,20 +98,18 @@ const GroupLifeAssurance = () => {
   };
 
 
-  const ChoosePhoneArea = ({ value, onChange }) => {
-    return (
-      <Select style={{ width: 100 }} value={value} onChange={onChange}>
-        {PhoneAreas.map((item) => (
-          <Option value={item.code} key={item.code}>
-            {item.code}
-            <div
-              className={`currency-flag currency-flag-sm currency-flag-${item.flag}`}
-            ></div>
-          </Option>
+const ChoosePhoneArea = ({ value, onChange }) => (
+    <Select defaultValue={value} onChange={onChange} style={{ width: 100 }}>
+        {PhoneAreas.map((area) => (
+            <Option key={area.code} value={area.code}>
+                <div style={{ display: 'flex', alignItems: 'center'}}>
+                    <span>{area.code}</span>
+                    <img src={area.flag} alt={area.country} style={{ width: '20px', marginLeft: '8px' }} />
+                </div>
+            </Option>
         ))}
-      </Select>
-    );
-  };
+    </Select>
+);
 
   const handlePhoneAreaChange = (newValue) => {
     const selectedCountry = PhoneAreas.find((area) => area.code === newValue);
@@ -265,35 +269,43 @@ const GroupLifeAssurance = () => {
 
   const steps = [
     {
-      title: 'Contact Details',
+      title: "Contact Details",
       content: (
-
-        <Form layout="vertical" form={form} onFinish={onFormFinish} initialValues={initialValues}>
+        <Form
+          layout="vertical"
+          form={form}
+          onFinish={onFormFinish}
+          initialValues={initialValues}
+        >
           <Row gutter={16}>
             <p>Please enter your personal details to continue</p>
           </Row>
           <br></br>
-          <Row gutter={16} >
-            <Col span={12} >
+          <Row gutter={16}>
+            <Col span={12}>
               <Form.Item
                 label="First Name"
                 name="firstName"
-                rules={[{ required: true, message: 'Please enter your first name!' }]}
+                rules={[
+                  { required: true, message: "Please enter your first name!" },
+                ]}
               >
                 <Input
                   className="custom-input"
                   value={firstName}
                   onChange={setFirstName}
-                  placeholder='Enter your first name'
+                  placeholder="Enter your first name"
                   onKeyPress={preventNumericInput}
                 />
               </Form.Item>
             </Col>
-            <Col span={12} >
+            <Col span={12}>
               <Form.Item
                 label="Last Name"
                 name="lastName"
-                rules={[{ required: true, message: 'Please enter your last name!' }]}
+                rules={[
+                  { required: true, message: "Please enter your last name!" },
+                ]}
               >
                 <Input
                   className="custom-input"
@@ -307,13 +319,19 @@ const GroupLifeAssurance = () => {
           </Row>
           <br></br>
           <Row gutter={16}>
-            <Col span={12} >
+            <Col span={12}>
               <Form.Item
                 label="Email Address"
                 name="email"
                 rules={[
-                  { required: true, message: 'Please enter your email address!' },
-                  { type: 'email', message: 'Please enter a valid email address!' },
+                  {
+                    required: true,
+                    message: "Please enter your email address!",
+                  },
+                  {
+                    type: "email",
+                    message: "Please enter a valid email address!",
+                  },
                 ]}
               >
                 <Input
@@ -324,25 +342,24 @@ const GroupLifeAssurance = () => {
                 />
               </Form.Item>
             </Col>
-            <Col span={12} >
+            <Col span={12}>
               <Form.Item
                 label="Mobile Number"
                 name="mobileNumber"
                 rules={[
+                  { len: 9, message: "The input must have exactly 9 digits." },
                   {
-                    len: 9,
-                    message: "The input must have exactly 9 digits.!",
+                    required: true,
+                    message: "Please enter your mobile number!",
                   },
-                  { required: true, message: 'Please enter your mobile number!' }
                 ]}
               >
                 <Input
-                  className="custom-input"
                   maxLength={9}
                   addonBefore={
                     <ChoosePhoneArea
                       value={phoneArea}
-                      onChange={handlePhoneAreaChange}
+                      onChange={setPhoneArea}
                     />
                   }
                   placeholder="Enter your mobile number"
@@ -353,11 +370,16 @@ const GroupLifeAssurance = () => {
           </Row>
           <br></br>
           <Row gutter={16}>
-            <Col span={12} >
+            <Col span={12}>
               <Form.Item
                 label="Date of Birth"
                 name="dateOfBirth"
-                rules={[{ required: true, message: 'Please enter your date of birth!' }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter your date of birth!",
+                  },
+                ]}
               >
                 <DatePicker
                   className="w-full custom-input"
@@ -373,23 +395,37 @@ const GroupLifeAssurance = () => {
             <Form.Item
               name="terms"
               valuePropName="checked"
-              rules={[{ validator: (_, value) => value ? Promise.resolve() : Promise.reject('Should accept terms and privacy policy') }]}
+              rules={[
+                {
+                  validator: (_, value) =>
+                    value
+                      ? Promise.resolve()
+                      : Promise.reject(
+                          "Should accept terms and privacy policy"
+                        ),
+                },
+              ]}
             >
               <Checkbox>
-                I accept the <a href="./" style={{ color: '#A32A29' }}>terms</a> and <a href="./" style={{ color: '#A32A29' }}>privacy policy</a>
+                I accept the{" "}
+                <a href="./" style={{ color: "#A32A29" }}>
+                  terms
+                </a>{" "}
+                and{" "}
+                <a href="./" style={{ color: "#A32A29" }}>
+                  privacy policy
+                </a>
               </Checkbox>
             </Form.Item>
           </Row>
         </Form>
-
       ),
     },
 
     {
-      title: 'Company Details',
+      title: "Company Details",
       content: (
         <div>
-
           <Row gutter={16}>
             <p>Please enter company details to continue</p>
           </Row>
@@ -399,11 +435,13 @@ const GroupLifeAssurance = () => {
               <Form.Item
                 label="What is the name of your Company"
                 name="companyName"
-                rules={[{ required: true, message: 'Please enter company name!' }]}
+                rules={[
+                  { required: true, message: "Please enter company name!" },
+                ]}
               >
                 <Input
                   className="custom-input"
-                  placeholder='Enter name of your company'
+                  placeholder="Enter name of your company"
                   onKeyPress={preventNumericInput}
                 />
               </Form.Item>
@@ -412,16 +450,27 @@ const GroupLifeAssurance = () => {
               <Form.Item
                 name="industry"
                 label="How would you classify your company?"
-                rules={[{ required: true, message: 'Please select Industry!' }]}
+                rules={[{ required: true, message: "Please select Industry!" }]}
               >
-                <Select value={industry} onChange={value => setIndustry(value)}>
+                <Select
+                  value={industry}
+                  onChange={(value) => setIndustry(value)}
+                >
                   <Option value="pleaseSelect">Please Select</Option>
                   <Option value="administrative">Administrative</Option>
-                  <Option value="parastatalGovernment">Parastatal/Government</Option>
-                  <Option value="lightManufacturing">Light Manufacturing</Option>
-                  <Option value="heavyManufacturing">Heavy Manufacturing</Option>
+                  <Option value="parastatalGovernment">
+                    Parastatal/Government
+                  </Option>
+                  <Option value="lightManufacturing">
+                    Light Manufacturing
+                  </Option>
+                  <Option value="heavyManufacturing">
+                    Heavy Manufacturing
+                  </Option>
                   <Option value="professional">Professional</Option>
-                  <Option value="retailersAndWholesalers">Retailers & Wholesalers</Option>
+                  <Option value="retailersAndWholesalers">
+                    Retailers & Wholesalers
+                  </Option>
                 </Select>
               </Form.Item>
             </Col>
@@ -432,13 +481,18 @@ const GroupLifeAssurance = () => {
               <Form.Item
                 label="How many employees are to be covered by this scheme?"
                 name="numberOfEmployees"
-                rules={[{ required: true, message: 'Please enter number of employees!' }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter number of employees!",
+                  },
+                ]}
               >
                 <InputNumber
                   className="w-full custom-input-number"
                   value={numberOfEmployees}
                   onChange={setNumberOfEmployees}
-                  placeholder='Enter total number of employees'
+                  placeholder="Enter total number of employees"
                   onKeyPress={preventTextInput}
                 />
               </Form.Item>
@@ -447,14 +501,18 @@ const GroupLifeAssurance = () => {
               <Form.Item
                 label="What is the total annual salary of your company?"
                 name="annualTurnover"
-                rules={[{ required: true, message: 'Please enter annual turnover!' }]}
+                rules={[
+                  { required: true, message: "Please enter annual turnover!" },
+                ]}
               >
                 <InputNumber
                   onKeyPress={preventTextInput}
                   addonBefore={currencySymbol}
-                  placeholder='Enter total annual Salaries'
+                  placeholder="Enter total annual Salaries"
                   className="w-full custom-input-number"
-                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
                   parser={(value) => value.replace(/(,*)/g, "")}
                 />
               </Form.Item>
@@ -464,10 +522,9 @@ const GroupLifeAssurance = () => {
       ),
     },
     {
-      title: 'Insured Members',
+      title: "Insured Members",
       description,
       content: (
-
         <div>
           <Row gutter={16}>
             <p>Please enter insured members details to continue</p>
@@ -477,11 +534,15 @@ const GroupLifeAssurance = () => {
               <Form.Item
                 label="Number of Principal Members"
                 name="principalMembers"
-                rules={[{ required: true, message: 'Please enter number of principal members!' }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter number of principal members!",
+                  },
+                ]}
               >
                 <InputNumber
                   className="w-full custom-input-number"
-
                   value={numberPrincipalMembers}
                   onChange={setNumberPrincipalMembers}
                   onKeyPress={preventTextInput}
@@ -492,7 +553,9 @@ const GroupLifeAssurance = () => {
               <Form.Item
                 label="Number of Spouse"
                 name="totalNumberOfSpouses"
-                rules={[{ required: true, message: 'Please enter number of spouse!' }]}
+                rules={[
+                  { required: true, message: "Please enter number of spouse!" },
+                ]}
               >
                 <InputNumber
                   className="w-full custom-input-number"
@@ -509,7 +572,12 @@ const GroupLifeAssurance = () => {
               <Form.Item
                 label="Number of Children"
                 name="totalNumberOfChilidren"
-                rules={[{ required: true, message: 'Please enter number of children!' }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter number of children!",
+                  },
+                ]}
               >
                 <InputNumber
                   className="w-full custom-input-number"
@@ -523,7 +591,12 @@ const GroupLifeAssurance = () => {
               <Form.Item
                 label="Number of Parents"
                 name="totalNumberOfParents"
-                rules={[{ required: true, message: 'Please enter number of parents!' }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter number of parents!",
+                  },
+                ]}
               >
                 <InputNumber
                   className="w-full custom-input-number"
@@ -540,7 +613,12 @@ const GroupLifeAssurance = () => {
               <Form.Item
                 label="Number of Parents-in-law"
                 name="totalNumberOfParentsInLaws"
-                rules={[{ required: true, message: 'Please enter number of parents-in-law!' }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter number of parents-in-law!",
+                  },
+                ]}
               >
                 <InputNumber
                   className="w-full custom-input-number"
@@ -555,7 +633,7 @@ const GroupLifeAssurance = () => {
       ),
     },
     {
-      title: 'Policy Details',
+      title: "Policy Details",
       content: (
         <div>
           <Row gutter={16}>
@@ -567,30 +645,47 @@ const GroupLifeAssurance = () => {
               <Form.Item
                 label="What Level of Cover Do you need?"
                 name="benefitLevel"
-                rules={[{ required: true, message: 'Please select a level of cover!' }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select a level of cover!",
+                  },
+                ]}
               >
-                <Select placeholder="Please select" onChange={handleCoverChange}>
+                <Select
+                  placeholder="Please select"
+                  onChange={handleCoverChange}
+                >
                   <Option value="pleaseSelect">Please Select</Option>
                   <Option value="1x">1x Salary</Option>
                   <Option value="2x">2x Salary</Option>
                   <Option value="3x">3x Salary</Option>
                   <Option value="4x">4x Salary</Option>
                   <Option value="5x">5x Salary</Option>
-                  <Option value="flatAmount">I will specify A flat amount</Option>
+                  <Option value="flatAmount">
+                    I will specify A flat amount
+                  </Option>
                 </Select>
               </Form.Item>
               {isFlatAmount && (
                 <Form.Item
                   label="Specify Flat Amount"
                   name="flatAmount"
-                  rules={[{ required: true, message: 'Please enter the flat amount!' }]}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter the flat amount!",
+                    },
+                  ]}
                 >
                   <InputNumber
                     className="w-full"
                     placeholder="Enter flat amount"
                     min={0}
                     addonBefore={currencySymbol}
-                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    formatter={(value) =>
+                      `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }
                     parser={(value) => value.replace(/(,*)/g, "")}
                   />
                 </Form.Item>
@@ -601,17 +696,32 @@ const GroupLifeAssurance = () => {
               <Form.Item
                 label="Policy Start Date"
                 name="policyStartDate"
-                rules={[{ required: true, message: 'Please select policy start date!' }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select policy start date!",
+                  },
+                ]}
               >
-                <DatePicker className="w-full custom-input" disabledDate={disabledTodayDate} />
+                <DatePicker
+                  className="w-full custom-input"
+                  disabledDate={disabledTodayDate}
+                />
               </Form.Item>
               <Form.Item shouldUpdate>
                 {({ getFieldValue }) => {
-                  const policyStartDate = getFieldValue('policyStartDate');
-                  const expiryDate = policyStartDate ? new Date(policyStartDate).setFullYear(new Date(policyStartDate).getFullYear() + 1) : null;
+                  const policyStartDate = getFieldValue("policyStartDate");
+                  const expiryDate = policyStartDate
+                    ? new Date(policyStartDate).setFullYear(
+                        new Date(policyStartDate).getFullYear() + 1
+                      )
+                    : null;
                   return (
                     <p>
-                      Your cover will automatically expire on {expiryDate ? new Date(expiryDate).toLocaleDateString() : '____'}
+                      Your cover will automatically expire on{" "}
+                      {expiryDate
+                        ? new Date(expiryDate).toLocaleDateString()
+                        : "____"}
                     </p>
                   );
                 }}
@@ -622,16 +732,14 @@ const GroupLifeAssurance = () => {
       ),
     },
     {
-      title: 'Review and Confirm',
+      title: "Review and Confirm",
       content: (
-
         <div>
           <Row gutter={16}>
             <p>Please Review and Confirm your entries to continue</p>
           </Row>
           <ReviewAndConfirmModal />
         </div>
-
       ),
     },
   ];
@@ -666,13 +774,15 @@ const GroupLifeAssurance = () => {
         title="What would you like to do?"
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
+        
         footer={[
-
+          <div style={{ textAlign: 'left' }}>
           <Button key="continue" type="primary" disabled={!formData.selectedOption} onClick={handleModalOk}>
             Continue
-          </Button>,
+          </Button>
+          </div>,
         ]}
-        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'left' }}
       >
         <Radio.Group onChange={handleRadioChange} value={formData.selectedOption}>
           <Space direction="vertical">
