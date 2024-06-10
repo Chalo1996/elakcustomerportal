@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import { Divider } from "antd";
 import { useTheme } from "../../store/context/theme-context";
-import CustomerTypeModal from "../../components/Funeral Expense/CustomerTypeModal";
+import CustomerTypeModal from "../../components/Funeral Expense/modals/CustomerTypeModal";
 
 const CustomerTypePage = () => {
   const { theme } = useTheme();

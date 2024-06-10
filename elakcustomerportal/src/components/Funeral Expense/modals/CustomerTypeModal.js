@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Modal, Button, Checkbox } from "antd";
-import { useTheme } from "../../store/context/theme-context";
+import { useTheme } from "../../../store/context/theme-context";
 
 const CustomerTypeModal = ({ isModalOpen, onOkay, onCancel, customerType }) => {
   const { theme } = useTheme();
