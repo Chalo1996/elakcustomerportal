@@ -1,19 +1,21 @@
 import React, { useState } from "react";
-import { Steps, Form, Input, DatePicker, Button, Row, Col, Select, Modal,InputNumber, Checkbox} from "antd";
+import { Steps, Form, Input, Radio, DatePicker, Button, Row, Col, Select, Modal,InputNumber, Checkbox} from "antd";
 import moment from "moment";
 
 const { Step } = Steps;
 const { Option } = Select;
 
 const Education = () => {
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState(-1);
   const [isCoverDurationModalVisible, setIsCoverDurationModalVisible] = useState(false);
   const [periodOfDuration, setPeriodOfDuration] = useState(null);
   const [coverStartDate, setCoverStartDate] = useState(null);
   const [coverEndDate, setCoverEndDate] = useState(null);
   const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
   const [isPrivacyModalVisible, setIsPrivacyModalVisible] = useState(false);
+  const [isPaymentFrequencyModalVisible, setIsPaymentFrequencyModalVisible] = useState(false);
   const [form] = Form.useForm();
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const next = () => {
     form.validateFields().then(() => {
@@ -62,8 +64,6 @@ const Education = () => {
   };
 
 ;
-
-
 const showTermsModal = () => {
   setIsTermsModalVisible(true);
 };
@@ -88,8 +88,44 @@ const handlePrivacyModalCancel = () => {
   setIsPrivacyModalVisible(false);
 };
 
+const showPaymentFrequencyModal = () => {
+  setIsPaymentFrequencyModalVisible(true);
+};
+
+const handlePaymentFrequencyModalOk = () => {
+  setIsPaymentFrequencyModalVisible(false);
+};
+
+const handlePaymentFrequencyModalCancel = () => {
+  setIsPaymentFrequencyModalVisible(false);
+};
+
+const handleRadioChange = (e) => {
+  setSelectedOption(e.target.value);
+};
+
+const handleContinue = () => {
+  setCurrent(0); // Move to the first step of the main project
+};
   return (
     <>
+    <Modal
+        title="What would you like to do?"
+        visible={current === -1}
+        footer={null}
+      >
+        <Radio.Group onChange={handleRadioChange} value={selectedOption}>
+          <Radio value={1}>Target Premium amount</Radio>
+          <Radio value={2}>Target fund value</Radio>
+        </Radio.Group>
+        <Button
+          type="primary"
+          disabled={!selectedOption}
+          onClick={handleContinue}
+        >
+          Continue
+        </Button>
+      </Modal>
     <Steps current={current}>
       <Step title="Product Details" />
       <Step title="Personal Details" />
@@ -122,27 +158,27 @@ const handlePrivacyModalCancel = () => {
             <Row gutter={16}>
               <Col span={12}>
               <Form.Item label="Cover Duration" name="coverDuration" rules={[{ required: true, message: 'Please select a cover duration to continue' }]}>
-  <Input
-    readOnly
-    onClick={showCoverDurationModal}
-    placeholder="Select duration"
-    value={periodOfDuration ? `${periodOfDuration} years` : "Select duration"}
-    style={{ cursor: 'pointer' }}
-  />
-</Form.Item>
+              <Input
+                readOnly
+                onClick={showCoverDurationModal}
+                placeholder="Select duration"
+                value={periodOfDuration ? `${periodOfDuration} years` : "Select duration"}
+                style={{ cursor: 'pointer' }}
+              />
+            </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item label="Payment Frequency" name="paymentFrequency" rules={[{ required: true, message: 'Please select the payment frequency' }]}>
-                  <Select>
-                    <Option value="weekly">Weekly</Option>
-                    <Option value="monthly">Monthly</Option>
-                    <Option value="quarterly">Quarterly</Option>
-                    <Option value="semiannually">Semiannually</Option>
-                    <Option value="annually">Annually</Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-            </Row>
+              <Form.Item label="Payment Frequency">
+                <Input
+                  readOnly
+                  onClick={showPaymentFrequencyModal}
+                  placeholder="Select frequency"
+                  value={form.getFieldValue('paymentFrequency') || 'Select frequency'}
+                  style={{ cursor: 'pointer' }}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
             <Row gutter={16}>
                 <Col span={24}>
                   <Form.Item name="termsCheckbox" valuePropName="checked" rules={[{ required: true, message: 'Please accept the terms and privacy policies' }]}>
@@ -204,27 +240,7 @@ const handlePrivacyModalCancel = () => {
           )}
         </div>
       </Form>
-    </div>
-    <Modal
-        title="Terms"
-        visible={isTermsModalVisible}
-        onOk={handleTermsModalOk}
-        onCancel={handleTermsModalCancel}
-      >
-        <p>Terms and conditions go here...</p>
-      </Modal>
-
-      <Modal
-        title="Privacy Policies"
-        visible={isPrivacyModalVisible}
-        onOk={handlePrivacyModalOk}
-        onCancel={handlePrivacyModalCancel}
-      >
-        <p>Privacy policies go here...</p>
-      </Modal>
-    
-
-
+    </div>  
     <Modal
         title={<b>Cover Duration</b>}
         visible={isCoverDurationModalVisible}
@@ -262,6 +278,52 @@ const handlePrivacyModalCancel = () => {
             <Input readOnly value={coverEndDate ? coverEndDate.format('YYYY-MM-DD') : ''} />
           </Form.Item>
         </Form>
+      </Modal> 
+
+      <Modal
+  title="Payment Frequency"
+  visible={isPaymentFrequencyModalVisible}
+  onCancel={handlePaymentFrequencyModalCancel}
+  footer={[
+    <Button key="back" onClick={handlePaymentFrequencyModalCancel}>
+      Cancel
+    </Button>,
+    <Button key="submit" type="primary" onClick={handlePaymentFrequencyModalOk}>
+      Continue
+    </Button>,
+  ]}
+>
+  <p>Select your payment frequency:</p>
+  <Form.Item name="paymentFrequency" rules={[{ required: true, message: 'Please select a payment frequency' }]}>
+    <Radio.Group onChange={e => form.setFieldsValue({ paymentFrequency: e.target.value })}>
+      <Radio value="Weekly">Weekly</Radio>
+      <Radio value="Monthly">Monthly</Radio>
+      <Radio value="Quarterly">Quarterly</Radio>
+      <Radio value="SemiAnnual">Semi-Annual</Radio>
+      <Radio value="Annual">Annual</Radio>
+      <Radio value="Oneoff">One-off</Radio>
+    </Radio.Group>
+  </Form.Item>
+</Modal>
+
+
+
+      <Modal
+        title="Terms"
+        visible={isTermsModalVisible}
+        onOk={handleTermsModalOk}
+        onCancel={handleTermsModalCancel}
+      >
+        <p>Terms and conditions go here...</p>
+      </Modal>
+
+      <Modal
+        title="Privacy Policies"
+        visible={isPrivacyModalVisible}
+        onOk={handlePrivacyModalOk}
+        onCancel={handlePrivacyModalCancel}
+      >
+        <p>Privacy policies go here...</p>
       </Modal>
     </>
   );

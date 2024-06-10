@@ -28,3 +28,17 @@ code {
 .dark-theme .ant-modal-content {
   background-color: #1f2937;
 }
+.ant-radio-wrapper {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.ant-radio-wrapper:hover .ant-radio,
+.ant-radio-wrapper-focused .ant-radio {
+  border-color: #800000;;
+}
+
+.ant-radio-checked .ant-radio-inner {
+  border-color: #800000;;
+  background-color: #800000;;
+}
