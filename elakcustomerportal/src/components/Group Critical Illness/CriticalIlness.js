@@ -1,55 +1,15 @@
 import React, { useState } from "react";
-// import { PersonalIcon, GroupIcon } from "../../layout/icons/icons";
 import { Steps, Radio, Space, Button, Row, Col, Form, Input, Select, DatePicker, Modal, Checkbox, InputNumber, Divider, Typography, Table} from "antd";
+import sspFlag from '../../assets/flags/ssp.png';
+import cdfFlag from '../../assets/flags/cdf.png';
+import rwfFlag from '../../assets/flags/rwf.png';
+import kesFlag from '../../assets/flags/kes.png';
+import tzsFlag from '../../assets/flags/tzs.png';
+import ugxFlag from '../../assets/flags/ugx.png';
+
 
 const { Step } = Steps;
 
-const IndividualCustomerDetailsModal = ({ visible, onCancel, onNext }) => {
-  const [, setCheckedList] = useState([]);
-
-  const onCheckboxChange = (checkedList) => {
-    setCheckedList(checkedList);
-  };
-
-  const handleOk = () => {
-    onNext(); // Call the onNext function passed from the parent component
-  };
-
-  const handleCancel = () => {
-    onCancel(); // Close the modal without moving to the next step
-  };
-
-
-  return (
-    <Modal
-      title="You will be required to provide the following details to continue"
-      visible={visible}
-      onCancel={handleCancel}
-      onOk={handleOk}
-      width={600}
-      footer={[
-        <Button key="cancel" onClick={handleCancel}>
-          Cancel
-        </Button>,
-        <Button key="ok" type="primary" onClick={handleOk}>
-          Continue
-        </Button>,
-      ]}
-    >
-      <Form layout="vertical">
-        <Form.Item>
-          <Checkbox.Group onChange={onCheckboxChange} style={{ display: 'flex', flexDirection: 'column' }}>
-            <Checkbox value="name" style={{ marginBottom: '20px' }}>Full Name</Checkbox>
-            <Checkbox value="gender" style={{ marginBottom: '20px' }}>Gender</Checkbox>
-            <Checkbox value="dob" style={{ marginBottom: '20px' }}>Date of Birth</Checkbox>
-            <Checkbox value="email" style={{ marginBottom: '20px' }}>Email Address</Checkbox>
-            <Checkbox value="telNo" style={{ marginBottom: '20px' }}>Phone Number</Checkbox>
-          </Checkbox.Group>
-        </Form.Item>
-      </Form>
-    </Modal>
-  );
-};
 
 const RequestCallbackModal = ({ visible, onCancel, onContinue, selectedOption, setSelectedOption }) => {
   const handleOptionChange = (e) => {
@@ -73,53 +33,18 @@ const RequestCallbackModal = ({ visible, onCancel, onContinue, selectedOption, s
     >
       <Radio.Group onChange={handleOptionChange} value={selectedOption}>
         <Space direction="vertical">
-          <Radio value="callback">Request a Call Back</Radio>
-          <Divider />
           <Radio value="generate">Generate Quote</Radio>
+          <Divider />
+          <Radio value="callback">Request a Call Back</Radio>
         </Space>
       </Radio.Group>
     </Modal>
   );
 };
 
-const ConfirmationModal = ({ visible, onCancel, onEdit, onGenerate, data }) => {
-  return (
-    <Modal
-      title="To continue, please confirm your insurance purchase details"
-      visible={visible}
-      onCancel={onCancel}
-      width={600}
-      footer={[
-        <Button key="edit" onClick={onEdit}>
-          Edit
-        </Button>,
-        <Button key="generate" type="primary" onClick={onGenerate}>
-          Generate Quote
-        </Button>,
-      ]}
-    >
-      <div>
-        <p><strong>Customer Type:</strong> {data.selection}</p>
-        <p><strong>First Name:</strong> {data.firstName}</p>
-        <p><strong>Last Name:</strong> {data.lastName}</p>
-        <p><strong>Gender:</strong> {data.gender}</p>
-        <p><strong>Date of Birth:</strong> {data.dob}</p>
-        <p><strong>Email:</strong> {data.email}</p>
-        <p><strong>Phone Number:</strong> {data.telNo}</p>
-        <p><strong>Number of Spouses:</strong> {data.spouses}</p>
-        <p><strong>Number of Children:</strong> {data.children}</p>
-        <p><strong>SA % Payable to Principal:</strong> {data.saPrincipal}</p>
-        <p><strong>SA % Payable to Spouse:</strong> {data.saSpouse}</p>
-        <p><strong>SA % Payable to Children:</strong> {data.saChildren}</p>
-        <p><strong>Sum Assured:</strong> {data.sumAssured}</p>
-      </div>
-    </Modal>
-  );
-};
 
 const GroupCriticalIllness = () => {
   const [current, setCurrent] = useState(0);
-  const [selection, setSelection] = useState('individual');
   const [form] = Form.useForm();
   const [policyTerm, setPolicyTerm] = useState();
   // const [firstName, setFirstName] = useState();
@@ -128,6 +53,7 @@ const GroupCriticalIllness = () => {
   const [dateOfBirth, setDateOfBirth] = useState();
   const [clientEmailAddress, setClientEmailAddress] = useState();
   const [telNo, setTelNo] = useState();
+  const [phoneArea, setPhoneArea] = React.useState("+254");
   const [spouseNumber, setSpouseNumber] = useState();
   const [childrenNumber, setChildrenNumber] = useState();
   const [SAPrincipal, setSAPrincipal] = useState();
@@ -135,17 +61,13 @@ const GroupCriticalIllness = () => {
   const [SAChildren, setSAChildren] = useState();
   const [sumAssured, setSumAssured] = useState();
   const [coverDate,setCoverDate] = useState();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [confirmModalVisible, setConfirmModalVisible] = useState(false);
+  const [coverExpiryDate, setCoverExpiryDate] = useState();
   const [callbackModalVisible, setCallbackModalVisible] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [formData, setFormData] = useState({});
   const [ setTableColumns] = useState([]);
-
-  const handleSelectionChange = (e) => {
-    setSelection(e.target.value);
-  };
+  const [showHiddenFields, setShowHiddenFields] = useState(false);
 
   const [formatter] = React.useState(new Intl.NumberFormat('en-KE', {
     style: 'currency',
@@ -163,8 +85,79 @@ const preventTextInput = (event) => {
     event.preventDefault();
   }
 };
+
+const PhoneAreas = [
+  { code: "+211", flag: sspFlag, country: "South Sudan" },
+  { code: "+243", flag: cdfFlag, country: "DRC" },
+  { code: "+250", flag: rwfFlag, country: "Rwanda" },
+  { code: "+254", flag: kesFlag, country: "Kenya" },
+  { code: "+255", flag: tzsFlag, country: "Tanzania" },
+  { code: "+256", flag: ugxFlag, country: "Uganda" },
+];
+
 const handleTableColumnsChange = (columns) => {
   setTableColumns(columns);
+};
+
+const ChoosePhoneArea = ({ value, onChange }) => (
+  <Select defaultValue={value} onChange={onChange} style={{ width: 100 }}>
+      {PhoneAreas.map((area) => (
+          <Option key={area.code} value={area.code}>
+              <div style={{ display: 'flex', alignItems: 'center'}}>
+                  <span>{area.code}</span>
+                  <img src={area.flag} alt={area.country} style={{ width: '20px', marginLeft: '8px' }} />
+              </div>
+          </Option>
+      ))}
+  </Select>
+);
+
+const handleCoverDateChange = (date, timeInYears) => {
+  if (!date) {
+    form.resetFields(["coverExpiryDate"]);
+    setCoverExpiryDate();
+    return null;
+  }
+  const oneYearLater = date
+    .clone()
+    .add(timeInYears, "year")
+    .subtract(1, "day");
+  setCoverDate(date);
+
+  return oneYearLater;
+};
+
+const disabledDate = (current) => {
+  const today = new Date();
+  return (
+    current &&
+    current <
+      new Date(today.getFullYear(), today.getMonth(), today.getDate())
+  );
+};
+
+const disableCoverExpiryDate = (date) => {
+  if (coverDate) {
+    const currentDate = new Date(coverDate);
+    let newCoverExpiryDate = new Date(coverDate);
+    newCoverExpiryDate.setFullYear(currentDate.getFullYear() + 1);
+
+    // Adjust for leap years
+    if (currentDate.getDate() === 29 && currentDate.getMonth() === 1) {
+      if (newCoverExpiryDate.getMonth() === 1 && newCoverExpiryDate.getDate() === 28) {
+        newCoverExpiryDate.setDate(1); // Start from March 1
+        newCoverExpiryDate.setMonth(2); // Adjust to March
+      }
+    }
+
+    const formattedCoverExpiryDate = new Date(
+      newCoverExpiryDate.getFullYear(),
+      newCoverExpiryDate.getMonth(),
+      newCoverExpiryDate.getDate()
+    );
+
+    return date && date < formattedCoverExpiryDate;
+  }
 };
 
 const columns = [
@@ -381,45 +374,36 @@ const funeralExpenseCover = [
   const { Text, Title } = Typography;
 
   const handleNextClick = async () => {
-    if (current === 1 && !termsChecked) {
-      alert("Please accept the terms and conditions");
-      return;
-    }
-    if (selection === 'individual' && current === 0) {
-      setModalVisible(true);
-    } else if (selection === 'individual' && current === 1) {
-      setCallbackModalVisible(true);
-    } else if (current === steps.length - 2) {
-      const values = await form.validateFields();
-      setFormData({ ...values, selection });
-      setConfirmModalVisible(true);
-    } else {
-      setCurrent(current + 1);
+    try {
+      await form.validateFields();
+      if (current === 0 && !termsChecked) {
+        alert("Please accept the terms and conditions");
+        return;
+      } else if (current === 0) {
+        setCallbackModalVisible(true); 
+      } else if (current === steps.length - 2) {
+        const values = await form.validateFields();
+        setFormData({ ...values });
+        console.log("Form data:", formData);
+        setCurrent(current + 1); // Move to the next step
+        setShowHiddenFields(true); // Show hidden fields for the final step
+      } else {
+        setCurrent(current + 1); // Move to the next step
+      }
+    } catch (error) {
+      console.error("Validation Error:", error);
     }
   };
-
+  
+  
   const handlePrevClick = () => {
     setCurrent(current - 1);
-  };
-
-  const handleModalClose = () => {
-    setModalVisible(false);
-    setCurrent(current + 1);
-  };
-
-  const handleConfirmModalClose = () => {
-    setConfirmModalVisible(false);
   };
 
   const handleCallbackModalClose = () => {
     setCallbackModalVisible(false);
   };
 
-  const handleGenerateQuote = () => {
-    setConfirmModalVisible(false);
-    setCurrent(current + 1);
-    // Add logic to generate the quote
-  };
 
   const handleCallbackContinue = async () => {
     if (selectedOption === "callback") {
@@ -434,28 +418,9 @@ const funeralExpenseCover = [
     }
     setCallbackModalVisible(false); // Close the modal
   };
+  
 
   const steps = [
-    // {
-    //   title: "Customer",
-    //   content: (
-    //     <Space direction="vertical">
-    //       <div>Select:</div>
-    //       <Radio.Group onChange={handleSelectionChange} value={selection}>
-    //         <Radio value="individual">
-    //           <Space>
-    //             <span>Individual Customer</span>
-    //           </Space>
-    //         </Radio>
-    //         <Radio value="group">
-    //           <Space>
-    //             <span>Group Customer</span>
-    //           </Space>
-    //         </Radio>
-    //       </Radio.Group>
-    //     </Space>
-    //   ),
-    // },
     {
       title: "Personal details",
       content: (
@@ -493,7 +458,8 @@ const funeralExpenseCover = [
                 </Select>
               </Form.Item>
 
-              <Form.Item label="Date of Birth" name="dob">
+              <Form.Item label="Date of Birth" name="dob"
+              rules={[{ required: true, message: "Please entger date of birth." }]}>
                 <DatePicker
                   style={{ width: '100%' }}
                   value = {dateOfBirth}
@@ -538,21 +504,29 @@ const funeralExpenseCover = [
           />
         </Form.Item>
 
-              <Form.Item
-          label="Mobile Number"
-          name="telNo"
-          rules={[
-            { required: true, message: "Please input a mobile number." },
-            { len: 10, message: "The input must have exactly 10 digits." },
-          ]}
-        >
-          <Input
-            placeholder="0700000000"
-            value={telNo}
-            onChange={(e) => setTelNo(e.target.value)}
-            onKeyPress={preventTextInput}
-          />
-        </Form.Item>
+        <Form.Item
+                label="Mobile Number"
+                name="mobileNumber"
+                rules={[
+                  { len: 9, message: "The input must have exactly 9 digits." },
+                  {
+                    required: true,
+                    message: "Please enter your mobile number!",
+                  },
+                ]}
+              >
+                <Input
+                  maxLength={9}
+                  addonBefore={
+                    <ChoosePhoneArea
+                      value={phoneArea}
+                      onChange={setPhoneArea}
+                    />
+                  }
+                  placeholder="Enter your mobile number"
+                  onKeyPress={preventTextInput}
+                />
+              </Form.Item>
             </Col>
           </Row>
           <Form.Item>
@@ -573,7 +547,8 @@ const funeralExpenseCover = [
           <Typography.Text strong>How many members would you like to insure?</Typography.Text>
           <Row gutter={16}>
             <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
-              <Form.Item label="SPOUSE" name="spouses">
+              <Form.Item label="SPOUSE" name="spouses"
+              rules={[{ required: true, message: "Please enter the number of spouses." }]}>
               <Input
                 id="spouseNumber"
                 value={spouseNumber}
@@ -582,7 +557,8 @@ const funeralExpenseCover = [
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
-              <Form.Item label="CHILDREN" name="children">
+              <Form.Item label="CHILDREN" name="children"
+              rules={[{ required: true, message: "Please enter the number of children." }]}>
               <Input
                 id="childrenNumber"
                 value={childrenNumber}
@@ -598,14 +574,12 @@ const funeralExpenseCover = [
       title: "Percentage of Cover Payable",
       content: (
         <Form form={form} layout="vertical" style={{ marginTop: '24px', padding: '16px' }}>
+          <Typography.Text strong>Please confirm the sum assured and percentage sum assured for each member</Typography.Text>
           <Row gutter={16}>
             <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
             <Form.Item
           label="Sum Assured"
-          rules={[
-            { required: true, message: ("Please input the benefit amount") },
-            { type: "number", message: "The input is not a valid number!" },
-          ]}
+          rules={[{ required: true, message: "Please input sum assured." }]}
         >
           <InputNumber
             value={sumAssured}
@@ -631,15 +605,37 @@ const funeralExpenseCover = [
     onChange={(value) => setSASpouse(parseFloat(value))}
                 />
               </Form.Item>
-              <Form.Item label="Cover Start Date">
-              <DatePicker
-                onChange={(date, dateString) => setCoverDate(dateString)}
-                disabledDate={(current) => {
-                  const today = new Date();
-                  return current && current < new Date(today.getFullYear(), today.getMonth(), today.getDate());
-                }}
-              />
-            </Form.Item>
+              <Form.Item
+                    label="Cover Commencement Date"
+                    name="coverDate"
+                    rules={[
+                      {
+                        required: true,
+                        message: ("Please select start date."),
+                      },
+                    ]}
+                    style={{ width: "100%", cursor: "pointer" }}
+                  >
+                    <DatePicker
+                      style={{ width: "100%" }}
+                      id="coverDate"
+                      disabledDate={disabledDate}
+                      onChange={handleCoverDateChange}
+                       inputReadOnly={true}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    label="Cover End Date"
+                    name="coverExpiryDate"
+                    style={{ width: "100%", cursor: "pointer" }}
+                  >
+                    <DatePicker
+                      style={{ width: "100%" }}
+                      id="coverExpiryDate"
+                      disabled
+                      inputReadOnly={true}
+                    />
+                  </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
             <Form.Item
@@ -962,25 +958,18 @@ const funeralExpenseCover = [
           )}
           {current < steps.length - 1 && (
             <Button type="primary" onClick={handleNextClick}>
-              {current === 1 && selectedOption === "callback" ? "Submit" : "Next"}
+              {current === 0 && selectedOption === "callback" ? "Submit" : "Next"}
             </Button>
           )}
         </div>
       </div>
-      <IndividualCustomerDetailsModal visible={modalVisible} onCancel={() => setModalVisible(false)} onNext={handleModalClose} />
+    
       <RequestCallbackModal
         visible={callbackModalVisible}
         onCancel={handleCallbackModalClose}
         onContinue={handleCallbackContinue}
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
-      />
-      <ConfirmationModal
-        visible={confirmModalVisible}
-        onCancel={handleConfirmModalClose}
-        onEdit={handlePrevClick}
-        onGenerate={handleGenerateQuote}
-        data={formData}
       />
     </>
   );
