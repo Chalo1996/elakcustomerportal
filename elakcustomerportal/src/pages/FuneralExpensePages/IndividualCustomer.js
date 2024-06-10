@@ -1,61 +1,49 @@
 import { useState } from "react";
 import { LeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { Steps, Form, Button } from "antd";
+import { Steps, Button } from "antd";
 import PersonalDetailsForm from "../../components/Funeral Expense/PersonalDetails";
 
 const { Step } = Steps;
 
 const IndividualCustomer = () => {
   const [current, setCurrent] = useState(0);
-  const [form1] = Form.useForm();
-
   const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNo: "",
+    phoneArea: "+254",
+    country: "Kenya",
+    birthDate: null,
+  });
+
   const handleNavigate = () => {
     navigate("/home/funeral-expense/select-customer-type");
   };
 
-  const [formData, setFormData] = useState({});
-
-  const forms = [form1];
-
-  const handleNext = async () => {
-    try {
-      await forms[current].validateFields();
-      // Save current form data to state
-      setFormData({
-        ...formData,
-        ...forms[current].getFieldsValue(),
-      });
-      setCurrent(current + 1);
-    } catch (error) {
-      console.log("Validation Failed:", error);
-    }
+  const handleNext = () => {
+    setCurrent(current + 1);
   };
 
   const handlePrev = () => {
     setCurrent(current - 1);
   };
 
-  const handleSubmit = async () => {
-    try {
-      await Promise.all(forms.map((form) => form.validateFields()));
-      // Collect data from all forms
-      const data = {
-        ...formData,
-        ...forms[current].getFieldsValue(),
-      };
-      console.log("Collected data:", data);
-    } catch (error) {
-      console.log("Validation Failed:", error);
-    }
+  const handleSubmit = () => {
+    console.log("Collected data:", formData);
   };
 
   const steps = [
     {
       title: "Personal Information",
-      content: <PersonalDetailsForm form={form1} />,
+      content: (
+        <PersonalDetailsForm formData={formData} setFormData={setFormData} />
+      ),
     },
+    // Add more steps here if needed
   ];
 
   return (
