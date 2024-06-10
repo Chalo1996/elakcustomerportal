@@ -1,60 +1,16 @@
 import React, { useState } from 'react';
-import { Steps, Form, Row, Input, InputNumber, Button, message, Col, Checkbox, Modal, DatePicker, Select, Space, Radio, Divider, Typography } from 'antd';
+import { Steps, Form, Row, Input, InputNumber, Button, message, Col, Checkbox, Modal, DatePicker, Select, Space, Radio, Divider, Typography, Card } from 'antd';
 import 'tailwindcss/tailwind.css';
-import sspFlag from '../../assets/flags/ssp.png';
-import cdfFlag from '../../assets/flags/cdf.png';
-import rwfFlag from '../../assets/flags/rwf.png';
-import kesFlag from '../../assets/flags/kes.png';
-import tzsFlag from '../../assets/flags/tzs.png';
-import ugxFlag from '../../assets/flags/ugx.png';
+
+import QuotationTable from "./GroupLifeQuotation.js"
+
+
+import {preventNumericInput, preventTextInput, disabledDate, disabledTodayDate, PhoneAreas} from "./Utilities.js"
+
 
 const { Step } = Steps;
 const { Option } = Select;
 const { Title } = Typography;
-
-const preventNumericInput = (event) => {
-  if (/[0-9]/.test(event.key)) {
-    event.preventDefault();
-  }
-};
-
-const preventTextInput = (event) => {
-  if (!/[0-9]/.test(event.key)) {
-    event.preventDefault();
-  }
-};
-
-const disabledDate = (current) => {
-  if (!current) return false;
-  const selectedDate = new Date(current);
-  const today = new Date();
-  let age = today.getFullYear() - selectedDate.getFullYear();
-  const hasBirthdayOccurred =
-    today.getMonth() > selectedDate.getMonth() ||
-    (today.getMonth() === selectedDate.getMonth() &&
-      today.getDate() >= selectedDate.getDate());
-  if (!hasBirthdayOccurred) {
-    age--;
-  }
-  return age < 18 || age > 75;
-};
-
-const disabledTodayDate = (current) => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  return current && current.toDate() < today;
-};
-
-const PhoneAreas = [
-  { code: "+211", flag: sspFlag, country: "South Sudan" },
-  { code: "+243", flag: cdfFlag, country: "DRC" },
-  { code: "+250", flag: rwfFlag, country: "Rwanda" },
-  { code: "+254", flag: kesFlag, country: "Kenya" },
-  { code: "+255", flag: tzsFlag, country: "Tanzania" },
-  { code: "+256", flag: ugxFlag, country: "Uganda" },
-];
-
-
 
 const GroupLifeAssurance = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -75,7 +31,6 @@ const GroupLifeAssurance = () => {
 
   const [currencySymbol,] = React.useState("KSh");
   const [phoneArea, setPhoneArea] = React.useState("+254");
-  const [setCountry] = React.useState("Kenya");
   const [industry, setIndustry] = useState('pleaseSelect');
   const [isFlatAmount, setIsFlatAmount] = useState(false);
   const [levelOfCover, SetLevelOfCover] = useState("pleaseSelect");
@@ -111,15 +66,6 @@ const ChoosePhoneArea = ({ value, onChange }) => (
     </Select>
 );
 
-  const handlePhoneAreaChange = (newValue) => {
-    const selectedCountry = PhoneAreas.find((area) => area.code === newValue);
-    if (selectedCountry) {
-      setCountry(selectedCountry.country);
-    }
-
-    setPhoneArea(newValue);
-  };
-
   const handleCoverChange = (value) => {
     SetLevelOfCover(levelOfCover);
     setIsFlatAmount(value === 'flatAmount');
@@ -131,7 +77,8 @@ const ChoosePhoneArea = ({ value, onChange }) => (
     if (currentStep === 0) {
       updatedFormData.contactDetails = values;
       if (action === 'callback') {
-        form.submit(); // Submit the form if requesting a callback
+        // form.submit(); // Submit the form if requesting a callback
+        setAction("Submit")
         return;
       }
     } else if (currentStep === 1) {
@@ -181,91 +128,106 @@ const ChoosePhoneArea = ({ value, onChange }) => (
     setIsModalOpen(false);
   };
 
-  const ReviewAndConfirmModal = () => (
-    <Modal
-      title="Review and Confirm"
-      open={isModalOpen}
-      onCancel={() => setIsModalOpen(false)}
-      footer={[
-        <Button key="back" onClick={() => setIsModalOpen(false)}>
-          Return
-        </Button>,
-        <Button key="quote" type="primary" onClick={() => handleModalOk('quote')}>
-          View Quote
-        </Button>,
-        <Button key="email" type="primary" onClick={() => handleModalOk('email')}>
-          Send to My Email
-        </Button>,
-        <Checkbox key="accept" onChange={(e) => setAction(e.target.checked ? 'callback' : 'continue')}>
-          I accept the policy exclusions
-        </Checkbox>
-      ]}
-    >
-      <Form>
-        <Row>
-          <h3>Contact Details</h3>
-        </Row>
-        <Row gutter={16}>
-          <Col span={12}>
-            <p><strong>First Name:</strong> {formData.contactDetails.firstName}</p>
-          </Col>
-          <Col span={12}>
-            <p><strong>Last Name:</strong> {formData.contactDetails.lastName}</p>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col span={12}>
-            <p><strong>Email Address:</strong> {formData.contactDetails.email}</p>
-          </Col>
-          <Col span={12}>
-            <p><strong>Mobile Number:</strong> {formData.contactDetails.mobileNumber}</p>
-          </Col>
-          <Col span={12}>
-            <p><strong>Date of Birth:</strong> {formData.contactDetails.dob}</p>
-          </Col>
-        </Row>
+  const ReviewAndConfirm = () => {
 
-        <Row gutter={16}>
-          <h3>Company Details</h3>
-        </Row>
-        <Row gutter={16}>
-          <Col span={12}>
-            <p><strong>Company Name:</strong> {formData.companyDetails.companyName}</p>
-          </Col>
-          <Col span={12}>
-            <p><strong>Company Address:</strong> {formData.companyDetails.companyAddress}</p>
-          </Col>
-        </Row>
+return (
+<Form layout='vertical'>
 
-        <Row gutter={16}>
-          <Col span={12}>
-            <p><strong>Industry Type:</strong> {formData.companyDetails.industryType}</p>
-          </Col>
-          <Col span={12}>
-            <p><strong>Number of Employees:</strong> {formData.companyDetails.numberOfEmployees}</p>
-          </Col>
-          <Col span={12}>
-            <p><strong>Annual Turnover:</strong> {formData.companyDetails.annualTurnover}</p>
-          </Col>
-        </Row>
-      </Form>
+    <Card title="Contact Details">
+    <Row gutter={16}>
+      <Col span={12}>
+        <p><strong>First Name</strong> {formData.contactDetails.firstName}</p>
+      </Col>
+      <Col span={12}>
+        <p><strong>Last Name</strong> {formData.contactDetails.lastName}</p>
+      </Col>
+    </Row>
+    <Row gutter={16}>
+      <Col span={12}>
+        <p><strong>Email Address</strong> {formData.contactDetails.email}</p>
+      </Col>
+      <Col span={12}>
+        <p><strong>Mobile Number</strong> {formData.contactDetails.mobileNumber}</p>
+      </Col>
+      <Col span={12}>
+        <p><strong>Date of Birth</strong> {formData.contactDetails.dob}</p>
+      </Col>
+    </Row>
+    </Card>
+    <Card>
+    <Row gutter={16}>
+      <h3>Company Details</h3>
+    </Row>
+    <Row gutter={16}>
+      <Col span={12}>
+        <p><strong>Company Name</strong> {formData.companyDetails.companyName}</p>
+      </Col>
+      <Col span={12}>
+        <p><strong>Company Address</strong> {formData.companyDetails.companyAddress}</p>
+      </Col>
+    </Row>
 
-      {/*Do what I have done above for the rest*/}
-      <h3>Insured Members</h3>
-      <p><strong>Principal Members:</strong> {formData.insuredMembers.principalMembers}</p>
-      <p><strong>Spouse:</strong> {formData.insuredMembers.spouse}</p>
-      <p><strong>Children:</strong> {formData.insuredMembers.children}</p>
-      <p><strong>Parents:</strong> {formData.insuredMembers.parents}</p>
-      <p><strong>Parents-in-Law:</strong> {formData.insuredMembers.parentsInLaw}</p>
+    <Row gutter={16}>
+      <Col span={12}>
+        <p><strong>Industry Type</strong> {formData.companyDetails.industryType}</p>
+      </Col>
+      <Col span={12}>
+        <p><strong>Number of Employees</strong> {formData.companyDetails.numberOfEmployees}</p>
+      </Col>
+      <Col span={12}>
+        <p><strong>Annual Turnover</strong> {formData.companyDetails.annualTurnover}</p>
+      </Col>
+    </Row>
+    </Card>
 
-      <h3>Policy Details</h3>
-      <p><strong>Policy Start Date:</strong> {formData.policyDetails.policyStartDate}</p>
-      <p><strong>Benefit Level:</strong> {formData.policyDetails.benefitLevel}</p>
-    </Modal>
-  );
+    <Card>
+    <Row gutter={16}>
+    <h3>Insured Members</h3>
+    </Row>
 
+    <Row gutter={16}>
+      <Col span={12}>
+      <p><strong>Principal Members</strong> {formData.insuredMembers.principalMembers}</p>
+      </Col>
+      <Col span={12}>
+      <p><strong>Spouse</strong> {formData.insuredMembers.spouse}</p>
+      </Col>
+    </Row>
 
-  const description = "Please enter the number of family members to be covered";
+    <Row gutter={16}>
+      <Col span={12}>
+      <p><strong>Children</strong> {formData.insuredMembers.children}</p>
+      </Col>
+      <Col span={12}>
+      <p><strong>Parents</strong> {formData.insuredMembers.parents}</p>
+      </Col>
+    </Row>
+
+    <Row gutter={16}>
+      <Col span={12}>
+      <p><strong>Parents-in-Law</strong> {formData.insuredMembers.parentsInLaw}</p>
+      </Col>
+      <Col span={12}></Col>
+    </Row>
+    </Card>
+
+    <Card>
+    <Row gutter={16}>
+    <h3>Policy Details</h3>
+    </Row>
+
+    <Row gutter={16}>
+      <Col span={12}>
+      <p><strong>Policy Start Date</strong> {formData.policyDetails.policyStartDate}</p>
+      </Col>
+      <Col span={12}>
+      <p><strong>Benefit Level</strong> {formData.policyDetails.benefitLevel}</p>
+      </Col>
+    </Row>  
+    </Card>      
+  </Form>)
+};
+
 
   const steps = [
     {
@@ -523,7 +485,6 @@ const ChoosePhoneArea = ({ value, onChange }) => (
     },
     {
       title: "Insured Members",
-      description,
       content: (
         <div>
           <Row gutter={16}>
@@ -738,7 +699,15 @@ const ChoosePhoneArea = ({ value, onChange }) => (
           <Row gutter={16}>
             <p>Please Review and Confirm your entries to continue</p>
           </Row>
-          <ReviewAndConfirmModal />
+          <ReviewAndConfirm/>
+        </div>
+      ),
+    },
+    {
+      title: "Quotation",
+      content: (
+        <div>
+          <QuotationTable/>
         </div>
       ),
     },
