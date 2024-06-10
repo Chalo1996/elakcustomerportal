@@ -1,16 +1,28 @@
 import React, { useState } from "react";
-import { Steps, Form, Input, DatePicker, Button, Row, Col, Select, Modal } from "antd";
+import { Steps, Form, Input, Radio, DatePicker, Button, Row, Col, Select, Modal,InputNumber, Checkbox} from "antd";
 import moment from "moment";
 
 const { Step } = Steps;
 const { Option } = Select;
 
-function Education() {
-  const [current, setCurrent] = useState(0);
+const Education = () => {
+  const [current, setCurrent] = useState(-1);
   const [isCoverDurationModalVisible, setIsCoverDurationModalVisible] = useState(false);
+  const [periodOfDuration, setPeriodOfDuration] = useState(null);
+  const [coverStartDate, setCoverStartDate] = useState(null);
+  const [coverEndDate, setCoverEndDate] = useState(null);
+  const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
+  const [isPrivacyModalVisible, setIsPrivacyModalVisible] = useState(false);
+  const [isPaymentFrequencyModalVisible, setIsPaymentFrequencyModalVisible] = useState(false);
+  const [form] = Form.useForm();
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const next = () => {
-    setCurrent(current + 1);
+    form.validateFields().then(() => {
+      setCurrent(current + 1);
+    }).catch(errorInfo => {
+      console.log('Validation Failed:', errorInfo);
+    });
   };
 
   const back = () => {
@@ -22,7 +34,15 @@ function Education() {
   };
 
   const handleCoverDurationOk = () => {
-    setIsCoverDurationModalVisible(false);
+    form.validateFields(['periodOfDuration', 'coverStartDate']).then((values) => {
+      setPeriodOfDuration(values.periodOfDuration);
+      setCoverStartDate(values.coverStartDate);
+      const endDate = moment(values.coverStartDate).add(values.periodOfDuration, 'years');
+      setCoverEndDate(endDate);
+      setIsCoverDurationModalVisible(false);
+    }).catch(errorInfo => {
+      console.log('Validation Failed:', errorInfo);
+    });
   };
 
   const handleCoverDurationCancel = () => {
@@ -31,34 +51,104 @@ function Education() {
 
   const disabledDate = (current) => {
     return (
-      current && 
+      current &&
       (current < moment().subtract(80, 'years') || current > moment().subtract(18, 'years'))
     );
   };
 
+  const handleStartDateChange = (date) => {
+    if (date && periodOfDuration) {
+      const endDate = moment(date).add(periodOfDuration, 'years');
+      setCoverEndDate(endDate);
+    }
+  };
+
+;
+const showTermsModal = () => {
+  setIsTermsModalVisible(true);
+};
+
+const handleTermsModalOk = () => {
+  setIsTermsModalVisible(false);
+};
+
+const handleTermsModalCancel = () => {
+  setIsTermsModalVisible(false);
+};
+
+const showPrivacyModal = () => {
+  setIsPrivacyModalVisible(true);
+};
+
+const handlePrivacyModalOk = () => {
+  setIsPrivacyModalVisible(false);
+};
+
+const handlePrivacyModalCancel = () => {
+  setIsPrivacyModalVisible(false);
+};
+
+const showPaymentFrequencyModal = () => {
+  setIsPaymentFrequencyModalVisible(true);
+};
+
+const handlePaymentFrequencyModalOk = () => {
+  setIsPaymentFrequencyModalVisible(false);
+};
+
+const handlePaymentFrequencyModalCancel = () => {
+  setIsPaymentFrequencyModalVisible(false);
+};
+
+const handleRadioChange = (e) => {
+  setSelectedOption(e.target.value);
+};
+
+const handleContinue = () => {
+  setCurrent(0); // Move to the first step of the main project
+};
   return (
     <>
-      <Steps current={current}>
-        <Step title="1" description="Enter product details." />
-        <Step title="2" description="Enter your personal details." />
-        <Step title="3" description="Insurance Sum" />
-        <Step title="4" description="Get a quote." />
-      </Steps>
-      <div style={{ marginTop: 20 }}>
+    <Modal
+        title="What would you like to do?"
+        visible={current === -1}
+        footer={null}
+      >
+        <Radio.Group onChange={handleRadioChange} value={selectedOption}>
+          <Radio value={1}>Target Premium amount</Radio>
+          <Radio value={2}>Target fund value</Radio>
+        </Radio.Group>
+        <Button
+          type="primary"
+          disabled={!selectedOption}
+          onClick={handleContinue}
+        >
+          Continue
+        </Button>
+      </Modal>
+    <Steps current={current}>
+      <Step title="Product Details" />
+      <Step title="Personal Details" />
+      <Step title="Insurance Details" />
+      <Step title="Get a Quote" />
+    </Steps>
+    <div style={{ marginTop: 20 }}>
+      <Form form={form} layout="vertical">
         {current === 0 && (
-          <Form layout="vertical">
+          <>
             <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item label="Investment Premium" name="investmentPremium" rules={[{ required: true, message: 'Please select the investment premium' }]}>
-                  <Select>
-                    {[...Array(10)].map((_, i) => (
-                      <Option key={i} value={1000 * (i + 1)}>
-                        {1000 * (i + 1)}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
+            <Col span={12}>
+            <Form.Item label="Investment Premium" name="investmentPremium" rules={[{ required: true, message: 'Please enter the investment premium' }]}>
+  <InputNumber
+    style={{ width: '100%' }}
+    formatter={value => `KES ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+    parser={value => value.replace(/^KES\s?|(,*)/g, '')} // Changed the regex to keep commas
+    placeholder="Enter the investment premium"
+  />
+</Form.Item>
+
+                </Col>
+
               <Col span={12}>
                 <Form.Item label="Date of Birth" name="dateOfBirth" rules={[{ required: true, message: 'Please enter your date of birth' }]}>
                   <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} />
@@ -67,44 +157,39 @@ function Education() {
             </Row>
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item label="Cover Duration">
-                  <Button onClick={showCoverDurationModal}>Set Cover Duration</Button>
-                </Form.Item>
-                <Modal
-                  title={<b>Cover Duration</b>}
-                  visible={isCoverDurationModalVisible}
-                  onOk={handleCoverDurationOk}
-                  onCancel={handleCoverDurationCancel}
-                >
-                  <Form layout="vertical">
-                    <Form.Item label="Period of Duration" name="periodOfDuration" rules={[{ required: true, message: 'Please enter the period of duration' }]}>
-                      <Input />
-                    </Form.Item>
-                    <Form.Item label="Cover Start Date" name="coverStartDate" rules={[{ required: true, message: 'Please enter the cover start date' }]}>
-                      <DatePicker style={{ width: '100%' }} />
-                    </Form.Item>
-                    <Form.Item label="Cover End Date" name="coverEndDate" rules={[{ required: true, message: 'Please enter the cover end date' }]}>
-                      <DatePicker style={{ width: '100%' }} />
-                    </Form.Item>
-                  </Form>
-                </Modal>
+              <Form.Item label="Cover Duration" name="coverDuration" rules={[{ required: true, message: 'Please select a cover duration to continue' }]}>
+              <Input
+                readOnly
+                onClick={showCoverDurationModal}
+                placeholder="Select duration"
+                value={periodOfDuration ? `${periodOfDuration} years` : "Select duration"}
+                style={{ cursor: 'pointer' }}
+              />
+            </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item label="Payment Frequency" name="paymentFrequency" rules={[{ required: true, message: 'Please select the payment frequency' }]}>
-                  <Select>
-                    <Option value="weekly">Weekly</Option>
-                    <Option value="monthly">Monthly</Option>
-                    <Option value="quarterly">Quarterly</Option>
-                    <Option value="semiannually">Semiannually</Option>
-                    <Option value="annually">Annually</Option>
-                  </Select>
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
+              <Form.Item label="Payment Frequency">
+                <Input
+                  readOnly
+                  onClick={showPaymentFrequencyModal}
+                  placeholder="Select frequency"
+                  value={form.getFieldValue('paymentFrequency') || 'Select frequency'}
+                  style={{ cursor: 'pointer' }}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+            <Row gutter={16}>
+                <Col span={24}>
+                  <Form.Item name="termsCheckbox" valuePropName="checked" rules={[{ required: true, message: 'Please accept the terms and privacy policies' }]}>
+                    <Checkbox>I accept the <a href="#" onClick={showTermsModal}>terms</a> & <a href="#" onClick={showPrivacyModal}>privacy policies</a></Checkbox>
+                  </Form.Item>
+                </Col>
+              </Row>
+          </>
         )}
         {current === 1 && (
-          <Form layout="vertical">
+          <>
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item label="First Name" name="firstName" rules={[{ required: true, message: 'Please enter your first name' }]}>
@@ -129,12 +214,17 @@ function Education() {
                 </Form.Item>
               </Col>
             </Row>
-          </Form>
+          </>
         )}
-        {current === 2 && (
+         {current === 2 && (
+          <>
+          <p>Insurance details form goes here...</p>
+            {/* Your form fields for step 3 */}
+          </>
+        )}
+       {current === 3 && (
           <div>
-            <p>Get a quote form goes here...</p>
-            {/* Add form fields for step 3 */}
+            {/* Your form fields for step 4 */}
           </div>
         )}
         <div style={{ marginTop: 20 }}>
@@ -143,15 +233,100 @@ function Education() {
               Back
             </Button>
           )}
-          {current < 2 && (
+          {current < 3 && (
             <Button type="primary" onClick={next}>
               Next
             </Button>
           )}
         </div>
-      </div>
+      </Form>
+    </div>  
+    <Modal
+        title={<b>Cover Duration</b>}
+        visible={isCoverDurationModalVisible}
+        onOk={handleCoverDurationOk}
+        onCancel={handleCoverDurationCancel}
+      >
+        <Form layout="vertical" form={form}>
+          <Form.Item label="Period of Duration" name="periodOfDuration" rules={[{ required: true, message: 'Please select the period of duration' }]}>
+            <Select onChange={(value) => form.setFieldsValue({ coverDuration: value })}>
+              {[...Array(13)].map((_, i) => (
+                <Option key={i + 3} value={i + 3}>{i + 3} years</Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item label="Cover Duration" name="coverDuration" hidden>
+            <Input readOnly />
+          </Form.Item>
+          <Form.Item
+            label="Cover Start Date"
+            name="coverStartDate"
+            rules={[{ required: true, message: 'Please enter the cover start date' }]}
+          >
+            <DatePicker
+              style={{ width: '100%' }}
+              onChange={(date) => {
+                form.setFieldsValue({ coverStartDate: date });
+                handleStartDateChange(date); // Call handleStartDateChange on date change
+              }}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Cover End Date"
+            name="coverEndDate"
+          >
+            <Input readOnly value={coverEndDate ? coverEndDate.format('YYYY-MM-DD') : ''} />
+          </Form.Item>
+        </Form>
+      </Modal> 
+
+      <Modal
+  title="Payment Frequency"
+  visible={isPaymentFrequencyModalVisible}
+  onCancel={handlePaymentFrequencyModalCancel}
+  footer={[
+    <Button key="back" onClick={handlePaymentFrequencyModalCancel}>
+      Cancel
+    </Button>,
+    <Button key="submit" type="primary" onClick={handlePaymentFrequencyModalOk}>
+      Continue
+    </Button>,
+  ]}
+>
+  <p>Select your payment frequency:</p>
+  <Form.Item name="paymentFrequency" rules={[{ required: true, message: 'Please select a payment frequency' }]}>
+    <Radio.Group onChange={e => form.setFieldsValue({ paymentFrequency: e.target.value })}>
+      <Radio value="Weekly">Weekly</Radio>
+      <Radio value="Monthly">Monthly</Radio>
+      <Radio value="Quarterly">Quarterly</Radio>
+      <Radio value="SemiAnnual">Semi-Annual</Radio>
+      <Radio value="Annual">Annual</Radio>
+      <Radio value="Oneoff">One-off</Radio>
+    </Radio.Group>
+  </Form.Item>
+</Modal>
+
+
+
+      <Modal
+        title="Terms"
+        visible={isTermsModalVisible}
+        onOk={handleTermsModalOk}
+        onCancel={handleTermsModalCancel}
+      >
+        <p>Terms and conditions go here...</p>
+      </Modal>
+
+      <Modal
+        title="Privacy Policies"
+        visible={isPrivacyModalVisible}
+        onOk={handlePrivacyModalOk}
+        onCancel={handlePrivacyModalCancel}
+      >
+        <p>Privacy policies go here...</p>
+      </Modal>
     </>
   );
-}
+};
 
 export default Education;

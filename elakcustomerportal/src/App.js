@@ -3,10 +3,12 @@ import { ThemeProvider } from "./store/context/theme-context";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Provider } from "react-redux";
 
+//import MainLayout from "./layout/main-layout/MainLayout";
 import store from "./store/redux/store";
 import Home from "./pages/Home";
 import PortalLayout from "./layout/PortalLayout";
 import Education from "./components/Education/Education";
+import GoalBased from "./components/Goal Based/GoalBased";
 import GroupLifeAssurance from "./components/Group Life/GroupLife";
 import GroupCriticalIllness from "./components/Group Critical Illness/CriticalIlness";
 import NotFound from "./pages/NotFound";
@@ -50,6 +52,7 @@ function App() {
                   <PortalLayout>
                     <Routes>
                       <Route path="education" element={<Education />} />
+                      <Route path="goal-based" element={<GoalBased />} />
                       <Route
                         path="funeral-expense/select-customer-type"
                         element={<CustomerTypePage />}
