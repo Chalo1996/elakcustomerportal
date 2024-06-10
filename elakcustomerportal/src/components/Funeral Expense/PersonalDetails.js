@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { Form, Input, Row, Col, DatePicker, Select } from "antd";
 import sspFlag from "../../assets/flags/ssp.png";
 import cdfFlag from "../../assets/flags/cdf.png";
@@ -17,14 +17,23 @@ const PhoneAreas = [
   { code: "+256", flag: ugxFlag, country: "Uganda" },
 ];
 
-const PersonalDetailsForm = ({ form }) => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNo, setPhoneNo] = useState("");
-  const [phoneArea, setPhoneArea] = useState("+254");
-  const [country, setCountry] = useState("Kenya");
-  const [birthDate, setBirthDate] = useState(null);
+const PersonalDetailsForm = ({ formData, setFormData }) => {
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    form.setFieldsValue(formData);
+  }, [form, formData]);
+
+  const handlePhoneAreaChange = (newValue) => {
+    const selectedCountry = PhoneAreas.find((area) => area.code === newValue);
+    if (selectedCountry) {
+      setFormData({
+        ...formData,
+        phoneArea: newValue,
+        country: selectedCountry.country,
+      });
+    }
+  };
 
   const validateBirthDate = (_, value) => {
     if (!value) {
@@ -34,7 +43,6 @@ const PersonalDetailsForm = ({ form }) => {
     const today = new Date();
     const selectedDate = new Date(value);
 
-    // Calculate minimum and maximum dates
     const minDate = new Date(
       today.getFullYear() - 70,
       today.getMonth(),
@@ -46,57 +54,15 @@ const PersonalDetailsForm = ({ form }) => {
       today.getDate()
     );
 
-    // Check if selected date is within the acceptable range
     if (selectedDate >= minDate && selectedDate <= maxDate) {
       return Promise.resolve();
     }
 
-    // Reject with appropriate error message
     if (selectedDate < maxDate) {
       return Promise.reject(new Error("Maximum required age is 70 years."));
     } else {
       return Promise.reject(new Error("Minimum required age is 18 years."));
     }
-  };
-
-  const handlePhoneAreaChange = (newValue) => {
-    const selectedCountry = PhoneAreas.find((area) => area.code === newValue);
-    if (selectedCountry) {
-      setCountry(selectedCountry.country);
-    }
-
-    setPhoneArea(newValue);
-  };
-
-  const preventNumericInput = (event) => {
-    if (/[0-9]/.test(event.key)) {
-      event.preventDefault();
-    }
-  };
-
-  const preventTextInput = (event) => {
-    if (!/[0-9]/.test(event.key)) {
-      event.preventDefault();
-    }
-  };
-
-  const ChoosePhoneArea = ({ value, onChange }) => {
-    return (
-      <Select style={{ width: 100 }} value={value} onChange={onChange}>
-        {PhoneAreas.map((item) => (
-          <Option value={item.code} key={item.code}>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <span>{item.code}</span>
-              <img
-                src={item.flag}
-                alt={item.country}
-                style={{ width: "20px", marginLeft: "8px" }}
-              />
-            </div>
-          </Option>
-        ))}
-      </Select>
-    );
   };
 
   return (
@@ -113,7 +79,6 @@ const PersonalDetailsForm = ({ form }) => {
             <Form.Item
               label="First Name"
               name="firstName"
-              onKeyPress={preventNumericInput}
               rules={[
                 {
                   required: true,
@@ -123,14 +88,15 @@ const PersonalDetailsForm = ({ form }) => {
             >
               <Input
                 placeholder="Enter your first name"
-                value={firstName}
-                onChange={(event) => setFirstName(event.target.value)}
+                value={formData.firstName}
+                onChange={(e) =>
+                  setFormData({ ...formData, firstName: e.target.value })
+                }
               />
             </Form.Item>
             <Form.Item
               label="Email Address"
               name="email"
-              onKeyPress={preventNumericInput}
               rules={[
                 {
                   required: true,
@@ -140,8 +106,10 @@ const PersonalDetailsForm = ({ form }) => {
             >
               <Input
                 placeholder="Enter your email address"
-                value={firstName}
-                onChange={(event) => setEmail(event.target.value)}
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
               />
             </Form.Item>
             <Form.Item
@@ -159,7 +127,9 @@ const PersonalDetailsForm = ({ form }) => {
               <DatePicker
                 style={{ width: "100%" }}
                 id="birthDate"
-                onChange={(value) => setBirthDate(value)}
+                onChange={(value) =>
+                  setFormData({ ...formData, birthDate: value })
+                }
                 inputReadOnly={true}
               />
             </Form.Item>
@@ -168,7 +138,6 @@ const PersonalDetailsForm = ({ form }) => {
             <Form.Item
               label="Last Name"
               name="lastName"
-              onKeyPress={preventNumericInput}
               rules={[
                 {
                   required: true,
@@ -178,13 +147,14 @@ const PersonalDetailsForm = ({ form }) => {
             >
               <Input
                 placeholder="Enter your last name"
-                value={firstName}
-                onChange={(event) => setLastName(event.target.value)}
+                value={formData.lastName}
+                onChange={(e) =>
+                  setFormData({ ...formData, lastName: e.target.value })
+                }
               />
             </Form.Item>
             <Form.Item
               label="Mobile Number"
-              onKeyPress={preventTextInput}
               name="phoneNo"
               rules={[
                 {
@@ -199,13 +169,29 @@ const PersonalDetailsForm = ({ form }) => {
             >
               <Input
                 addonBefore={
-                  <ChoosePhoneArea
-                    value={phoneArea}
+                  <Select
+                    style={{ width: 100 }}
+                    value={formData.phoneArea}
                     onChange={handlePhoneAreaChange}
-                  />
+                  >
+                    {PhoneAreas.map((item) => (
+                      <Option value={item.code} key={item.code}>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <span>{item.code}</span>
+                          <img
+                            src={item.flag}
+                            alt={item.country}
+                            style={{ width: "20px", marginLeft: "8px" }}
+                          />
+                        </div>
+                      </Option>
+                    ))}
+                  </Select>
                 }
-                value={phoneNo}
-                onChange={(e) => setPhoneNo(e.target.value)}
+                value={formData.phoneNo}
+                onChange={(e) =>
+                  setFormData({ ...formData, phoneNo: e.target.value })
+                }
               />
             </Form.Item>
           </Col>
