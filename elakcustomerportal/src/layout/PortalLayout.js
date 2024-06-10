@@ -40,7 +40,7 @@ const PortalLayout = ({ children }) => {
       <Sider
         collapsed={collapsed}
         onCollapse={setCollapsed}
-        width={256}
+        width={260}
         collapsedWidth={80}
         style={{
           overflow: "auto",
@@ -60,7 +60,7 @@ const PortalLayout = ({ children }) => {
       </Sider>
       <Layout
         style={{
-          marginLeft: collapsed ? 80 : 256,
+          marginLeft: collapsed ? 80 : 260,
           overflow: "auto",
         }}
       >

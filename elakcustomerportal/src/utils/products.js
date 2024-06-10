@@ -5,11 +5,10 @@ import goal from "../assets/goal.png";
 import introImage from "../assets/introImage.jpg"
 import happyfamily from "../assets/happyfamily.png";
 
-
 const products = [
   {
     title: "Funeral Expense Cover",
-    url: "funeral-expense",
+    url: "funeral-expense/select-customer-type",
     image: gleImg,
     description:
       "Funeral expense solution is designed to help families deal with the burden of meeting immediate funeral related expenses on the death of a family member.",
@@ -51,5 +50,3 @@ const products = [
 ];
 
 export default products;
-
-

@@ -1,4 +1,4 @@
-import { Menu, Switch, Button, Divider } from "antd";
+import { Menu, Switch, Divider } from "antd";
 import {
   LogoutOutlined,
   SunOutlined,
@@ -6,7 +6,7 @@ import {
   HomeOutlined,
   GlobalOutlined,
   EllipsisOutlined,
-  MenuOutlined,
+  DownOutlined,
 } from "@ant-design/icons";
 import {
   AccountsIcon,
@@ -31,25 +31,11 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
     {
       key: collapsed ? "collapsed" : "expanded",
       style: { height: "auto" },
+      className: "non-interactive",
       label: (
         <div className="flex items-center">
-          {collapsed && (
-            <MenuOutlined
-              style={{ margin: "auto" }}
-              onClick={toggleCollapsed}
-            />
-          )}
           {!collapsed && (
             <>
-              <Button
-                type="text"
-                onClick={toggleCollapsed}
-                style={{ marginRight: "auto", marginTop: 20 }}
-              >
-                <span style={{ color: theme === "dark" ? "white" : "maroon" }}>
-                  <MenuOutlined />
-                </span>
-              </Button>
               <img
                 src={theme === "dark" ? darkLogo : imgLogo}
                 alt="Equity Bank"
@@ -65,15 +51,24 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
       className: "non-interactive",
       style: { height: "auto" },
       label: !collapsed && (
-        <div className="flex items-center rounded-lg my-7 mx-0">
+        <div
+          className={`${
+            theme === "dark" ? "text-white bg-gray-800" : "bg-[#F7F7F7]"
+          } flex items-center justify-start pl-1 pr-8 py-3 rounded-lg my-7 mx-0 gap-3`}
+        >
           <div className="flex-shrink-0">
             <div className="w-12 h-12 bg-[#A32A29] text-white flex items-center justify-center rounded-full">
               PN
             </div>
           </div>
-          <div className="ml-3">
-            <p className="font-semibold leading-tight">Profile Name</p>
-            <p className="text-gray-500 leading-tight">Personal</p>
+          <div className="h-12 text-base">
+            <p>
+              <span className="font-semibold">Profile Name</span>
+              <span className="text-gray-500 text-sm block">Personal</span>
+            </p>
+          </div>
+          <div className="ml-[3px]">
+            <DownOutlined className="text-[#A32A29]" />
           </div>
         </div>
       ),
@@ -82,11 +77,6 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
       key: "home",
       icon: <HomeOutlined />,
       label: <Link to="/home">Home</Link>,
-    },
-    {
-      key: "space",
-      label: "",
-      className: "non-interactive",
     },
     {
       key: "divider1",
@@ -157,7 +147,7 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
       mode="inline"
       style={{
         height: "100vh",
-        overflowY: "auto",
+        overflow: "auto",
       }}
       items={items}
       theme={theme}
