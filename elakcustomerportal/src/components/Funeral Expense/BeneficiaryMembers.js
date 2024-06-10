@@ -55,6 +55,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
             >
               <InputNumber
                 style={{ width: "100%" }}
+                placeholder="Specify number of children"
                 defaultValue={0}
                 step={1}
                 onChange={(value) =>
@@ -85,6 +86,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
             >
               <InputNumber
                 style={{ width: "100%" }}
+                placeholder="Specify number of parents"
                 defaultValue={0}
                 step={1}
                 onChange={(value) =>
@@ -113,6 +115,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
             >
               <InputNumber
                 style={{ width: "100%" }}
+                placeholder="Specify number of parents in law"
                 defaultValue={0}
                 step={1}
                 onChange={(value) =>
