@@ -3,7 +3,7 @@ import { Modal, Button, Row } from "antd";
 import Img from "../../assets/modal-image.png";
 import { useTheme } from "../../store/context/theme-context";
 
-const FuneralExpenseModal = ({ isModalOpen, onCancel, onOkay, product }) => {
+const GroupLifeModal = ({ isModalOpen, onCancel, onOkay, product }) => {
   const { theme } = useTheme();
   const customTitle = (
     <p
@@ -11,7 +11,7 @@ const FuneralExpenseModal = ({ isModalOpen, onCancel, onOkay, product }) => {
         theme === "dark" ? "text-white bg-gray-800" : "text-black"
       } text-lg font-medium text-center font-roboto `}
     >
-      Funeral Expense Cover
+      Group Life Assurance Cover
     </p>
   );
 
@@ -37,7 +37,7 @@ const FuneralExpenseModal = ({ isModalOpen, onCancel, onOkay, product }) => {
               theme === "dark" ? "text-white" : ""
             } shadow-none font-semibold text-lg leading-6 text-center w-[177px] h-[48px] p-[12px_48px] gap-0 rounded-tl-lg `}
           >
-            <NavLink to="funeral-expense">Apply Now</NavLink>
+            <NavLink to="group-life-assurance">Apply Now</NavLink>
           </Button>
         </Row>,
       ]}
@@ -57,9 +57,9 @@ const FuneralExpenseModal = ({ isModalOpen, onCancel, onOkay, product }) => {
             Life is a journey...
           </p>
           <p className="text-left font-normal text-[#929497] text-base leading-5 mb-4">
-            Death within the family may come with a heavy financial burden when
-            we may least expect. There will be immediate funeral related
-            expenses to be met to accord the family member a decent send off.
+          Group life insurance – also known as death in service insurance – is an attractive
+          employee benefit designed to financially support your employee’s loved ones by providing
+          them with a cash lump-sum payment.
           </p>
         </div>
         <div className="py-3 px-0">
@@ -68,13 +68,13 @@ const FuneralExpenseModal = ({ isModalOpen, onCancel, onOkay, product }) => {
               theme === "dark" ? "text-white" : "text-[#221F1F]"
             } text-left  font-semibold text-[16px] leading-6`}
           >
-            Our Funeral expense cover
+            Our Group Life cover
           </p>
           <p className="text-left font-normal text-[#929497] text-base leading-5 mb-4">
-            Will make a lump sum payment to you or your beneficiary within 48
-            hours of a notice of death, to go towards covering funeral expenses.
-            With a range of covers to choose from, you are a click away having
-            peace of mind and stability for you and your loved ones.
+          We will make a lump sum payment to your beneficiaries within 48 hours of a notice of death. 
+          This payment is intended to cover funeral expenses and provide financial stability during a difficult time. 
+          With a range of coverage options to choose from, your peace of mind and the well-being of your employees and 
+          their families are just a click away.
           </p>
         </div>
       </div>
@@ -82,4 +82,4 @@ const FuneralExpenseModal = ({ isModalOpen, onCancel, onOkay, product }) => {
   );
 };
 
-export default FuneralExpenseModal;
+export default GroupLifeModal;

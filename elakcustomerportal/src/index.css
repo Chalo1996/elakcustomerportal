@@ -12,8 +12,9 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji,
+    Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 }
 
 .non-interactive {
@@ -27,4 +28,18 @@ code {
 
 .dark-theme .ant-modal-content {
   background-color: #1f2937;
+}
+.ant-radio-wrapper {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.ant-radio-wrapper:hover .ant-radio,
+.ant-radio-wrapper-focused .ant-radio {
+  border-color: #800000;;
+}
+
+.ant-radio-checked .ant-radio-inner {
+  border-color: #800000;;
+  background-color: #800000;;
 }
