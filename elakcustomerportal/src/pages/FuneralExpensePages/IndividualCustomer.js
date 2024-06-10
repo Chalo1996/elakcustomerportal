@@ -5,6 +5,7 @@ import { Steps, Button, Form } from "antd";
 import PersonalDetailsForm from "../../components/Funeral Expense/PersonalDetails";
 import CallBackModal from "../../components/Funeral Expense/modals/CallBackModal";
 import BeneficiaryMembersForm from "../../components/Funeral Expense/BeneficiaryMembers";
+import ProductPackagesForm from "../../components/Funeral Expense/ProductPackages";
 
 const { Step } = Steps;
 
@@ -15,7 +16,8 @@ const IndividualCustomer = () => {
 
   const [form1] = Form.useForm();
   const [form2] = Form.useForm();
-  const forms = [form1, form2];
+  const [form3] = Form.useForm();
+  const forms = [form1, form2, form3];
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -92,6 +94,16 @@ const IndividualCustomer = () => {
       content: (
         <BeneficiaryMembersForm
           form={form2}
+          formData={formData}
+          setFormData={setFormData}
+        />
+      ),
+    },
+    {
+      title: "Select Package",
+      content: (
+        <ProductPackagesForm
+          form={form3}
           formData={formData}
           setFormData={setFormData}
         />
