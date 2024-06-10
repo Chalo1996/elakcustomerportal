@@ -17,9 +17,7 @@ const PhoneAreas = [
   { code: "+256", flag: ugxFlag, country: "Uganda" },
 ];
 
-const PersonalDetailsForm = ({ formData, setFormData }) => {
-  const [form] = Form.useForm();
-
+const PersonalDetailsForm = ({ form, formData, setFormData }) => {
   useEffect(() => {
     form.setFieldsValue(formData);
   }, [form, formData]);
@@ -71,9 +69,21 @@ const PersonalDetailsForm = ({ formData, setFormData }) => {
     }
   };
 
+  const preventNumericInput = (event) => {
+    if (/[0-9]/.test(event.key)) {
+      event.preventDefault();
+    }
+  };
+
+  const preventTextInput = (event) => {
+    if (!/[0-9]/.test(event.key)) {
+      event.preventDefault();
+    }
+  };
+
   return (
     <>
-      <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 flex flex-col gap-4">
+      <div className="w-[710px] h-[76px] top-[408px] left-[425px] mt-3 py-3 px-0 flex flex-col gap-4">
         <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
           Please enter your details
         </p>
@@ -85,6 +95,7 @@ const PersonalDetailsForm = ({ formData, setFormData }) => {
             <Form.Item
               label="First Name"
               name="firstName"
+              onKeyPress={preventNumericInput}
               rules={[
                 {
                   required: true,
@@ -146,6 +157,7 @@ const PersonalDetailsForm = ({ formData, setFormData }) => {
             <Form.Item
               label="Last Name"
               name="lastName"
+              onKeyPress={preventNumericInput}
               rules={[
                 {
                   required: true,
@@ -165,6 +177,7 @@ const PersonalDetailsForm = ({ formData, setFormData }) => {
             <Form.Item
               label="Mobile Number"
               name="phoneNo"
+              onKeyPress={preventTextInput}
               rules={[
                 {
                   required: true,

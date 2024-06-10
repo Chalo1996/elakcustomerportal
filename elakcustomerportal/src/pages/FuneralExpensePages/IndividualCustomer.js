@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { LeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { Steps, Button } from "antd";
+import { Steps, Button, Form } from "antd";
 import PersonalDetailsForm from "../../components/Funeral Expense/PersonalDetails";
 import CallBackModal from "../../components/Funeral Expense/modals/CallBackModal";
 import BeneficiaryMembersForm from "../../components/Funeral Expense/BeneficiaryMembers";
@@ -13,6 +13,10 @@ const IndividualCustomer = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const navigate = useNavigate();
 
+  const [form1] = Form.useForm();
+  const [form2] = Form.useForm();
+  const forms = [form1, form2];
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -22,17 +26,27 @@ const IndividualCustomer = () => {
     country: "Kenya",
     birthDate: null,
     terms: false,
+    spouse: false,
+    spouseNumber: 0,
+    parentsNumber: 0,
+    childrenNumber: 0,
+    parentsInLawNumber: 0,
   });
 
   const handleNavigate = () => {
     navigate("/home/funeral-expense/select-customer-type");
   };
 
-  const handleNext = () => {
-    if (current === 0) {
-      setIsModalVisible(true);
-    } else {
-      setCurrent(current + 1);
+  const handleNext = async () => {
+    try {
+      await forms[current].validateFields();
+      if (current === 0) {
+        setIsModalVisible(true);
+      } else {
+        setCurrent(current + 1);
+      }
+    } catch (error) {
+      console.log("Validation Failed:", error);
     }
   };
 
@@ -53,21 +67,34 @@ const IndividualCustomer = () => {
     }
   };
 
-  const handleSubmit = () => {
-    console.log("Collected data:", formData);
+  const handleSubmit = async () => {
+    try {
+      await Promise.all(forms.map((form) => form.validateFields()));
+      console.log("Collected data:", formData);
+    } catch (error) {
+      console.log("Validation Failed:", error);
+    }
   };
 
   const steps = [
     {
       title: "Personal Information",
       content: (
-        <PersonalDetailsForm formData={formData} setFormData={setFormData} />
+        <PersonalDetailsForm
+          form={form1}
+          formData={formData}
+          setFormData={setFormData}
+        />
       ),
     },
     {
       title: "Beneficiary Members",
       content: (
-        <BeneficiaryMembersForm formData={formData} setFormData={setFormData} />
+        <BeneficiaryMembersForm
+          form={form2}
+          formData={formData}
+          setFormData={setFormData}
+        />
       ),
     },
   ];
@@ -93,6 +120,14 @@ const IndividualCustomer = () => {
         </Steps>
         <div className="steps-content">{steps[current].content}</div>
         <div className="steps-action">
+          {current > 0 && (
+            <Button
+              onClick={handlePrev}
+              className="h-full px-4 py-2 shadow-none text-center mr-3"
+            >
+              Go back
+            </Button>
+          )}
           {current < steps.length - 1 && (
             <Button
               type="primary"
@@ -109,14 +144,6 @@ const IndividualCustomer = () => {
               className="h-full px-4 py-2 shadow-none text-center"
             >
               Done
-            </Button>
-          )}
-          {current > 0 && (
-            <Button
-              onClick={handlePrev}
-              className="h-full px-4 py-2 shadow-none text-center"
-            >
-              Go back
             </Button>
           )}
         </div>

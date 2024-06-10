@@ -32,7 +32,7 @@ const CallBackModal = ({ isModalOpen, onClose, onContinue }) => {
       open={isModalOpen}
       onCancel={onClose}
       footer={[
-        <Row justify="start" key="footer-row">
+        <Row justify="start" key="footer-row" className="mt-4">
           <Button
             key="submit"
             type="primary"
@@ -69,3 +69,4 @@ const CallBackModal = ({ isModalOpen, onClose, onContinue }) => {
 };
 
 export default CallBackModal;
+
