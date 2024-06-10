@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { Modal, Button, Row } from "antd";
-import Img from "../../assets/modal-image.png";
-import { useTheme } from "../../store/context/theme-context";
+import Img from "../../../assets/modal-image.png";
+import { useTheme } from "../../../store/context/theme-context";
 
 const FuneralExpenseModal = ({ isModalOpen, onCancel, onOkay, product }) => {
   const { theme } = useTheme();

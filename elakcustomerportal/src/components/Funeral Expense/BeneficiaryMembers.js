@@ -17,7 +17,7 @@ const PhoneAreas = [
   { code: "+256", flag: ugxFlag, country: "Uganda" },
 ];
 
-const PersonalDetailsForm = ({ formData, setFormData }) => {
+const BeneficiaryMembersForm = ({ formData, setFormData }) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -241,4 +241,4 @@ const PersonalDetailsForm = ({ formData, setFormData }) => {
   );
 };
 
-export default PersonalDetailsForm;
+export default BeneficiaryMembersForm;
