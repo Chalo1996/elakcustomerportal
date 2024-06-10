@@ -3,7 +3,6 @@ import { ThemeProvider } from "./store/context/theme-context";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Provider } from "react-redux";
 
-import MainLayout from "./layout/main-layout/MainLayout";
 import store from "./store/redux/store";
 import Home from "./pages/Home";
 import PortalLayout from "./layout/PortalLayout";
@@ -11,7 +10,10 @@ import Education from "./components/Education/Education";
 import GroupLifeAssurance from "./components/Group Life/GroupLife";
 import GroupCriticalIllness from "./components/Group Critical Illness/CriticalIlness";
 import NotFound from "./pages/NotFound";
-import FuneralExpensePage from "./pages/FuneralExpense";
+import CustomerTypePage from "./pages/FuneralExpensePages/CustomerType";
+import LandingPage from "./pages/landingPage";
+import IndividualCustomer from "./pages/FuneralExpensePages/IndividualCustomer";
+import GroupCustomerPage from "./pages/FuneralExpensePages/GroupCustomer";
 
 function App() {
   return (
@@ -26,8 +28,10 @@ function App() {
             }}
           >
             <Routes>
-              {/* Redirect to /home */}
-              <Route path="/" element={<Navigate to="/home" />} />
+              {/* Landing Page Route */}
+              <Route path="/landing-page" element={<LandingPage />} />
+              {/* Redirect to /landing-page */}
+              <Route path="/" element={<Navigate to="/landing-page" />} />
 
               {/* Home route */}
               <Route
@@ -47,14 +51,21 @@ function App() {
                     <Routes>
                       <Route path="education" element={<Education />} />
                       <Route
-                        path="funeral-expense"
-                        element={<FuneralExpensePage />}
+                        path="funeral-expense/select-customer-type"
+                        element={<CustomerTypePage />}
+                      />
+                      <Route
+                        path="funeral-expense/individual-customer"
+                        element={<IndividualCustomer />}
+                      />
+                      <Route
+                        path="funeral-expense/group-customer"
+                        element={<GroupCustomerPage />}
                       />
                       <Route
                         path="group-life-assurance"
                         element={<GroupLifeAssurance />}
                       />
-
                       <Route
                         path="critical-illness"
                         element={<GroupCriticalIllness />}
@@ -67,7 +78,6 @@ function App() {
               />
 
               {/* Routes outside of /home */}
-              <Route path="landing-page" element={<MainLayout />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </ConfigProvider>

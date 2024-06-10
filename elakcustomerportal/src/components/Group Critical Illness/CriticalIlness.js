@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { PersonalIcon, GroupIcon } from "../../layout/icons/icons";
-import { Steps, Radio, Space, Button, Row, Col, Form, Input, Select, DatePicker, Modal, Checkbox, InputNumber } from "antd";
+// import { PersonalIcon, GroupIcon } from "../../layout/icons/icons";
+import { Steps, Radio, Space, Button, Row, Col, Form, Input, Select, DatePicker, Modal, Checkbox, InputNumber, Divider, Typography, Table} from "antd";
 
 const { Step } = Steps;
 
@@ -58,7 +58,7 @@ const RequestCallbackModal = ({ visible, onCancel, onContinue, selectedOption, s
 
   return (
     <Modal
-      title="How would you like to proceed?"
+      title="What would you like to do?"
       visible={visible}
       onCancel={onCancel}
       width={600}
@@ -74,6 +74,7 @@ const RequestCallbackModal = ({ visible, onCancel, onContinue, selectedOption, s
       <Radio.Group onChange={handleOptionChange} value={selectedOption}>
         <Space direction="vertical">
           <Radio value="callback">Request a Call Back</Radio>
+          <Divider />
           <Radio value="generate">Generate Quote</Radio>
         </Space>
       </Radio.Group>
@@ -133,22 +134,23 @@ const GroupCriticalIllness = () => {
   const [SASpouse, setSASpouse] = useState();
   const [SAChildren, setSAChildren] = useState();
   const [sumAssured, setSumAssured] = useState();
-  const [setCoverDate] = useState();
+  const [coverDate,setCoverDate] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
   const [callbackModalVisible, setCallbackModalVisible] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [formData, setFormData] = useState({});
+  const [ setTableColumns] = useState([]);
 
   const handleSelectionChange = (e) => {
     setSelection(e.target.value);
   };
 
-//   const [formatter] = React.useState(new Intl.NumberFormat('en-KE', {
-//     style: 'currency',
-//     currency: 'KES',
-// }));
+  const [formatter] = React.useState(new Intl.NumberFormat('en-KE', {
+    style: 'currency',
+    currency: 'KES',
+}));
 
 // const preventNumericInput = (event) => {
 //   if (/[0-9]/.test(event.key)) {
@@ -161,10 +163,222 @@ const preventTextInput = (event) => {
     event.preventDefault();
   }
 };
+const handleTableColumnsChange = (columns) => {
+  setTableColumns(columns);
+};
 
+const columns = [
+  {
+    title: "Attribute",
+    dataIndex: "attribute",
+    key: "attribute",
+    width: "50%",
+    render: (text) => <Text strong>{text}</Text>,
+  },
+  {
+    title: "Value",
+    dataIndex: "value",
+    key: "value",
+    width: "50%",
+  },
+];
 
+const tableColumns = [
+  {
+    title: "Member Type",
+    dataIndex: "name",
+    key: "name",
+    width: "15%",
+  },
+  {
+    title: "Lives",
+    dataIndex: "individualLives",
+    key: "individualLives",
+    width: "15%",
+  },
+  {
+    title: "Sum Assured Per Member",
+    dataIndex: "sumAssured",
+    key: "sumAssured",
+    width: "15%",
+    render: (text) => formatter.format(text)
+  },
+  {
+    title: "Total Sum Assured",
+    dataIndex: "totalSumAssured",
+    key: "totalSumAssured",
+    width: "15%",
+    render: (text) => formatter.format(text)
+  },
+  {
+    title: "Premium Per Member",
+    dataIndex: "ciPremium",
+    key: "ciPremium",
+    width: "15%",
+    render: (text) => formatter.format(text)
+  },
+  {
+    title: "Total Premium",
+    dataIndex: "totalciPremium",
+    key: "totalciPremium",
+    width: "15%",
+    render: (text) => formatter.format(text)
+  },
+];
+
+const contactDetails = [
+  { key: "clientName", attribute: "Name", value: formData.clientName },
+  { key: "telNo", attribute: "Phone Number", value: formData.telNo},
+  { key: "clientEmailAddress", attribute: "Email", value: formData.clientEmailAddress },
+];
+
+const criticalIllnessCover = [
+  {
+    name: "",
+    individualLives: "",
+    sumAssured: "",
+    totalSumAssured: "",
+    ciPremium: "",
+    totalciPremium: "",
+  },
+  {
+    name: "",
+    individualLives: "",
+    sumAssured: "",
+    totalSumAssured: "",
+    ciPremium: "",
+    totalciPremium: "",
+  },
+  {
+    name: "",
+    individualLives: "",
+    sumAssured: "",
+    totalSumAssured: "",
+    ciPremium: "",
+    totalciPremium: "",
+  },
+  {
+    name: "",
+    individualLives: "",
+    sumAssured: "",
+    totalSumAssured: "",
+    ciPremium: "",
+    totalciPremium: "",
+  },
+];
+
+const funeralExpenseCover = [
+  {
+    name: "",
+    individualLives: "",
+    sumAssured: "",
+    totalSumAssured: "",
+    ciPremium: "",
+    totalciPremium: "",
+  },
+  {
+    name: "",
+    individualLives: "",
+    sumAssured: "",
+    totalSumAssured: "",
+    ciPremium: "",
+    totalciPremium: "",
+  },
+  {
+    name: "",
+    individualLives: "",
+    sumAssured: "",
+    totalSumAssured: "",
+    ciPremium: "",
+    totalciPremium: "",
+  },
+  {
+    name: "",
+    individualLives: "",
+    sumAssured: "",
+    totalSumAssured: "",
+    ciPremium: "",
+    totalciPremium: "",
+  },
+     ];
+
+     const terminalIllnessRider = [
+      {
+        name: "",
+        individualLives: "",
+        sumAssured: "",
+        totalSumAssured: "",
+        ciPremium: "",
+        totalciPremium: "",
+      },
+      {
+        name: "",
+        individualLives: "",
+        sumAssured: "",
+        totalSumAssured: "",
+        ciPremium: "",
+        totalciPremium: "",
+      },
+      {
+        name: "",
+        individualLives: "",
+        sumAssured: "",
+        totalSumAssured: "",
+        ciPremium: "",
+        totalciPremium: "",
+      },
+      {
+        name: "",
+        individualLives: "",
+        sumAssured: "",
+        totalSumAssured: "",
+        ciPremium: "",
+        totalciPremium: "",
+      },
+   ];
+
+   const totalPremiumDetails = [
+    {
+      name: "",
+      individualLives: "",
+      sumAssured: "",
+      totalSumAssured: "",
+      ciPremium: "",
+      totalciPremium: "",
+    },
+    {
+      name: "",
+      individualLives: "",
+      sumAssured: "",
+      totalSumAssured: "",
+      ciPremium: "",
+      totalciPremium: "",
+    },
+    {
+      name: "",
+      individualLives: "",
+      sumAssured: "",
+      totalSumAssured: "",
+      ciPremium: "",
+      totalciPremium: "",
+    },
+    {
+      name: "",
+      individualLives: "",
+      sumAssured: "",
+      totalSumAssured: "",
+      ciPremium: "",
+      totalciPremium: "",
+    },
+  ];
+
+  const today = new Date();
+    const options = { month: "long", day: "numeric", year: "numeric" };
+    const currentDate = today.toLocaleDateString("en-US", options);
+    
   const policyTerms = ["1", "2", "3"];
   const { Option } = Select;
+  const { Text, Title } = Typography;
 
   const handleNextClick = async () => {
     if (current === 1 && !termsChecked) {
@@ -222,28 +436,26 @@ const preventTextInput = (event) => {
   };
 
   const steps = [
-    {
-      title: "Customer Type",
-      content: (
-        <Space direction="vertical">
-          <div>Select:</div>
-          <Radio.Group onChange={handleSelectionChange} value={selection}>
-            <Radio value="individual">
-              <Space>
-                <PersonalIcon />
-                <span>Individual Customer</span>
-              </Space>
-            </Radio>
-            <Radio value="group">
-              <Space>
-                <GroupIcon />
-                <span>Group Customer</span>
-              </Space>
-            </Radio>
-          </Radio.Group>
-        </Space>
-      ),
-    },
+    // {
+    //   title: "Customer",
+    //   content: (
+    //     <Space direction="vertical">
+    //       <div>Select:</div>
+    //       <Radio.Group onChange={handleSelectionChange} value={selection}>
+    //         <Radio value="individual">
+    //           <Space>
+    //             <span>Individual Customer</span>
+    //           </Space>
+    //         </Radio>
+    //         <Radio value="group">
+    //           <Space>
+    //             <span>Group Customer</span>
+    //           </Space>
+    //         </Radio>
+    //       </Radio.Group>
+    //     </Space>
+    //   ),
+    // },
     {
       title: "Personal details",
       content: (
@@ -348,7 +560,7 @@ const preventTextInput = (event) => {
               checked={termsChecked}
               onChange={(e) => setTermsChecked(e.target.checked)}
             >
-              I accept the terms and conditions
+              I accept the terms and privacy policies
             </Checkbox>
           </Form.Item>
         </Form>
@@ -358,6 +570,7 @@ const preventTextInput = (event) => {
       title: "Insured Members",
       content: (
         <Form form={form} layout="vertical" style={{ marginTop: '24px', padding: '16px' }}>
+          <Typography.Text strong>How many members would you like to insure?</Typography.Text>
           <Row gutter={16}>
             <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
               <Form.Item label="SPOUSE" name="spouses">
@@ -387,20 +600,23 @@ const preventTextInput = (event) => {
         <Form form={form} layout="vertical" style={{ marginTop: '24px', padding: '16px' }}>
           <Row gutter={16}>
             <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
-              <Form.Item
-                label="SA % Payable to Principal"
-                name="saPrincipal"
-                rules={[{ required: true, message: "Please enter percentage." }]}
-              >
-                <InputNumber
-                  style={{ width: "100%" }}
-                  formatter={(value) => `${value}%`}
-                  parser={(value) => value.replace("%", "")}
-                  step={0.1}
-                  value={SAPrincipal}
-    onChange={(value) => setSAPrincipal(parseFloat(value))}
-                />
-              </Form.Item>
+            <Form.Item
+          label="Sum Assured"
+          rules={[
+            { required: true, message: ("Please input the benefit amount") },
+            { type: "number", message: "The input is not a valid number!" },
+          ]}
+        >
+          <InputNumber
+            value={sumAssured}
+            style={{ width: "100%" }}
+            addonBefore="Ksh"
+            // disabled={!sumAssuredEdit}
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            parser={(value) => value.replace(/(,*)/g, "")}
+            onChange={setSumAssured}
+          />
+        </Form.Item>
               <Form.Item
                 label="SA % Payable to Spouse"
                 name="saSpouse"
@@ -427,8 +643,8 @@ const preventTextInput = (event) => {
             </Col>
             <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
             <Form.Item
-  label="SA % Payable to Children"
-  name="saChildren"
+  label="SA % Payable to Principal"
+  name="saPrincipal"
   rules={[{ required: true, message: "Please enter percentage." }]}
 >
   <InputNumber
@@ -436,28 +652,25 @@ const preventTextInput = (event) => {
     formatter={(value) => `${value}%`}
     parser={(value) => value.replace("%", "")}
     step={0.1}
-    value={SAChildren}
-    onChange={(value) => setSAChildren(parseFloat(value))}
+    value={SAPrincipal}
+    onChange={(value) => setSAPrincipal(parseFloat(value))}
   />
 </Form.Item>
-
 <Form.Item
-          label="Sum Assured"
-          rules={[
-            { required: true, message: ("Please input the benefit amount") },
-            { type: "number", message: "The input is not a valid number!" },
-          ]}
-        >
-          <InputNumber
-            value={sumAssured}
-            style={{ width: "100%" }}
-            addonBefore="Ksh"
-            // disabled={!sumAssuredEdit}
-            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-            parser={(value) => value.replace(/(,*)/g, "")}
-            onChange={setSumAssured}
-          />
-        </Form.Item>
+                label="SA % Payable to Children"
+                name="saChildren"
+                rules={[{ required: true, message: "Please enter percentage." }]}
+              >
+                <InputNumber
+                  style={{ width: "100%" }}
+                  formatter={(value) => `${value}%`}
+                  parser={(value) => value.replace("%", "")}
+                  step={0.1}
+                  value={SAChildren}
+    onChange={(value) => setSAChildren(parseFloat(value))}
+                />
+              </Form.Item>
+
               <Form.Item
           label="Policy Term(Years)"
           rules={[{ required: true, message: "Please select the Policy Term." }]}
@@ -483,8 +696,251 @@ const preventTextInput = (event) => {
       ),
     },
     {
+      title: "Review and Confirm",
+      content: (
+        <div>Rewiew and Confirm</div>
+      ),
+    },
+    {
       title: "Get Quotation",
-      content: <div>Quotation</div>
+      content: (
+        <>
+          <div
+            style={{
+              border: "2px solid black",
+              maxWidth: "800px",
+              margin: "auto",
+              position: "relative",
+              paddingBottom: "60px",
+            }}
+          >
+            <div style={{ maxWidth: "750px", margin: "auto" }}>
+              <Row
+                justify="space-between"
+                align="middle"
+                style={{ marginTop: "20px" }}
+              >
+                <Col>
+                  <Title level={4} style={{ margin: 0 }}>
+                    EQUITY LIFE ASSURANCE (KENYA) LIMITED
+                  </Title>
+                  <Title level={4} style={{ margin: 0 }}>
+                    {formData.segment} Quotation
+                  </Title>
+                </Col>
+                <Col>
+                  <div style={{ textAlign: "right" }}>
+                    <img
+                      src="https://th.bing.com/th/id/OIP.slQhzvN6Tzo0RxGP9AiQSgAAAA?rs=1&pid=ImgDetMain"
+                      alt="Company Logo"
+                      style={{
+                        maxWidth: "100px",
+                        maxHeight: "120px",
+                        marginLeft: "30px",
+                      }}
+                    />
+                    <Text style={{ display: "block", marginTop: "10px" }}>
+                      {currentDate}
+                    </Text>
+                  </div>
+                </Col>
+              </Row>
+  
+              <Title style={{ textAlign: "left" }} level={4}>
+                Contact Details
+              </Title>
+              <Table
+                columns={columns}
+                dataSource={contactDetails}
+                pagination={false}
+                bordered
+                showHeader={false}
+                size="middle"
+                style={{
+                  border: "2px solid maroon",
+                  padding: "20px",
+                  marginBottom: "20px",
+                }}
+              />
+  
+              <Title style={{ textAlign: "left" }} level={4}>
+                Policy Details
+              </Title>
+              <Title style={{ textAlign: "center", color: "red" }} level={4}>
+                Personal Critical Illness Cover
+              </Title>
+              <Table
+                columns={tableColumns}
+                dataSource={criticalIllnessCover}
+                pagination={false}
+                bordered
+                showHeader={true}
+                size="middle"
+                style={{
+                  border: "2px solid maroon",
+                  padding: "20px",
+                  marginBottom: "20px",
+                }}
+              />
+  
+              <Title style={{ textAlign: "center" }} level={4}>
+                Personal Funeral Expense Rider
+              </Title>
+              <Table
+                columns={tableColumns}
+                dataSource={funeralExpenseCover}
+                pagination={false}
+                bordered
+                showHeader={true}
+                size="middle"
+                style={{
+                  border: "2px solid maroon",
+                  padding: "20px",
+                  marginBottom: "20px",
+                }}
+              />
+  
+              <Title style={{ textAlign: "center" }} level={4}>
+                Personal Terminal Illness Rider
+              </Title>
+              <Table
+                columns={tableColumns}
+                dataSource={terminalIllnessRider}
+                pagination={false}
+                bordered
+                showHeader={true}
+                size="middle"
+                style={{
+                  border: "2px solid maroon",
+                  padding: "20px",
+                  marginBottom: "20px",
+                }}
+              />
+  
+              <Title style={{ textAlign: "center" }} level={4}>
+                Total Premiums
+              </Title>
+              <Table
+                columns={tableColumns}
+                dataSource={totalPremiumDetails}
+                pagination={false}
+                bordered
+                showHeader={true}
+                size="middle"
+                style={{
+                  border: "2px solid maroon",
+                  padding: "20px",
+                  marginBottom: "20px",
+                }}
+              />
+            </div>
+  
+            <div
+              style={{
+                textAlign: "justify",
+                marginTop: "20px",
+                marginLeft: "15px",
+                padding: "10px",
+              }}
+            >
+              <Text>Quotation is valid for 90 days since the date of issue</Text>
+              <br />
+              <table border="1">
+                <tr>
+                  <th>Category of member</th>
+                  <th>Minimum entry age</th>
+                  <th>Maximum entry age</th>
+                </tr>
+                <tr>
+                  <td>Life Assured (Main member)</td>
+                  <td>18 years</td>
+                  <td>70 years</td>
+                </tr>
+                <tr>
+                  <td>Spouse</td>
+                  <td>18 years</td>
+                  <td>70 years</td>
+                </tr>
+                <tr>
+                  <td>Children</td>
+                  <td>37 weeks</td>
+                  <td>24 years</td>
+                </tr>
+              </table>
+              <br />
+              <p>
+                <strong>Onboarding requirements:</strong> Member data in the below
+                format
+              </p>
+              <table>
+                <thead>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    Name
+                  </th>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    Date of Birth
+                  </th>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    ID/Passport Number
+                  </th>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    Phone Number
+                  </th>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    Main Member
+                  </th>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    Relation to Member
+                  </th>
+                </thead>
+                <tbody>
+                  <td style={{ border: "1px solid black", padding: "8px" }}></td>
+                  <td style={{ border: "1px solid black", padding: "8px" }}></td>
+                  <td style={{ border: "1px solid black", padding: "8px" }}></td>
+                  <td style={{ border: "1px solid black", padding: "8px" }}></td>
+                  <td style={{ border: "1px solid black", padding: "8px" }}></td>
+                  <td style={{ border: "1px solid black", padding: "8px" }}></td>
+                </tbody>
+              </table>
+              <br />
+              <Text>
+                Copies of ID/Passport, Birth Certificate/Notification of members
+                covered.
+              </Text>
+              <div>
+                <p style={{ fontStyle: "italic" }}>
+                  Additional documents for individual cover: KRA Pin of main
+                  member.
+                </p>
+                <p style={{ fontStyle: "italic" }}>
+                  Additional documents for Groups/Corporates: Certificate of
+                  Registration & KRA Pin.
+                </p>
+              </div>
+              <Text strong>Contacts</Text>
+              <br />
+              <Text>Email: businessdevelopment@equityinsurance.co.ke</Text>
+              <br />
+              <Text>Tel: +254763026000</Text>
+              <br />
+            </div>
+  
+            <div
+              style={{
+                backgroundColor: "maroon",
+                position: "absolute",
+                bottom: "0",
+                width: "100%",
+                textAlign: "center",
+                color: "white",
+                padding: "5px 0",
+              }}
+            >
+              Equity Life Assurance (Kenya) Limited
+            </div>
+          </div>
+        </>
+      ),
     },
   ];
 

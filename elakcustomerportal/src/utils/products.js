@@ -1,13 +1,12 @@
 import gleImg from "../assets/funeral-expense.jpg";
-import glaImg from "../assets/glaImg.png";
-import introImage from "../assets/introImage.jpg"
+import glaImg from "../assets/glaImg.jpg";
+import introImage from "../assets/introImage.jpg";
 import happyfamily from "../assets/happyfamily.png";
-
 
 const products = [
   {
     title: "Funeral Expense Cover",
-    url: "funeral-expense",
+    url: "funeral-expense/select-customer-type",
     image: gleImg,
     description:
       "Funeral expense solution is designed to help families deal with the burden of meeting immediate funeral related expenses on the death of a family member.",
@@ -21,6 +20,7 @@ const products = [
   },
   {
     title: "Group Life Insurance",
+    url: "group-life-assurance",
     image: glaImg,
     description:
       "We offer group life insurance solutions to provide financial security to your employees' families in the event of an unexpected loss.",
@@ -46,5 +46,3 @@ const products = [
 ];
 
 export default products;
-
-
