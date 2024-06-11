@@ -1,238 +1,133 @@
 import { useEffect } from "react";
-import { Form, Input, Row, Col, DatePicker, Select, Checkbox } from "antd";
-import sspFlag from "../../assets/flags/ssp.png";
-import cdfFlag from "../../assets/flags/cdf.png";
-import rwfFlag from "../../assets/flags/rwf.png";
-import kesFlag from "../../assets/flags/kes.png";
-import tzsFlag from "../../assets/flags/tzs.png";
-import ugxFlag from "../../assets/flags/ugx.png";
+import { Form, InputNumber, Row, Col, Checkbox } from "antd";
 
-const { Option } = Select;
-const PhoneAreas = [
-  { code: "+211", flag: sspFlag, country: "South Sudan" },
-  { code: "+243", flag: cdfFlag, country: "DRC" },
-  { code: "+250", flag: rwfFlag, country: "Rwanda" },
-  { code: "+254", flag: kesFlag, country: "Kenya" },
-  { code: "+255", flag: tzsFlag, country: "Tanzania" },
-  { code: "+256", flag: ugxFlag, country: "Uganda" },
-];
-
-const BeneficiaryMembersForm = ({ formData, setFormData }) => {
-  const [form] = Form.useForm();
+const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
+  const principalNumber = 1;
 
   useEffect(() => {
     form.setFieldsValue(formData);
   }, [form, formData]);
 
-  const handlePhoneAreaChange = (newValue) => {
-    const selectedCountry = PhoneAreas.find((area) => area.code === newValue);
-    if (selectedCountry) {
-      setFormData({
-        ...formData,
-        phoneArea: newValue,
-        country: selectedCountry.country,
-      });
-    }
-  };
-
-  const validateTerms = (_, value) => {
-    return value
-      ? Promise.resolve()
-      : Promise.reject(new Error("Please agree to our terms to proceed"));
-  };
-
-  const validateBirthDate = (_, value) => {
-    if (!value) {
-      return Promise.resolve();
-    }
-
-    const today = new Date();
-    const selectedDate = new Date(value);
-
-    const minDate = new Date(
-      today.getFullYear() - 70,
-      today.getMonth(),
-      today.getDate()
-    );
-    const maxDate = new Date(
-      today.getFullYear() - 18,
-      today.getMonth(),
-      today.getDate()
-    );
-
-    if (selectedDate >= minDate && selectedDate <= maxDate) {
-      return Promise.resolve();
-    }
-
-    if (selectedDate < maxDate) {
-      return Promise.reject(new Error("Maximum required age is 70 years."));
-    } else {
-      return Promise.reject(new Error("Minimum required age is 18 years."));
+  const preventTextInput = (event) => {
+    if (!/[0-9]/.test(event.key)) {
+      event.preventDefault();
     }
   };
 
   return (
     <>
-      <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 flex flex-col gap-4">
+      <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 mt-3 flex flex-col gap-4">
         <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
-          Please enter your details
+          Please enter the number of family members to be covered
         </p>
       </div>
 
       <Form form={form} layout="vertical">
         <Row gutter={[16, 16]}>
           <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <Form.Item
-              label="First Name"
-              name="firstName"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter your first name.",
-                },
-              ]}
-              style={{ marginBottom: "35px" }}
-            >
-              <Input
-                placeholder="Enter your first name"
-                value={formData.firstName}
+            <Form.Item label="" style={{ marginBottom: "35px" }}>
+              <Checkbox
                 onChange={(e) =>
-                  setFormData({ ...formData, firstName: e.target.value })
+                  setFormData({
+                    ...formData,
+                    spouse: e.target.checked,
+                    spouseNumber: e.target.checked ? 1 : 0,
+                  })
                 }
-              />
-            </Form.Item>
-            <Form.Item
-              label="Email Address"
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter your email address.",
-                },
-              ]}
-              style={{ marginBottom: "35px" }}
-            >
-              <Input
-                placeholder="Enter your email address"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-              />
-            </Form.Item>
-            <Form.Item
-              label="Date of Birth"
-              name="birthDate"
-              rules={[
-                {
-                  required: true,
-                  message: "Please select date of birth.",
-                },
-                { validator: validateBirthDate },
-              ]}
-              style={{ width: "100%", cursor: "pointer", marginBottom: "35px" }}
-            >
-              <DatePicker
-                style={{ width: "100%" }}
-                id="birthDate"
-                onChange={(value) =>
-                  setFormData({ ...formData, birthDate: value })
-                }
-                inputReadOnly={true}
-              />
+                className="flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left"
+              >
+                Spouse
+              </Checkbox>
+              <p className="text-[#929497] ml-6">Checkbox to select spouse</p>
             </Form.Item>
           </Col>
           <Col xs={24} sm={24} md={12} lg={12} xl={12}>
             <Form.Item
-              label="Last Name"
-              name="lastName"
+              label="Children"
+              onKeyPress={preventTextInput}
               rules={[
                 {
-                  required: true,
-                  message: "Please enter your last name.",
+                  type: "number",
+                  message: "The input is not a valid number!",
                 },
               ]}
               style={{ marginBottom: "35px" }}
             >
-              <Input
-                placeholder="Enter your last name"
-                value={formData.lastName}
-                onChange={(e) =>
-                  setFormData({ ...formData, lastName: e.target.value })
+              <InputNumber
+                style={{ width: "100%" }}
+                placeholder="Specify number of children"
+                defaultValue={0}
+                step={1}
+                onChange={(value) =>
+                  setFormData({ ...formData, childrenNumber: value })
                 }
+                value={formData.childrenNumber}
+                max={principalNumber * 12}
+                min={0}
               />
-            </Form.Item>
-            <Form.Item
-              label="Mobile Number"
-              name="phoneNo"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input a mobile number.",
-                },
-                {
-                  len: 9,
-                  message: "The input must have exactly 9 digits.!",
-                },
-              ]}
-              style={{ marginBottom: "35px" }}
-            >
-              <Input
-                addonBefore={
-                  <Select
-                    style={{ width: 100 }}
-                    value={formData.phoneArea}
-                    onChange={handlePhoneAreaChange}
-                  >
-                    {PhoneAreas.map((item) => (
-                      <Option value={item.code} key={item.code}>
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <span>{item.code}</span>
-                          <img
-                            src={item.flag}
-                            alt={item.country}
-                            style={{ width: "20px", marginLeft: "8px" }}
-                          />
-                        </div>
-                      </Option>
-                    ))}
-                  </Select>
-                }
-                value={formData.phoneNo}
-                onChange={(e) =>
-                  setFormData({ ...formData, phoneNo: e.target.value })
-                }
-              />
+              <p className="text-[#929497]">
+                Maximum number is {principalNumber * 12}
+              </p>
             </Form.Item>
           </Col>
         </Row>
-        <Row>
-          <Col>
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
             <Form.Item
-              name="terms"
-              valuePropName="checked"
+              label="Parents"
+              onKeyPress={preventTextInput}
               rules={[
                 {
-                  validator: validateTerms,
+                  type: "number",
+                  message: "The input is not a valid number!",
                 },
               ]}
               style={{ marginBottom: "35px" }}
             >
-              <Checkbox
-                checked={formData.terms}
-                onChange={(e) =>
-                  setFormData({ ...formData, terms: e.target.checked })
+              <InputNumber
+                style={{ width: "100%" }}
+                placeholder="Specify number of parents"
+                defaultValue={0}
+                step={1}
+                onChange={(value) =>
+                  setFormData({ ...formData, parentsNumber: value })
                 }
-              >
-                I accept the{" "}
-                <a href="#terms" style={{ color: "#A32A29" }}>
-                  terms
-                </a>{" "}
-                &{" "}
-                <a href="#privacy" style={{ color: "#A32A29" }}>
-                  privacy policy
-                </a>
-              </Checkbox>
+                value={formData.parentsNumber}
+                max={principalNumber * 2}
+                min={0}
+              />
+              <p className="text-[#929497]">
+                Maximum number is {principalNumber * 2}
+              </p>
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <Form.Item
+              label="Parents In Law"
+              onKeyPress={preventTextInput}
+              rules={[
+                {
+                  type: "number",
+                  message: "The input is not a valid number!",
+                },
+              ]}
+              style={{ marginBottom: "35px" }}
+            >
+              <InputNumber
+                style={{ width: "100%" }}
+                placeholder="Specify number of parents in law"
+                defaultValue={0}
+                step={1}
+                onChange={(value) =>
+                  setFormData({ ...formData, parentsInLawNumber: value })
+                }
+                value={formData.prentsInLawNumber}
+                max={principalNumber * 2}
+                min={0}
+              />
+              <p className="text-[#929497]">
+                Maximum number is {principalNumber * 2}
+              </p>
             </Form.Item>
           </Col>
         </Row>
