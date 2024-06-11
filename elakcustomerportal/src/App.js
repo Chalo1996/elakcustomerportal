@@ -11,6 +11,13 @@ import Education from "./components/Education/Education";
 import GroupLifeAssurance from "./components/Group Life/GroupLife";
 import NotFound from "./pages/NotFound";
 import FuneralExpensePage from "./pages/FuneralExpense";
+import GroupTermLife from "./components/Group Term Life/TermLife";
+import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
+import Welcome from "./components/Group Term Life/Welcome";
+import TermLife from "./components/Group Term Life/TermLife";
+
+ 
+
 
 function App() {
   return (
@@ -55,6 +62,11 @@ function App() {
                       />
                       {/* Add more routes here */}
                       <Route path="*" element={<NotFound />} />
+                      <Route path="term-life" element={<GroupTermLife/>}/>
+                      <Route path="term-life-quote" element={<GroupTermLifeQuote/>}/>
+                      <Route path="welcome" element={<Welcome/>}/>
+                      <Route path="termlife" element={<TermLife/>}/>
+                      
                     </Routes>
                   </PortalLayout>
                 }
@@ -70,5 +82,4 @@ function App() {
     </Provider>
   );
 }
-
 export default App;
