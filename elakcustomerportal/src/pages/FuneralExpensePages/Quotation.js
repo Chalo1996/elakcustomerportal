@@ -20,7 +20,7 @@ const FuneralExpenseQuotation = ({ formData, tableData }) => {
     {
       key: "name",
       attribute: "Name",
-      value: `${formData.title} ${formData.customerName}`,
+      value: formData.customerName,
     },
     {
       key: "gender",
