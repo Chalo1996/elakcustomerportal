@@ -17,6 +17,8 @@ import LandingPage from "./pages/landingPage";
 import IndividualCustomer from "./pages/FuneralExpensePages/IndividualCustomer";
 import GroupCustomerPage from "./pages/FuneralExpensePages/GroupCustomer";
 import FuneralExpenseQuotation from "./pages/FuneralExpensePages/Quotation";
+import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
+import Welcome from "./components/Group Term Life/Welcome";
 
 function App() {
   return (
@@ -79,7 +81,9 @@ function App() {
                         element={<GroupCriticalIllness />}
                       />
                       {/* Add more routes here */}
-                      <Route path="*" element={<NotFound />} />
+                      <Route path="*" element={<NotFound />}/>
+                      <Route path="term-life-quote" element={<GroupTermLifeQuote/>}/>
+                      <Route path="welcome" element={<Welcome/>}/>
                     </Routes>
                   </PortalLayout>
                 }
