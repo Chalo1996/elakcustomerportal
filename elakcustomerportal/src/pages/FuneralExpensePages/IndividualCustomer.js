@@ -33,6 +33,8 @@ const IndividualCustomer = () => {
     parentsNumber: 0,
     childrenNumber: 0,
     parentsInLawNumber: 0,
+    productName: "",
+    benefitAmount: 0,
   });
 
   const handleNavigate = () => {

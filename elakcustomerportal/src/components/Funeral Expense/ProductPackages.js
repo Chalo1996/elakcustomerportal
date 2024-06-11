@@ -1,3 +1,4 @@
+import {useState} from "react"
 import { Form, Row } from "antd";
 import ProductPackage from "./ProductPackage";
 
@@ -13,6 +14,17 @@ const productPackages = [
 ];
 
 const ProductPackagesForm = ({ form, formData, setFormData }) => {
+    const [selectedPackage, setSelectedPackage] = useState(formData.productName);
+
+    const handleSelect = (name, benefit) => {
+      setFormData({
+        ...formData,
+        productName: name,
+        benefitAmount: benefit,
+      });
+      setSelectedPackage(name);
+    };
+
   return (
     <>
       <div className="w-[710px] h-[76px] top-[408px] left-[425px] mt-3 mb-10 py-3 px-0 flex flex-col gap-1">
@@ -27,7 +39,13 @@ const ProductPackagesForm = ({ form, formData, setFormData }) => {
       <Form form={form} className="mb-10">
         <Row gutter={[16, 16]}>
           {productPackages.map((pkg, index) => (
-            <ProductPackage key={index} name={pkg.name} benefit={pkg.benefit} />
+            <ProductPackage
+              key={index}
+              name={pkg.name}
+              benefit={pkg.benefit}
+              onSelect={handleSelect}
+              selected={pkg.name === selectedPackage}
+            />
           ))}
         </Row>
       </Form>
