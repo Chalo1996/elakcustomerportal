@@ -19,6 +19,7 @@ function Welcome() {
 
 
   return (
+    
     <div style={{ backgroundColor: '#f0f0f0', height: '100vh', padding: '20px' }}>
       <Text 
       strong style={{ color: 'black', fontSize: '24px' }}>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Row, Col, Form, Input, Button, DatePicker, Select, Steps, Modal, Radio, Checkbox } from 'antd';
+import Title from 'antd/es/skeleton/Title';
 
 const TermLifeQuote = () => {
   const { Option } = Select;
@@ -53,7 +54,7 @@ const TermLifeQuote = () => {
       });
     }  
   };
-  
+
   const handlePrev = () => {
     setCurrentStep(currentStep - 1);
   };
@@ -393,6 +394,8 @@ const TermLifeQuote = () => {
                  <Option value="oneoff">One-off</Option>
                </Select>
              </Form.Item>
+
+
            </Col>
          </Row>
        </>
