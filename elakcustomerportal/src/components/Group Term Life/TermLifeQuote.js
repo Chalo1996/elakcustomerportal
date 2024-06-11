@@ -53,7 +53,7 @@ const TermLifeQuote = () => {
       });
     }  
   };
-
+  
   const handlePrev = () => {
     setCurrentStep(currentStep - 1);
   };
