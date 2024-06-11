@@ -7,6 +7,7 @@ import CallBackModal from "../../components/Funeral Expense/modals/CallBackModal
 import BeneficiaryMembersForm from "../../components/Funeral Expense/BeneficiaryMembers";
 import ProductPackagesForm from "../../components/Funeral Expense/ProductPackages";
 import SumAssuredPercentageForm from "../../components/Funeral Expense/SumAssuredPercentage";
+import ConfirmDetailsForm from "../../components/Funeral Expense/ConfirmDetails";
 
 const { Step } = Steps;
 
@@ -19,7 +20,8 @@ const IndividualCustomer = () => {
   const [form2] = Form.useForm();
   const [form3] = Form.useForm();
   const [form4] = Form.useForm();
-  const forms = [form1, form2, form3, form4];
+  const [form5] = Form.useForm();
+  const forms = [form1, form2, form3, form4, form5];
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -118,7 +120,7 @@ const IndividualCustomer = () => {
       ),
     },
     {
-      title: "Select Package",
+      title: "Package",
       content: (
         <ProductPackagesForm
           form={form3}
@@ -128,7 +130,7 @@ const IndividualCustomer = () => {
       ),
     },
     {
-      title: "Percentage of cover payable (%)",
+      title: "Coverage (%)",
       content: (
         <SumAssuredPercentageForm
           form={form4}
@@ -136,6 +138,10 @@ const IndividualCustomer = () => {
           setFormData={setFormData}
         />
       ),
+    },
+    {
+      title: "Review",
+      content: <ConfirmDetailsForm form={form5} formData={formData} />,
     },
   ];
 
