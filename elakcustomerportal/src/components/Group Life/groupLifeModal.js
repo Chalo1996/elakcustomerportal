@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { Modal, Button, Row } from "antd";
-import Img from "../../assets/modal-image.png";
+import Img from "../../assets/glaImg.jpg";
 import { useTheme } from "../../store/context/theme-context";
 
 const GroupLifeModal = ({ isModalOpen, onCancel, onOkay, product }) => {
