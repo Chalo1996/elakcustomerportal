@@ -50,6 +50,13 @@ const IndividualCustomer = () => {
     navigate("/home/funeral-expense/select-customer-type");
   };
 
+  const isNextButtonDisabled = () => {
+    if (current === 2) {
+      return !formData.productName || formData.benefitAmount === 0;
+    }
+    return false;
+  };
+
   const handleNext = async () => {
     try {
       // await forms[current].validateFields();
@@ -165,6 +172,7 @@ const IndividualCustomer = () => {
             <Button
               type="primary"
               onClick={handleNext}
+              disabled={isNextButtonDisabled()}
               className="h-full px-4 py-2 shadow-none text-center"
             >
               Continue

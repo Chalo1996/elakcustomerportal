@@ -45,6 +45,10 @@ const SumAssuredPercentageForm = ({ form, formData, setFormData }) => {
   };
 
   useEffect(() => {
+    form.setFieldsValue(formData);
+  }, [form, formData]);
+
+  useEffect(() => {
     const newEndDate = handleStartDateChange(formData.startDate, 1);
     setFormData({ ...formData, endDate: newEndDate });
     form.setFieldsValue({ endDate: newEndDate });
@@ -73,6 +77,7 @@ const SumAssuredPercentageForm = ({ form, formData, setFormData }) => {
                   message: "The input is not a valid number!",
                 },
               ]}
+              style={{ marginBottom: "35px" }}
             >
               <InputNumber
                 style={{ width: "100%" }}
@@ -89,131 +94,167 @@ const SumAssuredPercentageForm = ({ form, formData, setFormData }) => {
               <p className="text-[#929497]"></p>
             </Form.Item>
           </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <Form.Item
-              label={
-                <span className="text-[#929497]">
-                  Spouse percentage of sum assured (%)
-                </span>
-              }
-              style={{ color: "[#929497]" }}
-              onKeyPress={preventTextInput}
-              rules={[
-                {
-                  type: "number",
-                  message: "The input is not a valid number!",
-                },
-              ]}
-            >
-              <InputNumber
-                style={{ width: "100%" }}
-                value={formData.spousePercentage}
-                min={0}
-                max={100}
-                formatter={(value) => `${value}%`}
-                parser={(value) => value.replace("%", "")}
-                onChange={(value) =>
-                  setFormData({ ...formData, spousePercentage: value })
+          {formData.spouseNumber > 0 && (
+            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+              <Form.Item
+                label={
+                  <span className="text-[#929497]">
+                    Spouse percentage of sum assured (%)
+                  </span>
                 }
-              />
-              <p className="text-[#929497]">
+                name="spousePercentage"
+                onKeyPress={preventTextInput}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input the percentage!",
+                  },
+                  {
+                    type: "number",
+                    min: 20,
+                    message: "The minimum percentage is 20",
+                  },
+                ]}
+              >
+                <InputNumber
+                  style={{ width: "100%" }}
+                  value={formData.spousePercentage}
+                  min={0}
+                  max={100}
+                  formatter={(value) => `${value}%`}
+                  parser={(value) => value.replace("%", "")}
+                  onChange={(value) =>
+                    setFormData({ ...formData, spousePercentage: value })
+                  }
+                />
+              </Form.Item>
+              <p className="text-[#929497] mb-[35px]">
                 Enter percentage value between 20% and 100%
               </p>
-            </Form.Item>
-          </Col>
+            </Col>
+          )}
         </Row>
         <Row gutter={[16, 16]}>
+          {formData.childrenNumber > 0 && (
+            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+              <Form.Item
+                label={
+                  <span className="text-[#929497]">
+                    Children percentage of sum assured (%)
+                  </span>
+                }
+                name="childrenPercentage"
+                onKeyPress={preventTextInput}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input the percentage!",
+                  },
+                  {
+                    type: "number",
+                    min: 20,
+                    message: "The minimum percentage is 20",
+                  },
+                ]}
+              >
+                <InputNumber
+                  style={{ width: "100%" }}
+                  value={formData.childrenPercentage}
+                  min={0}
+                  max={100}
+                  formatter={(value) => `${value}%`}
+                  parser={(value) => value.replace("%", "")}
+                  onChange={(value) =>
+                    setFormData({ ...formData, childrenPercentage: value })
+                  }
+                />
+              </Form.Item>
+              <p className="text-[#929497] mb-[35px]">
+                Enter percentage value between 20% and 100%
+              </p>
+            </Col>
+          )}
+          {formData.parentsInLawNumber > 0 && (
+            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+              <Form.Item
+                label={
+                  <span className="text-[#929497]">
+                    Parents-In-Law percentage of sum assured (%)
+                  </span>
+                }
+                name="parentsInLawPercentage"
+                onKeyPress={preventTextInput}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input the percentage!",
+                  },
+                  {
+                    type: "number",
+                    min: 20,
+                    message: "The minimum percentage is 20",
+                  },
+                ]}
+              >
+                <InputNumber
+                  style={{ width: "100%" }}
+                  value={formData.parentsInLawPercentage}
+                  min={0}
+                  max={100}
+                  formatter={(value) => `${value}%`}
+                  parser={(value) => value.replace("%", "")}
+                  onChange={(value) =>
+                    setFormData({ ...formData, parentsInLawPercentage: value })
+                  }
+                />
+              </Form.Item>
+              <p className="text-[#929497] mb-[35px]">
+                Enter percentage value between 20% and 100%
+              </p>
+            </Col>
+          )}
+        </Row>
+        <Row gutter={[16, 16]}>
+          {formData.parentsNumber > 0 && (
+            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+              <Form.Item
+                label={
+                  <span className="text-[#929497]">
+                    Parents percentage of sum assured (%)
+                  </span>
+                }
+                name="parentsPercentage"
+                onKeyPress={preventTextInput}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input the percentage!",
+                  },
+                  {
+                    type: "number",
+                    min: 20,
+                    message: "The minimum percentage is 20",
+                  },
+                ]}
+              >
+                <InputNumber
+                  style={{ width: "100%" }}
+                  value={formData.parentsPercentage}
+                  min={0}
+                  max={100}
+                  formatter={(value) => `${value}%`}
+                  parser={(value) => value.replace("%", "")}
+                  onChange={(value) =>
+                    setFormData({ ...formData, parentsPercentage: value })
+                  }
+                />
+              </Form.Item>
+              <p className="text-[#929497] mb-[35px]">
+                Enter percentage value between 20% and 100%
+              </p>
+            </Col>
+          )}
           <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <Form.Item
-              label={
-                <span className="text-[#929497]">
-                  Children percentage of sum assured (%)
-                </span>
-              }
-              style={{ color: "[#929497]" }}
-              onKeyPress={preventTextInput}
-              rules={[
-                {
-                  type: "number",
-                  message: "The input is not a valid number!",
-                },
-              ]}
-            >
-              <InputNumber
-                style={{ width: "100%" }}
-                value={formData.childrenPercentage}
-                min={0}
-                max={100}
-                formatter={(value) => `${value}%`}
-                parser={(value) => value.replace("%", "")}
-                onChange={(value) =>
-                  setFormData({ ...formData, childrenPercentage: value })
-                }
-              />
-              <p className="text-[#929497]">
-                Enter percentage value between 20% and 100%
-              </p>
-            </Form.Item>
-            <Form.Item
-              label={
-                <span className="text-[#929497]">
-                  Parents-In-Law percentage of sum assured (%)
-                </span>
-              }
-              onKeyPress={preventTextInput}
-              rules={[
-                {
-                  type: "number",
-                  message: "The input is not a valid number!",
-                },
-              ]}
-            >
-              <InputNumber
-                style={{ width: "100%" }}
-                value={formData.parentsInLawPercentage}
-                min={0}
-                max={100}
-                formatter={(value) => `${value}%`}
-                parser={(value) => value.replace("%", "")}
-                onChange={(value) =>
-                  setFormData({ ...formData, parentsInLawPercentage: value })
-                }
-              />
-              <p className="text-[#929497]">
-                Enter percentage value between 20% and 100%
-              </p>
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <Form.Item
-              label={
-                <span className="text-[#929497]">
-                  Parents percentage of sum assured (%)
-                </span>
-              }
-              onKeyPress={preventTextInput}
-              rules={[
-                {
-                  type: "number",
-                  message: "The input is not a valid number!",
-                },
-              ]}
-            >
-              <InputNumber
-                style={{ width: "100%" }}
-                value={formData.parentsPercentage}
-                min={0}
-                max={100}
-                formatter={(value) => `${value}%`}
-                parser={(value) => value.replace("%", "")}
-                onChange={(value) =>
-                  setFormData({ ...formData, parentsPercentage: value })
-                }
-              />
-              <p className="text-[#929497]">
-                Enter percentage value between 20% and 100%
-              </p>
-            </Form.Item>
             <Form.Item
               label="Cover Commencement Date"
               name="startDate"
@@ -234,7 +275,7 @@ const SumAssuredPercentageForm = ({ form, formData, setFormData }) => {
               />
             </Form.Item>
             {formData.startDate && (
-              <p className="flex items-center">
+              <p className="flex items-center mb-[35px]">
                 <InfoCircleOutlined
                   style={{
                     color: "#D93E3E",
