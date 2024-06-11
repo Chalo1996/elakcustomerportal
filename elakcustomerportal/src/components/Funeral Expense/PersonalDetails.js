@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Form, Input, Row, Col, DatePicker, Select } from "antd";
+import { Form, Input, Row, Col, DatePicker, Select, Checkbox } from "antd";
 import sspFlag from "../../assets/flags/ssp.png";
 import cdfFlag from "../../assets/flags/cdf.png";
 import rwfFlag from "../../assets/flags/rwf.png";
@@ -17,9 +17,7 @@ const PhoneAreas = [
   { code: "+256", flag: ugxFlag, country: "Uganda" },
 ];
 
-const PersonalDetailsForm = ({ formData, setFormData }) => {
-  const [form] = Form.useForm();
-
+const PersonalDetailsForm = ({ form, formData, setFormData }) => {
   useEffect(() => {
     form.setFieldsValue(formData);
   }, [form, formData]);
@@ -33,6 +31,12 @@ const PersonalDetailsForm = ({ formData, setFormData }) => {
         country: selectedCountry.country,
       });
     }
+  };
+
+  const validateTerms = (_, value) => {
+    return value
+      ? Promise.resolve()
+      : Promise.reject(new Error("Please agree to our terms to proceed"));
   };
 
   const validateBirthDate = (_, value) => {
@@ -65,26 +69,40 @@ const PersonalDetailsForm = ({ formData, setFormData }) => {
     }
   };
 
+  const preventNumericInput = (event) => {
+    if (/[0-9]/.test(event.key)) {
+      event.preventDefault();
+    }
+  };
+
+  const preventTextInput = (event) => {
+    if (!/[0-9]/.test(event.key)) {
+      event.preventDefault();
+    }
+  };
+
   return (
     <>
-      <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 flex flex-col gap-4">
+      <div className="w-[710px] h-[76px] top-[408px] left-[425px] mt-3 py-3 px-0 flex flex-col gap-4">
         <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
           Please enter your details
         </p>
       </div>
 
       <Form form={form} layout="vertical">
-        <Row gutter={16}>
+        <Row gutter={[16, 16]}>
           <Col xs={24} sm={24} md={12} lg={12} xl={12}>
             <Form.Item
               label="First Name"
               name="firstName"
+              onKeyPress={preventNumericInput}
               rules={[
                 {
                   required: true,
                   message: "Please enter your first name.",
                 },
               ]}
+              style={{ marginBottom: "35px" }}
             >
               <Input
                 placeholder="Enter your first name"
@@ -103,6 +121,7 @@ const PersonalDetailsForm = ({ formData, setFormData }) => {
                   message: "Please enter your email address.",
                 },
               ]}
+              style={{ marginBottom: "35px" }}
             >
               <Input
                 placeholder="Enter your email address"
@@ -122,7 +141,7 @@ const PersonalDetailsForm = ({ formData, setFormData }) => {
                 },
                 { validator: validateBirthDate },
               ]}
-              style={{ width: "100%", cursor: "pointer" }}
+              style={{ width: "100%", cursor: "pointer", marginBottom: "35px" }}
             >
               <DatePicker
                 style={{ width: "100%" }}
@@ -138,12 +157,14 @@ const PersonalDetailsForm = ({ formData, setFormData }) => {
             <Form.Item
               label="Last Name"
               name="lastName"
+              onKeyPress={preventNumericInput}
               rules={[
                 {
                   required: true,
                   message: "Please enter your last name.",
                 },
               ]}
+              style={{ marginBottom: "35px" }}
             >
               <Input
                 placeholder="Enter your last name"
@@ -156,6 +177,7 @@ const PersonalDetailsForm = ({ formData, setFormData }) => {
             <Form.Item
               label="Mobile Number"
               name="phoneNo"
+              onKeyPress={preventTextInput}
               rules={[
                 {
                   required: true,
@@ -166,6 +188,7 @@ const PersonalDetailsForm = ({ formData, setFormData }) => {
                   message: "The input must have exactly 9 digits.!",
                 },
               ]}
+              style={{ marginBottom: "35px" }}
             >
               <Input
                 addonBefore={
@@ -193,6 +216,36 @@ const PersonalDetailsForm = ({ formData, setFormData }) => {
                   setFormData({ ...formData, phoneNo: e.target.value })
                 }
               />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Form.Item
+              name="terms"
+              valuePropName="checked"
+              rules={[
+                {
+                  validator: validateTerms,
+                },
+              ]}
+              style={{ marginBottom: "35px" }}
+            >
+              <Checkbox
+                checked={formData.terms}
+                onChange={(e) =>
+                  setFormData({ ...formData, terms: e.target.checked })
+                }
+              >
+                I accept the{" "}
+                <a href="#terms" style={{ color: "#A32A29" }}>
+                  terms
+                </a>{" "}
+                &{" "}
+                <a href="#privacy" style={{ color: "#A32A29" }}>
+                  privacy policy
+                </a>
+              </Checkbox>
             </Form.Item>
           </Col>
         </Row>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Steps, Radio, Space, Button, Row, Col, Form, Input, Select, DatePicker, Modal, Checkbox, InputNumber, Divider, Typography, Table} from "antd";
+import { Steps, Radio, Space, Button, Row, Col, Form, Input, Select, DatePicker, Modal, Checkbox, InputNumber, Divider, Typography, Table, Switch, Card} from "antd";
 import sspFlag from '../../assets/flags/ssp.png';
 import cdfFlag from '../../assets/flags/cdf.png';
 import rwfFlag from '../../assets/flags/rwf.png';
@@ -31,17 +31,18 @@ const RequestCallbackModal = ({ visible, onCancel, onContinue, selectedOption, s
         </Button>,
       ]}
     >
-      <Radio.Group onChange={handleOptionChange} value={selectedOption}>
-        <Space direction="vertical">
-          <Radio value="generate">Generate Quote</Radio>
-          <Divider />
-          <Radio value="callback">Request a Call Back</Radio>
-        </Space>
-      </Radio.Group>
+      <div style={{ width: '100%' }}>
+        <Radio.Group onChange={handleOptionChange} value={selectedOption} style={{ width: '100%' }}>
+          <Space direction="vertical" size="small" style={{ width: '100%' }}>
+            <Radio value="generate">Generate Quote</Radio>
+            <Divider style={{ margin: '8px 0', width: '100%' }} />
+            <Radio value="callback">Request a Call Back</Radio>
+          </Space>
+        </Radio.Group>
+      </div>
     </Modal>
   );
 };
-
 
 const GroupCriticalIllness = () => {
   const [current, setCurrent] = useState(0);
@@ -54,8 +55,12 @@ const GroupCriticalIllness = () => {
   const [clientEmailAddress, setClientEmailAddress] = useState();
   const [telNo, setTelNo] = useState();
   const [phoneArea, setPhoneArea] = React.useState("+254");
+  const [principalNumber, setPrincipalNumber] = React.useState();
   const [spouseNumber, setSpouseNumber] = useState();
+  const [spouse, setSpouse] = useState(false);
+  const [spouseDOB, setSpouseDOB] = useState();
   const [childrenNumber, setChildrenNumber] = useState();
+  const [childrenVisible, setChildrenVisible] = useState(false);
   const [SAPrincipal, setSAPrincipal] = useState();
   const [SASpouse, setSASpouse] = useState();
   const [SAChildren, setSAChildren] = useState();
@@ -159,6 +164,85 @@ const disableCoverExpiryDate = (date) => {
     return date && date < formattedCoverExpiryDate;
   }
 };
+
+const renderReviewAndConfirm = ({ formData }) => {
+  return (
+    <Form layout="vertical">
+      <Card title="PERSONAL DETAILS">
+        <Row gutter={16}>
+          <Col span={12}>
+            <p>First Name:</p>
+          </Col>
+          <Col span={12}>
+            <p>Last Name:</p>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={12}>
+            <p>Email Address:</p>
+          </Col>
+          <Col span={12}>
+            <p>Mobile Number:</p>
+          </Col>
+          </Row>
+          <Row gutter={16}>
+          <Col span={12}>
+            <p>Date of Birth:</p>
+          </Col>
+        </Row>
+      </Card>
+
+      <Card title="INSURED MEMBERS">
+        <Row gutter={16}>
+          <Col span={12}>
+            <p>Number of Principal Members:</p>
+          </Col>
+          <Col span={12}>
+            <p>Spouse Date of Birth:</p>
+          </Col>
+          </Row>
+          <Row gutter={16}>
+          <Col span={12}>
+            <p>Number of Spouses:</p>
+          </Col>
+          <Col span={12}>
+            <p>Number of Children:</p>
+          </Col>
+        </Row>
+      </Card>
+      <Card title="PERCENTAGE OF COVER PAYABLES">
+        <Row gutter={16}>
+          <Col span={12}>
+            <p>Sum Assured:</p>
+          </Col>
+          <Col span={12}>
+            <p>Principal member percentage of sum assured:</p>
+          </Col>
+          </Row>
+          <Row gutter={16}>
+          <Col span={12}>
+            <p>Spouse percentage of sum assured:</p>
+          </Col>
+          <Col span={12}>
+            <p>Children percentage of sum assured:</p>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={12}>
+            <p>Cover Commencement Date: </p>
+          </Col>
+          <Col span={12}>
+            <p>Policy Term (Years): </p>
+          </Col>
+          <Col span={12}>
+        <p>Cover End Date: </p>
+          </Col>
+        </Row>
+      </Card>
+    </Form>
+  );
+};
+
 
 const columns = [
   {
@@ -376,6 +460,12 @@ const funeralExpenseCover = [
   const handleNextClick = async () => {
     try {
       await form.validateFields();
+      const currentValues = form.getFieldsValue();
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        [steps[current]]: currentValues,
+      }));
+
       if (current === 0 && !termsChecked) {
         alert("Please accept the terms and conditions");
         return;
@@ -383,7 +473,10 @@ const funeralExpenseCover = [
         setCallbackModalVisible(true); 
       } else if (current === steps.length - 2) {
         const values = await form.validateFields();
-        setFormData({ ...values });
+        setFormData(prevFormData => ({
+          ...prevFormData,
+          [steps[current]]: values,
+        }));
         console.log("Form data:", formData);
         setCurrent(current + 1); // Move to the next step
         setShowHiddenFields(true); // Show hidden fields for the final step
@@ -424,7 +517,7 @@ const funeralExpenseCover = [
     {
       title: "Personal details",
       content: (
-        <Form form={form} layout="vertical" style={{ marginTop: '24px', padding: '16px' }}>
+        <Form form={form} onFinish={(values) => console.log('Form submitted:', values)} layout="vertical" style={{ marginTop: '24px', padding: '16px' }}>
           <Row gutter={16}>
             <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
               <Form.Item
@@ -459,7 +552,7 @@ const funeralExpenseCover = [
               </Form.Item>
 
               <Form.Item label="Date of Birth" name="dob"
-              rules={[{ required: true, message: "Please entger date of birth." }]}>
+              rules={[{ required: true, message: "Please enter date of birth." }]}>
                 <DatePicker
                   style={{ width: '100%' }}
                   value = {dateOfBirth}
@@ -544,29 +637,91 @@ const funeralExpenseCover = [
       title: "Insured Members",
       content: (
         <Form form={form} layout="vertical" style={{ marginTop: '24px', padding: '16px' }}>
-          <Typography.Text strong>How many members would you like to insure?</Typography.Text>
+          <Typography.Text strong>Please enter the number of family members to be insured</Typography.Text>
           <Row gutter={16}>
-            <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
-              <Form.Item label="SPOUSE" name="spouses"
-              rules={[{ required: true, message: "Please enter the number of spouses." }]}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
+          <Form.Item label="Spouse" name="spouse">
+            <Switch onChange={(checked) => setSpouse(checked)} />
+          </Form.Item>
+        </Col>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
+          <Form.Item
+            label="Spouse Date of Birth"
+            name="spouseDOB"
+            rules={[
+              { required: spouse, message: "Please enter spouse date of birth." },
+            ]}
+          >
+            <DatePicker
+              style={{ width: '100%' }}
+              disabled={!spouse}
+              disabledDate={(current) => {
+                const today = new Date();
+                const eighteenYearsAgo = new Date(
+                  today.getFullYear() - 18,
+                  today.getMonth(),
+                  today.getDate()
+                );
+                return current && current >= eighteenYearsAgo;
+              }}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+          <Row gutter={16}>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
+            <Form.Item label="Number of principal members" name="principals"
+              rules={[{ required: true, message: "Please enter the number of principal members." }]}>
               <Input
-                id="spouseNumber"
-                value={spouseNumber}
-                onChange={(event) => setSpouseNumber(event.target.value)}
+                id="principalNumber"
+                value={principalNumber}
+                onChange={(event) => setPrincipalNumber(event.target.value)}
               />
               </Form.Item>
-            </Col>
-            <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
-              <Form.Item label="CHILDREN" name="children"
-              rules={[{ required: true, message: "Please enter the number of children." }]}>
-              <Input
-                id="childrenNumber"
-                value={childrenNumber}
-                onChange={(event) => setChildrenNumber(event.target.value)}
-              />
-              </Form.Item>
-            </Col>
-          </Row>
+              </Col>
+              <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
+          <Form.Item
+            label="Number of Spouses"
+            name="spouses"
+            rules={[
+              { required: spouse, message: "Please enter the number of spouses." },
+            ]}
+          >
+            <Input
+              id="spouseNumber"
+              value={spouseNumber}
+              onChange={(event) => setSpouseNumber(event.target.value)}
+              disabled={!spouse}
+            />
+          </Form.Item>
+        </Col>
+        </Row>
+        <Row gutter={16}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
+          <Form.Item label="Children" name="children">
+            <Switch onChange={(checked) => setChildrenVisible(checked)} />
+          </Form.Item>
+        </Col>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
+          <Form.Item
+            label="Number of Children"
+            name="childrenNumber"
+            rules={[
+              {
+                required: childrenVisible,
+                message: "Please enter the number of children.",
+              },
+            ]}
+          >
+            <Input
+              id="childrenNumber"
+              value={childrenNumber}
+              onChange={(event) => setChildrenNumber(event.target.value)}
+              disabled={!childrenVisible}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
         </Form>
       ),
     },
@@ -585,14 +740,13 @@ const funeralExpenseCover = [
             value={sumAssured}
             style={{ width: "100%" }}
             addonBefore="Ksh"
-            // disabled={!sumAssuredEdit}
             formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             parser={(value) => value.replace(/(,*)/g, "")}
             onChange={setSumAssured}
           />
         </Form.Item>
               <Form.Item
-                label="SA % Payable to Spouse"
+                label="Spouse percentage of sum assured"
                 name="saSpouse"
                 rules={[{ required: true, message: "Please enter percentage." }]}
               >
@@ -639,7 +793,7 @@ const funeralExpenseCover = [
             </Col>
             <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
             <Form.Item
-  label="SA % Payable to Principal"
+  label="Principal member percentage of sum assured"
   name="saPrincipal"
   rules={[{ required: true, message: "Please enter percentage." }]}
 >
@@ -653,7 +807,7 @@ const funeralExpenseCover = [
   />
 </Form.Item>
 <Form.Item
-                label="SA % Payable to Children"
+                label="Children percentage of sum assured"
                 name="saChildren"
                 rules={[{ required: true, message: "Please enter percentage." }]}
               >
@@ -692,13 +846,15 @@ const funeralExpenseCover = [
       ),
     },
     {
-      title: "Review and Confirm",
+      title: "Review & Confirm",
       content: (
-        <div>Rewiew and Confirm</div>
+        <div>
+          {renderReviewAndConfirm(formData)}
+        </div>
       ),
     },
     {
-      title: "Get Quotation",
+      title: "Quotation",
       content: (
         <>
           <div
