@@ -8,9 +8,9 @@ import {
 } from "@ant-design/icons";
 import { Divider } from "antd";
 import { useTheme } from "../../store/context/theme-context";
-import CustomerTypeModal from "../../components/Funeral Expense/modals/CustomerTypeModal";
+import IndividualCustomerDetailsModal from "./IndividualCustomerModal";
 
-const CustomerTypePage = () => {
+const CriticalIllnessCustomer = () => {
   const { theme } = useTheme();
   const [selectedSection, setSelectedSection] = useState(null);
 
@@ -101,7 +101,7 @@ const CustomerTypePage = () => {
         </div>
       </div>
       {selectedSection === "Personal" && (
-        <CustomerTypeModal
+        <IndividualCustomerDetailsModal
           isModalOpen={selectedSection === "Personal"}
           onOkay={handleOk}
           onCancel={handleCancel}
@@ -109,7 +109,7 @@ const CustomerTypePage = () => {
         />
       )}
       {selectedSection === "Group" && (
-        <CustomerTypeModal
+        <IndividualCustomerDetailsModal
           isModalOpen={selectedSection === "Group"}
           onOkay={handleOk}
           onCancel={handleCancel}
@@ -120,4 +120,4 @@ const CustomerTypePage = () => {
   );
 };
 
-export default CustomerTypePage;
+export default CriticalIllnessCustomer;

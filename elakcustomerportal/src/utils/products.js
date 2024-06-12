@@ -1,6 +1,8 @@
 import gleImg from "../assets/funeral-expense.jpg";
-import glaImg from "../assets/glaImg.jpg";
-import introImage from "../assets/introImage.jpg";
+import glaImg from "../assets/glaImg.png";
+import edu from "../assets/edu.png";
+import goal from "../assets/goal.png";
+import introImage from "../assets/introImage.jpg"
 import happyfamily from "../assets/happyfamily.png";
 import groupcreditImg from "../assets/groupcredit.png";
 
@@ -27,22 +29,25 @@ const products = [
       "We offer group life insurance solutions to provide financial security to your employees' families in the event of an unexpected loss.",
   },
   {
-    title: "Travel Insurance",
-    image: gleImg,
+    title: "Education Insurance Cover",
+    url: "education",
+    image: edu,
     description:
-      "Travel insurance covers you against unexpected events while traveling, such as trip cancellations, lost luggage, medical emergencies, and more.",
+      "An education insurance cover is a financial plan ensuring funds for a child's education, providing savings and protection against uncertainties like parent's death or disability.",
   },
   {
     title: "Term Life Insurance",
+    url: "welcome",
     image: happyfamily,
     description:
       "Term life insurance is a type of life insurance policy that provides coverage for a specified period during  which if the policyholder dies, a death benefit is paid out to the designated beneficiaries.",
   },
   {
-    title: "Auto Insurance",
-    image: gleImg,
+    title: "Goal Based Insurance Cover",
+    url: "goal-based",
+    image: goal,
     description:
-      "Auto insurance provides coverage for damages to your vehicle, medical expenses, and liability in case of an accident, ensuring you stay protected on the road.",
+      "Goal-based insurance cover tailors financial protection plans to meet specific life objectives, ensuring personalized coverage for short-term, Medium-term and long-term financial goals.",
   },
   {
     title: "Group Credit Life Insurance",

@@ -5,9 +5,9 @@ const rootReducer = combineReducers({
   userDetails: userDetailsReducer,
 });
 
-const store = configureStore({
-  reducer: rootReducer,
-  devTools: process.env.NODE_ENV !== "production",
+export const store = configureStore({
+  reducer: rootReducer: {
+    auth: authReducer,
+    funeralExpense: funeralExpenseReducer,
+  },
 });
-
-export default store;
