@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Table, Typography, Row, Col } from 'antd';
 
 
-const Quotation = ({ formData, currentDate }) => {
+const CriticalIllnessQuotation = ({ formData, currentDate }) => {
     const [tableColumns, setTableColumns] = useState([]);
     const [acceptedExclusions, setAcceptedExclusions] = useState(false);
 
@@ -345,4 +345,4 @@ const Quotation = ({ formData, currentDate }) => {
     );
 };
 
-export default Quotation;
+export default CriticalIllnessQuotation;

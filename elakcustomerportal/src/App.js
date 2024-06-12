@@ -15,7 +15,7 @@ import GroupCustomerPage from "./pages/FuneralExpensePages/GroupCustomer";
 import FuneralExpenseQuotation from "./pages/FuneralExpensePages/Quotation";
 import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
 import Welcome from "./components/Group Term Life/Welcome";
-import Quotation from "./components/Group Critical Illness/Quotation";
+import CriticalIllnessQuotation from "./components/Group Critical Illness/CriticalIllnessQuotation";
 
 function App() {
   return (
@@ -44,44 +44,44 @@ function App() {
               }
             />
 
-              {/* Routes under /home */}
-              <Route
-                path="/home/*"
-                element={
-                  <PortalLayout>
-                    <Routes>
-                      <Route path="education" element={<Education />} />
-                      <Route path="goal-based" element={<GoalBased />} />
-                      <Route
-                        path="funeral-expense/select-customer-type"
-                        element={<CustomerTypePage />}
-                      />
-                      <Route
-                        path="funeral-expense/individual-customer"
-                        element={<IndividualCustomer />}
-                      />
-                      <Route
-                        path="funeral-expense/group-customer"
-                        element={<GroupCustomerPage />}
-                      />
-                      <Route
-                        path="group-life-assurance"
-                        element={<GroupLifeAssurance />}
-                      />
-                      <Route
-                        path="critical-illness"
-                        element={<GroupCriticalIllness />}
-                      />
-                      <Route
-                        path="critical-illness/quotation"
-                        element={<Quotation />}
-                      />
-                      {/* Add more routes here */}
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
-                  </PortalLayout>
-                }
-              />
+            {/* Routes under /home */}
+            <Route
+              path="/home/*"
+              element={
+                <PortalLayout>
+                  <Routes>
+                    <Route path="education" element={<Education />} />
+                    <Route path="goal-based" element={<GoalBased />} />
+                    <Route
+                      path="funeral-expense/select-customer-type"
+                      element={<CustomerTypePage />}
+                    />
+                    <Route
+                      path="funeral-expense/individual-customer"
+                      element={<IndividualCustomer />}
+                    />
+                    <Route
+                      path="funeral-expense/group-customer"
+                      element={<GroupCustomerPage />}
+                    />
+                    <Route
+                      path="group-life-assurance"
+                      element={<GroupLifeAssurance />}
+                    />
+                    <Route
+                      path="critical-illness"
+                      element={<GroupCriticalIllness />}
+                    />
+                    <Route
+                      path="critical-illness/critical-illness-quotation"
+                      element={<CriticalIllnessQuotation />}
+                    />
+                    {/* Add more routes here */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </PortalLayout>
+              }
+            />
 
             {/* Routes outside of /home */}
             <Route path="*" element={<NotFound />} />
