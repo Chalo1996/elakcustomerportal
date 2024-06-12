@@ -2,6 +2,7 @@ import gleImg from "../assets/funeral-expense.jpg";
 import glaImg from "../assets/glaImg.jpg";
 import introImage from "../assets/introImage.jpg";
 import happyfamily from "../assets/happyfamily.png";
+import groupcreditImg from "../assets/groupcredit.png";
 
 const products = [
   {
@@ -42,6 +43,13 @@ const products = [
     image: gleImg,
     description:
       "Auto insurance provides coverage for damages to your vehicle, medical expenses, and liability in case of an accident, ensuring you stay protected on the road.",
+  },
+  {
+    title: "Group Credit Life Insurance",
+    image: groupcreditImg,
+    url: "group-credit",
+    description:
+      "A group credit life insurance policy is issued by an insurance company to a creditor institution, such as a bank, covering the lives of the bank's current and future debtors. Unlike other group life plans, the bank is both the policyholder and the beneficiary of the life insurance.",
   },
 ];
 

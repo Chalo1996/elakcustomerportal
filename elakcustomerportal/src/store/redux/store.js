@@ -1,9 +1,12 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import userDetailsReducer from "../../reducers/reducer";
 
-import reducer from "../../reducers/reducer";
+const rootReducer = combineReducers({
+  userDetails: userDetailsReducer,
+});
 
 const store = configureStore({
-  reducer,
+  reducer: rootReducer,
   devTools: process.env.NODE_ENV !== "production",
 });
 
