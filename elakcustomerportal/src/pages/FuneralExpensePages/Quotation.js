@@ -2,17 +2,15 @@ import { useEffect } from "react";
 import { Card, Row, Col, Table } from "antd";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { funeralExpenseActions } from "../../store/redux/features/gleSlice";
+import { resetData } from "../../store/redux/features/gleSlice";
 
 const FuneralExpenseQuotation = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { formData, tableData } = location.state || {};
-  console.log("formData", formData);
-  console.log("tableData", tableData);
 
   useEffect(() => {
-    dispatch(funeralExpenseActions.resetData());
+    dispatch(resetData());
   }, [dispatch]);
 
   const customerTableColumns = [

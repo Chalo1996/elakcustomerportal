@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { ConfigProvider } from "antd";
 import { ThemeProvider } from "./store/context/theme-context";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -17,8 +19,14 @@ import FuneralExpenseQuotation from "./pages/FuneralExpensePages/Quotation";
 import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
 import Welcome from "./components/Group Term Life/Welcome";
 import CriticalIllnessQuotation from "./components/Group Critical Illness/CriticalIllnessQuotation";
+import { authenticateUser } from "./store/redux/features/authSlice";
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(authenticateUser());
+  }, [dispatch]);
+
   return (
     <BrowserRouter>
       <ThemeProvider>
