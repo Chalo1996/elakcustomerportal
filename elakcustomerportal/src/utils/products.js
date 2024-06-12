@@ -36,6 +36,7 @@ const products = [
   },
   {
     title: "Term Life Insurance",
+    url: "welcome",
     image: happyfamily,
     description:
       "Term life insurance is a type of life insurance policy that provides coverage for a specified period during  which if the policyholder dies, a death benefit is paid out to the designated beneficiaries.",

@@ -1,10 +1,6 @@
 import { ConfigProvider } from "antd";
 import { ThemeProvider } from "./store/context/theme-context";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { Provider } from "react-redux";
-
-//import MainLayout from "./layout/main-layout/MainLayout";
-import store from "./store/redux/store";
 import Home from "./pages/Home";
 import PortalLayout from "./layout/PortalLayout";
 import Education from "./components/Education/Education";
@@ -16,35 +12,37 @@ import CustomerTypePage from "./pages/FuneralExpensePages/CustomerType";
 import LandingPage from "./pages/landingPage";
 import IndividualCustomer from "./pages/FuneralExpensePages/IndividualCustomer";
 import GroupCustomerPage from "./pages/FuneralExpensePages/GroupCustomer";
+import FuneralExpenseQuotation from "./pages/FuneralExpensePages/Quotation";
+import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
+import Welcome from "./components/Group Term Life/Welcome";
 import Quotation from "./components/Group Critical Illness/Quotation";
 
 function App() {
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <ThemeProvider>
-          <ConfigProvider
-            theme={{
-              token: {
-                colorPrimary: "#A32A29",
-              },
-            }}
-          >
-            <Routes>
-              {/* Landing Page Route */}
-              <Route path="/landing-page" element={<LandingPage />} />
-              {/* Redirect to /landing-page */}
-              <Route path="/" element={<Navigate to="/landing-page" />} />
+    <BrowserRouter>
+      <ThemeProvider>
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: "#A32A29",
+            },
+          }}
+        >
+          <Routes>
+            {/* Landing Page Route */}
+            <Route path="/landing-page" element={<LandingPage />} />
+            {/* Redirect to /landing-page */}
+            <Route path="/" element={<Navigate to="/landing-page" />} />
 
-              {/* Home route */}
-              <Route
-                path="/home"
-                element={
-                  <PortalLayout>
-                    <Home />
-                  </PortalLayout>
-                }
-              />
+            {/* Home route */}
+            <Route
+              path="/home"
+              element={
+                <PortalLayout>
+                  <Home />
+                </PortalLayout>
+              }
+            />
 
               {/* Routes under /home */}
               <Route
@@ -85,13 +83,12 @@ function App() {
                 }
               />
 
-              {/* Routes outside of /home */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </ConfigProvider>
-        </ThemeProvider>
-      </BrowserRouter>
-    </Provider>
+            {/* Routes outside of /home */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </ConfigProvider>
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
 
