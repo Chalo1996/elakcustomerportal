@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Steps, Button } from "antd";
 import { connect } from "react-redux";
-import { updateUserDetails } from "../../redux/actions/actions";
+import { updateUserDetails } from "../../redux/actions/groupCreditActions";
 import ClientDetailsForm from "./ClientDetailsForm";
 
 const { Step } = Steps;
@@ -75,7 +75,7 @@ const IndividualCover = ({ userDetails, dispatch }) => {
 };
 
 const mapStateToProps = (state) => ({
-  userDetails: state.userDetails,
+  userDetails: state.groupCredit,
 });
 
 export default connect(mapStateToProps)(IndividualCover);
