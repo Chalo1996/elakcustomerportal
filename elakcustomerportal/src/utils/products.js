@@ -4,6 +4,7 @@ import edu from "../assets/edu.png";
 import goal from "../assets/goal.png";
 import introImage from "../assets/introImage.jpg"
 import happyfamily from "../assets/happyfamily.png";
+import groupcreditImg from "../assets/groupcredit.png";
 
 const products = [
   {
@@ -47,6 +48,13 @@ const products = [
     image: goal,
     description:
       "Goal-based insurance cover tailors financial protection plans to meet specific life objectives, ensuring personalized coverage for short-term, Medium-term and long-term financial goals.",
+  },
+  {
+    title: "Group Credit Life Insurance",
+    image: groupcreditImg,
+    url: "group-credit",
+    description:
+      "A group credit life insurance policy is issued by an insurance company to a creditor institution, such as a bank, covering the lives of the bank's current and future debtors. Unlike other group life plans, the bank is both the policyholder and the beneficiary of the life insurance.",
   },
 ];
 

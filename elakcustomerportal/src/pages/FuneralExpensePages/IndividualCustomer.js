@@ -1,4 +1,5 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { LeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { Steps, Button, Form } from "antd";
@@ -8,13 +9,20 @@ import BeneficiaryMembersForm from "../../components/Funeral Expense/Beneficiary
 import ProductPackagesForm from "../../components/Funeral Expense/ProductPackages";
 import SumAssuredPercentageForm from "../../components/Funeral Expense/SumAssuredPercentage";
 import ConfirmDetailsForm from "../../components/Funeral Expense/ConfirmDetails";
+import { fetchData } from "../../store/redux/features/gleSlice";
 
 const { Step } = Steps;
 
 const IndividualCustomer = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const authStatus = useSelector((state) => state.auth.status);
+  const isLoading = useSelector((state) => state.funeralExpense.isLoading);
+  const tableData = useSelector((state) => state.funeralExpense.gleData);
+
   const [current, setCurrent] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const navigate = useNavigate();
 
   const [form1] = Form.useForm();
   const [form2] = Form.useForm();
@@ -45,7 +53,62 @@ const IndividualCustomer = () => {
     parentsInLawPercentage: 100,
     startDate: null,
     endDate: null,
+    segment: "Individual Customer",
   });
+
+  const dataToPost = {
+    inputData: {
+      persons: [
+        {
+          name: "Principal Member",
+          lives: 1,
+          sumAssuredPercentage: 100,
+        },
+        {
+          name: "Spouse",
+          lives: formData.spouseNumber,
+          sumAssuredPercentage:
+            formData.spouseNumber > 0 ? formData.spousePercentage : 0,
+        },
+        {
+          name: "Children",
+          lives: formData.childrenNumber,
+          sumAssuredPercentage:
+            formData.childrenNumber > 0 ? formData.childrenPercentage : 0,
+        },
+        {
+          name: "Parents",
+          lives: formData.parentsNumber,
+          sumAssuredPercentage:
+            formData.parentsNumber > 0 ? formData.parentsPercentage : 0,
+        },
+        {
+          name: "Parents In Law",
+          lives: formData.parentsInLawNumber,
+          sumAssuredPercentage:
+            formData.parentsInLawNumber > 0
+              ? formData.parentsInLawPercentage
+              : 0,
+        },
+      ],
+      parameters: {
+        benefitAmount: formData.benefitAmount,
+        mortalityRiskLoading: 0.05,
+        marketingExpenseLoading: 0.08,
+        businessExpenseLoading: 0.2,
+        profitLoading: 0.05,
+        groupCoverAverageAge: 40,
+        childAge: 18,
+        parentAge: 60,
+        mortalityTable: "CI - IndividualMortalityRateTable",
+        currencySymbol: "KSh",
+        segment: "Individual Customer",
+      },
+      applicant: {
+        dob: formData.birthDate,
+      },
+    },
+  };
 
   const handleNavigate = () => {
     navigate("/home/funeral-expense/select-customer-type");
@@ -91,12 +154,21 @@ const IndividualCustomer = () => {
   const handleSubmit = async () => {
     try {
       await Promise.all(forms.map((form) => form.validateFields()));
-      console.log("Collected data:", formData);
-      // navigate('/home/funeral-expense/quotation-details', { state: { formData, tableData } });
+      if (authStatus === "succeeded") {
+        dispatch(fetchData(dataToPost));
+      }
     } catch (error) {
       console.log("Validation Failed:", error);
     }
   };
+
+  useEffect(() => {
+    if (!isLoading) {
+      navigate("/home/funeral-expense/quotation-details", {
+        state: { formData, tableData },
+      });
+    }
+  }, [isLoading, navigate, formData, tableData]);
 
   const steps = [
     {
