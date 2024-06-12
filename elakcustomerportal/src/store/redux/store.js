@@ -1,8 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import gleSliceReducer from "./features/gleSlice";
+import { authReducer } from "./features/authSlice";
+import { funeralExpenseReducer } from "./features/gleSlice";
 
 export const store = configureStore({
   reducer: {
-    funeralExpense: gleSliceReducer,
+    auth: authReducer,
+    funeralExpense: funeralExpenseReducer,
   },
 });

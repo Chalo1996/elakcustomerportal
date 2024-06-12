@@ -108,9 +108,6 @@ const formData = {
 };
 
 const FuneralExpenseQuotation = () => {
-  //   const location = useLocation();
-  //   const { formData, tableData } = location.state || {};
-
   const customerTableColumns = [
     {
       title: "Attribute",
