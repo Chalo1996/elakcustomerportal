@@ -7,7 +7,7 @@ import { resetData } from "../../store/redux/features/gleSlice";
 const FuneralExpenseQuotation = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const { formData, tableData } = location.state || {};
+  const { formData = {}, tableData = [] } = location.state || {};
 
   useEffect(() => {
     dispatch(resetData());
@@ -32,22 +32,22 @@ const FuneralExpenseQuotation = () => {
     {
       key: "fullName",
       attribute: "Name",
-      value: `${formData.firstName} ${formData.lastName}`,
+      value: `${formData.firstName ?? ""} ${formData.lastName ?? ""}`,
     },
     {
       key: "email",
       attribute: "Email",
-      value: formData.email,
+      value: formData.email ?? "",
     },
     {
       key: "country",
       attribute: "Country",
-      value: formData.country,
+      value: formData.country ?? "",
     },
     {
       key: "phone",
       attribute: "Phone",
-      value: `${formData.phoneArea}${formData.phoneNo}`,
+      value: `${formData.phoneArea ?? ""}${formData.phoneNo ?? ""}`,
     },
   ];
 
@@ -97,7 +97,9 @@ const FuneralExpenseQuotation = () => {
                 EQUITY LIFE ASSURANCE (KENYA) LIMITED
               </p>
               <p style={{ fontWeight: "bold" }}>Funeral Expense</p>
-              <p style={{ fontWeight: "bold" }}>{formData.segment} Quotation</p>
+              <p style={{ fontWeight: "bold" }}>
+                {formData.segment ?? ""} Quotation
+              </p>
             </Col>
             <Col>
               <img
@@ -176,7 +178,7 @@ const FuneralExpenseQuotation = () => {
             to adopted children subject to proof of legal adoption.
           </p>
           <p>
-            5 .The cover duration is one (1) year and commences once the premium
+            5. The cover duration is one (1) year and commences once the premium
             is paid in full.
           </p>
           <p>
