@@ -1,113 +1,20 @@
+import { useEffect } from "react";
 import { Card, Row, Col, Table } from "antd";
 import { useLocation } from "react-router-dom";
-
-const tableData = [
-  {
-    name: "Principal Member",
-    age: 42,
-    sumAssured: "KSh50,000.00",
-    lives: 1,
-    totalSumAssured: "KSh50,000.00",
-    mortalityRate: 0.002249,
-    riskPremiumSales: "KSh112.00",
-    adminCosts: "KSh46.90",
-    profitLoading: "KSh8.40",
-    premiumPerMember: "KSh168.00",
-    totalPremium: "KSh168.00",
-  },
-  {
-    name: "Spouse",
-    age: "",
-    sumAssured: "",
-    lives: 0,
-    totalSumAssured: "",
-    mortalityRate: null,
-    riskPremiumSales: "",
-    adminCosts: "",
-    profitLoading: "",
-    premiumPerMember: "",
-    totalPremium: "",
-  },
-  {
-    name: "Children",
-    age: "",
-    sumAssured: "",
-    lives: 0,
-    totalSumAssured: "",
-    mortalityRate: null,
-    riskPremiumSales: "",
-    adminCosts: "",
-    profitLoading: "",
-    premiumPerMember: "",
-    totalPremium: "",
-  },
-  {
-    name: "Parents",
-    age: "",
-    sumAssured: "",
-    lives: 0,
-    totalSumAssured: "",
-    mortalityRate: null,
-    riskPremiumSales: "",
-    adminCosts: "",
-    profitLoading: "",
-    premiumPerMember: "",
-    totalPremium: "",
-  },
-  {
-    name: "Parents In Law",
-    age: "",
-    sumAssured: "",
-    lives: 0,
-    totalSumAssured: "",
-    mortalityRate: null,
-    riskPremiumSales: "",
-    adminCosts: "",
-    profitLoading: "",
-    premiumPerMember: "",
-    totalPremium: "",
-  },
-  {
-    name: "Total",
-    age: "",
-    sumAssured: "KSh50,000.00",
-    lives: 1,
-    totalSumAssured: "KSh50,000.00",
-    mortalityRate: null,
-    riskPremiumSales: "KSh112.00",
-    adminCosts: "KSh47.00",
-    profitLoading: "KSh8.00",
-    premiumPerMember: "",
-    totalPremium: "KSh168.00",
-  },
-];
-
-const formData = {
-  firstName: "Lenore",
-  lastName: "Haynes",
-  email: "kokefuba@mailinator.com",
-  phoneNo: "766203505",
-  phoneArea: "+254",
-  country: "Kenya",
-  birthDate: "1972-04-09T21:00:00.000Z",
-  terms: true,
-  spouse: false,
-  spouseNumber: 0,
-  parentsNumber: 0,
-  childrenNumber: 0,
-  parentsInLawNumber: 0,
-  productName: "Imara",
-  benefitAmount: 10000,
-  principalPercentage: 100,
-  spousePercentage: 100,
-  childrenPercentage: 100,
-  parentsPercentage: 100,
-  parentsInLawPercentage: 100,
-  startDate: "2024-06-11T13:51:47.800Z",
-  endDate: "2025-06-10T13:51:47.800Z",
-};
+import { useDispatch } from "react-redux";
+import { funeralExpenseActions } from "../../store/redux/features/gleSlice";
 
 const FuneralExpenseQuotation = () => {
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const { formData, tableData } = location.state || {};
+  console.log("formData", formData);
+  console.log("tableData", tableData);
+
+  useEffect(() => {
+    dispatch(funeralExpenseActions.resetData());
+  }, [dispatch]);
+
   const customerTableColumns = [
     {
       title: "Attribute",
@@ -192,9 +99,7 @@ const FuneralExpenseQuotation = () => {
                 EQUITY LIFE ASSURANCE (KENYA) LIMITED
               </p>
               <p style={{ fontWeight: "bold" }}>Funeral Expense</p>
-              <p style={{ fontWeight: "bold" }}>
-                Individual Customer Quotation
-              </p>
+              <p style={{ fontWeight: "bold" }}>{formData.segment} Quotation</p>
             </Col>
             <Col>
               <img
@@ -247,7 +152,9 @@ const FuneralExpenseQuotation = () => {
                   color: "maroon",
                 }}
               >
-                Personal Funeral Expense Cover
+                {formData.segment === "Individual Customer"
+                  ? "Personal Funeral Expense Cover"
+                  : "Group Funeral Expense Cover"}
               </p>
             )}
             style={{ border: "1px solid black" }}
