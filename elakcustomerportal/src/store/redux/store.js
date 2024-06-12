@@ -1,10 +1,14 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { authReducer } from "./features/authSlice";
-import { funeralExpenseReducer } from "./features/gleSlice";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import userDetailsReducer from "../../reducers/reducer";
+// import authReducer from "../../reducers/authReducer";
+// import funeralExpenseReducer from "../../reducers/funeralExpenseReducer";
+
+const rootReducer = combineReducers({
+  userDetails: userDetailsReducer,
+  // auth: authReducer,
+  // funeralExpense: funeralExpenseReducer,
+});
 
 export const store = configureStore({
-  reducer: {
-    auth: authReducer,
-    funeralExpense: funeralExpenseReducer,
-  },
+  reducer: rootReducer,
 });
