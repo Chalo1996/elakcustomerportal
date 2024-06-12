@@ -16,6 +16,7 @@ import CustomerTypePage from "./pages/FuneralExpensePages/CustomerType";
 import LandingPage from "./pages/landingPage";
 import IndividualCustomer from "./pages/FuneralExpensePages/IndividualCustomer";
 import GroupCustomerPage from "./pages/FuneralExpensePages/GroupCustomer";
+import Quotation from "./components/Group Critical Illness/Quotation";
 
 function App() {
   return (
@@ -72,6 +73,10 @@ function App() {
                       <Route
                         path="critical-illness"
                         element={<GroupCriticalIllness />}
+                      />
+                      <Route
+                        path="critical-illness/quotation"
+                        element={<Quotation />}
                       />
                       {/* Add more routes here */}
                       <Route path="*" element={<NotFound />} />

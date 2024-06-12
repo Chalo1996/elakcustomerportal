@@ -27,6 +27,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
           <Col xs={24} sm={24} md={12} lg={12} xl={12}>
             <Form.Item label="" style={{ marginBottom: "35px" }}>
               <Checkbox
+                checked={formData.spouse}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
@@ -55,6 +56,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
             >
               <InputNumber
                 style={{ width: "100%" }}
+                placeholder="Specify number of children"
                 defaultValue={0}
                 step={1}
                 onChange={(value) =>
@@ -85,6 +87,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
             >
               <InputNumber
                 style={{ width: "100%" }}
+                placeholder="Specify number of parents"
                 defaultValue={0}
                 step={1}
                 onChange={(value) =>
@@ -113,6 +116,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
             >
               <InputNumber
                 style={{ width: "100%" }}
+                placeholder="Specify number of parents in law"
                 defaultValue={0}
                 step={1}
                 onChange={(value) =>

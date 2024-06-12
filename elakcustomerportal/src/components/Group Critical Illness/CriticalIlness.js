@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { Steps, Radio, Space, Button, Row, Col, Form, Input, Select, DatePicker, Modal, Checkbox, InputNumber, Divider, Typography, Table, Switch, Card} from "antd";
+import { useNavigate } from 'react-router-dom';
+import Quotation from "./Quotation";
+import dayjs from 'dayjs';
+import { Steps, Radio, Space, Button, Row, Col, Form, Input, Select, DatePicker, Modal, Checkbox, InputNumber, Divider, Typography, Switch, Card} from "antd";
 import sspFlag from '../../assets/flags/ssp.png';
 import cdfFlag from '../../assets/flags/cdf.png';
 import rwfFlag from '../../assets/flags/rwf.png';
@@ -53,12 +56,12 @@ const GroupCriticalIllness = () => {
   // const [gender, setGender] = useState();
   const [dateOfBirth, setDateOfBirth] = useState();
   const [clientEmailAddress, setClientEmailAddress] = useState();
-  const [telNo, setTelNo] = useState();
+  // const [telNo, setTelNo] = useState();
   const [phoneArea, setPhoneArea] = React.useState("+254");
   const [principalNumber, setPrincipalNumber] = React.useState();
   const [spouseNumber, setSpouseNumber] = useState();
   const [spouse, setSpouse] = useState(false);
-  const [spouseDOB, setSpouseDOB] = useState();
+  // const [spouseDOB, setSpouseDOB] = useState();
   const [childrenNumber, setChildrenNumber] = useState();
   const [childrenVisible, setChildrenVisible] = useState(false);
   const [SAPrincipal, setSAPrincipal] = useState();
@@ -71,14 +74,9 @@ const GroupCriticalIllness = () => {
   const [termsChecked, setTermsChecked] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [formData, setFormData] = useState({});
-  const [ setTableColumns] = useState([]);
   const [showHiddenFields, setShowHiddenFields] = useState(false);
 
-  const [formatter] = React.useState(new Intl.NumberFormat('en-KE', {
-    style: 'currency',
-    currency: 'KES',
-}));
-
+ 
 // const preventNumericInput = (event) => {
 //   if (/[0-9]/.test(event.key)) {
 //     event.preventDefault();
@@ -91,6 +89,9 @@ const preventTextInput = (event) => {
   }
 };
 
+const navigate = useNavigate();
+
+
 const PhoneAreas = [
   { code: "+211", flag: sspFlag, country: "South Sudan" },
   { code: "+243", flag: cdfFlag, country: "DRC" },
@@ -99,10 +100,6 @@ const PhoneAreas = [
   { code: "+255", flag: tzsFlag, country: "Tanzania" },
   { code: "+256", flag: ugxFlag, country: "Uganda" },
 ];
-
-const handleTableColumnsChange = (columns) => {
-  setTableColumns(columns);
-};
 
 const ChoosePhoneArea = ({ value, onChange }) => (
   <Select defaultValue={value} onChange={onChange} style={{ width: 100 }}>
@@ -116,6 +113,11 @@ const ChoosePhoneArea = ({ value, onChange }) => (
       ))}
   </Select>
 );
+
+const formatDate = (date) => {
+  return dayjs(date).format('YYYY-MM-DD'); 
+};
+
 
 const handleCoverDateChange = (date, timeInYears) => {
   if (!date) {
@@ -165,297 +167,13 @@ const disableCoverExpiryDate = (date) => {
   }
 };
 
-const renderReviewAndConfirm = ({ formData }) => {
-  return (
-    <Form layout="vertical">
-      <Card title="PERSONAL DETAILS">
-        <Row gutter={16}>
-          <Col span={12}>
-            <p>First Name:</p>
-          </Col>
-          <Col span={12}>
-            <p>Last Name:</p>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col span={12}>
-            <p>Email Address:</p>
-          </Col>
-          <Col span={12}>
-            <p>Mobile Number:</p>
-          </Col>
-          </Row>
-          <Row gutter={16}>
-          <Col span={12}>
-            <p>Date of Birth:</p>
-          </Col>
-        </Row>
-      </Card>
-
-      <Card title="INSURED MEMBERS">
-        <Row gutter={16}>
-          <Col span={12}>
-            <p>Number of Principal Members:</p>
-          </Col>
-          <Col span={12}>
-            <p>Spouse Date of Birth:</p>
-          </Col>
-          </Row>
-          <Row gutter={16}>
-          <Col span={12}>
-            <p>Number of Spouses:</p>
-          </Col>
-          <Col span={12}>
-            <p>Number of Children:</p>
-          </Col>
-        </Row>
-      </Card>
-      <Card title="PERCENTAGE OF COVER PAYABLES">
-        <Row gutter={16}>
-          <Col span={12}>
-            <p>Sum Assured:</p>
-          </Col>
-          <Col span={12}>
-            <p>Principal member percentage of sum assured:</p>
-          </Col>
-          </Row>
-          <Row gutter={16}>
-          <Col span={12}>
-            <p>Spouse percentage of sum assured:</p>
-          </Col>
-          <Col span={12}>
-            <p>Children percentage of sum assured:</p>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col span={12}>
-            <p>Cover Commencement Date: </p>
-          </Col>
-          <Col span={12}>
-            <p>Policy Term (Years): </p>
-          </Col>
-          <Col span={12}>
-        <p>Cover End Date: </p>
-          </Col>
-        </Row>
-      </Card>
-    </Form>
-  );
-};
-
-
-const columns = [
-  {
-    title: "Attribute",
-    dataIndex: "attribute",
-    key: "attribute",
-    width: "50%",
-    render: (text) => <Text strong>{text}</Text>,
-  },
-  {
-    title: "Value",
-    dataIndex: "value",
-    key: "value",
-    width: "50%",
-  },
-];
-
-const tableColumns = [
-  {
-    title: "Member Type",
-    dataIndex: "name",
-    key: "name",
-    width: "15%",
-  },
-  {
-    title: "Lives",
-    dataIndex: "individualLives",
-    key: "individualLives",
-    width: "15%",
-  },
-  {
-    title: "Sum Assured Per Member",
-    dataIndex: "sumAssured",
-    key: "sumAssured",
-    width: "15%",
-    render: (text) => formatter.format(text)
-  },
-  {
-    title: "Total Sum Assured",
-    dataIndex: "totalSumAssured",
-    key: "totalSumAssured",
-    width: "15%",
-    render: (text) => formatter.format(text)
-  },
-  {
-    title: "Premium Per Member",
-    dataIndex: "ciPremium",
-    key: "ciPremium",
-    width: "15%",
-    render: (text) => formatter.format(text)
-  },
-  {
-    title: "Total Premium",
-    dataIndex: "totalciPremium",
-    key: "totalciPremium",
-    width: "15%",
-    render: (text) => formatter.format(text)
-  },
-];
-
-const contactDetails = [
-  { key: "clientName", attribute: "Name", value: formData.clientName },
-  { key: "telNo", attribute: "Phone Number", value: formData.telNo},
-  { key: "clientEmailAddress", attribute: "Email", value: formData.clientEmailAddress },
-];
-
-const criticalIllnessCover = [
-  {
-    name: "",
-    individualLives: "",
-    sumAssured: "",
-    totalSumAssured: "",
-    ciPremium: "",
-    totalciPremium: "",
-  },
-  {
-    name: "",
-    individualLives: "",
-    sumAssured: "",
-    totalSumAssured: "",
-    ciPremium: "",
-    totalciPremium: "",
-  },
-  {
-    name: "",
-    individualLives: "",
-    sumAssured: "",
-    totalSumAssured: "",
-    ciPremium: "",
-    totalciPremium: "",
-  },
-  {
-    name: "",
-    individualLives: "",
-    sumAssured: "",
-    totalSumAssured: "",
-    ciPremium: "",
-    totalciPremium: "",
-  },
-];
-
-const funeralExpenseCover = [
-  {
-    name: "",
-    individualLives: "",
-    sumAssured: "",
-    totalSumAssured: "",
-    ciPremium: "",
-    totalciPremium: "",
-  },
-  {
-    name: "",
-    individualLives: "",
-    sumAssured: "",
-    totalSumAssured: "",
-    ciPremium: "",
-    totalciPremium: "",
-  },
-  {
-    name: "",
-    individualLives: "",
-    sumAssured: "",
-    totalSumAssured: "",
-    ciPremium: "",
-    totalciPremium: "",
-  },
-  {
-    name: "",
-    individualLives: "",
-    sumAssured: "",
-    totalSumAssured: "",
-    ciPremium: "",
-    totalciPremium: "",
-  },
-     ];
-
-     const terminalIllnessRider = [
-      {
-        name: "",
-        individualLives: "",
-        sumAssured: "",
-        totalSumAssured: "",
-        ciPremium: "",
-        totalciPremium: "",
-      },
-      {
-        name: "",
-        individualLives: "",
-        sumAssured: "",
-        totalSumAssured: "",
-        ciPremium: "",
-        totalciPremium: "",
-      },
-      {
-        name: "",
-        individualLives: "",
-        sumAssured: "",
-        totalSumAssured: "",
-        ciPremium: "",
-        totalciPremium: "",
-      },
-      {
-        name: "",
-        individualLives: "",
-        sumAssured: "",
-        totalSumAssured: "",
-        ciPremium: "",
-        totalciPremium: "",
-      },
-   ];
-
-   const totalPremiumDetails = [
-    {
-      name: "",
-      individualLives: "",
-      sumAssured: "",
-      totalSumAssured: "",
-      ciPremium: "",
-      totalciPremium: "",
-    },
-    {
-      name: "",
-      individualLives: "",
-      sumAssured: "",
-      totalSumAssured: "",
-      ciPremium: "",
-      totalciPremium: "",
-    },
-    {
-      name: "",
-      individualLives: "",
-      sumAssured: "",
-      totalSumAssured: "",
-      ciPremium: "",
-      totalciPremium: "",
-    },
-    {
-      name: "",
-      individualLives: "",
-      sumAssured: "",
-      totalSumAssured: "",
-      ciPremium: "",
-      totalciPremium: "",
-    },
-  ];
-
   const today = new Date();
     const options = { month: "long", day: "numeric", year: "numeric" };
     const currentDate = today.toLocaleDateString("en-US", options);
     
   const policyTerms = ["1", "2", "3"];
   const { Option } = Select;
-  const { Text, Title } = Typography;
+  
 
   const handleNextClick = async () => {
     try {
@@ -472,17 +190,20 @@ const funeralExpenseCover = [
       } else if (current === 0) {
         setCallbackModalVisible(true); 
       } else if (current === steps.length - 2) {
-        const values = await form.validateFields();
-        setFormData(prevFormData => ({
-          ...prevFormData,
-          [steps[current]]: values,
-        }));
-        console.log("Form data:", formData);
         setCurrent(current + 1); // Move to the next step
         setShowHiddenFields(true); // Show hidden fields for the final step
       } else {
         setCurrent(current + 1); // Move to the next step
       }
+      const values = await form.validateFields();
+        console.log("VALUES", values)
+        console.log("CURRENT", currentValues)
+        // setFormData(prevFormData => ({
+        //   ...prevFormData,
+        //   [steps[current]]: values,
+        // }));
+        setFormData({...formData, ...values});
+        console.log("Form data:", formData);
     } catch (error) {
       console.error("Validation Error:", error);
     }
@@ -511,8 +232,104 @@ const funeralExpenseCover = [
     }
     setCallbackModalVisible(false); // Close the modal
   };
-  
 
+  const renderReviewAndConfirm = () => {
+    console.log ("FORM DATA", formData)
+    return (
+      <Form layout="vertical">
+        <Typography.Text strong>Please confirm your insurance purchase details to continue</Typography.Text>
+        <Card title="PERSONAL DETAILS">
+          <Row gutter={16}>
+          <Col span={12}>
+            <p style={{ fontWeight: 'lighter', color: '#888', marginBottom: '0px' }}>First Name:</p>
+            <div style={{ marginTop: '0px' }}>{formData?.firstName}</div>
+          </Col>
+            <Col span={12}>
+              <p style={{ fontWeight: 'lighter', color: '#888', marginBottom: '0px' }}>Last Name:</p>
+              <div style={{ marginTop: '0px' }}>{formData?.lastName }</div>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <p style={{ fontWeight: 'lighter', color: '#888', marginBottom: '0px' }}>Email Address:</p>
+              <div style={{ marginTop: '0px' }}>{formData?.email }</div>
+            </Col>
+            <Col span={12}>
+              <p style={{ fontWeight: 'lighter', color: '#888', marginBottom: '0px' }}>Mobile Number:</p>
+              <div style={{ marginTop: '0px' }}>{formData?.mobileNumber }</div>
+            </Col>
+            </Row>
+            <Row gutter={16}>
+            <Col span={12}>
+              <p style={{ fontWeight: 'lighter', color: '#888', marginBottom: '0px' }}>Date of Birth:</p>
+              <div style={{ marginTop: '0px' }}>{formatDate(formData.dob)}</div>
+            </Col>
+          </Row>
+        </Card>
+        <br></br>
+        <Card title="INSURED MEMBERS">
+          <Row gutter={16}>
+            <Col span={12}>
+              <p style={{ fontWeight: 'lighter', color: '#888', marginBottom: '0px' }}>Number of Principal Members: </p>
+              <div style={{ marginTop: '0px' }}>{formData?.principalNumber }</div>
+            </Col>
+            <Col span={12}>
+              <p style={{ fontWeight: 'lighter', color: '#888', marginBottom: '0px' }}>Spouse Date of Birth: </p>
+              <div style={{ marginTop: '0px' }}>{formatDate(formData.spouseDOB)}</div>
+            </Col>
+            </Row>
+            <Row gutter={16}>
+            <Col span={12}>
+              <p style={{ fontWeight: 'lighter', color: '#888', marginBottom: '0px' }}>Number of Spouses: </p>
+              <div style={{ marginTop: '0px' }}>{formData?.spouseNumber }</div>
+            </Col>
+            <Col span={12}>
+              <p style={{ fontWeight: 'lighter', color: '#888', marginBottom: '0px' }}>Number of Children: </p>
+              <div style={{ marginTop: '0px' }}>{formData?.childrenNumber}</div>
+            </Col>
+          </Row>
+        </Card>
+        <br></br>
+        <Card title="COVERAGE">
+          <Row gutter={16}>
+            <Col span={12}>
+              <p style={{ fontWeight: 'lighter', color: '#888', marginBottom: '0px' }}>Sum Assured: </p>
+              <div style={{ marginTop: '0px' }}>{formData?.sumAssured }</div>
+            </Col>
+            <Col span={12}>
+              <p style={{ fontWeight: 'lighter', color: '#888', marginBottom: '0px' }}>Principal member percentage of sum assured: </p>
+              <div style={{ marginTop: '0px' }}>{formData?.SAPrincipal }</div>
+            </Col>
+            </Row>
+            <Row gutter={16}>
+            <Col span={12}>
+              <p style={{ fontWeight: 'lighter', color: '#888', marginBottom: '0px' }}>Spouse percentage of sum assured: </p>
+              <div style={{ marginTop: '0px' }}>{formData?.SASpouse }</div>
+            </Col>
+            <Col span={12}>
+              <p style={{ fontWeight: 'lighter', color: '#888', marginBottom: '0px' }}>Children percentage of sum assured: </p>
+              <div style={{ marginTop: '0px' }}>{formData?.SAChildren }</div>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <p style={{ fontWeight: 'lighter', color: '#888', marginBottom: '0px' }}>Cover Commencement Date: </p>
+              <div style={{ marginTop: '0px' }}>{formatDate(formData.coverDate)}</div>
+            </Col>
+            <Col span={12}>
+              <p style={{ fontWeight: 'lighter', color: '#888', marginBottom: '0px' }}>Policy Term (Years): </p>
+              <div style={{ marginTop: '0px' }}>{formData?.policyTerm }</div>
+            </Col>
+            <Col span={12}>
+          <p style={{ fontWeight: 'lighter', color: '#888', marginBottom: '0px' }}>Cover End Date: </p>
+          <div style={{ marginTop: '0px' }}>{formatDate(formData.coverExpiryDate)}</div>
+            </Col>
+          </Row>
+        </Card>
+      </Form>
+    );
+  };
+  
   const steps = [
     {
       title: "Personal details",
@@ -670,7 +487,7 @@ const funeralExpenseCover = [
       </Row>
           <Row gutter={16}>
           <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
-            <Form.Item label="Number of principal members" name="principals"
+            <Form.Item label="Number of principal members" name="principalNumber"
               rules={[{ required: true, message: "Please enter the number of principal members." }]}>
               <Input
                 id="principalNumber"
@@ -682,7 +499,7 @@ const funeralExpenseCover = [
               <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
           <Form.Item
             label="Number of Spouses"
-            name="spouses"
+            name="spouseNumber"
             rules={[
               { required: spouse, message: "Please enter the number of spouses." },
             ]}
@@ -726,7 +543,7 @@ const funeralExpenseCover = [
       ),
     },
     {
-      title: "Percentage of Cover Payable",
+      title: "Coverage",
       content: (
         <Form form={form} layout="vertical" style={{ marginTop: '24px', padding: '16px' }}>
           <Typography.Text strong>Please confirm the sum assured and percentage sum assured for each member</Typography.Text>
@@ -734,6 +551,7 @@ const funeralExpenseCover = [
             <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
             <Form.Item
           label="Sum Assured"
+          name="sumAssured"
           rules={[{ required: true, message: "Please input sum assured." }]}
         >
           <InputNumber
@@ -747,7 +565,7 @@ const funeralExpenseCover = [
         </Form.Item>
               <Form.Item
                 label="Spouse percentage of sum assured"
-                name="saSpouse"
+                name="SASpouse"
                 rules={[{ required: true, message: "Please enter percentage." }]}
               >
                 <InputNumber
@@ -794,7 +612,7 @@ const funeralExpenseCover = [
             <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: '16px' }}>
             <Form.Item
   label="Principal member percentage of sum assured"
-  name="saPrincipal"
+  name="SAPrincipal"
   rules={[{ required: true, message: "Please enter percentage." }]}
 >
   <InputNumber
@@ -808,7 +626,7 @@ const funeralExpenseCover = [
 </Form.Item>
 <Form.Item
                 label="Children percentage of sum assured"
-                name="saChildren"
+                name="SAChildren"
                 rules={[{ required: true, message: "Please enter percentage." }]}
               >
                 <InputNumber
@@ -846,280 +664,55 @@ const funeralExpenseCover = [
       ),
     },
     {
-      title: "Review & Confirm",
+      title: "Review",
       content: (
         <div>
           {renderReviewAndConfirm(formData)}
         </div>
       ),
     },
-    {
-      title: "Quotation",
-      content: (
-        <>
-          <div
-            style={{
-              border: "2px solid black",
-              maxWidth: "800px",
-              margin: "auto",
-              position: "relative",
-              paddingBottom: "60px",
-            }}
-          >
-            <div style={{ maxWidth: "750px", margin: "auto" }}>
-              <Row
-                justify="space-between"
-                align="middle"
-                style={{ marginTop: "20px" }}
-              >
-                <Col>
-                  <Title level={4} style={{ margin: 0 }}>
-                    EQUITY LIFE ASSURANCE (KENYA) LIMITED
-                  </Title>
-                  <Title level={4} style={{ margin: 0 }}>
-                    {formData.segment} Quotation
-                  </Title>
-                </Col>
-                <Col>
-                  <div style={{ textAlign: "right" }}>
-                    <img
-                      src="https://th.bing.com/th/id/OIP.slQhzvN6Tzo0RxGP9AiQSgAAAA?rs=1&pid=ImgDetMain"
-                      alt="Company Logo"
-                      style={{
-                        maxWidth: "100px",
-                        maxHeight: "120px",
-                        marginLeft: "30px",
-                      }}
-                    />
-                    <Text style={{ display: "block", marginTop: "10px" }}>
-                      {currentDate}
-                    </Text>
-                  </div>
-                </Col>
-              </Row>
-  
-              <Title style={{ textAlign: "left" }} level={4}>
-                Contact Details
-              </Title>
-              <Table
-                columns={columns}
-                dataSource={contactDetails}
-                pagination={false}
-                bordered
-                showHeader={false}
-                size="middle"
-                style={{
-                  border: "2px solid maroon",
-                  padding: "20px",
-                  marginBottom: "20px",
-                }}
-              />
-  
-              <Title style={{ textAlign: "left" }} level={4}>
-                Policy Details
-              </Title>
-              <Title style={{ textAlign: "center", color: "red" }} level={4}>
-                Personal Critical Illness Cover
-              </Title>
-              <Table
-                columns={tableColumns}
-                dataSource={criticalIllnessCover}
-                pagination={false}
-                bordered
-                showHeader={true}
-                size="middle"
-                style={{
-                  border: "2px solid maroon",
-                  padding: "20px",
-                  marginBottom: "20px",
-                }}
-              />
-  
-              <Title style={{ textAlign: "center" }} level={4}>
-                Personal Funeral Expense Rider
-              </Title>
-              <Table
-                columns={tableColumns}
-                dataSource={funeralExpenseCover}
-                pagination={false}
-                bordered
-                showHeader={true}
-                size="middle"
-                style={{
-                  border: "2px solid maroon",
-                  padding: "20px",
-                  marginBottom: "20px",
-                }}
-              />
-  
-              <Title style={{ textAlign: "center" }} level={4}>
-                Personal Terminal Illness Rider
-              </Title>
-              <Table
-                columns={tableColumns}
-                dataSource={terminalIllnessRider}
-                pagination={false}
-                bordered
-                showHeader={true}
-                size="middle"
-                style={{
-                  border: "2px solid maroon",
-                  padding: "20px",
-                  marginBottom: "20px",
-                }}
-              />
-  
-              <Title style={{ textAlign: "center" }} level={4}>
-                Total Premiums
-              </Title>
-              <Table
-                columns={tableColumns}
-                dataSource={totalPremiumDetails}
-                pagination={false}
-                bordered
-                showHeader={true}
-                size="middle"
-                style={{
-                  border: "2px solid maroon",
-                  padding: "20px",
-                  marginBottom: "20px",
-                }}
-              />
-            </div>
-  
-            <div
-              style={{
-                textAlign: "justify",
-                marginTop: "20px",
-                marginLeft: "15px",
-                padding: "10px",
-              }}
-            >
-              <Text>Quotation is valid for 90 days since the date of issue</Text>
-              <br />
-              <table border="1">
-                <tr>
-                  <th>Category of member</th>
-                  <th>Minimum entry age</th>
-                  <th>Maximum entry age</th>
-                </tr>
-                <tr>
-                  <td>Life Assured (Main member)</td>
-                  <td>18 years</td>
-                  <td>70 years</td>
-                </tr>
-                <tr>
-                  <td>Spouse</td>
-                  <td>18 years</td>
-                  <td>70 years</td>
-                </tr>
-                <tr>
-                  <td>Children</td>
-                  <td>37 weeks</td>
-                  <td>24 years</td>
-                </tr>
-              </table>
-              <br />
-              <p>
-                <strong>Onboarding requirements:</strong> Member data in the below
-                format
-              </p>
-              <table>
-                <thead>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
-                    Name
-                  </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
-                    Date of Birth
-                  </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
-                    ID/Passport Number
-                  </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
-                    Phone Number
-                  </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
-                    Main Member
-                  </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
-                    Relation to Member
-                  </th>
-                </thead>
-                <tbody>
-                  <td style={{ border: "1px solid black", padding: "8px" }}></td>
-                  <td style={{ border: "1px solid black", padding: "8px" }}></td>
-                  <td style={{ border: "1px solid black", padding: "8px" }}></td>
-                  <td style={{ border: "1px solid black", padding: "8px" }}></td>
-                  <td style={{ border: "1px solid black", padding: "8px" }}></td>
-                  <td style={{ border: "1px solid black", padding: "8px" }}></td>
-                </tbody>
-              </table>
-              <br />
-              <Text>
-                Copies of ID/Passport, Birth Certificate/Notification of members
-                covered.
-              </Text>
-              <div>
-                <p style={{ fontStyle: "italic" }}>
-                  Additional documents for individual cover: KRA Pin of main
-                  member.
-                </p>
-                <p style={{ fontStyle: "italic" }}>
-                  Additional documents for Groups/Corporates: Certificate of
-                  Registration & KRA Pin.
-                </p>
-              </div>
-              <Text strong>Contacts</Text>
-              <br />
-              <Text>Email: businessdevelopment@equityinsurance.co.ke</Text>
-              <br />
-              <Text>Tel: +254763026000</Text>
-              <br />
-            </div>
-  
-            <div
-              style={{
-                backgroundColor: "maroon",
-                position: "absolute",
-                bottom: "0",
-                width: "100%",
-                textAlign: "center",
-                color: "white",
-                padding: "5px 0",
-              }}
-            >
-              Equity Life Assurance (Kenya) Limited
-            </div>
-          </div>
-        </>
-      ),
-    },
   ];
 
+  
   return (
-    <>
-      <h1 style={{ textAlign: 'left', fontWeight: 'bold', fontSize: '24px', marginBottom: '20px' }}>Critical Illness Cover</h1>
+    <div>
+<h1 style={{ textAlign: 'left', fontWeight: 'bold', fontSize: '24px', marginBottom: '20px' }}>Critical Illness Cover</h1>
       <Steps current={current}>
-        {steps.map((step, index) => (
-          <Step key={index} title={step.title} />
+        {steps.map((item) => (
+          <Step key={item.title} title={item.title} />
         ))}
       </Steps>
-      <div style={{ marginTop: 32 }}>
+      <div className="steps-content" style={{ marginTop: '24px' }}>
         {steps[current].content}
-        <div className="steps-action" style={{ marginTop: 16 }}>
-          {current > 0 && (
-            <Button style={{ margin: '0 8px' }} onClick={handlePrevClick}>
-              Previous
-            </Button>
-          )}
-          {current < steps.length - 1 && (
-            <Button type="primary" onClick={handleNextClick}>
-              {current === 0 && selectedOption === "callback" ? "Submit" : "Next"}
-            </Button>
-          )}
-        </div>
       </div>
-    
+      <div className="steps-action" style={{ marginTop: '24px' }}>
+        {current > 0 && (
+          <Button style={{ margin: '0 8px' }} onClick={handlePrevClick}>
+            Previous
+          </Button>
+        )}
+        {current < steps.length - 1 && (
+          <Button type="primary" onClick={handleNextClick}>
+            Next
+          </Button>
+        )}
+        {current === steps.length - 1 && (
+          <Button
+            type="primary"
+            onClick={async () => {
+              try {
+                await form.validateFields();
+                form.submit(); // Submit the form
+                navigate('quotation'); // Navigate to the Quotation component
+              } catch (errorInfo) {
+                console.log('Failed:', errorInfo);
+              }
+            }}
+          >
+            Generate Quote
+          </Button>
+        )}
+      </div>
       <RequestCallbackModal
         visible={callbackModalVisible}
         onCancel={handleCallbackModalClose}
@@ -1127,7 +720,7 @@ const funeralExpenseCover = [
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
       />
-    </>
+    </div>
   );
 };
 
