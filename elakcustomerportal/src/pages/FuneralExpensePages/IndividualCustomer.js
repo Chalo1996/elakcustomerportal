@@ -20,8 +20,7 @@ const IndividualCustomer = () => {
   const [form2] = Form.useForm();
   const [form3] = Form.useForm();
   const [form4] = Form.useForm();
-  const [form5] = Form.useForm();
-  const forms = [form1, form2, form3, form4, form5];
+  const forms = [form1, form2, form3, form4];
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -61,7 +60,7 @@ const IndividualCustomer = () => {
 
   const handleNext = async () => {
     try {
-      // await forms[current].validateFields();
+      await forms[current].validateFields();
       if (current === 0) {
         setIsModalVisible(true);
       } else {
@@ -91,8 +90,9 @@ const IndividualCustomer = () => {
 
   const handleSubmit = async () => {
     try {
-      // await Promise.all(forms.map((form) => form.validateFields()));
+      await Promise.all(forms.map((form) => form.validateFields()));
       console.log("Collected data:", formData);
+      // navigate('/home/funeral-expense/quotation-details', { state: { formData, tableData } });
     } catch (error) {
       console.log("Validation Failed:", error);
     }
@@ -141,7 +141,7 @@ const IndividualCustomer = () => {
     },
     {
       title: "Review",
-      content: <ConfirmDetailsForm form={form5} formData={formData} />,
+      content: <ConfirmDetailsForm formData={formData} />,
     },
   ];
 
@@ -190,7 +190,7 @@ const IndividualCustomer = () => {
               onClick={handleSubmit}
               className="h-full px-4 py-2 shadow-none text-center"
             >
-              Done
+              Generate Quotation
             </Button>
           )}
         </div>
