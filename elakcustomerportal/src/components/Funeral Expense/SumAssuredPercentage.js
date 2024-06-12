@@ -46,6 +46,7 @@ const SumAssuredPercentageForm = ({ form, formData, setFormData }) => {
 
   useEffect(() => {
     form.setFieldsValue(formData);
+    form.setFieldsValue({ startDate: formData.startDate });
   }, [form, formData]);
 
   useEffect(() => {

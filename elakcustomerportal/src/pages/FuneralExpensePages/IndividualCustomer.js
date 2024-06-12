@@ -7,6 +7,7 @@ import CallBackModal from "../../components/Funeral Expense/modals/CallBackModal
 import BeneficiaryMembersForm from "../../components/Funeral Expense/BeneficiaryMembers";
 import ProductPackagesForm from "../../components/Funeral Expense/ProductPackages";
 import SumAssuredPercentageForm from "../../components/Funeral Expense/SumAssuredPercentage";
+import ConfirmDetailsForm from "../../components/Funeral Expense/ConfirmDetails";
 
 const { Step } = Steps;
 
@@ -59,7 +60,7 @@ const IndividualCustomer = () => {
 
   const handleNext = async () => {
     try {
-      // await forms[current].validateFields();
+      await forms[current].validateFields();
       if (current === 0) {
         setIsModalVisible(true);
       } else {
@@ -89,8 +90,9 @@ const IndividualCustomer = () => {
 
   const handleSubmit = async () => {
     try {
-      // await Promise.all(forms.map((form) => form.validateFields()));
+      await Promise.all(forms.map((form) => form.validateFields()));
       console.log("Collected data:", formData);
+      // navigate('/home/funeral-expense/quotation-details', { state: { formData, tableData } });
     } catch (error) {
       console.log("Validation Failed:", error);
     }
@@ -118,7 +120,7 @@ const IndividualCustomer = () => {
       ),
     },
     {
-      title: "Select Package",
+      title: "Package",
       content: (
         <ProductPackagesForm
           form={form3}
@@ -128,7 +130,7 @@ const IndividualCustomer = () => {
       ),
     },
     {
-      title: "Percentage of cover payable (%)",
+      title: "Coverage (%)",
       content: (
         <SumAssuredPercentageForm
           form={form4}
@@ -136,6 +138,10 @@ const IndividualCustomer = () => {
           setFormData={setFormData}
         />
       ),
+    },
+    {
+      title: "Review",
+      content: <ConfirmDetailsForm formData={formData} />,
     },
   ];
 
@@ -184,7 +190,7 @@ const IndividualCustomer = () => {
               onClick={handleSubmit}
               className="h-full px-4 py-2 shadow-none text-center"
             >
-              Done
+              Generate Quotation
             </Button>
           )}
         </div>
