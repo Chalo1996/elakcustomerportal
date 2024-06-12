@@ -1,10 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
+import gleSliceReducer from "./features/gleSlice";
 
-import reducer from "../../reducers/reducer";
-
-const store = configureStore({
-  reducer,
-  devTools: process.env.NODE_ENV !== "production",
+export const store = configureStore({
+  reducer: {
+    funeralExpense: gleSliceReducer,
+  },
 });
-
-export default store;
