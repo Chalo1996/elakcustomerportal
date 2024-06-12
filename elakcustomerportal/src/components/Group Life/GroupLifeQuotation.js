@@ -1,9 +1,8 @@
 import { Table, Row, Col, Card } from 'antd';
 
-const QuotationTable = ({ data }) => {
+const QuotationTable = () => {
     const formatCurrency = (value) => `KES ${Math.round(value).toLocaleString()}`;
 
-    // Define columns for the table
     const columns = [
       {
         title: 'Attribute',
@@ -19,7 +18,6 @@ const QuotationTable = ({ data }) => {
       },
     ];
 
-    // Group Life Assurance Table
     const groupLifeAssurance = [
       { title: 'Benefit Description', dataIndex: 'benefitDescriptionGla', key: 'benefitDescriptionGla' },
       { title: 'Benefit Level', dataIndex: 'benefitLevel', key: 'benefitLevel' },
@@ -27,7 +25,6 @@ const QuotationTable = ({ data }) => {
       { title: 'Annual Premium', dataIndex: 'premium', key: 'premium', render: (value) => formatCurrency(value) },
     ];
 
-    // Accidental/Occupational Causes Only Table
     const accidentalOccupationalCausesOnly = [
       { title: 'Benefit Description', dataIndex: 'benefitDescriptionGpaWiba', key: 'benefitDescriptionGpaWiba' },
       { title: 'Benefit Level', dataIndex: 'benefitLevel', key: 'benefitLevel' },
