@@ -15,6 +15,7 @@ import GroupCustomerPage from "./pages/FuneralExpensePages/GroupCustomer";
 import FuneralExpenseQuotation from "./pages/FuneralExpensePages/Quotation";
 import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
 import Welcome from "./components/Group Term Life/Welcome";
+import CriticalIllnessQuotation from "./components/Group Critical Illness/CriticalIllnessQuotation";
 
 function App() {
   return (
@@ -64,10 +65,6 @@ function App() {
                       element={<GroupCustomerPage />}
                     />
                     <Route
-                      path="funeral-expense/quotation-details"
-                      element={<FuneralExpenseQuotation />}
-                    />
-                    <Route
                       path="group-life-assurance"
                       element={<GroupLifeAssurance />}
                     />
@@ -75,13 +72,12 @@ function App() {
                       path="critical-illness"
                       element={<GroupCriticalIllness />}
                     />
+                    <Route
+                      path="critical-illness/critical-illness-quotation"
+                      element={<CriticalIllnessQuotation />}
+                    />
                     {/* Add more routes here */}
                     <Route path="*" element={<NotFound />} />
-                    <Route
-                      path="term-life-quote"
-                      element={<GroupTermLifeQuote />}
-                    />
-                    <Route path="welcome" element={<Welcome />} />
                   </Routes>
                 </PortalLayout>
               }
