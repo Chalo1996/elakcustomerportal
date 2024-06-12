@@ -31,13 +31,13 @@ function App() {
         >
           <Routes>
             {/* Landing Page Route */}
-            <Route path='/landing-page' element={<LandingPage />} />
+            <Route path="/landing-page" element={<LandingPage />} />
             {/* Redirect to /landing-page */}
-            <Route path='/' element={<Navigate to='/landing-page' />} />
+            <Route path="/" element={<Navigate to="/landing-page" />} />
 
             {/* Home route */}
             <Route
-              path='/home'
+              path="/home"
               element={
                 <PortalLayout>
                   <Home />
@@ -47,30 +47,34 @@ function App() {
 
             {/* Routes under /home */}
             <Route
-              path='/home/*'
+              path="/home/*"
               element={
                 <PortalLayout>
                   <Routes>
-                    <Route path='education' element={<Education />} />
+                    <Route path="education" element={<Education />} />
                     <Route path="goal-based" element={<GoalBased />} />
                     <Route
-                      path='funeral-expense/select-customer-type'
+                      path="funeral-expense/select-customer-type"
                       element={<CustomerTypePage />}
                     />
                     <Route
-                      path='funeral-expense/individual-customer'
+                      path="funeral-expense/individual-customer"
                       element={<IndividualCustomer />}
                     />
                     <Route
-                      path='funeral-expense/group-customer'
+                      path="funeral-expense/group-customer"
                       element={<GroupCustomerPage />}
                     />
                     <Route
-                      path='group-life-assurance'
+                      path="funeral-expense/quotation-details"
+                      element={<FuneralExpenseQuotation />}
+                    />
+                    <Route
+                      path="group-life-assurance"
                       element={<GroupLifeAssurance />}
                     />
                     <Route
-                      path='critical-illness'
+                      path="critical-illness"
                       element={<GroupCriticalIllness />}
                     />
                     <Route
@@ -78,15 +82,15 @@ function App() {
                       element={<CriticalIllnessQuotation />}
                     />
                     {/* Add more routes here */}
-                    <Route path='group-credit/*' element={<GroupCredit />} />
-                      <Route path='*' element={<NotFound />} />
+                    <Route path="group-credit/*" element={<GroupCredit />} />
+                    <Route path="*" element={<NotFound />} />
                   </Routes>
                 </PortalLayout>
               }
             />
 
             {/* Routes outside of /home */}
-            <Route path='*' element={<NotFound />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </ConfigProvider>
       </ThemeProvider>
