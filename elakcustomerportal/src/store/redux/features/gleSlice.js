@@ -62,7 +62,5 @@ const funeralExpenseSlice = createSlice({
   },
 });
 
-export const {
-  actions: funeralExpenseActions,
-  reducer: funeralExpenseReducer,
-} = funeralExpenseSlice;
+export const { resetData } = funeralExpenseSlice.actions;
+export const { reducer: funeralExpenseReducer } = funeralExpenseSlice;
