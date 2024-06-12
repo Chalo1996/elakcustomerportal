@@ -6,6 +6,8 @@ import PersonalDetailsForm from "../../components/Funeral Expense/PersonalDetail
 import CallBackModal from "../../components/Funeral Expense/modals/CallBackModal";
 import BeneficiaryMembersForm from "../../components/Funeral Expense/BeneficiaryMembers";
 import ProductPackagesForm from "../../components/Funeral Expense/ProductPackages";
+import SumAssuredPercentageForm from "../../components/Funeral Expense/SumAssuredPercentage";
+import ConfirmDetailsForm from "../../components/Funeral Expense/ConfirmDetails";
 
 const { Step } = Steps;
 
@@ -17,7 +19,8 @@ const IndividualCustomer = () => {
   const [form1] = Form.useForm();
   const [form2] = Form.useForm();
   const [form3] = Form.useForm();
-  const forms = [form1, form2, form3];
+  const [form4] = Form.useForm();
+  const forms = [form1, form2, form3, form4];
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -35,10 +38,24 @@ const IndividualCustomer = () => {
     parentsInLawNumber: 0,
     productName: "",
     benefitAmount: 0,
+    principalPercentage: 100,
+    spousePercentage: 100,
+    childrenPercentage: 100,
+    parentsPercentage: 100,
+    parentsInLawPercentage: 100,
+    startDate: null,
+    endDate: null,
   });
 
   const handleNavigate = () => {
     navigate("/home/funeral-expense/select-customer-type");
+  };
+
+  const isNextButtonDisabled = () => {
+    if (current === 2) {
+      return !formData.productName || formData.benefitAmount === 0;
+    }
+    return false;
   };
 
   const handleNext = async () => {
@@ -75,6 +92,7 @@ const IndividualCustomer = () => {
     try {
       await Promise.all(forms.map((form) => form.validateFields()));
       console.log("Collected data:", formData);
+      // navigate('/home/funeral-expense/quotation-details', { state: { formData, tableData } });
     } catch (error) {
       console.log("Validation Failed:", error);
     }
@@ -102,7 +120,7 @@ const IndividualCustomer = () => {
       ),
     },
     {
-      title: "Select Package",
+      title: "Package",
       content: (
         <ProductPackagesForm
           form={form3}
@@ -110,6 +128,20 @@ const IndividualCustomer = () => {
           setFormData={setFormData}
         />
       ),
+    },
+    {
+      title: "Coverage (%)",
+      content: (
+        <SumAssuredPercentageForm
+          form={form4}
+          formData={formData}
+          setFormData={setFormData}
+        />
+      ),
+    },
+    {
+      title: "Review",
+      content: <ConfirmDetailsForm formData={formData} />,
     },
   ];
 
@@ -146,6 +178,7 @@ const IndividualCustomer = () => {
             <Button
               type="primary"
               onClick={handleNext}
+              disabled={isNextButtonDisabled()}
               className="h-full px-4 py-2 shadow-none text-center"
             >
               Continue
@@ -157,7 +190,7 @@ const IndividualCustomer = () => {
               onClick={handleSubmit}
               className="h-full px-4 py-2 shadow-none text-center"
             >
-              Done
+              Generate Quotation
             </Button>
           )}
         </div>

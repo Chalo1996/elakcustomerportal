@@ -27,6 +27,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
           <Col xs={24} sm={24} md={12} lg={12} xl={12}>
             <Form.Item label="" style={{ marginBottom: "35px" }}>
               <Checkbox
+                checked={formData.spouse}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
