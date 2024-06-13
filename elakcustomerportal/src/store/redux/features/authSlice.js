@@ -9,10 +9,9 @@ const credentials = {
 
 export const authenticateUser = createAsyncThunk(
   "auth/authenticateUser",
-  async (thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
       const response = await axios.post(authUrl, credentials);
-      console.log("authSlice response: ", response);
       return response.data.outData;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -23,25 +22,37 @@ export const authenticateUser = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    token: null,
-    status: "idle",
+    token: localStorage.getItem("authToken") || null,
+    status: localStorage.getItem("authStatus") || "idle",
     error: null,
   },
-  reducers: {},
+  reducers: {
+    setToken(state, action) {
+      state.token = action.payload;
+    },
+    setStatus(state, action) {
+      state.status = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(authenticateUser.pending, (state) => {
         state.status = "loading";
+        localStorage.setItem("authStatus", "loading");
       })
       .addCase(authenticateUser.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.token = action.payload.token;
+        localStorage.setItem("authToken", action.payload.token);
+        localStorage.setItem("authStatus", "succeeded");
       })
       .addCase(authenticateUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
+        localStorage.setItem("authStatus", "failed");
       });
   },
 });
 
-export const { actions: authActions, reducer: authReducer } = authSlice;
+export const { setToken, setStatus } = authSlice.actions;
+export const { reducer: authReducer } = authSlice;
