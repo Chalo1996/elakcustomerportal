@@ -7,7 +7,7 @@ import FuneralExpenseModal from "../Funeral Expense/modals/FuneralExpenseModal";
 import CriticalIllnessModal from "../Group Critical Illness/CriticalIllnessModal";
 import GroupCreditModal from "../GroupCredit/GroupCreditModal";
 import GroupLifeModal from "../Group Life/groupLifeModal";
-import Welcome from "./components/Group Term Life/Welcome";
+import GroupTermLifeModal from "../Group Term Life/GroupTermLifeModal";
 
 const { Meta } = Card;
 
@@ -59,7 +59,7 @@ const Product = ({ product, index }) => {
 
         case 4:
           return (
-            <Welcome
+            <GroupTermLifeModal
               isModalOpen={isModalOpen}
               onOkay={handleOk}
               onCancel={handleCancel}
