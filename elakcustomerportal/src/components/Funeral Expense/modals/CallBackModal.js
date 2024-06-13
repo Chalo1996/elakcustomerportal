@@ -26,6 +26,10 @@ const CallBackModal = ({ isModalOpen, onClose, onContinue }) => {
     onContinue(selectedOption);
   };
 
+  const handleClick = (value) => {
+    setSelectedOption(value);
+  };
+
   return (
     <Modal
       title={customTitle}
@@ -50,12 +54,18 @@ const CallBackModal = ({ isModalOpen, onClose, onContinue }) => {
         value={selectedOption}
         style={{ width: "100%" }}
       >
-        <div className="w-full flex items-center justify-between">
+        <div
+          className="w-full flex items-center justify-between cursor-pointer"
+          onClick={() => handleClick("generateQuote")}
+        >
           <Text>Generate Quote</Text>
           <Radio value="generateQuote"></Radio>
         </div>
         <Divider />
-        <div className="w-full flex items-center justify-between">
+        <div
+          className="w-full flex items-center justify-between cursor-pointer"
+          onClick={() => handleClick("requestCallback")}
+        >
           <Text>Request a call back</Text>
           <Radio value="requestCallback"></Radio>
         </div>
