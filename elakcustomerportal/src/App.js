@@ -20,6 +20,7 @@ import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
 import Welcome from "./components/Group Term Life/Welcome";
 import CriticalIllnessQuotation from "./components/Group Critical Illness/CriticalIllnessQuotation";
 import { authenticateUser } from "./store/redux/features/authSlice";
+import GroupLifeQuotation from "./components/Group Life/GroupLifeQuotation";
 
 function App() {
   const dispatch = useDispatch();
@@ -80,6 +81,10 @@ function App() {
                     <Route
                       path="group-life-assurance"
                       element={<GroupLifeAssurance />}
+                    />
+                    <Route
+                      path="group-life-assurance/quotation-details"
+                      element={<GroupLifeQuotation />}
                     />
                     <Route
                       path="critical-illness"
