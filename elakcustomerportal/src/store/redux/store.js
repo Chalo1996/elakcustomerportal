@@ -1,8 +1,14 @@
-import { configureStore } from "@reduxjs/toolkit";
-import gleSliceReducer from "./features/gleSlice";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { groupCreditReducer } from "../../reducers/groupCreditReducers";
+import { authReducer } from "./features/authSlice";
+import { funeralExpenseReducer } from "./features/gleSlice";
+
+const rootReducer = combineReducers({
+  groupCredit: groupCreditReducer,
+  auth: authReducer,
+  funeralExpense: funeralExpenseReducer,
+});
 
 export const store = configureStore({
-  reducer: {
-    funeralExpense: gleSliceReducer,
-  },
+  reducer: rootReducer,
 });
