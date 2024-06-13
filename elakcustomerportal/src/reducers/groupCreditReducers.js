@@ -1,6 +1,6 @@
-import { UPDATE_USER_DETAILS } from "../redux/actions/actions";
+import { UPDATE_USER_DETAILS } from "../redux/actions/groupCreditActions";
 
-const initialState = {
+const gcInitialState = {
   username: "",
   country: "",
   phone: "",
@@ -10,7 +10,7 @@ const initialState = {
   countryFlag: null,
 };
 
-const userDetailsReducer = (state = initialState, action) => {
+export const groupCreditReducer = (state = gcInitialState, action) => {
   switch (action.type) {
     case UPDATE_USER_DETAILS:
       console.log(state);
@@ -22,5 +22,3 @@ const userDetailsReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-export default userDetailsReducer;
