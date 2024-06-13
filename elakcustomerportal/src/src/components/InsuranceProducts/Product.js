@@ -5,7 +5,7 @@ import { useState } from "react";
 import FuneralExpenseModal from "../Funeral Expense/modals/FuneralExpenseModal";
 import CriticalIllnessModal from "../Group Critical Illness/CriticalIllnessModal";
 import GroupLifeModal from "../Group Life/groupLifeModal";
-import GroupCreditModal from "../GroupCredit/Modals/GroupCreditModal";
+import GroupCreditModal from "../GroupCredit/GroupCreditModal";
 import Educamodal from "../Education/Educamodal";
 import Goalbasedmodal from "../Goal Based/Goalbasedmodal";
 import { NavLink } from "react-router-dom";

@@ -14,12 +14,16 @@ import CustomerTypePage from "./pages/FuneralExpensePages/CustomerType";
 import LandingPage from "./pages/landingPage";
 import IndividualCustomer from "./pages/FuneralExpensePages/IndividualCustomer";
 import GroupCustomerPage from "./pages/FuneralExpensePages/GroupCustomer";
-import { GroupCredit } from "./components/GroupCredit/GroupCredit";
+import GroupCredit from "./components/GroupCredit/GroupCredit";
+import IndividualCover from "./components/GroupCredit/IndividualCover";
+import MultipleCover from "./components/GroupCredit/MultipleCover";
 import FuneralExpenseQuotation from "./pages/FuneralExpensePages/Quotation";
 import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
 import Welcome from "./components/Group Term Life/Welcome";
 import CriticalIllnessQuotation from "./components/Group Critical Illness/CriticalIllnessQuotation";
 import { authenticateUser } from "./store/redux/features/authSlice";
+import Privacy from "./pages/TermsAndPrivacy/Privacy";
+import Terms from "./pages/TermsAndPrivacy/Terms";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,13 +43,13 @@ function App() {
         >
           <Routes>
             {/* Landing Page Route */}
-            <Route path="/landing-page" element={<LandingPage />} />
+            <Route path='/landing-page' element={<LandingPage />} />
             {/* Redirect to /landing-page */}
-            <Route path="/" element={<Navigate to="/landing-page" />} />
+            <Route path='/' element={<Navigate to='/landing-page' />} />
 
             {/* Home route */}
             <Route
-              path="/home"
+              path='/home'
               element={
                 <PortalLayout>
                   <Home />
@@ -55,55 +59,69 @@ function App() {
 
             {/* Routes under /home */}
             <Route
-              path="/home/*"
+              path='/home/*'
               element={
                 <PortalLayout>
                   <Routes>
-                    <Route path="education" element={<Education />} />
-                    <Route path="goal-based" element={<GoalBased />} />
+                    <Route path='education' element={<Education />} />
+                    <Route path='goal-based' element={<GoalBased />} />
                     <Route
-                      path="funeral-expense/select-customer-type"
+                      path='funeral-expense/select-customer-type'
                       element={<CustomerTypePage />}
                     />
                     <Route
-                      path="funeral-expense/individual-customer"
+                      path='funeral-expense/individual-customer'
                       element={<IndividualCustomer />}
                     />
                     <Route
-                      path="funeral-expense/group-customer"
+                      path='funeral-expense/group-customer'
                       element={<GroupCustomerPage />}
                     />
                     <Route
-                      path="funeral-expense/quotation-details"
+                      path='funeral-expense/quotation-details'
                       element={<FuneralExpenseQuotation />}
                     />
                     <Route
-                      path="group-life-assurance"
+                      path='group-life-assurance'
                       element={<GroupLifeAssurance />}
                     />
                     <Route
-                      path="critical-illness"
+                      path='critical-illness'
                       element={<GroupCriticalIllness />}
                     />
                     <Route
-                      path="critical-illness/critical-illness-quotation"
+                      path='critical-illness/critical-illness-quotation'
                       element={<CriticalIllnessQuotation />}
                     />
-                    {/* Add more routes here */}
-                    <Route path="group-credit/*" element={<GroupCredit />} />
-                    <Route path="*" element={<NotFound />} />
+                    <Route
+                      path='group-credit/*'
+                      element={<GroupCreditRoutes />}
+                    />
+                    <Route path='*' element={<NotFound />} />
                   </Routes>
                 </PortalLayout>
               }
             />
 
             {/* Routes outside of /home */}
-            <Route path="*" element={<NotFound />} />
+            <Route path='/terms' element={<Terms />} />
+            <Route path='/privacy' element={<Privacy />} />
+            <Route path='*' element={<NotFound />} />
           </Routes>
         </ConfigProvider>
       </ThemeProvider>
     </BrowserRouter>
   );
 }
+
+const GroupCreditRoutes = () => {
+  return (
+    <Routes>
+      <Route path='/' element={<GroupCredit />} />
+      <Route path='individual-cover' element={<IndividualCover />} />
+      <Route path='multiple-cover' element={<MultipleCover />} />
+    </Routes>
+  );
+};
 
 export default App;
