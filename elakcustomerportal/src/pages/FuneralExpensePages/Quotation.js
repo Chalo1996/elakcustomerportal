@@ -1,6 +1,18 @@
+import { useEffect } from "react";
 import { Card, Row, Col, Table } from "antd";
+import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { resetData } from "../../store/redux/features/gleSlice";
 
-const FuneralExpenseQuotation = ({ formData, tableData }) => {
+const FuneralExpenseQuotation = () => {
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const { formData = {}, tableData = [] } = location.state || {};
+
+  useEffect(() => {
+    dispatch(resetData());
+  }, [dispatch]);
+
   const customerTableColumns = [
     {
       title: "Attribute",
@@ -18,29 +30,24 @@ const FuneralExpenseQuotation = ({ formData, tableData }) => {
 
   const customerTableData = [
     {
-      key: "name",
+      key: "fullName",
       attribute: "Name",
-      value: formData.customerName,
-    },
-    {
-      key: "gender",
-      attribute: "Gender",
-      value: formData.customerGender,
+      value: `${formData.firstName ?? ""} ${formData.lastName ?? ""}`,
     },
     {
       key: "email",
       attribute: "Email",
-      value: formData.customerEmail,
+      value: formData.email ?? "",
     },
     {
       key: "country",
       attribute: "Country",
-      value: formData.country,
+      value: formData.country ?? "",
     },
     {
       key: "phone",
-      attribute: " Phone",
-      value: `${formData.customerPhoneArea}${formData.customerPhone}`,
+      attribute: "Phone",
+      value: `${formData.phoneArea ?? ""}${formData.phoneNo ?? ""}`,
     },
   ];
 
@@ -86,13 +93,13 @@ const FuneralExpenseQuotation = ({ formData, tableData }) => {
         <div style={{ width: "90%", margin: "auto" }}>
           <Row justify="space-between">
             <Col>
-              <h3 style={{ fontWeight: "bold" }}>
+              <p style={{ fontWeight: "bold" }}>
                 EQUITY LIFE ASSURANCE (KENYA) LIMITED
-              </h3>
-              <h4 style={{ fontWeight: "bold" }}>Funeral Expense</h4>
-              <h4 style={{ fontWeight: "bold" }}>
-                {formData.segment} Quotation
-              </h4>
+              </p>
+              <p style={{ fontWeight: "bold" }}>Funeral Expense</p>
+              <p style={{ fontWeight: "bold" }}>
+                {formData.segment ?? ""} Quotation
+              </p>
             </Col>
             <Col>
               <img
@@ -104,7 +111,7 @@ const FuneralExpenseQuotation = ({ formData, tableData }) => {
                 }}
               />
 
-              <h4
+              <p
                 style={{
                   display: "block",
                   marginTop: "10px",
@@ -112,32 +119,33 @@ const FuneralExpenseQuotation = ({ formData, tableData }) => {
                 }}
               >
                 Date: {new Date().toLocaleDateString()}
-              </h4>
+              </p>
             </Col>
           </Row>
 
-          <h4 style={{ fontWeight: "bold", marginTop: "5px" }}>
+          <p style={{ fontWeight: "bold", marginTop: "5px" }}>
             Customer Details
-          </h4>
+          </p>
           <Table
             columns={customerTableColumns}
             dataSource={customerTableData}
             bordered
             pagination={false}
             style={{ border: "1px solid black" }}
+            scroll={{ x: "max-content" }}
             showHeader={false}
           />
 
-          <h4 style={{ fontWeight: "bold", marginTop: "10px" }}>
+          <p style={{ fontWeight: "bold", marginTop: "10px" }}>
             Policy Details
-          </h4>
+          </p>
           <Table
             columns={policyDataColumns}
             dataSource={tableData}
             bordered
             pagination={false}
             title={() => (
-              <div
+              <p
                 style={{
                   fontWeight: "bold",
                   textAlign: "center",
@@ -147,12 +155,13 @@ const FuneralExpenseQuotation = ({ formData, tableData }) => {
                 {formData.segment === "Individual Customer"
                   ? "Personal Funeral Expense Cover"
                   : "Group Funeral Expense Cover"}
-              </div>
+              </p>
             )}
             style={{ border: "1px solid black" }}
+            scroll={{ x: "max-content" }}
           />
 
-          <h4 style={{ fontWeight: "bold", marginTop: "20px" }}>Notes</h4>
+          <p style={{ fontWeight: "bold", marginTop: "20px" }}>Notes</p>
           <p>1. Cover on 24 hour worldwide basis. </p>
           <p>
             2. Funeral Expense claims are payable within 48 hours of official
@@ -169,7 +178,7 @@ const FuneralExpenseQuotation = ({ formData, tableData }) => {
             to adopted children subject to proof of legal adoption.
           </p>
           <p>
-            5 .The cover duration is one (1) year and commences once the premium
+            5. The cover duration is one (1) year and commences once the premium
             is paid in full.
           </p>
           <p>
@@ -188,84 +197,103 @@ const FuneralExpenseQuotation = ({ formData, tableData }) => {
             issue.
           </p>
 
-          <table
-            style={{
-              width: "80%",
-              borderCollapse: "collapse",
-              border: "1px solid black",
-            }}
-          >
-            <thead>
-              <tr
-                style={{
-                  backgroundColor: "maroon",
-                  color: "white",
-                  textAlign: "left",
-                }}
-              >
-                <th style={{ border: "1px solid black", padding: "8px" }}>
-                  Category of Member
-                </th>
-                <th style={{ border: "1px solid black", padding: "8px" }}>
-                  Minimum Entry Age
-                </th>
-                <th style={{ border: "1px solid black", padding: "8px" }}>
-                  Maximum Entry Age
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {ageInfoData.map((row, index) => (
-                <tr key={index}>
-                  <td style={{ border: "1px solid black", padding: "8px" }}>
-                    {row.category}
-                  </td>
-                  <td style={{ border: "1px solid black", padding: "8px" }}>
-                    {row.minAge}
-                  </td>
-                  <td style={{ border: "1px solid black", padding: "8px" }}>
-                    {row.maxAge}
-                  </td>
+          <div className="overflow-x-auto">
+            <table
+              style={{
+                borderCollapse: "collapse",
+                border: "1px solid black",
+                width: "100%",
+              }}
+            >
+              <thead>
+                <tr
+                  style={{
+                    backgroundColor: "maroon",
+                    color: "white",
+                    textAlign: "left",
+                  }}
+                >
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    Category of Member
+                  </th>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    Minimum Entry Age
+                  </th>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    Maximum Entry Age
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {ageInfoData.map((row, index) => (
+                  <tr key={index}>
+                    <td style={{ border: "1px solid black", padding: "8px" }}>
+                      {row.category}
+                    </td>
+                    <td style={{ border: "1px solid black", padding: "8px" }}>
+                      {row.minAge}
+                    </td>
+                    <td style={{ border: "1px solid black", padding: "8px" }}>
+                      {row.maxAge}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           <p style={{ marginTop: "15px" }}>
             <strong>Onboarding requirements:</strong> Member data in the below
             format
           </p>
-          <table>
-            <thead>
-              <th style={{ border: "1px solid black", padding: "8px" }}>
-                Name
-              </th>
-              <th style={{ border: "1px solid black", padding: "8px" }}>
-                Date of Birth
-              </th>
-              <th style={{ border: "1px solid black", padding: "8px" }}>
-                ID/Passport Number
-              </th>
-              <th style={{ border: "1px solid black", padding: "8px" }}>
-                Phone Number
-              </th>
-              <th style={{ border: "1px solid black", padding: "8px" }}>
-                Main Member
-              </th>
-              <th style={{ border: "1px solid black", padding: "8px" }}>
-                Relation to Member
-              </th>
-            </thead>
-            <tbody>
-              <td style={{ border: "1px solid black", padding: "8px" }}></td>
-              <td style={{ border: "1px solid black", padding: "8px" }}></td>
-              <td style={{ border: "1px solid black", padding: "8px" }}></td>
-              <td style={{ border: "1px solid black", padding: "8px" }}></td>
-              <td style={{ border: "1px solid black", padding: "8px" }}></td>
-              <td style={{ border: "1px solid black", padding: "8px" }}></td>
-            </tbody>
-          </table>
-
+          <div className="overflow-x-auto">
+            <table>
+              <thead>
+                <tr>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    Name
+                  </th>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    Date of Birth
+                  </th>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    ID/Passport Number
+                  </th>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    Phone Number
+                  </th>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    Main Member
+                  </th>
+                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                    Relation to Member
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td
+                    style={{ border: "1px solid black", padding: "8px" }}
+                  ></td>
+                  <td
+                    style={{ border: "1px solid black", padding: "8px" }}
+                  ></td>
+                  <td
+                    style={{ border: "1px solid black", padding: "8px" }}
+                  ></td>
+                  <td
+                    style={{ border: "1px solid black", padding: "8px" }}
+                  ></td>
+                  <td
+                    style={{ border: "1px solid black", padding: "8px" }}
+                  ></td>
+                  <td
+                    style={{ border: "1px solid black", padding: "8px" }}
+                  ></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <p style={{ marginTop: "15px" }}>
             Copies of ID/Passport, Birth Certificate/Notification of members
             covered.
@@ -278,7 +306,7 @@ const FuneralExpenseQuotation = ({ formData, tableData }) => {
           <p>
             <em>
               Additional documents for Groups/Corporates-Certificate of
-              Registration & KRA Pin.{" "}
+              Registration & KRA Pin.
             </em>
           </p>
 
@@ -303,9 +331,9 @@ const FuneralExpenseQuotation = ({ formData, tableData }) => {
             padding: "6px",
           }}
         >
-          <h3 style={{ color: "white" }}>
+          <p style={{ color: "white" }}>
             <strong>Equity Life Assurance (Kenya) Limited</strong>
-          </h3>
+          </p>
         </div>
       </Card>
     </>
