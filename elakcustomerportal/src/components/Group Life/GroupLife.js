@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Steps, Row, Form, Input, InputNumber, Button, message, Col, Checkbox, Modal, DatePicker, Select, Radio, Divider, Typography, Card } from 'antd';
 import 'tailwindcss/tailwind.css';
 
@@ -7,6 +7,9 @@ import dayjs from 'dayjs';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchData } from "../../store/redux/features/glaSlice";
+import { InfoCircleOutlined } from "@ant-design/icons";
+import moment from 'moment';
+
 
 const { Step } = Steps;
 const { Option } = Select;
@@ -414,42 +417,88 @@ const InsuredMembers = ({ formData, setFormData }) => {
 };
 
 const PolicyDetails = ({ formData, setFormData }) => {
-  const [currencySymbol,] = React.useState("KSh");
-  
+  const [form] = Form.useForm(); // Initialize form
+
   const handleInputChange = (value, field) => {
     setFormData((prevData) => ({ ...prevData, [field]: value }));
   };
 
+  const handleStartDateChange = useCallback(
+    (date) => {
+      if (!date) {
+        form.resetFields(['policyEndDate']);
+        setFormData({ ...formData, policyEndDate: null });
+        return null;
+      }
+      const oneYearLater = date.clone().add(1, 'year').subtract(1, 'day');
+      setFormData({ ...formData, policyStartDate: date, policyEndDate: oneYearLater });
+      return oneYearLater;
+    },
+    [form, formData, setFormData]
+  );
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  };
+
+  useEffect(() => {
+    form.setFieldsValue(formData);
+    form.setFieldsValue({ policyStartDate: formData.policyStartDate });
+  }, [form, formData]);
+
+  useEffect(() => {
+    const newPolicyEndDate = handleStartDateChange(formData.policyStartDate);
+    setFormData({ ...formData, policyEndDate: newPolicyEndDate });
+    form.setFieldsValue({ policyEndDate: newPolicyEndDate });
+  }, [formData, form, setFormData, handleStartDateChange]);
+
   return (
-    <div>
+    <Form form={form} layout="vertical">
       <Row gutter={16}>
         <Col span={12}>
           <Title level={5} style={{ marginBottom: '20px' }}>Please enter policy details</Title>
-          </Col>
+        </Col>
       </Row>
-      <br></br>
+      <br />
       <Row gutter={16}>
-        <Col span={12}>
-          <Form.Item label="When would you like the cover to start?" name="policyStartDate"
-            rules={[{ required: true, message: 'Please Select a date' }]}
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+          <Form.Item
+            label="Cover Commencement Date"
+            name="policyStartDate"
+            rules={[
+              {
+                required: true,
+                message: 'Please select start date.',
+              },
+            ]}
+            style={{ width: '100%', cursor: 'pointer' }}
           >
-            <DatePicker 
-            style={{ width: "100%" }}
-            value={formData.policyStartDate}
-            disabledDate={disabledTodayDate}
-            onChange={(value) => handleInputChange(value, 'policyStartDate')}
-             />
+            <DatePicker
+              style={{ width: '100%' }}
+              id="policyStartDate"
+              disabledDate={(current) => current && current < moment().endOf('day')}
+              onChange={handleStartDateChange}
+              inputReadOnly={true}
+            />
           </Form.Item>
-          <br></br>
-          <Form.Item label="Your cover will automatically expire on:" name="coverEndDate"
-            rules={[{ required: true, message: 'Please Select a date' }]}
-          >
-            <DatePicker 
-            style={{ width: "100%" }}
-            value={"2025-06-12"}
-            onChange={(value) => handleInputChange(value, '2025-06-12')}
-             />
-          </Form.Item>
+          {formData.policyStartDate && (
+            <p className="flex items-center mb-[35px]">
+              <InfoCircleOutlined
+                style={{
+                  color: '#D93E3E',
+                  marginRight: '8px',
+                }}
+              />
+              <span className="text-[#929497]">
+                Your cover will automatically expire on {formatDate(formData.policyEndDate)}
+              </span>
+            </p>
+          )}
         </Col>
         <Col span={12}>
           <Form.Item
@@ -458,7 +507,7 @@ const PolicyDetails = ({ formData, setFormData }) => {
             rules={[
               {
                 required: true,
-                message: "Please select a level of cover!",
+                message: 'Please select a level of cover!',
               },
             ]}
           >
@@ -473,7 +522,7 @@ const PolicyDetails = ({ formData, setFormData }) => {
               <Option value="5">5x Salary</Option>
             </Select>
           </Form.Item>
-          <br></br>
+          <br />
           {formData.flatAmount && (
             <Form.Item
               label="Specify Flat Amount"
@@ -481,7 +530,7 @@ const PolicyDetails = ({ formData, setFormData }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter the flat amount!",
+                  message: 'Please enter the flat amount!',
                 },
               ]}
             >
@@ -489,22 +538,21 @@ const PolicyDetails = ({ formData, setFormData }) => {
                 className="w-full"
                 placeholder="Enter flat amount"
                 min={0}
-                addonBefore={currencySymbol}
+                addonBefore="KSh"
                 value={formData.flatAmount}
                 onChange={(value) => handleInputChange(value, 'flatAmount')}
                 formatter={(value) =>
-                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                 }
-                parser={(value) => value.replace(/(,*)/g, "")}
+                parser={(value) => value.replace(/(,*)/g, '')}
               />
             </Form.Item>
           )}
         </Col>
       </Row>
-    </div>
-  )
+    </Form>
+  );
 };
-
 const ReviewAndConfirm = ({ formDataToSubmit }) => {
   const [formatter] = React.useState(
     new Intl.NumberFormat('en-KE', {
