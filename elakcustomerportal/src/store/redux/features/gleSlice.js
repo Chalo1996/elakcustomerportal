@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const url = "https://course-api.com/react-useReducer-cart-project";
+const url = "https://sisos-eu.azurewebsites.net/api/cmd";
 
 const initialState = {
   gleData: [],
@@ -9,39 +9,58 @@ const initialState = {
 };
 
 export const fetchData = createAsyncThunk(
-  "funeral-expense/fetchData",
-  async (name, thunkAPI) => {
+  "funeralExpense/fetchData",
+  async (data, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const token = state.auth.token;
+
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+
     try {
-      console.log(name);
-      console.log("thunkAPI: ", thunkAPI);
-      console.log("thunkAPI.getState(): ", thunkAPI.getState());
-      const response = await axios(url);
-      console.log("response: ", response);
-      return response.data;
+      const dataToPost = {
+        cmd: "ExeChain",
+        data: {
+          chain: "M3TrainingGLECalculator",
+          context: JSON.stringify(data),
+        },
+      };
+      const response = await axios.post(url, dataToPost, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("funeralExpense response: ", response);
+      return response.data.outData;
     } catch (error) {
-      console.log(error);
-      return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(error.response.data);
     }
   }
 );
 
-export const gleSlice = createSlice({
-  name: "cart",
-  initialState,
+const funeralExpenseSlice = createSlice({
+  name: "funeralExpense",
+  initialState: initialState,
+  reducers: {
+    resetData: (state) => {
+      state.isLoading = true;
+    },
+  },
   extraReducers: (builder) => {
-    // Lifecycle actions for createAsyncThunk
     builder
       .addCase(fetchData.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(fetchData.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.cartItems = action.payload;
+        state.gleData = action.payload;
       })
-      .addCase(fetchData.rejected, (state) => {
+      .addCase(fetchData.rejected, (state, action) => {
         state.isLoading = false;
       });
   },
 });
 
-export default gleSlice.reducer;
+export const { resetData } = funeralExpenseSlice.actions;
+export const { reducer: funeralExpenseReducer } = funeralExpenseSlice;

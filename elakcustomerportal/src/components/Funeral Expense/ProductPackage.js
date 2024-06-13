@@ -7,6 +7,11 @@ const ProductPackage = ({ name, benefit, onSelect, selected }) => {
     onSelect(name, benefit);
   };
 
+  const formattedBenefit = new Intl.NumberFormat("en-KE", {
+    style: "currency",
+    currency: "KES",
+  }).format(benefit);
+
   return (
     <Col xs={24} sm={12} lg={8}>
       <Card
@@ -15,7 +20,7 @@ const ProductPackage = ({ name, benefit, onSelect, selected }) => {
         } w-full`}
         onClick={handleClick}
       >
-        <Meta title={name} description={`Benefit: ${benefit} KES`} />
+        <Meta title={name} description={`Benefit: ${formattedBenefit}`} />
       </Card>
     </Col>
   );
