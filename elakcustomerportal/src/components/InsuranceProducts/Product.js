@@ -6,7 +6,8 @@ import { useState } from "react";
 import FuneralExpenseModal from "../Funeral Expense/modals/FuneralExpenseModal";
 import CriticalIllnessModal from "../Group Critical Illness/CriticalIllnessModal";
 import GroupCreditModal from "../GroupCredit/GroupCreditModal";
-//import GroupLifeModal from "../Group Life/groupLifeModal";
+import GroupLifeModal from "../Group Life/groupLifeModal";
+import Welcome from "./components/Group Term Life/Welcome";
 
 const { Meta } = Card;
 
@@ -55,6 +56,17 @@ const Product = ({ product, index }) => {
             product={product}
           />
         );
+
+        case 4:
+          return (
+            <Welcome
+              isModalOpen={isModalOpen}
+              onOkay={handleOk}
+              onCancel={handleCancel}
+              product={product}
+            />
+          );
+  
 
       case 6:
         return (
