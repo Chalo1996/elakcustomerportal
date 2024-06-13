@@ -57,5 +57,4 @@ const products = [
       "A group credit life insurance policy is issued by an insurance company to a creditor institution, such as a bank, covering the lives of the bank's current and future debtors. Unlike other group life plans, the bank is both the policyholder and the beneficiary of the life insurance.",
   },
 ];
-
 export default products;

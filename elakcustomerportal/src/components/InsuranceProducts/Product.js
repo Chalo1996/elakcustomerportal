@@ -1,17 +1,12 @@
 import { Card, Button } from "antd";
+import { NavLink } from "react-router-dom";
 import { useTheme } from "../../store/context/theme-context";
 import { useState } from "react";
 
 import FuneralExpenseModal from "../Funeral Expense/modals/FuneralExpenseModal";
 import CriticalIllnessModal from "../Group Critical Illness/CriticalIllnessModal";
-import GroupLifeModal from "../Group Life/groupLifeModal";
 import GroupCreditModal from "../GroupCredit/GroupCreditModal";
-import Educamodal from "../Education/Educamodal";
-import Goalbasedmodal from "../Goal Based/Goalbasedmodal";
-import { NavLink } from "react-router-dom";
-import GroupTermLifeModal from "../Group Term Life/GroupTermLifeModal";
-
- 
+import GroupLifeModal from "../Group Life/groupLifeModal";
 
 const { Meta } = Card;
 
@@ -60,6 +55,7 @@ const Product = ({ product, index }) => {
             product={product}
           />
         );
+
       case 6:
         return (
           <GroupCreditModal
@@ -69,7 +65,7 @@ const Product = ({ product, index }) => {
             product={product}
           />
         );
-      // Add cases for additional product modals here...
+      //Add cases for additional product modals here...
       default:
         return null;
     }
@@ -82,7 +78,7 @@ const Product = ({ product, index }) => {
         <img
           alt={product.title}
           src={product.image}
-          className='h-40 object-cover'
+          className="h-40 object-cover"
         />
       }
       className={`${theme === "dark" ? "bg-gray-700 text-white" : ""} m-4`}
@@ -99,14 +95,15 @@ const Product = ({ product, index }) => {
           </span>
         }
       />
-      <div className='flex flex-col lg:flex-row justify-start mt-4 gap-1'>
+      <div className="flex flex-col lg:flex-row justify-start mt-4 gap-1">
         <Button
-          className='border-0 shadow-none text-[#A32A29]'
+          className="border-0 shadow-none text-[#A32A29]"
           onClick={showModal}
         >
           Learn More
         </Button>
-        <Button type='primary' className='border-0 shadow-none'>
+
+        <Button type="primary" className="border-0 shadow-none">
           <NavLink to={product.url}>Get Cover</NavLink>
         </Button>
       </div>
@@ -114,5 +111,4 @@ const Product = ({ product, index }) => {
     </Card>
   );
 };
-
 export default Product;

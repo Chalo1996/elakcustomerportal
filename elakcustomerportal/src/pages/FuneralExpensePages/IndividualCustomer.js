@@ -11,6 +11,7 @@ import ProductPackagesForm from "../../components/Funeral Expense/ProductPackage
 import SumAssuredPercentageForm from "../../components/Funeral Expense/SumAssuredPercentage";
 import ConfirmDetailsForm from "../../components/Funeral Expense/ConfirmDetails";
 import { fetchData } from "../../store/redux/features/gleSlice";
+import CallBackForm from "../../components/Funeral Expense/CallBack";
 
 const { Step } = Steps;
 
@@ -28,6 +29,7 @@ const getInitialFormData = () => {
         birthDate: null,
         terms: false,
         spouse: false,
+        principalNumber: 1,
         spouseNumber: 0,
         parentsNumber: 0,
         childrenNumber: 0,
@@ -55,11 +57,13 @@ const IndividualCustomer = () => {
 
   const [current, setCurrent] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [showCallback, setShowCallback] = useState(false);
 
   const [form1] = Form.useForm();
   const [form2] = Form.useForm();
   const [form3] = Form.useForm();
   const [form4] = Form.useForm();
+  const [form5] = Form.useForm();
   const forms = [form1, form2, form3, form4];
 
   const [formData, setFormData] = useState(() => {
@@ -81,7 +85,7 @@ const IndividualCustomer = () => {
       persons: [
         {
           name: "Principal Member",
-          lives: 1,
+          lives: formData.principalNumber,
           sumAssuredPercentage: 100,
         },
         {
@@ -167,8 +171,17 @@ const IndividualCustomer = () => {
     if (selectedOption === "generateQuote") {
       setCurrent(current + 1);
     } else if (selectedOption === "requestCallback") {
-      navigate("/home/funeral-expense/request-callback");
+      // navigate("/home/funeral-expense/request-callback");
+      setShowCallback(true);
     }
+  };
+
+  const handleCallBack = () => {
+    setShowCallback(false);
+  };
+
+  const handleSubmitCallback = () => {
+    console.log("clicked");
   };
 
   const handleSubmit = async () => {
@@ -239,54 +252,85 @@ const IndividualCustomer = () => {
 
   return (
     <div className="pt-5 pl-4">
-      <div className="mb-4">
-        <span>
-          <button className="mb-2 focus:outline-none hover:text-[#A32A29]">
-            <LeftOutlined className="w-8 h-8" onClick={handleNavigate} />
-          </button>
-        </span>
-        <span className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
-          Get Funeral Expense Cover
-        </span>
-      </div>
-
-      <div>
-        <Steps current={current}>
-          {steps.map((item) => (
-            <Step key={item.title} title={item.title} />
-          ))}
-        </Steps>
-        <div className="steps-content">{steps[current].content}</div>
-        <div className="steps-action">
-          {current > 0 && (
+      {showCallback ? (
+        <>
+          <div className="mb-4">
+            <span>
+              <button className="mb-2 focus:outline-none hover:text-[#A32A29]">
+                <LeftOutlined className="w-8 h-8" onClick={handleCallBack} />
+              </button>
+            </span>
+            <span className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
+              Request Callback
+            </span>
+          </div>
+          <CallBackForm
+            form={form5}
+            formData={formData}
+            setFormData={setFormData}
+          />
+          <div className="steps-action">
             <Button
-              onClick={handlePrev}
+              type="primary"
+              onClick={handleSubmitCallback}
               className="h-full px-4 py-2 shadow-none text-center mr-3"
             >
-              Go back
+              Submit
             </Button>
-          )}
-          {current < steps.length - 1 && (
-            <Button
-              type="primary"
-              onClick={handleNext}
-              disabled={isNextButtonDisabled()}
-              className="h-full px-4 py-2 shadow-none text-center"
-            >
-              Continue
-            </Button>
-          )}
-          {current === steps.length - 1 && (
-            <Button
-              type="primary"
-              onClick={handleSubmit}
-              className="h-full px-4 py-2 shadow-none text-center"
-            >
-              Generate Quotation
-            </Button>
-          )}
-        </div>
-      </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="mb-4">
+            <span>
+              <button className="mb-2 focus:outline-none hover:text-[#A32A29]">
+                <LeftOutlined className="w-8 h-8" onClick={handleNavigate} />
+              </button>
+            </span>
+            <span className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
+              Get Funeral Expense Cover
+            </span>
+          </div>
+
+          <div>
+            <Steps current={current}>
+              {steps.map((item) => (
+                <Step key={item.title} title={item.title} />
+              ))}
+            </Steps>
+            <div className="steps-content">{steps[current].content}</div>
+            <div className="steps-action">
+              {current > 0 && (
+                <Button
+                  onClick={handlePrev}
+                  className="h-full px-4 py-2 shadow-none text-center mr-3"
+                >
+                  Go back
+                </Button>
+              )}
+              {current < steps.length - 1 && (
+                <Button
+                  type="primary"
+                  onClick={handleNext}
+                  disabled={isNextButtonDisabled()}
+                  className="h-full px-4 py-2 shadow-none text-center"
+                >
+                  Continue
+                </Button>
+              )}
+              {current === steps.length - 1 && (
+                <Button
+                  type="primary"
+                  onClick={handleSubmit}
+                  className="h-full px-4 py-2 shadow-none text-center"
+                >
+                  Generate Quotation
+                </Button>
+              )}
+            </div>
+          </div>
+        </>
+      )}
 
       <CallBackModal
         isModalOpen={isModalVisible}
