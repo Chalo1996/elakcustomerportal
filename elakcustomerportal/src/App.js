@@ -12,22 +12,11 @@ import GroupCriticalIllness from "./components/Group Critical Illness/CriticalIl
 import NotFound from "./pages/NotFound";
 import CustomerTypePage from "./pages/FuneralExpensePages/CustomerType";
 import LandingPage from "./pages/landingPage";
-import IndividualCustomer from "./pages/FuneralExpensePages/IndividualCustomer";
-import GroupCustomerPage from "./pages/FuneralExpensePages/GroupCustomer";
 import { GroupCredit } from "./components/GroupCredit/GroupCredit";
 import FuneralExpenseQuotation from "./pages/FuneralExpensePages/Quotation";
-//import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
-//import Welcome from "./components/Group Term Life/Welcome";
 import CriticalIllnessQuotation from "./components/Group Critical Illness/CriticalIllnessQuotation";
 import { authenticateUser } from "./store/redux/features/authSlice";
-// import FuneralExpensePages from "./pages/FuneralExpensePages";
-import GroupTermLife from "./components/Group Term Life/TermLife";
-//import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
-import Welcome from "./components/Group Term Life/Welcome";
-//import TermLife from "./components/Group Term Life/TermLife";
-
- 
-
+import HandleCustomerSelection from "./pages/FuneralExpensePages/HandleCustomerSelection";
 
 function App() {
   const dispatch = useDispatch();
@@ -74,12 +63,8 @@ function App() {
                       element={<CustomerTypePage />}
                     />
                     <Route
-                      path="funeral-expense/individual-customer"
-                      element={<IndividualCustomer />}
-                    />
-                    <Route
-                      path="funeral-expense/group-customer"
-                      element={<GroupCustomerPage />}
+                      path="/funeral-expense"
+                      element={<HandleCustomerSelection />}
                     />
                     <Route
                       path="funeral-expense/quotation-details"
