@@ -10,7 +10,7 @@ import GroupCreditModal from "../GroupCredit/GroupCreditModal";
 import Educamodal from "../Education/Educamodal";
 import Goalbasedmodal from "../Goal Based/Goalbasedmodal";
 import { NavLink } from "react-router-dom";
-import GroupTermLifeModal from "../Group Term Life/GroupTermLifeModal";
+//import GroupTermLifeModal from "../Group Term Life/GroupTermLifeModal";
 
  
 

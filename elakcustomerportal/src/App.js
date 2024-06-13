@@ -16,15 +16,15 @@ import IndividualCustomer from "./pages/FuneralExpensePages/IndividualCustomer";
 import GroupCustomerPage from "./pages/FuneralExpensePages/GroupCustomer";
 import { GroupCredit } from "./components/GroupCredit/GroupCredit";
 import FuneralExpenseQuotation from "./pages/FuneralExpensePages/Quotation";
-import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
-import Welcome from "./components/Group Term Life/Welcome";
+//import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
+//import Welcome from "./components/Group Term Life/Welcome";
 import CriticalIllnessQuotation from "./components/Group Critical Illness/CriticalIllnessQuotation";
 import { authenticateUser } from "./store/redux/features/authSlice";
-import FuneralExpensePage from "./pages/FuneralExpense";
+// import FuneralExpensePages from "./pages/FuneralExpensePages";
 import GroupTermLife from "./components/Group Term Life/TermLife";
-import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
+//import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
 import Welcome from "./components/Group Term Life/Welcome";
-import TermLife from "./components/Group Term Life/TermLife";
+//import TermLife from "./components/Group Term Life/TermLife";
 
  
 
