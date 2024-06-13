@@ -20,6 +20,8 @@ import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
 import Welcome from "./components/Group Term Life/Welcome";
 import CriticalIllnessQuotation from "./components/Group Critical Illness/CriticalIllnessQuotation";
 import { authenticateUser } from "./store/redux/features/authSlice";
+import EducQuotation from "./components/Education/EducQuotation";
+import GoalQuotation from "./components/Goal Based/GoalQuotation";
 
 function App() {
   const dispatch = useDispatch();
@@ -88,6 +90,14 @@ function App() {
                     <Route
                       path="critical-illness/critical-illness-quotation"
                       element={<CriticalIllnessQuotation />}
+                    />
+                     <Route
+                      path="Education/Educ-Quotation"
+                      element={<EducQuotation />}
+                    />
+                    <Route
+                      path="Goal-based/Goal-Quotation"
+                      element={<GoalQuotation />}
                     />
                     {/* Add more routes here */}
                     <Route path="group-credit/*" element={<GroupCredit />} />

@@ -60,6 +60,24 @@ const Product = ({ product, index }) => {
             product={product}
           />
         );
+        case 3:
+        return (
+          <Educamodal
+            isModalOpen={isModalOpen}
+            onOkay={handleOk}
+            onCancel={handleCancel}
+            product={product}
+          />
+        );
+        case 4:
+        return (
+          <Goalbasedmodal
+            isModalOpen={isModalOpen}
+            onOkay={handleOk}
+            onCancel={handleCancel}
+            product={product}
+          />
+        );
       case 6:
         return (
           <GroupCreditModal
