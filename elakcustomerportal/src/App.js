@@ -25,6 +25,8 @@ import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
 import Welcome from "./components/Group Term Life/Welcome";
 import CustomerType from "./components/Group Critical Illness/CustomerType";
 import Submit from "./components/Group Critical Illness/Submit";
+import GroupLifeQuotation from "./components/Group Life/GroupLifeQuotation";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -94,6 +96,11 @@ function App() {
                       path="group-life-assurance"
                       element={<GroupLifeAssurance />}
                     />
+                    <Route
+                      path="group-life-assurance/quotation-details"
+                      element={<GroupLifeQuotation />}
+                    />
+ 
                     <Route
                       path="customer-type/critical-illness"
                       element={<GroupCriticalIllness />}
