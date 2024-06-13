@@ -19,9 +19,9 @@ const CustomerTypeModal = ({ isModalOpen, onOkay, onCancel, customerType }) => {
 
   const handleNavigate = () => {
     if (customerType === "Personal") {
-      navigate("/home/funeral-expense/individual-customer");
+      navigate("/home/funeral-expense?customer=individual");
     } else if (customerType === "Group") {
-      navigate("/home/funeral-expense/group-customer");
+      navigate("/home/funeral-expense?customer=group");
     }
   };
 
