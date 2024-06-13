@@ -146,6 +146,7 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
               <DatePicker
                 style={{ width: "100%" }}
                 id="birthDate"
+                value={formData.birthDate}
                 onChange={(value) =>
                   setFormData({ ...formData, birthDate: value })
                 }
