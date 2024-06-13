@@ -6,7 +6,7 @@ import { useState } from "react";
 import FuneralExpenseModal from "../Funeral Expense/modals/FuneralExpenseModal";
 import CriticalIllnessModal from "../Group Critical Illness/CriticalIllnessModal";
 import GroupCreditModal from "../GroupCredit/GroupCreditModal";
-import GroupLifeModal from "../Group Life/groupLifeModal";
+//import GroupLifeModal from "../Group Life/groupLifeModal";
 
 const { Meta } = Card;
 

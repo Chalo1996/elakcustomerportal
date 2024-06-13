@@ -17,6 +17,8 @@ import FuneralExpenseQuotation from "./pages/FuneralExpensePages/Quotation";
 import CriticalIllnessQuotation from "./components/Group Critical Illness/CriticalIllnessQuotation";
 import { authenticateUser } from "./store/redux/features/authSlice";
 import HandleCustomerSelection from "./pages/FuneralExpensePages/HandleCustomerSelection";
+import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
+import Welcome from "./components/Group Term Life/Welcome";
 
 function App() {
   const dispatch = useDispatch();
@@ -84,6 +86,8 @@ function App() {
                     />
                     {/* Add more routes here */}
                     <Route path="group-credit/*" element={<GroupCredit />} />
+                    <Route path="welcome" element={<Welcome/>} />
+                    <Route path="term-life-quote" element={<GroupTermLifeQuote/>}/>
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </PortalLayout>
