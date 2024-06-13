@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { LeftOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import {
   Steps,
@@ -16,7 +17,6 @@ import {
   Checkbox,
   InputNumber,
   Divider,
-  Typography,
   Switch,
   Card,
 } from "antd";
@@ -150,6 +150,10 @@ const GroupCriticalIllness = () => {
     return dayjs(date).format("YYYY-MM-DD");
   };
 
+  const handleNavigate = () => {
+    navigate("/home");
+  };
+
   const handleCoverDateChange = (date, timeInYears) => {
     if (!date) {
       form.resetFields(["coverExpiryDate"]);
@@ -248,10 +252,12 @@ const GroupCriticalIllness = () => {
   };
 
   const handleCallbackContinue = async () => {
+  
     if (selectedOption === "callback") {
       try {
         await form.validateFields();
         form.submit(); // Submit the form
+        navigate("submit"); // Navigate to the critical-illness/submit path
       } catch (errorInfo) {
         console.log("Failed:", errorInfo);
       }
@@ -265,9 +271,12 @@ const GroupCriticalIllness = () => {
     console.log("FORM DATA", formData);
     return (
       <Form layout="vertical">
-        <Typography.Text strong>
+        <Card>
+        <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 mt-3 flex flex-col gap-4">
+        <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
           Please confirm your insurance purchase details to continue
-        </Typography.Text>
+        </p>
+      </div>
         <Card title="PERSONAL DETAILS">
           <Row gutter={16}>
             <Col span={12}>
@@ -275,7 +284,7 @@ const GroupCriticalIllness = () => {
                 style={{
                   fontWeight: "lighter",
                   color: "#888",
-                  marginBottom: "0px",
+                  marginBottom: "10px",
                 }}
               >
                 First Name:
@@ -287,7 +296,7 @@ const GroupCriticalIllness = () => {
                 style={{
                   fontWeight: "lighter",
                   color: "#888",
-                  marginBottom: "0px",
+                  marginBottom: "10px",
                 }}
               >
                 Last Name:
@@ -301,7 +310,7 @@ const GroupCriticalIllness = () => {
                 style={{
                   fontWeight: "lighter",
                   color: "#888",
-                  marginBottom: "0px",
+                  marginBottom: "10px",
                 }}
               >
                 Email Address:
@@ -313,7 +322,7 @@ const GroupCriticalIllness = () => {
                 style={{
                   fontWeight: "lighter",
                   color: "#888",
-                  marginBottom: "0px",
+                  marginBottom: "10px",
                 }}
               >
                 Mobile Number:
@@ -327,7 +336,7 @@ const GroupCriticalIllness = () => {
                 style={{
                   fontWeight: "lighter",
                   color: "#888",
-                  marginBottom: "0px",
+                  marginBottom: "10px",
                 }}
               >
                 Date of Birth:
@@ -344,7 +353,7 @@ const GroupCriticalIllness = () => {
                 style={{
                   fontWeight: "lighter",
                   color: "#888",
-                  marginBottom: "0px",
+                  marginBottom: "10px",
                 }}
               >
                 Number of Principal Members:{" "}
@@ -358,7 +367,7 @@ const GroupCriticalIllness = () => {
                 style={{
                   fontWeight: "lighter",
                   color: "#888",
-                  marginBottom: "0px",
+                  marginBottom: "10px",
                 }}
               >
                 Spouse Date of Birth:{" "}
@@ -374,7 +383,7 @@ const GroupCriticalIllness = () => {
                 style={{
                   fontWeight: "lighter",
                   color: "#888",
-                  marginBottom: "0px",
+                  marginBottom: "10px",
                 }}
               >
                 Number of Spouses:{" "}
@@ -386,7 +395,7 @@ const GroupCriticalIllness = () => {
                 style={{
                   fontWeight: "lighter",
                   color: "#888",
-                  marginBottom: "0px",
+                  marginBottom: "10px",
                 }}
               >
                 Number of Children:{" "}
@@ -403,7 +412,7 @@ const GroupCriticalIllness = () => {
                 style={{
                   fontWeight: "lighter",
                   color: "#888",
-                  marginBottom: "0px",
+                  marginBottom: "10px",
                 }}
               >
                 Sum Assured:{" "}
@@ -415,7 +424,7 @@ const GroupCriticalIllness = () => {
                 style={{
                   fontWeight: "lighter",
                   color: "#888",
-                  marginBottom: "0px",
+                  marginBottom: "10px",
                 }}
               >
                 Principal member percentage of sum assured:{" "}
@@ -429,7 +438,7 @@ const GroupCriticalIllness = () => {
                 style={{
                   fontWeight: "lighter",
                   color: "#888",
-                  marginBottom: "0px",
+                  marginBottom: "10px",
                 }}
               >
                 Spouse percentage of sum assured:{" "}
@@ -441,7 +450,7 @@ const GroupCriticalIllness = () => {
                 style={{
                   fontWeight: "lighter",
                   color: "#888",
-                  marginBottom: "0px",
+                  marginBottom: "10px",
                 }}
               >
                 Children percentage of sum assured:{" "}
@@ -455,7 +464,7 @@ const GroupCriticalIllness = () => {
                 style={{
                   fontWeight: "lighter",
                   color: "#888",
-                  marginBottom: "0px",
+                  marginBottom: "10px",
                 }}
               >
                 Cover Commencement Date:{" "}
@@ -469,7 +478,7 @@ const GroupCriticalIllness = () => {
                 style={{
                   fontWeight: "lighter",
                   color: "#888",
-                  marginBottom: "0px",
+                  marginBottom: "10px",
                 }}
               >
                 Policy Term (Years):{" "}
@@ -481,16 +490,17 @@ const GroupCriticalIllness = () => {
                 style={{
                   fontWeight: "lighter",
                   color: "#888",
-                  marginBottom: "0px",
+                  marginBottom: "10px",
                 }}
               >
-                Cover End Date:{" "}
+                Cover End Date:
               </p>
               <div style={{ marginTop: "0px" }}>
                 {formatDate(formData.coverExpiryDate)}
               </div>
             </Col>
           </Row>
+        </Card>
         </Card>
       </Form>
     );
@@ -504,8 +514,12 @@ const GroupCriticalIllness = () => {
           form={form}
           onFinish={(values) => console.log("Form submitted:", values)}
           layout="vertical"
-          style={{ marginTop: "24px", padding: "16px" }}
         >
+           <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 mt-3 flex flex-col gap-4">
+        <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
+          Please enter personal details
+        </p>
+      </div>
           <Row gutter={16}>
             <Col
               xs={24}
@@ -656,11 +670,12 @@ const GroupCriticalIllness = () => {
         <Form
           form={form}
           layout="vertical"
-          style={{ marginTop: "24px", padding: "16px" }}
         >
-          <Typography.Text strong>
-            Please enter the number of family members to be insured
-          </Typography.Text>
+          <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 mt-3 flex flex-col gap-4">
+        <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
+          Please enter the number of family members to be covered
+        </p>
+      </div>
           <Row gutter={16}>
             <Col
               xs={24}
@@ -810,12 +825,12 @@ const GroupCriticalIllness = () => {
         <Form
           form={form}
           layout="vertical"
-          style={{ marginTop: "24px", padding: "16px" }}
         >
-          <Typography.Text strong >
-            Please confirm the sum assured and percentage sum assured for each
-            member
-          </Typography.Text>
+         <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 mt-3 flex flex-col gap-4">
+        <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
+          Please confirm the sum assured and percentage sum assured for each member
+        </p>
+      </div>
           <Row gutter={16}>
             <Col
               xs={24}
@@ -965,17 +980,15 @@ const GroupCriticalIllness = () => {
   ];
 
   return (
-    <div>
-      <h1
-        style={{
-          textAlign: "left",
-          fontWeight: "bold",
-          fontSize: "24px",
-          marginBottom: "20px",
-        }}
-      >
-        Critical Illness Cover
-      </h1>
+    <div className="mb-4">
+        <span>
+          <button className="mb-2 focus:outline-none hover:text-[#A32A29]">
+            <LeftOutlined className="w-8 h-8" onClick={handleNavigate} />
+          </button>
+        </span>
+        <span className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
+          Get Critical Illness Cover
+        </span>
       <Steps current={current}>
         {steps.map((item) => (
           <Step key={item.title} title={item.title} />
