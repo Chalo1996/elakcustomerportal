@@ -265,9 +265,11 @@ const GroupCriticalIllness = () => {
     console.log("FORM DATA", formData);
     return (
       <Form layout="vertical">
-        <Typography.Text strong>
+        <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 mt-3 flex flex-col gap-4">
+        <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
           Please confirm your insurance purchase details to continue
-        </Typography.Text>
+        </p>
+      </div>
         <Card title="PERSONAL DETAILS">
           <Row gutter={16}>
             <Col span={12}>
@@ -658,9 +660,11 @@ const GroupCriticalIllness = () => {
           layout="vertical"
           style={{ marginTop: "24px", padding: "16px" }}
         >
-          <Typography.Text strong>
-            Please enter the number of family members to be insured
-          </Typography.Text>
+          <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 mt-3 flex flex-col gap-4">
+        <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
+          Please enter the number of family members to be covered
+        </p>
+      </div>
           <Row gutter={16}>
             <Col
               xs={24}
@@ -812,10 +816,11 @@ const GroupCriticalIllness = () => {
           layout="vertical"
           style={{ marginTop: "24px", padding: "16px" }}
         >
-          <Typography.Text strong >
-            Please confirm the sum assured and percentage sum assured for each
-            member
-          </Typography.Text>
+         <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 mt-3 flex flex-col gap-4">
+        <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
+          Please confirm the sum assured and percentage sum assured for each member
+        </p>
+      </div>
           <Row gutter={16}>
             <Col
               xs={24}
