@@ -18,10 +18,9 @@ function Welcome() {
   return (
     
     <div style={{ backgroundColor: '#f0f0f0', height: '100vh', padding: '20px' }}>
-      <Text 
-      strong style={{ color: 'black', fontSize: '24px' }}>
+       <h1  style={{ textAlign: 'left', fontWeight: 'bold', fontSize: '24px', marginBottom: '20px' }}>
         Please select the type of customer
-      </Text>
+        </h1>
       <br />
       <Text type="secondary" style={{ fontSize: '18px' }}>
         Select the type of customer to proceed

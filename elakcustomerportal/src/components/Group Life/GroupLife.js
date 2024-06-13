@@ -4,19 +4,16 @@ import 'tailwindcss/tailwind.css';
 
 import { preventNumericInput, preventTextInput, disabledDate, disabledTodayDate, PhoneAreas } from "./Utilities.js"
 import dayjs from 'dayjs';
-import { useNavigate } from 'react-router-dom';
-
-const formatDate = (date) => {
-  return dayjs(date).format('YYYY-MM-DD');
-};
-
 
 const { Step } = Steps;
 const { Option } = Select;
 const { Title, Text } = Typography;
 
+const formatDate = (date) => {
+  return dayjs(date).format('YYYY-MM-DD');
+};
+
 const ContactDetails = ({ formData, setFormData }) => {
-  const [phoneArea, setPhoneArea] = React.useState("+254");
   
   const handleInputChange = (value, field) => {
     setFormData((prevData) => ({ ...prevData, [field]: value }));
@@ -40,8 +37,8 @@ const ContactDetails = ({ formData, setFormData }) => {
       layout="vertical">
       <Row gutter={16}>
         <Col span={12}>
-          <Title level={4} style={{ marginBottom: '20px' }}>Please enter your details</Title>
-          <p>Please enter your personal details to continue</p></Col>
+          <Title level={5} style={{ marginBottom: '20px' }}>Please enter your details</Title>
+          </Col>
       </Row>
       <br></br>
       <Row gutter={16}>
@@ -119,8 +116,8 @@ const ContactDetails = ({ formData, setFormData }) => {
               onChange={(e) => handleInputChange(e.target.value, 'mobileNumber')}
               addonBefore={
                 <ChoosePhoneArea
-                  value={phoneArea}
-                  onChange={setPhoneArea}
+                  value={formData.phoneArea}
+                  onChange={(value) => handleInputChange(value, 'phoneArea')}
                 />
               }
               placeholder="Enter your mobile number"
@@ -191,8 +188,7 @@ const CompanyDetails = ({ formData, setFormData }) => {
     <div>
       <Row gutter={16}>
         <Col span={12}>
-          <Title level={4} style={{ marginBottom: '20px' }}>Please enter company details</Title>
-          <p>Please enter company details to continue</p>
+          <Title level={5} style={{ marginBottom: '20px' }}>Please enter company details</Title>
         </Col>
       </Row>
       <br />
@@ -287,14 +283,14 @@ const InsuredMembers = ({ formData, setFormData }) => {
     <div>
       <Row gutter={16}>
         <Col span={12}>
-          <Title level={4} style={{ marginBottom: '20px' }}>Please enter number of members to be covered</Title>
-          <p>Please enter insured members details to continue</p></Col>
+          <Title level={5} style={{ marginBottom: '20px' }}>Please enter number of members to be covered</Title>
+          </Col>
       </Row>
       <br></br>
       <Row gutter={16}>
         <Col span={12}>
           <Form.Item
-            label="Number of Principal Members"
+            label="How many principle members would you like to be covered?"
             name="principalMembers"
             rules={[
               {
@@ -305,6 +301,7 @@ const InsuredMembers = ({ formData, setFormData }) => {
           >
             <InputNumber
               className="w-full custom-input-number"
+              placeholder='Enter number of principal members'
               value={formData.numberPrincipalMembers}
               onChange={(value) => handleInputChange(value, 'numberPrincipalMembers')}
               onKeyPress={preventTextInput}
@@ -313,14 +310,15 @@ const InsuredMembers = ({ formData, setFormData }) => {
         </Col>
         <Col span={12}>
           <Form.Item
-            label="Number of Spouse"
+            label="How many spouses would you like to be covered?"
             name="totalNumberOfSpouses"
             rules={[
-              { required: true, message: "Please enter number of spouse!" },
+              { required: true, message: "Please enter number of spouses!" },
             ]}
           >
             <InputNumber
               className="w-full custom-input-number"
+              placeholder='Enter number of spouses'
               value={formData.totalNumberOfSpouses}
               onChange={(value) => handleInputChange(value, "totalNumberOfSpouses")}
               onKeyPress={preventTextInput}
@@ -332,8 +330,8 @@ const InsuredMembers = ({ formData, setFormData }) => {
       <Row gutter={16}>
         <Col span={12}>
           <Form.Item
-            label="Number of Children"
-            name="totalNumberOfChilidren"
+            label="How many children would you like to be covered?"
+            name="totalNumberOfChildren"
             rules={[
               {
                 required: true,
@@ -343,15 +341,16 @@ const InsuredMembers = ({ formData, setFormData }) => {
           >
             <InputNumber
               className="w-full custom-input-number"
-              value={formData.totalNumberOfChilidren}
-              onChange={(value) => handleInputChange(value, 'totalNumberOfChilidren')}
+              placeholder='Enter number of children'
+              value={formData.totalNumberOfChildren}
+              onChange={(value) => handleInputChange(value, 'totalNumberOfChildren')}
               onKeyPress={preventTextInput}
             />
           </Form.Item>
         </Col>
         <Col span={12}>
           <Form.Item
-            label="Number of Parents"
+            label="How many parents would you like to be covered?"
             name="totalNumberOfParents"
             rules={[
               {
@@ -362,6 +361,7 @@ const InsuredMembers = ({ formData, setFormData }) => {
           >
             <InputNumber
               className="w-full custom-input-number"
+              placeholder='Enter number of parents'
               value={formData.totalNumberOfParents}
               onKeyPress={preventTextInput}
               onChange={(value) => handleInputChange(value, 'totalNumberOfParents')}
@@ -373,7 +373,7 @@ const InsuredMembers = ({ formData, setFormData }) => {
       <Row gutter={16}>
         <Col span={12}>
           <Form.Item
-            label="Number of Parents-in-law"
+            label="How many parents-in-law would you like to be covered?"
             name="totalNumberOfParentsInLaws"
             rules={[
               {
@@ -384,6 +384,7 @@ const InsuredMembers = ({ formData, setFormData }) => {
           >
             <InputNumber
               className="w-full custom-input-number"
+              placeholder='Enter number of parents-in-law'
               value={formData.totalNumberOfParentsInLaws}
               onKeyPress={preventTextInput}
               onChange={(value) => handleInputChange(value, 'totalNumberOfParentsInLaws')}
@@ -401,14 +402,13 @@ const PolicyDetails = ({ formData, setFormData }) => {
   const handleInputChange = (value, field) => {
     setFormData((prevData) => ({ ...prevData, [field]: value }));
   };
-  
 
   return (
     <div>
       <Row gutter={16}>
         <Col span={12}>
-          <Title level={4} style={{ marginBottom: '20px' }}>Please enter policy details</Title>
-          <p>Please enter policy details to continue</p></Col>
+          <Title level={5} style={{ marginBottom: '20px' }}>Please enter policy details</Title>
+          </Col>
       </Row>
       <br></br>
       <Row gutter={16}>
@@ -424,13 +424,13 @@ const PolicyDetails = ({ formData, setFormData }) => {
              />
           </Form.Item>
           <br></br>
-          <Form.Item label="Your cover will automatically expire on;" name="coverEndDate"
+          <Form.Item label="Your cover will automatically expire on:" name="coverEndDate"
             rules={[{ required: true, message: 'Please Select a date' }]}
           >
             <DatePicker 
             style={{ width: "100%" }}
-            value={formData.policyEndDate}
-            onChange={(value) => handleInputChange(value, 'policyEndDate')}
+            value={"2025-06-12"}
+            onChange={(value) => handleInputChange(value, '2025-06-12')}
              />
           </Form.Item>
         </Col>
@@ -449,15 +449,11 @@ const PolicyDetails = ({ formData, setFormData }) => {
               placeholder="Please select"
               onChange={(value) => handleInputChange(value, 'benefitLevel')}
             >
-              <Option value="pleaseSelect">Please Select</Option>
-              <Option value="1x">1x Salary</Option>
-              <Option value="2x">2x Salary</Option>
-              <Option value="3x">3x Salary</Option>
-              <Option value="4x">4x Salary</Option>
-              <Option value="5x">5x Salary</Option>
-              <Option value="flatAmount">
-                I will specify A flat amount
-              </Option>
+              <Option value="1">1x Salary</Option>
+              <Option value="2">2x Salary</Option>
+              <Option value="3">3x Salary</Option>
+              <Option value="4">4x Salary</Option>
+              <Option value="5">5x Salary</Option>
             </Select>
           </Form.Item>
           <br></br>
@@ -493,131 +489,143 @@ const PolicyDetails = ({ formData, setFormData }) => {
 };
 
 const ReviewAndConfirm = ({ formDataToSubmit }) => {
-  const [formatter] = React.useState(new Intl.NumberFormat('en-KE', {
-    style: 'currency',
-    currency: 'KES',
-}));
-  return (
-    <div layout='vertical'>
-      <Row gutter={16}>
-        <Col span={12}>
-          <Title level={4} style={{ marginBottom: '20px' }}>Please confirm your details</Title>
-          <p>To continue, please confirm your details</p></Col>
-      </Row>
-      <Card title="Contact Details" layout='vertical'>
-        <Row gutter={16}>
-          <Col span={12}>
-            <h5><strong>First Name</strong></h5>
-            {formDataToSubmit.firstName}
-          </Col>
-          <Col span={12}>
-            <p><strong>Last Name</strong></p>
-            {formDataToSubmit.lastName}
-          </Col>
-        </Row>
-        <br></br>
-        <Row gutter={16}>
-          <Col span={12}>
-            <p>
-            <strong>Email Address</strong>
-            </p>
-            
-            {formDataToSubmit.email}
-          </Col>
-          <Col span={12}>
-          <p>
-          <strong>Mobile Number</strong>
-          </p>
-          +254 {formDataToSubmit.mobileNumber}
-          </Col>
-        </Row>
-        <br></br>
-        <Row gutter={16}>
-        <Col span={12}>
-            <p><strong>Date of Birth</strong></p>
-            {formatDate(formDataToSubmit.dateOfBirth)}
-          </Col>
-        </Row>
-      </Card>
-      <br></br>
-      <Card title="Company Details" layout='vertical'>
-        <Row gutter={16}>
-          <Col span={12}>
-            <p><strong>Industry Type</strong> </p>
-            {formDataToSubmit.industry}
-          </Col>
-          <Col span={12}>
-            <p><strong>Company Name</strong></p>
-            {formDataToSubmit.companyName}
-          </Col>
-        </Row>
-        <br></br>
-        <Row gutter={16}>
-          <Col span={12}>
-            <p><strong>Number of Employees</strong></p>
-            {formDataToSubmit.numberOfEmployees}
-          </Col>
-          <Col span={12}>
-            <p><strong>Total Annual Salaries</strong></p>
-            {formatter.format(formDataToSubmit.annualSalaries)}
-          </Col>
-        </Row>
+  const [formatter] = React.useState(
+    new Intl.NumberFormat('en-KE', {
+      style: 'currency',
+      currency: 'KES',
+    })
+  );
 
-      </Card>
-      <br></br>
-      <Card title="Insured Members" layout='vertical'>
-        <Row gutter={16}>
-          <Col span={12}>
-            <p><strong>Principal Members</strong> </p>
-            {formDataToSubmit.numberPrincipalMembers}
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  };
+
+  return (
+    <Card className="mb-10 mt-10">
+      <p className="font-open-sans text-[15px] font-semibold text-left">
+        To continue, please confirm your details
+      </p>
+
+      <Card title="Contact Details" className="mb-10">
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={12}>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className="text-[#929497]">First Name</p>
+              <p>{formDataToSubmit.firstName}</p>
+            </div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className="text-[#929497]">Email Address</p>
+              <p>{formDataToSubmit.email}</p>
+            </div>
           </Col>
-          <Col span={12}>
-            <p><strong>Spouse</strong> </p>
-            {formDataToSubmit.totalNumberOfSpouses}
-          </Col>
-        </Row>
-        <br></br>
-        <Row gutter={16}>
-          <Col span={12}>
-            <p><strong>Children</strong></p>
-            {formDataToSubmit.totalNumberOfChilidren}
-          </Col>
-          <Col span={12}>
-            <p><strong>Parents</strong> </p>
-            {formDataToSubmit.totalNumberOfParents}
-          </Col>
-        </Row>
-        <br></br>
-        <Row gutter={16}>
-          <Col span={12}>
-            <p><strong>Parents-in-Law</strong> </p>
-            {formDataToSubmit.totalNumberOfParentsInLaws}
-          </Col>
-          <Col span={12}></Col>
-        </Row>
-      </Card>
-      <br></br>
-      <Card title="Policy Details" layout='vertical'>
-        <Row gutter={16}>
-          <Col span={12}>
-            <p><strong>Policy Start Date</strong></p>
-            {formatDate(formDataToSubmit.policyStartDate)}
-          </Col>
-          <Col span={12} tooltip="Multiple Of Annual Salary">
-            <p><strong>Benefit Level</strong> </p>
-            {formDataToSubmit.benefitLevel}
+          <Col xs={24} sm={24} md={12}>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className="text-[#929497]">Last Name</p>
+              <p>{formDataToSubmit.lastName}</p>
+            </div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className="text-[#929497]">Mobile Number</p>
+              <p>{formDataToSubmit.phoneArea} {formDataToSubmit.mobileNumber}</p>
+            </div>
           </Col>
         </Row>
-        <br></br>
-        <Row gutter={16}>
-          <Col span={12}>
-          <p><strong>Policy End Date</strong></p>
-          {formatDate(formDataToSubmit.policyEndDate)}
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={12}>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className="text-[#929497]">Date of Birth</p>
+              <p>{formatDate(formDataToSubmit.dateOfBirth)}</p>
+            </div>
           </Col>
         </Row>
       </Card>
-    </div>)
+
+      <Card title="Company Details" className="mb-10">
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={12}>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className="text-[#929497]">Industry Type</p>
+              <p>{formDataToSubmit.industry}</p>
+            </div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className="text-[#929497]">Number of Employees</p>
+              <p>{formDataToSubmit.numberOfEmployees} employees</p>
+            </div>
+          </Col>
+          <Col xs={24} sm={24} md={12}>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className="text-[#929497]">Company Name</p>
+              <p>{formDataToSubmit.companyName}</p>
+            </div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className="text-[#929497]">Total Annual Salaries</p>
+              <p>{formatter.format(formDataToSubmit.annualSalaries)}</p>
+            </div>
+          </Col>
+        </Row>
+      </Card>
+
+      <Card title="Insured Members" className="mb-10">
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={12}>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className="text-[#929497]">Number of Principal Members</p>
+              <p>{formDataToSubmit.numberPrincipalMembers} members</p>
+            </div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className="text-[#929497]">Number of Children</p>
+              <p>{formDataToSubmit.totalNumberOfChildren} children</p>
+            </div>
+          </Col>
+          <Col xs={24} sm={24} md={12}>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className="text-[#929497]">Number of Spouse</p>
+              <p>{formDataToSubmit.totalNumberOfSpouses} spouses</p>
+            </div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className="text-[#929497]">Number of Parents</p>
+              <p>{formDataToSubmit.totalNumberOfParents} parents</p>
+            </div>
+          </Col>
+        </Row>
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={12}>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className="text-[#929497]">Number of Parents-in-Law</p>
+              <p>{formDataToSubmit.totalNumberOfParentsInLaws} parents-in-law</p>
+            </div>
+          </Col>
+        </Row>
+      </Card>
+
+      <Card title="Policy Details" className="mb-10">
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={12}>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className="text-[#929497]">The cover commences on:</p>
+              <p>{formatDate(formDataToSubmit.policyStartDate)}</p>
+            </div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className="text-[#929497]">The cover will expire on:</p>
+              <p>{formatDate(formDataToSubmit.policyEndDate)}</p>
+            </div>
+          </Col>
+          <Col xs={24} sm={24} md={12}>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className="text-[#929497]">The assured sum will be:</p>
+              <p>Annual Salary X {formDataToSubmit.benefitLevel}</p>
+            </div>
+          </Col>
+        </Row>
+      </Card>
+    </Card>
+  );
 };
+
 
 const GroupLifeAssurance = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -641,7 +649,7 @@ const GroupLifeAssurance = () => {
 
     numberPrincipalMembers: 0,
     totalNumberOfSpouses: "",
-    totalNumberOfChilidren: "",
+    totalNumberOfChildren: 0,
     totalNumberOfParents: "",
     totalNumberOfParentsInLaws: "",
 
@@ -649,7 +657,7 @@ const GroupLifeAssurance = () => {
     benefitLevel: "",
     flatAmount: "",
     policyStartDate: "",
-    policyEndDate: "",
+    policyEndDate: "2024-06-12",
   });
 
   const onFormFinish = (values) => {
@@ -675,20 +683,20 @@ const GroupLifeAssurance = () => {
       email: updatedFormData.email,
       mobileNumber: updatedFormData.mobileNumber,
       phoneArea: updatedFormData.phoneArea,
-      dateOfBirth: updatedFormData.dateOfBirth,
+      dateOfBirth: formatDate(updatedFormData.dateOfBirth),
       companyName: updatedFormData.companyName,
       industry: updatedFormData.industry,
       numberOfEmployees: updatedFormData.numberOfEmployees,
       annualSalaries: updatedFormData.annualSalaries,
       principalMembers: updatedFormData.principalMembers,
       totalNumberOfSpouses: updatedFormData.totalNumberOfSpouses,
-      totalNumberOfChilidren: updatedFormData.totalNumberOfChilidren,
+      totalNumberOfChildren: updatedFormData.totalNumberOfChildren,
       totalNumberOfParents: updatedFormData.totalNumberOfParents,
       totalNumberOfParentsInLaws: updatedFormData.totalNumberOfParentsInLaws,
       levelOfCover: updatedFormData.benefitLevel,
       flatAmount: updatedFormData.flatAmount,
-      policyStartDate: updatedFormData.policyStartDate,
-      policyEndDate: updatedFormData.policyEndDate,
+      policyStartDate: formatDate(updatedFormData.policyStartDate),
+      policyEndDate: formatDate(updatedFormData.policyEndDate),
     };
 
     setFormData(updatedFormData);
@@ -730,12 +738,12 @@ const GroupLifeAssurance = () => {
     setIsModalOpen(false);
   };
 
-
-  const navigate = useNavigate();
-
-  const HandleQuoteButton = () => {
-    navigate("group-life-quotation");
+  const handleSubmit = async () => {
+    console.log('Form Data: ', formData);
+    message.success('Form submitted successfully!');
   };
+
+
 
   const steps = [
     {
@@ -774,7 +782,7 @@ const GroupLifeAssurance = () => {
   return (
     <div>
       <div>
-        <Title level={4} style={{ marginBottom: '20px' }}>Group Life Assurance Cover</Title>
+        <Title level={5} style={{ marginBottom: '20px' }}>Group Life Assurance Cover</Title>
       </div>
       <br></br>
       <Steps current={currentStep} className="mb-8">
@@ -796,7 +804,7 @@ const GroupLifeAssurance = () => {
             </Button>
           )}
           {currentStep > 3 && (
-            <Button className="mr-4" onClick={HandleQuoteButton}>
+            <Button type="primary" onClick={handleSubmit} >
               Generate Quote
             </Button>
           )}

@@ -38,8 +38,7 @@ const GroupTermLifeModal = ({ isModalOpen, onCancel, onOkay, product }) => {
         <img
           src={happyfamily}
           alt={product.title}
-          className="object-cover text-center rounded-[16px] h-[232px] w-[311px] m-auto"
-        />
+          className="object-cover text-center rounded-[16px] h-[232px] w-[311px] m-auto"/>
         <div className="py-3 px-0">
           <p className="text-left text-[#221F1F] font-semibold text-[16px] leading-6">
           A Life Secured is Peace Assured.
