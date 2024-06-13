@@ -93,7 +93,6 @@ function App() {
                 </PortalLayout>
               }
             />
-
             {/* Routes outside of /home */}
             <Route path="*" element={<NotFound />} />
           </Routes>
