@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CriticalIllnessQuotation from "./CriticalIllnessQuotation";
 import dayjs from "dayjs";
 import {
   Steps,
@@ -201,9 +200,7 @@ const GroupCriticalIllness = () => {
     }
   };
 
-  const today = new Date();
-  const options = { month: "long", day: "numeric", year: "numeric" };
-  const currentDate = today.toLocaleDateString("en-US", options);
+  
 
   const policyTerms = ["1", "2", "3"];
   const { Option } = Select;
@@ -635,13 +632,21 @@ const GroupCriticalIllness = () => {
             </Col>
           </Row>
           <Form.Item>
-            <Checkbox
-              checked={termsChecked}
-              onChange={(e) => setTermsChecked(e.target.checked)}
-            >
-              I accept the terms and privacy policies
-            </Checkbox>
-          </Form.Item>
+    <Checkbox
+        checked={termsChecked}
+        onChange={(e) => setTermsChecked(e.target.checked)}
+    >
+        I accept the{" "}
+        <a href="./" style={{ color: "#A32A29" }}>
+            terms
+        </a>{" "}
+        and{" "}
+        <a href="./" style={{ color: "#A32A29" }}>
+            privacy policy
+        </a>
+    </Checkbox>
+</Form.Item>
+
         </Form>
       ),
     },
@@ -665,7 +670,7 @@ const GroupCriticalIllness = () => {
               xl={12}
               style={{ marginBottom: "16px" }}
             >
-              <Form.Item label="Spouse" name="spouse">
+              <Form.Item label="Do you want to cover your spouse?" name="spouse">
                 <Switch onChange={(checked) => setSpouse(checked)} />
               </Form.Item>
             </Col>
@@ -765,7 +770,7 @@ const GroupCriticalIllness = () => {
               xl={12}
               style={{ marginBottom: "16px" }}
             >
-              <Form.Item label="Children" name="children">
+              <Form.Item label="Do you want to cover your children?" name="children">
                 <Switch onChange={(checked) => setChildrenVisible(checked)} />
               </Form.Item>
             </Col>
@@ -807,7 +812,7 @@ const GroupCriticalIllness = () => {
           layout="vertical"
           style={{ marginTop: "24px", padding: "16px" }}
         >
-          <Typography.Text strong>
+          <Typography.Text strong >
             Please confirm the sum assured and percentage sum assured for each
             member
           </Typography.Text>
