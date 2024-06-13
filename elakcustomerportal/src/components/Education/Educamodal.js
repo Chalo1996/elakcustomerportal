@@ -1,11 +1,11 @@
 import { Modal, Button, Row } from "antd";
-import Img from "../../assets/modal-image.png";
+import edu from "../../assets/edu.png";
 import { NavLink } from "react-router-dom";
 
-const FuneralExpenseModal = ({ isModalOpen, onCancel, onOkay, product }) => {
+const Educamodal = ({ isModalOpen, onCancel, onOkay, product }) => {
   const customTitle = (
     <p className="text-lg font-medium text-center font-roboto text-black">
-      Funeral Expense Cover
+      Education Insurance Cover
     </p>
   );
 
@@ -28,41 +28,39 @@ const FuneralExpenseModal = ({ isModalOpen, onCancel, onOkay, product }) => {
             type="primary"
             className="shadow-none font-semibold text-lg leading-6 text-center text-white w-[177px] h-[48px] p-[12px_48px] gap-0 rounded-tl-lg "
           >
-            <NavLink to="funeral-expense">Apply Now</NavLink>
+            <NavLink to="education">Apply Now</NavLink>
           </Button>
         </Row>,
       ]}
     >
       <div className="flex flex-col gap-1 ">
         <img
-          src={Img}
+          src={edu}
           alt={product.title}
           className="object-cover text-center rounded-[16px] h-[232px] w-[311px] m-auto"
         />
         <div className="py-3 px-0">
           <p className="text-left text-[#221F1F] font-semibold text-[16px] leading-6">
-            Life is a journey...
+            Ensure a Bright Future for Your Child
           </p>
           <p className="text-left font-normal text-[#929497] text-base leading-5 mb-4">
-            Death within the family may come with a heavy financial burden when
-            we may least expect. There will be immediate funeral related
-            expenses to be met to accord the family member a decent send off.
+            Education insurance cover provides financial support for your child's education, ensuring that they have access to quality education regardless of life's uncertainties. With this cover, you can secure your child's future and give them the best opportunities to succeed.
           </p>
         </div>
         <div className="py-3 px-0">
           <p className="text-left text-[#221F1F] font-semibold text-[16px] leading-6">
-            Our Funeral expense cover
+            Benefits of Education Insurance Cover
           </p>
-          <p className="text-left font-normal text-[#929497] text-base leading-5 mb-4">
-            Will make a lump sum payment to you or your beneficiary within 48
-            hours of a notice of death, to go towards covering funeral expenses.
-            With a range of covers to choose from, you are a click away having
-            peace of mind and stability for you and your loved ones.
-          </p>
+          <ul className="list-disc text-left pl-5">
+            <li className="mb-2">Financial security for your child's education</li>
+            <li className="mb-2">Peace of mind knowing that your child's education is protected</li>
+            <li className="mb-2">Flexibility to choose the coverage that suits your needs</li>
+            <li className="mb-2">Tax benefits under section 80C of the Income Tax Act</li>
+          </ul>
         </div>
       </div>
     </Modal>
   );
 };
 
-export default FuneralExpenseModal;
+export default Educamodal;

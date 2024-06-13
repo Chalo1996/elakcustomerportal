@@ -1,10 +1,14 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { groupCreditReducer } from "../../reducers/groupCreditReducers";
+import { authReducer } from "./features/authSlice";
+import { funeralExpenseReducer } from "./features/gleSlice";
 
-import reducer from "../../reducers/reducer";
-
-const store = configureStore({
-  reducer,
-  devTools: process.env.NODE_ENV !== "production",
+const rootReducer = combineReducers({
+  groupCredit: groupCreditReducer,
+  auth: authReducer,
+  funeralExpense: funeralExpenseReducer,
 });
 
-export default store;
+export const store = configureStore({
+  reducer: rootReducer,
+});
