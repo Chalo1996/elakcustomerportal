@@ -12,7 +12,7 @@ const CallBackModal = ({ isModalOpen, onClose, onContinue }) => {
     <p
       className={`${
         theme === "dark" ? "text-white bg-gray-800" : ""
-      }  text-left font-open-sans text-lg leading-6`}
+      }  text-left font-open-sans text-lg leading-6 mb-8`}
     >
       What would you like to do?
     </p>
@@ -54,11 +54,7 @@ const CallBackModal = ({ isModalOpen, onClose, onContinue }) => {
           <Text>Generate Quote</Text>
           <Radio value="generateQuote"></Radio>
         </div>
-        <br />
-        <br />
         <Divider />
-        <br />
-        <br />
         <div className="w-full flex items-center justify-between">
           <Text>Request a call back</Text>
           <Radio value="requestCallback"></Radio>
@@ -69,4 +65,3 @@ const CallBackModal = ({ isModalOpen, onClose, onContinue }) => {
 };
 
 export default CallBackModal;
-
