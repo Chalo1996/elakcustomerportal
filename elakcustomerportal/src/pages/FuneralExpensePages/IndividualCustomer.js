@@ -29,6 +29,7 @@ const getInitialFormData = () => {
         birthDate: null,
         terms: false,
         spouse: false,
+        principalNumber: 1,
         spouseNumber: 0,
         parentsNumber: 0,
         childrenNumber: 0,
@@ -84,7 +85,7 @@ const IndividualCustomer = () => {
       persons: [
         {
           name: "Principal Member",
-          lives: 1,
+          lives: formData.principalNumber,
           sumAssuredPercentage: 100,
         },
         {
