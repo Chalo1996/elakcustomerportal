@@ -105,20 +105,20 @@ function App() {
                       element={<GroupLifeAssurance />}
                     />
                     <Route
-                      path='group-life-assurance/quotation-details"
+                      path='group-life-assurance/quotation-details'
                       element={<GroupLifeQuotation />}
                     />
  
                     <Route
-                      path="customer-type/critical-illness'
+                      path='customer-type/critical-illness'
                       element={<GroupCriticalIllness />}
                     />
                     <Route
-                      path='customer-type"
+                      path='customer-type'
                       element={<CustomerType />}
                     />
                     <Route
-                      path="customer-type/critical-illness/critical-illness-quotation'
+                      path='customer-type/critical-illness/critical-illness-quotation'
                       element={<CriticalIllnessQuotation />}
                     />
                     <Route
