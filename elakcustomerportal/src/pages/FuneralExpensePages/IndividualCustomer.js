@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { LeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { Steps, Button, Form } from "antd";
+import dayjs from "dayjs";
 import PersonalDetailsForm from "../../components/Funeral Expense/PersonalDetails";
 import CallBackModal from "../../components/Funeral Expense/modals/CallBackModal";
 import BeneficiaryMembersForm from "../../components/Funeral Expense/BeneficiaryMembers";
@@ -12,6 +13,37 @@ import ConfirmDetailsForm from "../../components/Funeral Expense/ConfirmDetails"
 import { fetchData } from "../../store/redux/features/gleSlice";
 
 const { Step } = Steps;
+
+const getInitialFormData = () => {
+  const savedFormData = localStorage.getItem("yourGLEData");
+  return savedFormData
+    ? JSON.parse(savedFormData)
+    : {
+        firstName: "",
+        lastName: "",
+        email: "",
+        phoneNo: "",
+        phoneArea: "+254",
+        country: "Kenya",
+        birthDate: null,
+        terms: false,
+        spouse: false,
+        spouseNumber: 0,
+        parentsNumber: 0,
+        childrenNumber: 0,
+        parentsInLawNumber: 0,
+        productName: "",
+        benefitAmount: 0,
+        principalPercentage: 100,
+        spousePercentage: 100,
+        childrenPercentage: 100,
+        parentsPercentage: 100,
+        parentsInLawPercentage: 100,
+        startDate: null,
+        endDate: null,
+        segment: "Individual Customer",
+      };
+};
 
 const IndividualCustomer = () => {
   const dispatch = useDispatch();
@@ -30,31 +62,19 @@ const IndividualCustomer = () => {
   const [form4] = Form.useForm();
   const forms = [form1, form2, form3, form4];
 
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNo: "",
-    phoneArea: "+254",
-    country: "Kenya",
-    birthDate: null,
-    terms: false,
-    spouse: false,
-    spouseNumber: 0,
-    parentsNumber: 0,
-    childrenNumber: 0,
-    parentsInLawNumber: 0,
-    productName: "",
-    benefitAmount: 0,
-    principalPercentage: 100,
-    spousePercentage: 100,
-    childrenPercentage: 100,
-    parentsPercentage: 100,
-    parentsInLawPercentage: 100,
-    startDate: null,
-    endDate: null,
-    segment: "Individual Customer",
+  const [formData, setFormData] = useState(() => {
+    const initialData = getInitialFormData();
+    return {
+      ...initialData,
+      birthDate: initialData.birthDate ? dayjs(initialData.birthDate) : null,
+      startDate: initialData.startDate ? dayjs(initialData.startDate) : null,
+      endDate: initialData.endDate ? dayjs(initialData.endDate) : null,
+    };
   });
+
+  useEffect(() => {
+    localStorage.setItem("yourGLEData", JSON.stringify(formData));
+  }, [formData]);
 
   const dataToPost = {
     inputData: {

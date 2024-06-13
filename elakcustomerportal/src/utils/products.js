@@ -17,7 +17,7 @@ const products = [
   {
     title: "Critical Illness Cover",
     image: introImage,
-    url: "critical-illness",
+    url: "customer-type",
     description:
       "Critical Illness insurance provides comprehensive coverage for against chronic illnesses such as cancer, ensuring you receive the best healthcare possible.",
   },

@@ -20,6 +20,8 @@ import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
 import Welcome from "./components/Group Term Life/Welcome";
 import CriticalIllnessQuotation from "./components/Group Critical Illness/CriticalIllnessQuotation";
 import { authenticateUser } from "./store/redux/features/authSlice";
+import CustomerType from "./components/Group Critical Illness/CustomerType";
+import Submit from "./components/Group Critical Illness/Submit";
 
 function App() {
   const dispatch = useDispatch();
@@ -82,12 +84,20 @@ function App() {
                       element={<GroupLifeAssurance />}
                     />
                     <Route
-                      path="critical-illness"
+                      path="customer-type/critical-illness"
                       element={<GroupCriticalIllness />}
                     />
                     <Route
-                      path="critical-illness/critical-illness-quotation"
+                      path="customer-type"
+                      element={<CustomerType />}
+                    />
+                    <Route
+                      path="customer-type/critical-illness/critical-illness-quotation"
                       element={<CriticalIllnessQuotation />}
+                    />
+                    <Route
+                      path="customer-type/critical-illness/submit"
+                      element={<Submit />}
                     />
                     {/* Add more routes here */}
                     <Route path="group-credit/*" element={<GroupCredit />} />
