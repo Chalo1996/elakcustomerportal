@@ -1,24 +1,16 @@
 import { UPDATE_USER_DETAILS } from "../redux/actions/groupCreditActions";
 
-const groupCreditformData = {
-  firstname: "",
-  lastname: "",
-  gender: "",
+const gcInitialState = {
+  username: "",
   country: "",
   phone: "",
   dob: null,
   email: "",
   countryCode: "",
   countryFlag: null,
-  termschecked: false,
-  sumAssured: 5000000,
-  termsInMonths: "",
-  frequency: "Single",
-  installments: 1,
-  retrenchment: false,
 };
 
-export const groupCreditReducer = (state = groupCreditformData, action) => {
+export const groupCreditReducer = (state = gcInitialState, action) => {
   switch (action.type) {
     case UPDATE_USER_DETAILS:
       console.log(state);
