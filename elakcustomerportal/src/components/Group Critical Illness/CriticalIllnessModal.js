@@ -40,21 +40,26 @@ const CriticalIllnessModal = ({ isModalOpen, onCancel, onOkay, product }) => {
           className="object-cover text-center rounded-[16px] h-[232px] w-[311px] m-auto"
         />
         <div className="py-3 px-0">
-  <p className="text-left text-[#221F1F] font-semibold text-[16px] leading-6">
-    Life is full of unexpected challenges.
-  </p>
-  <p className="text-left font-normal text-[#929497] text-base leading-5 mb-4">
-    Being diagnosed with a critical illness comes with huge expenses and need for immediate attention inorder to save a life
-  </p>
-</div>
-<div className="py-3 px-0">
-  <p className="text-left text-[#221F1F] font-semibold text-[16px] leading-6">
-    Critical Illness Cover
-  </p>
-  <p className="text-left font-normal text-[#929497] text-base leading-5 mb-4">
-    Serious illnesses like cancer, heart attacks, kidney failure and strokes can lead to major medical expenses. Critical Illness Cover provides a lump sum payment upon diagnosis, helping you cover medical costs and maintain financial stability. Choose the right cover to secure your peace of mind and focus on recovery.
-  </p>
-</div>
+          <p className="text-left text-[#221F1F] font-semibold text-[16px] leading-6">
+            Life is full of unexpected challenges.
+          </p>
+          <p className="text-left font-normal text-[#929497] text-base leading-5 mb-4">
+            Being diagnosed with a critical illness comes with huge expenses and
+            need for immediate attention inorder to save a life
+          </p>
+        </div>
+        <div className="py-3 px-0">
+          <p className="text-left text-[#221F1F] font-semibold text-[16px] leading-6">
+            Critical Illness Cover
+          </p>
+          <p className="text-left font-normal text-[#929497] text-base leading-5 mb-4">
+            Serious illnesses like cancer, heart attacks, kidney failure and
+            strokes can lead to major medical expenses. Critical Illness Cover
+            provides a lump sum payment upon diagnosis, helping you cover
+            medical costs and maintain financial stability. Choose the right
+            cover to secure your peace of mind and focus on recovery.
+          </p>
+        </div>
       </div>
     </Modal>
   );

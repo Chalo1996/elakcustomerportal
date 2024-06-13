@@ -12,20 +12,38 @@ import GroupCriticalIllness from "./components/Group Critical Illness/CriticalIl
 import NotFound from "./pages/NotFound";
 import CustomerTypePage from "./pages/FuneralExpensePages/CustomerType";
 import LandingPage from "./pages/landingPage";
-import IndividualCustomer from "./pages/FuneralExpensePages/IndividualCustomer";
-import GroupCustomerPage from "./pages/FuneralExpensePages/GroupCustomer";
 import { GroupCredit } from "./components/GroupCredit/GroupCredit";
 import FuneralExpenseQuotation from "./pages/FuneralExpensePages/Quotation";
+import CriticalIllnessQuotation from "./components/Group Critical Illness/CriticalIllnessQuotation";
+import {
+  authenticateUser,
+  setStatus,
+  setToken,
+} from "./store/redux/features/authSlice";
+import HandleCustomerSelection from "./pages/FuneralExpensePages/HandleCustomerSelection";
 import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
 import Welcome from "./components/Group Term Life/Welcome";
-import CriticalIllnessQuotation from "./components/Group Critical Illness/CriticalIllnessQuotation";
-import { authenticateUser } from "./store/redux/features/authSlice";
+import CustomerType from "./components/Group Critical Illness/CustomerType";
+import Submit from "./components/Group Critical Illness/Submit";
 import GroupLifeQuotation from "./components/Group Life/GroupLifeQuotation";
+
 
 function App() {
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(authenticateUser());
+    const authToken = localStorage.getItem("authToken");
+    const authStatus = localStorage.getItem("authStatus");
+
+    if (authToken) {
+      dispatch(setToken(authToken));
+    }
+
+    if (authStatus) {
+      dispatch(setStatus(authStatus));
+    } else {
+      dispatch(authenticateUser());
+    }
   }, [dispatch]);
 
   return (
@@ -67,12 +85,8 @@ function App() {
                       element={<CustomerTypePage />}
                     />
                     <Route
-                      path="funeral-expense/individual-customer"
-                      element={<IndividualCustomer />}
-                    />
-                    <Route
-                      path="funeral-expense/group-customer"
-                      element={<GroupCustomerPage />}
+                      path="/funeral-expense"
+                      element={<HandleCustomerSelection />}
                     />
                     <Route
                       path="funeral-expense/quotation-details"
@@ -86,16 +100,30 @@ function App() {
                       path="group-life-assurance/quotation-details"
                       element={<GroupLifeQuotation />}
                     />
+ 
                     <Route
-                      path="critical-illness"
+                      path="customer-type/critical-illness"
                       element={<GroupCriticalIllness />}
                     />
                     <Route
-                      path="critical-illness/critical-illness-quotation"
+                      path="customer-type"
+                      element={<CustomerType />}
+                    />
+                    <Route
+                      path="customer-type/critical-illness/critical-illness-quotation"
                       element={<CriticalIllnessQuotation />}
+                    />
+                    <Route
+                      path="customer-type/critical-illness/submit"
+                      element={<Submit />}
                     />
                     {/* Add more routes here */}
                     <Route path="group-credit/*" element={<GroupCredit />} />
+                    <Route path="welcome" element={<Welcome />} />
+                    <Route
+                      path="term-life-quote"
+                      element={<GroupTermLifeQuote />}
+                    />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </PortalLayout>
@@ -110,5 +138,4 @@ function App() {
     </BrowserRouter>
   );
 }
-
 export default App;

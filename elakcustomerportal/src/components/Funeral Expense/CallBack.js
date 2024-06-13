@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { Form, Input, Row, Col, DatePicker, Select, Checkbox } from "antd";
+import { Form, Input, Row, Col, Select } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
 import sspFlag from "../../assets/flags/ssp.png";
 import cdfFlag from "../../assets/flags/cdf.png";
 import rwfFlag from "../../assets/flags/rwf.png";
@@ -17,7 +18,7 @@ const PhoneAreas = [
   { code: "+256", flag: ugxFlag, country: "Uganda" },
 ];
 
-const PersonalDetailsForm = ({ form, formData, setFormData }) => {
+const CallBackForm = ({ form, formData, setFormData }) => {
   useEffect(() => {
     form.setFieldsValue(formData);
   }, [form, formData]);
@@ -30,42 +31,6 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
         phoneArea: newValue,
         country: selectedCountry.country,
       });
-    }
-  };
-
-  const validateTerms = (_, value) => {
-    return value
-      ? Promise.resolve()
-      : Promise.reject(new Error("Please agree to our terms to proceed"));
-  };
-
-  const validateBirthDate = (_, value) => {
-    if (!value) {
-      return Promise.resolve();
-    }
-
-    const today = new Date();
-    const selectedDate = new Date(value);
-
-    const minDate = new Date(
-      today.getFullYear() - 70,
-      today.getMonth(),
-      today.getDate()
-    );
-    const maxDate = new Date(
-      today.getFullYear() - 18,
-      today.getMonth(),
-      today.getDate()
-    );
-
-    if (selectedDate >= minDate && selectedDate <= maxDate) {
-      return Promise.resolve();
-    }
-
-    if (selectedDate < maxDate) {
-      return Promise.reject(new Error("Maximum required age is 70 years."));
-    } else {
-      return Promise.reject(new Error("Minimum required age is 18 years."));
     }
   };
 
@@ -83,9 +48,12 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
 
   return (
     <>
-      <div className="w-[710px] h-[76px] top-[408px] left-[425px] mt-3 py-3 px-0 flex flex-col gap-4">
-        <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
-          Please enter your details
+      <div className="w-[710px] h-[76px] top-[408px] left-[425px] mt-2 mb-10 py-3 px-0 flex flex-col gap-0">
+        <p className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
+          Please confirm your details
+        </p>
+        <p className="text-sm font-normal font-open-sans text-left text-[#929497]">
+          These are the details our agent will use to contact you
         </p>
       </div>
 
@@ -109,69 +77,6 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
                 value={formData.firstName}
                 onChange={(e) =>
                   setFormData({ ...formData, firstName: e.target.value })
-                }
-              />
-            </Form.Item>
-            <Form.Item
-              label="Email Address"
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter your email address.",
-                },
-              ]}
-              style={{ marginBottom: "35px" }}
-            >
-              <Input
-                placeholder="Enter your email address"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-              />
-            </Form.Item>
-            <Form.Item
-              label="Date of Birth"
-              name="birthDate"
-              rules={[
-                {
-                  required: true,
-                  message: "Please select date of birth.",
-                },
-                { validator: validateBirthDate },
-              ]}
-              style={{ width: "100%", cursor: "pointer", marginBottom: "35px" }}
-            >
-              <DatePicker
-                style={{ width: "100%" }}
-                id="birthDate"
-                value={formData.birthDate}
-                onChange={(value) =>
-                  setFormData({ ...formData, birthDate: value })
-                }
-                inputReadOnly={true}
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <Form.Item
-              label="Last Name"
-              name="lastName"
-              onKeyPress={preventNumericInput}
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter your last name.",
-                },
-              ]}
-              style={{ marginBottom: "35px" }}
-            >
-              <Input
-                placeholder="Enter your last name"
-                value={formData.lastName}
-                onChange={(e) =>
-                  setFormData({ ...formData, lastName: e.target.value })
                 }
               />
             </Form.Item>
@@ -219,40 +124,64 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
               />
             </Form.Item>
           </Col>
-        </Row>
-        <Row>
-          <Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
             <Form.Item
-              name="terms"
-              valuePropName="checked"
+              label="Last Name"
+              name="lastName"
+              onKeyPress={preventNumericInput}
               rules={[
                 {
-                  validator: validateTerms,
+                  required: true,
+                  message: "Please enter your last name.",
                 },
               ]}
               style={{ marginBottom: "35px" }}
             >
-              <Checkbox
-                checked={formData.terms}
+              <Input
+                placeholder="Enter your last name"
+                value={formData.lastName}
                 onChange={(e) =>
-                  setFormData({ ...formData, terms: e.target.checked })
+                  setFormData({ ...formData, lastName: e.target.value })
                 }
-              >
-                I accept the{" "}
-                <a href="#terms" style={{ color: "#A32A29" }}>
-                  terms
-                </a>{" "}
-                &{" "}
-                <a href="#privacy" style={{ color: "#A32A29" }}>
-                  privacy policy
-                </a>
-              </Checkbox>
+              />
+            </Form.Item>
+            <Form.Item
+              label="Email Address"
+              name="email"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter your email address.",
+                },
+              ]}
+              style={{ marginBottom: "35px" }}
+            >
+              <Input
+                placeholder="Enter your email address"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+              />
             </Form.Item>
           </Col>
+        </Row>
+        <Row>
+          <p className="flex items-center mb-[35px]">
+            <InfoCircleOutlined
+              style={{
+                color: "#D93E3E",
+                marginRight: "8px",
+              }}
+            />
+            <span className="text-[#929497]">
+              Edit any field before clicking submit if necessary
+            </span>
+          </p>
         </Row>
       </Form>
     </>
   );
 };
 
-export default PersonalDetailsForm;
+export default CallBackForm;

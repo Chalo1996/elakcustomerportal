@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import userDetailsReducer from "../../reducers/reducer";
+import { groupCreditReducer } from "../../reducers/groupCreditReducers";
 import { authReducer } from "./features/authSlice";
 import { funeralExpenseReducer } from "./features/gleSlice";
 
@@ -7,7 +7,7 @@ import { groupLifeAssuranceReducer } from "./features/glaSlice";
 
 
 const rootReducer = combineReducers({
-  userDetails: userDetailsReducer,
+  groupCredit: groupCreditReducer,
   auth: authReducer,
   funeralExpense: funeralExpenseReducer,
   groupLifeAssurance: groupLifeAssuranceReducer,
