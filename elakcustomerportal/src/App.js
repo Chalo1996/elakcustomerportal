@@ -30,7 +30,7 @@ import Submit from "./components/Group Critical Illness/Submit";
 import GroupLifeQuotation from "./components/Group Life/GroupLifeQuotation";
 import Privacy from "./pages/TermsAndPrivacy/Privacy";
 import Terms from "./pages/TermsAndPrivacy/Terms";
-
+import IndividualCustomer from "./pages/FuneralExpensePages/IndividualCustomer";
 
 function App() {
   const dispatch = useDispatch();
@@ -94,7 +94,7 @@ function App() {
                     />
                     <Route
                       path='funeral-expense/group-customer'
-                      element={<GroupCustomerPage />}
+                      // element={<GroupCustomerPage />}
                     />
                     <Route
                       path='funeral-expense/quotation-details'
@@ -122,16 +122,16 @@ function App() {
                       element={<CriticalIllnessQuotation />}
                     />
                     <Route
-                      path="customer-type/critical-illness/submit"
+                      path='customer-type/critical-illness/submit'
                       element={<Submit />}
                     />
                     <Route
                       path='group-credit/*'
                       element={<GroupCreditRoutes />}
                     />
-                    <Route path="welcome" element={<Welcome />} />
+                    <Route path='welcome' element={<Welcome />} />
                     <Route
-                      path="term-life-quote"
+                      path='term-life-quote'
                       element={<GroupTermLifeQuote />}
                     />
                     <Route path='*' element={<NotFound />} />
