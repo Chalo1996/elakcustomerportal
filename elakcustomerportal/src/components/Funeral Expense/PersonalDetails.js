@@ -17,6 +17,8 @@ const PhoneAreas = [
   { code: "+256", flag: ugxFlag, country: "Uganda" },
 ];
 
+const Genders = ["Male", "Female"];
+
 const PersonalDetailsForm = ({ form, formData, setFormData }) => {
   useEffect(() => {
     form.setFieldsValue(formData);
