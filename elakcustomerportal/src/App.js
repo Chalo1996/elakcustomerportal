@@ -30,7 +30,8 @@ import Submit from "./components/Group Critical Illness/Submit";
 import GroupLifeQuotation from "./components/Group Life/GroupLifeQuotation";
 import Privacy from "./pages/TermsAndPrivacy/Privacy";
 import Terms from "./pages/TermsAndPrivacy/Terms";
- 
+import EducQuotation from "./components/Education/EducQuotation";
+import GoalQuotation from "./components/Goal Based/GoalQuotation";
 function App() {
   const dispatch = useDispatch();
  
@@ -126,9 +127,18 @@ function App() {
                       path="term-life-quote"
                       element={<GroupTermLifeQuote />}
                     />
+                    <Route
+                      path="Education/Educ-Quotation"
+                      element={<EducQuotation />}
+                    />
+                    <Route
+                      path="Goal-based/Goal-Quotation"
+                      element={<GoalQuotation />}
+                    />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </PortalLayout>
+
               }
             />
  
