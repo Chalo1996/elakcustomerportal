@@ -99,12 +99,12 @@ const GroupCriticalIllness = () => {
   const [SAChildren, setSAChildren] = useState();
   const [sumAssured, setSumAssured] = useState();
   const [coverDate, setCoverDate] = useState();
-  const [coverExpiryDate, setCoverExpiryDate] = useState();
+  const [ setCoverExpiryDate] = useState();
   const [callbackModalVisible, setCallbackModalVisible] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [formData, setFormData] = useState({});
-  const [showHiddenFields, setShowHiddenFields] = useState(false);
+  const [ setShowHiddenFields] = useState(false);
 
   // const preventNumericInput = (event) => {
   //   if (/[0-9]/.test(event.key)) {
@@ -177,32 +177,32 @@ const GroupCriticalIllness = () => {
     );
   };
 
-  const disableCoverExpiryDate = (date) => {
-    if (coverDate) {
-      const currentDate = new Date(coverDate);
-      let newCoverExpiryDate = new Date(coverDate);
-      newCoverExpiryDate.setFullYear(currentDate.getFullYear() + 1);
+  // // const disableCoverExpiryDate = (date) => {
+  // //   if (coverDate) {
+  // //     const currentDate = new Date(coverDate);
+  // //     let newCoverExpiryDate = new Date(coverDate);
+  // //     newCoverExpiryDate.setFullYear(currentDate.getFullYear() + 1);
 
-      // Adjust for leap years
-      if (currentDate.getDate() === 29 && currentDate.getMonth() === 1) {
-        if (
-          newCoverExpiryDate.getMonth() === 1 &&
-          newCoverExpiryDate.getDate() === 28
-        ) {
-          newCoverExpiryDate.setDate(1); // Start from March 1
-          newCoverExpiryDate.setMonth(2); // Adjust to March
-        }
-      }
+  // //     // Adjust for leap years
+  // //     if (currentDate.getDate() === 29 && currentDate.getMonth() === 1) {
+  // //       if (
+  // //         newCoverExpiryDate.getMonth() === 1 &&
+  // //         newCoverExpiryDate.getDate() === 28
+  // //       ) {
+  // //         newCoverExpiryDate.setDate(1); // Start from March 1
+  // //         newCoverExpiryDate.setMonth(2); // Adjust to March
+  // //       }
+  // //     }
 
-      const formattedCoverExpiryDate = new Date(
-        newCoverExpiryDate.getFullYear(),
-        newCoverExpiryDate.getMonth(),
-        newCoverExpiryDate.getDate()
-      );
+  //     const formattedCoverExpiryDate = new Date(
+  //       newCoverExpiryDate.getFullYear(),
+  //       newCoverExpiryDate.getMonth(),
+  //       newCoverExpiryDate.getDate()
+  //     );
 
-      return date && date < formattedCoverExpiryDate;
-    }
-  };
+  //     return date && date < formattedCoverExpiryDate;
+  //   }
+  // };
 
   
 
@@ -225,7 +225,6 @@ const GroupCriticalIllness = () => {
         setCallbackModalVisible(true);
       } else if (current === steps.length - 2) {
         setCurrent(current + 1); // Move to the next step
-        setShowHiddenFields(true); // Show hidden fields for the final step
       } else {
         setCurrent(current + 1); // Move to the next step
       }
@@ -273,7 +272,7 @@ const GroupCriticalIllness = () => {
       <Form layout="vertical">
         <Card>
         <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 mt-3 flex flex-col gap-4">
-        <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
+        <p className="font-open-sans text-[15px] font-semibold leading-[28px] text-left">
           Please confirm your insurance purchase details to continue
         </p>
       </div>
@@ -516,7 +515,7 @@ const GroupCriticalIllness = () => {
           layout="vertical"
         >
            <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 mt-3 flex flex-col gap-4">
-        <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
+        <p className="font-open-sans text-[15px] font-semibold leading-[28px] text-left">
           Please enter personal details
         </p>
       </div>
@@ -651,11 +650,11 @@ const GroupCriticalIllness = () => {
         onChange={(e) => setTermsChecked(e.target.checked)}
     >
         I accept the{" "}
-        <a href="./" style={{ color: "#A32A29" }}>
+        <a href="./critical-illness" style={{ color: "#A32A29" }}>
             terms
         </a>{" "}
         and{" "}
-        <a href="./" style={{ color: "#A32A29" }}>
+        <a href="./critical-illness" style={{ color: "#A32A29" }}>
             privacy policy
         </a>
     </Checkbox>
@@ -672,7 +671,7 @@ const GroupCriticalIllness = () => {
           layout="vertical"
         >
           <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 mt-3 flex flex-col gap-4">
-        <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
+        <p className="font-open-sans text-[15px] font-semibold leading-[28px] text-left">
           Please enter the number of family members to be covered
         </p>
       </div>
@@ -685,10 +684,37 @@ const GroupCriticalIllness = () => {
               xl={12}
               style={{ marginBottom: "16px" }}
             >
-              <Form.Item label="Do you want to cover your spouse?" name="spouse">
+              <Form.Item
+                label="How many principal members do yo want to cover?"
+                name="principalNumber"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter the number of principal members.",
+                  },
+                ]}
+              >
+                <Input
+                  id="principalNumber"
+                  value={principalNumber}
+                  onChange={(event) => setPrincipalNumber(event.target.value)}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={24}
+              md={12}
+              lg={12}
+              xl={12}
+              style={{ marginBottom: "16px" }}
+            >
+               <Form.Item label="Do you want to cover your spouse?" name="spouse">
                 <Switch onChange={(checked) => setSpouse(checked)} />
               </Form.Item>
             </Col>
+          </Row>
+          <Row gutter={16}>
             <Col
               xs={24}
               sm={24}
@@ -721,33 +747,7 @@ const GroupCriticalIllness = () => {
                   }}
                 />
               </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col
-              xs={24}
-              sm={24}
-              md={12}
-              lg={12}
-              xl={12}
-              style={{ marginBottom: "16px" }}
-            >
-              <Form.Item
-                label="Number of principal members"
-                name="principalNumber"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter the number of principal members.",
-                  },
-                ]}
-              >
-                <Input
-                  id="principalNumber"
-                  value={principalNumber}
-                  onChange={(event) => setPrincipalNumber(event.target.value)}
-                />
-              </Form.Item>
+
             </Col>
             <Col
               xs={24}
@@ -758,7 +758,7 @@ const GroupCriticalIllness = () => {
               style={{ marginBottom: "16px" }}
             >
               <Form.Item
-                label="Number of Spouses"
+                label="How many spouses do you want to cover?"
                 name="spouseNumber"
                 rules={[
                   {
@@ -798,7 +798,7 @@ const GroupCriticalIllness = () => {
               style={{ marginBottom: "16px" }}
             >
               <Form.Item
-                label="Number of Children"
+                label="How many children do you want to cover?"
                 name="childrenNumber"
                 rules={[
                   {
@@ -827,7 +827,7 @@ const GroupCriticalIllness = () => {
           layout="vertical"
         >
          <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 mt-3 flex flex-col gap-4">
-        <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
+        <p className="font-open-sans text-[15px] font-semibold leading-[28px] text-left">
           Please confirm the sum assured and percentage sum assured for each member
         </p>
       </div>
@@ -841,7 +841,7 @@ const GroupCriticalIllness = () => {
               style={{ marginBottom: "16px" }}
             >
               <Form.Item
-                label="Sum Assured"
+                label="How much would you like to pay for the cover?"
                 name="sumAssured"
                 rules={[
                   { required: true, message: "Please input sum assured." },
@@ -859,7 +859,7 @@ const GroupCriticalIllness = () => {
                 />
               </Form.Item>
               <Form.Item
-                label="Spouse percentage of sum assured"
+                label="What percentage of paid amount should be given to spouse?"
                 name="SASpouse"
                 rules={[
                   { required: true, message: "Please enter percentage." },
@@ -875,7 +875,7 @@ const GroupCriticalIllness = () => {
                 />
               </Form.Item>
               <Form.Item
-                label="Cover Commencement Date"
+                label="When do you want the cover to start?"
                 name="coverDate"
                 rules={[
                   {
@@ -915,7 +915,7 @@ const GroupCriticalIllness = () => {
               style={{ marginBottom: "16px" }}
             >
               <Form.Item
-                label="Principal member percentage of sum assured"
+                label="What percentage of paid amount should be given to principal member?"
                 name="SAPrincipal"
                 rules={[
                   { required: true, message: "Please enter percentage." },
@@ -931,7 +931,7 @@ const GroupCriticalIllness = () => {
                 />
               </Form.Item>
               <Form.Item
-                label="Children percentage of sum assured"
+                label="What percentage of paid amount should be given to children?"
                 name="SAChildren"
                 rules={[
                   { required: true, message: "Please enter percentage." },
@@ -948,7 +948,7 @@ const GroupCriticalIllness = () => {
               </Form.Item>
 
               <Form.Item
-                label="Policy Term(Years)"
+                label="How long do you want the cover to last (years)?"
                 rules={[
                   { required: true, message: "Please select the Policy Term." },
                 ]}
@@ -957,7 +957,7 @@ const GroupCriticalIllness = () => {
               >
                 <Select
                   id="policyTerm"
-                  placeholder="Please select the policy term"
+                  placeholder="Please select the cover duration"
                   value={policyTerm}
                   onChange={(value) => setPolicyTerm(parseFloat(value))}
                 >
