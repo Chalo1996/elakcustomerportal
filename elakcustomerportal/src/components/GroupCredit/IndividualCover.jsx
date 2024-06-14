@@ -3,17 +3,23 @@ import { Steps, Button, Form } from "antd";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LeftOutlined } from "@ant-design/icons";
-import { updateUserDetails } from "../../redux/actions/groupCreditActions";
+import {
+  updateUserDetails,
+  generateQuotation,
+} from "../../redux/actions/groupCreditActions";
 import ClientDetailsForm from "./ClientDetailsForm";
-import ProductDetailsForm from "./ProductDetails";
+import ProductDetailsForm from "./ProductDetailsForm";
+import ConfirmDetailsForm from "./ConfirmDetailsForm";
 
 const { Step } = Steps;
 
-const IndividualCover = ({ userDetails, dispatch }) => {
+const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isNextDisabled, setIsNextDisabled] = useState(true);
   const [form] = Form.useForm();
   const navigate = useNavigate();
+
+  const [isQuotationGenerated, setIsQuotationGenerated] = useState(false);
 
   const next = async () => {
     try {
@@ -36,6 +42,14 @@ const IndividualCover = ({ userDetails, dispatch }) => {
     navigate(-1);
   };
 
+  const handleGenerateQuotation = () => {
+    dispatch(generateQuotation(contextObject));
+    setIsQuotationGenerated(true);
+    isQuotationGenerated &&
+      quotationData &&
+      navigate("/home/group-credit/quotation");
+  };
+
   useEffect(() => {
     const validateForm = async () => {
       try {
@@ -48,6 +62,26 @@ const IndividualCover = ({ userDetails, dispatch }) => {
     validateForm();
   }, [form, userDetails]);
 
+  const contextObject = {
+    userInfo: {
+      memberName: `${userDetails.firstname}${userDetails.lastname}`,
+      sumAssured: userDetails.sumAssured,
+      termsInMonths: userDetails.termsInMonths,
+      individualRetrenchmentCover:
+        userDetails.retrenchment === true ? "Yes" : "No",
+      annuitantDoB: userDetails.dob,
+      numberOfPartners: 1,
+      partnersDatesOfBirths: [],
+      coverType: "Single",
+      frequency: userDetails.frequency,
+      retRate: userDetails.retRate,
+      gcRate: userDetails.gcRate,
+      discount: userDetails.discount,
+      freeCoverLimit: userDetails.freeCoverLimit,
+    },
+    memberDetails: [],
+  };
+
   const steps = [
     {
       title: "Client Details",
@@ -57,6 +91,7 @@ const IndividualCover = ({ userDetails, dispatch }) => {
           formData={userDetails}
           handleFormChange={handleFormChange}
           form={form}
+          validateTrigger='onSubmit'
         />
       ),
     },
@@ -68,13 +103,14 @@ const IndividualCover = ({ userDetails, dispatch }) => {
           formData={userDetails}
           handleFormChange={handleFormChange}
           form={form}
+          validateTrigger='onSubmit'
         />
       ),
     },
     {
-      title: "Step 3",
-      message: "Please enter the details for step 3.",
-      content: <div>Content for Step 3</div>,
+      title: "Review",
+      message: "To continue, please confirm your insurance purchase details.",
+      content: <ConfirmDetailsForm formData={userDetails} form={form} />,
     },
   ];
 
@@ -122,9 +158,9 @@ const IndividualCover = ({ userDetails, dispatch }) => {
           <Button
             className='h-full px-4 py-2 shadow-none text-center'
             type='primary'
-            onClick={() => alert("Done!")}
+            onClick={handleGenerateQuotation}
           >
-            Done
+            Generate Quotation
           </Button>
         )}
       </div>
@@ -134,6 +170,7 @@ const IndividualCover = ({ userDetails, dispatch }) => {
 
 const mapStateToProps = (state) => ({
   userDetails: state.groupCredit,
+  quotationData: state.groupCredit.quotationData,
 });
 
 export default connect(mapStateToProps)(IndividualCover);

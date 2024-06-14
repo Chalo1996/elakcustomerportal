@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Form,
   Input,
@@ -83,8 +83,12 @@ const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
     handleFormChange("phone", phoneNumber);
   };
 
-  const handleDoBChange = (date) => {
-    handleFormChange("dob", date ? date.toISOString() : null);
+  const formatDate = (dateString) => {
+    return moment(dateString).format("MM/DD/YYYY");
+  };
+
+  const handleDoBChange = (date, dateString) => {
+    handleFormChange("dob", formatDate(dateString));
   };
 
   const handleEmailChange = (e) => {
@@ -134,10 +138,6 @@ const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
     setPrivacyVisible(false);
     handleFormChange("termschecked", true);
   };
-
-  useEffect(() => {
-    form.validateFields();
-  }, [formData]);
 
   return (
     <>
@@ -308,15 +308,15 @@ const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
                 checked={formData.termschecked}
                 onChange={handleTermsCheckBox}
               >
-                I Accept the{" "}
+                I Accept the
                 <Button
                   type='link'
                   style={{ color: "brown" }}
                   onClick={() => setTermsVisible(true)}
                 >
                   Terms and Conditions
-                </Button>{" "}
-                &{" "}
+                </Button>
+                &
                 <Button
                   type='link'
                   style={{ color: "brown" }}
