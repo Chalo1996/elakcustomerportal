@@ -92,155 +92,150 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
       </div>
 
       <Form form={form} layout="vertical">
-        <Row gutter={[16, 16]}>
-          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <Form.Item
-              label="First Name"
-              name="firstName"
-              onKeyPress={preventNumericInput}
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter your first name.",
-                },
-              ]}
-              style={{ marginBottom: "35px" }}
+        <div className="grid grid-cols-2 gap-4">
+          <Form.Item
+            label="First Name"
+            name="firstName"
+            onKeyPress={preventNumericInput}
+            rules={[
+              {
+                required: true,
+                message: "Please enter your first name.",
+              },
+            ]}
+            style={{ marginBottom: "35px" }}
+          >
+            <Input
+              placeholder="Enter your first name"
+              value={formData.firstName}
+              onChange={(e) =>
+                setFormData({ ...formData, firstName: e.target.value })
+              }
+            />
+          </Form.Item>
+          <Form.Item
+            label="Last Name"
+            name="lastName"
+            onKeyPress={preventNumericInput}
+            rules={[
+              {
+                required: true,
+                message: "Please enter your last name.",
+              },
+            ]}
+            style={{ marginBottom: "35px" }}
+          >
+            <Input
+              placeholder="Enter your last name"
+              value={formData.lastName}
+              onChange={(e) =>
+                setFormData({ ...formData, lastName: e.target.value })
+              }
+            />
+          </Form.Item>
+          <Form.Item
+            label="Gender"
+            name="gender"
+            rules={[{ required: true, message: "Please select a gender." }]}
+            style={{ marginBottom: "35px" }}
+          >
+            <Select
+              value={formData.gender}
+              onChange={(value) => setFormData({ ...formData, gender: value })}
             >
-              <Input
-                placeholder="Enter your first name"
-                value={formData.firstName}
-                onChange={(e) =>
-                  setFormData({ ...formData, firstName: e.target.value })
-                }
-              />
-            </Form.Item>
-            <Form.Item
-              label="Gender"
-              name="gender"
-              rules={[{ required: true, message: "Please select a gender." }]}
-              style={{ marginBottom: "35px" }}
-            >
-              <Select
-                value={formData.gender}
-                onChange={(value) =>
-                  setFormData({ ...formData, gender: value })
-                }
-              >
-                {Genders.map((item) => (
-                  <Option key={item} value={item}>
-                    {item}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-            <Form.Item
-              label="Date of Birth"
-              name="birthDate"
-              rules={[
-                {
-                  required: true,
-                  message: "Please select date of birth.",
-                },
-                { validator: validateBirthDate },
-              ]}
-              style={{ width: "100%", cursor: "pointer", marginBottom: "35px" }}
-            >
-              <DatePicker
-                style={{ width: "100%" }}
-                id="birthDate"
-                value={formData.birthDate}
-                onChange={(value) =>
-                  setFormData({ ...formData, birthDate: value })
-                }
-                inputReadOnly={true}
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <Form.Item
-              label="Last Name"
-              name="lastName"
-              onKeyPress={preventNumericInput}
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter your last name.",
-                },
-              ]}
-              style={{ marginBottom: "35px" }}
-            >
-              <Input
-                placeholder="Enter your last name"
-                value={formData.lastName}
-                onChange={(e) =>
-                  setFormData({ ...formData, lastName: e.target.value })
-                }
-              />
-            </Form.Item>
-            <Form.Item
-              label="Email Address"
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter your email address.",
-                },
-              ]}
-              style={{ marginBottom: "35px" }}
-            >
-              <Input
-                placeholder="Enter your email address"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-              />
-            </Form.Item>
-            <Form.Item
-              label="Mobile Number"
-              name="phoneNo"
-              onKeyPress={preventTextInput}
-              rules={[
-                {
-                  required: true,
-                  message: "Please input a mobile number.",
-                },
-                {
-                  len: 9,
-                  message: "The input must have exactly 9 digits.!",
-                },
-              ]}
-              style={{ marginBottom: "35px" }}
-            >
-              <Input
-                addonBefore={
-                  <Select
-                    style={{ width: 100 }}
-                    value={formData.phoneArea}
-                    onChange={handlePhoneAreaChange}
-                  >
-                    {PhoneAreas.map((item) => (
-                      <Option value={item.code} key={item.code}>
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <span>{item.code}</span>
-                          <img
-                            src={item.flag}
-                            alt={item.country}
-                            style={{ width: "20px", marginLeft: "8px" }}
-                          />
-                        </div>
-                      </Option>
-                    ))}
-                  </Select>
-                }
-                value={formData.phoneNo}
-                onChange={(e) =>
-                  setFormData({ ...formData, phoneNo: e.target.value })
-                }
-              />
-            </Form.Item>
-          </Col>
-        </Row>
+              {Genders.map((item) => (
+                <Option key={item} value={item}>
+                  {item}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label="Date of Birth"
+            name="birthDate"
+            rules={[
+              {
+                required: true,
+                message: "Please select date of birth.",
+              },
+              { validator: validateBirthDate },
+            ]}
+            style={{ width: "100%", cursor: "pointer", marginBottom: "35px" }}
+          >
+            <DatePicker
+              style={{ width: "100%" }}
+              id="birthDate"
+              value={formData.birthDate}
+              onChange={(value) =>
+                setFormData({ ...formData, birthDate: value })
+              }
+              inputReadOnly={true}
+            />
+          </Form.Item>
+
+          <Form.Item
+            label="Email Address"
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: "Please enter your email address.",
+              },
+            ]}
+            style={{ marginBottom: "35px" }}
+          >
+            <Input
+              placeholder="Enter your email address"
+              value={formData.email}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
+            />
+          </Form.Item>
+          <Form.Item
+            label="Mobile Number"
+            name="phoneNo"
+            onKeyPress={preventTextInput}
+            rules={[
+              {
+                required: true,
+                message: "Please input a mobile number.",
+              },
+              {
+                len: 9,
+                message: "The input must have exactly 9 digits.!",
+              },
+            ]}
+            style={{ marginBottom: "35px" }}
+          >
+            <Input
+              addonBefore={
+                <Select
+                  style={{ width: 100 }}
+                  value={formData.phoneArea}
+                  onChange={handlePhoneAreaChange}
+                >
+                  {PhoneAreas.map((item) => (
+                    <Option value={item.code} key={item.code}>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <span>{item.code}</span>
+                        <img
+                          src={item.flag}
+                          alt={item.country}
+                          style={{ width: "20px", marginLeft: "8px" }}
+                        />
+                      </div>
+                    </Option>
+                  ))}
+                </Select>
+              }
+              value={formData.phoneNo}
+              onChange={(e) =>
+                setFormData({ ...formData, phoneNo: e.target.value })
+              }
+            />
+          </Form.Item>
+        </div>
         <Row>
           <Col>
             <Form.Item
