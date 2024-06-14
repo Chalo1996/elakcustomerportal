@@ -1,9 +1,13 @@
-import React from 'react';
-import { Table, Card, Row, Col } from 'antd';
+import React, { useState } from 'react';
+import { Table, Card, Row, Col, Checkbox, Button } from 'antd';
+import { useLocation } from "react-router-dom";
+
 
 const renderFormattedValue = (value) => Math.round(value).toLocaleString("en-us");
 const formatCurrency = (value) => `KES ${Math.round(value).toLocaleString()}`;
 const formatPercentage = (value) => `${Math.round(value)}%`;
+
+
 
 const detailColumns = [
   { title: "Attribute", dataIndex: "attribute", key: "attribute", width: "50%" },
@@ -53,6 +57,21 @@ const getInvestmentData = (cData) => {
 };
 
 const EducQuotation = ({ cData = {}, formData = {} }) => {
+  const location = useLocation();
+  const [acceptedExclusions, setAcceptedExclusions] = useState(false);
+
+  const handleAcceptanceChange = (e) => {
+    setAcceptedExclusions(e.target.checked);
+  };
+
+  const handlePrevClick = () => {
+    console.log('Previous button clicked');
+  };
+
+  const handleDownload = () => {
+    console.log('Download button clicked');
+  };
+
   const clientData = getClientData(formData);
   const policyData = getPolicyData(formData);
   const investmentData = getInvestmentData(cData);
@@ -159,6 +178,27 @@ const EducQuotation = ({ cData = {}, formData = {} }) => {
           </h3>
         </div>
       </div>
+      {/* Checkbox for accepting policy exclusions */}
+      <div style={{ margin: '20px 0', textAlign: 'left' }}>
+                <Checkbox
+                    checked={acceptedExclusions}
+                    onChange={handleAcceptanceChange}
+                >
+                    I accept the {" "}
+        <a href="./" style={{ color: "#A32A29" }}>
+            policy exclusions
+        </a>
+                </Checkbox>
+            </div>
+    
+            {/* Buttons */}
+            <div style={{ textAlign: 'left', marginTop: '20px' }}>
+                <Button style={{ marginRight: '10px' }} onClick={handlePrevClick}>Previous</Button>
+                <Button type="primary" style={{ marginRight: '10px' }} onClick={handleDownload}>Download</Button>
+                <Button type="primary" style={{ marginRight: '10px' }}>Send to Email</Button>
+                <Button type="primary">Proceed with Payment</Button>
+            </div>
+   
     </Card>
   );
 };
