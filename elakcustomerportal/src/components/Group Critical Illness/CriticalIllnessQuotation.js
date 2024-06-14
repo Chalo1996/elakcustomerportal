@@ -1,18 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { jsPDF } from "jspdf";
 import { Table, Typography, Row, Col, Button, Checkbox } from 'antd';
+// import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { resetData } from "../../store/redux/features/gciSlice";
 
 
 const CriticalIllnessQuotation = ({ formData }) => {
-    const [tableColumns, setTableColumns] = useState([]);
+    // const [ tableColumns, setTableColumns] = useState([]);
     const [acceptedExclusions, setAcceptedExclusions] = useState(false);
     const [current, setCurrent] = useState(0);
 
-    
+    const dispatch = useDispatch();
+//   const location = useLocation();
+//   const { data = {}} = location.state || {};
 
-    const handleTableColumnsChange = (columns) => {
-        setTableColumns(columns);
-    };
+  useEffect(() => {
+    dispatch(resetData());
+  }, [dispatch]);
+
+    // const handleTableColumnsChange = (columns) => {
+    //     setTableColumns(columns);
+    // };
 
     const today = new Date();
   const options = { month: "long", day: "numeric", year: "numeric" };
@@ -295,7 +304,7 @@ const CriticalIllnessQuotation = ({ formData }) => {
         },
     ];
 
-    const tableColumnsData = [
+    const tableColumns = [
         {
             title: "Member Type",
             dataIndex: "name",
@@ -344,7 +353,7 @@ const CriticalIllnessQuotation = ({ formData }) => {
         { key: "clientEmailAddress", attribute: "Email", value: "" },
     ];
 
-    const emptyDataTemplate = [
+    const criticalIllnessCover = [
         {
             name: "",
             individualLives: "",
@@ -378,6 +387,112 @@ const CriticalIllnessQuotation = ({ formData }) => {
             totalciPremium: "",
         },
     ];
+
+    const funeralExpenseCover = [
+        {
+            name: "",
+            individualLives: "",
+            sumAssured: "",
+            totalSumAssured: "",
+            ciPremium: "",
+            totalciPremium: "",
+        },
+        {
+            name: "",
+            individualLives: "",
+            sumAssured: "",
+            totalSumAssured: "",
+            ciPremium: "",
+            totalciPremium: "",
+        },
+        {
+            name: "",
+            individualLives: "",
+            sumAssured: "",
+            totalSumAssured: "",
+            ciPremium: "",
+            totalciPremium: "",
+        },
+        {
+            name: "",
+            individualLives: "",
+            sumAssured: "",
+            totalSumAssured: "",
+            ciPremium: "",
+            totalciPremium: "",
+        },
+    ];
+
+    const terminalIllnessRider = [
+        {
+            name: "",
+            individualLives: "",
+            sumAssured: "",
+            totalSumAssured: "",
+            ciPremium: "",
+            totalciPremium: "",
+        },
+        {
+            name: "",
+            individualLives: "",
+            sumAssured: "",
+            totalSumAssured: "",
+            ciPremium: "",
+            totalciPremium: "",
+        },
+        {
+            name: "",
+            individualLives: "",
+            sumAssured: "",
+            totalSumAssured: "",
+            ciPremium: "",
+            totalciPremium: "",
+        },
+        {
+            name: "",
+            individualLives: "",
+            sumAssured: "",
+            totalSumAssured: "",
+            ciPremium: "",
+            totalciPremium: "",
+        },
+    ];
+
+    const totalPremiumDetails = [
+        {
+            name: "",
+            individualLives: "",
+            sumAssured: "",
+            totalSumAssured: "",
+            ciPremium: "",
+            totalciPremium: "",
+        },
+        {
+            name: "",
+            individualLives: "",
+            sumAssured: "",
+            totalSumAssured: "",
+            ciPremium: "",
+            totalciPremium: "",
+        },
+        {
+            name: "",
+            individualLives: "",
+            sumAssured: "",
+            totalSumAssured: "",
+            ciPremium: "",
+            totalciPremium: "",
+        },
+        {
+            name: "",
+            individualLives: "",
+            sumAssured: "",
+            totalSumAssured: "",
+            ciPremium: "",
+            totalciPremium: "",
+        },
+    ];
+
 
     return (
         <>
@@ -446,8 +561,8 @@ const CriticalIllnessQuotation = ({ formData }) => {
                         Personal Critical Illness Cover
                     </Title>
                     <Table
-                        columns={tableColumnsData}
-                        dataSource={emptyDataTemplate}
+                        columns={tableColumns}
+                        dataSource={criticalIllnessCover}
                         pagination={false}
                         bordered
                         showHeader={true}
@@ -463,8 +578,8 @@ const CriticalIllnessQuotation = ({ formData }) => {
                         Personal Funeral Expense Rider
                     </Title>
                     <Table
-                        columns={tableColumnsData}
-                        dataSource={emptyDataTemplate}
+                        columns={tableColumns}
+                        dataSource={funeralExpenseCover}
                         pagination={false}
                         bordered
                         showHeader={true}
@@ -480,8 +595,8 @@ const CriticalIllnessQuotation = ({ formData }) => {
                         Personal Terminal Illness Rider
                     </Title>
                     <Table
-                        columns={tableColumnsData}
-                        dataSource={emptyDataTemplate}
+                        columns={tableColumns}
+                        dataSource={terminalIllnessRider}
                         pagination={false}
                         bordered
                         showHeader={true}
@@ -497,8 +612,8 @@ const CriticalIllnessQuotation = ({ formData }) => {
                         Total Premiums
                     </Title>
                     <Table
-                        columns={tableColumnsData}
-                        dataSource={emptyDataTemplate}
+                        columns={tableColumns}
+                        dataSource={totalPremiumDetails}
                         pagination={false}
                         bordered
                         showHeader={true}

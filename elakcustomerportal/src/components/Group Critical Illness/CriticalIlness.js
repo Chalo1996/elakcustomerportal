@@ -99,12 +99,12 @@ const GroupCriticalIllness = () => {
   const [SAChildren, setSAChildren] = useState();
   const [sumAssured, setSumAssured] = useState();
   const [coverDate, setCoverDate] = useState();
-  const [coverExpiryDate, setCoverExpiryDate] = useState();
+  const [ setCoverExpiryDate] = useState();
   const [callbackModalVisible, setCallbackModalVisible] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [formData, setFormData] = useState({});
-  const [showHiddenFields, setShowHiddenFields] = useState(false);
+  const [ setShowHiddenFields] = useState(false);
 
   // const preventNumericInput = (event) => {
   //   if (/[0-9]/.test(event.key)) {
@@ -177,32 +177,32 @@ const GroupCriticalIllness = () => {
     );
   };
 
-  const disableCoverExpiryDate = (date) => {
-    if (coverDate) {
-      const currentDate = new Date(coverDate);
-      let newCoverExpiryDate = new Date(coverDate);
-      newCoverExpiryDate.setFullYear(currentDate.getFullYear() + 1);
+  // // const disableCoverExpiryDate = (date) => {
+  // //   if (coverDate) {
+  // //     const currentDate = new Date(coverDate);
+  // //     let newCoverExpiryDate = new Date(coverDate);
+  // //     newCoverExpiryDate.setFullYear(currentDate.getFullYear() + 1);
 
-      // Adjust for leap years
-      if (currentDate.getDate() === 29 && currentDate.getMonth() === 1) {
-        if (
-          newCoverExpiryDate.getMonth() === 1 &&
-          newCoverExpiryDate.getDate() === 28
-        ) {
-          newCoverExpiryDate.setDate(1); // Start from March 1
-          newCoverExpiryDate.setMonth(2); // Adjust to March
-        }
-      }
+  // //     // Adjust for leap years
+  // //     if (currentDate.getDate() === 29 && currentDate.getMonth() === 1) {
+  // //       if (
+  // //         newCoverExpiryDate.getMonth() === 1 &&
+  // //         newCoverExpiryDate.getDate() === 28
+  // //       ) {
+  // //         newCoverExpiryDate.setDate(1); // Start from March 1
+  // //         newCoverExpiryDate.setMonth(2); // Adjust to March
+  // //       }
+  // //     }
 
-      const formattedCoverExpiryDate = new Date(
-        newCoverExpiryDate.getFullYear(),
-        newCoverExpiryDate.getMonth(),
-        newCoverExpiryDate.getDate()
-      );
+  //     const formattedCoverExpiryDate = new Date(
+  //       newCoverExpiryDate.getFullYear(),
+  //       newCoverExpiryDate.getMonth(),
+  //       newCoverExpiryDate.getDate()
+  //     );
 
-      return date && date < formattedCoverExpiryDate;
-    }
-  };
+  //     return date && date < formattedCoverExpiryDate;
+  //   }
+  // };
 
   
 
@@ -225,7 +225,6 @@ const GroupCriticalIllness = () => {
         setCallbackModalVisible(true);
       } else if (current === steps.length - 2) {
         setCurrent(current + 1); // Move to the next step
-        setShowHiddenFields(true); // Show hidden fields for the final step
       } else {
         setCurrent(current + 1); // Move to the next step
       }
