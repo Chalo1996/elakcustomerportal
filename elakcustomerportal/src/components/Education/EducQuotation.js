@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { Table, Card, Row, Col, Checkbox, Button } from 'antd';
 import { useLocation } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { resetData } from "../../store/redux/features/eduSlice";
 
 const renderFormattedValue = (value) => Math.round(value).toLocaleString("en-us");
 const formatCurrency = (value) => `KES ${Math.round(value).toLocaleString()}`;
-const formatPercentage = (value) => `${Math.round(value)}%`;
-
-
+const formatPercentage = (value) => `${Math.round(value)}%`; 
 
 const detailColumns = [
   { title: "Attribute", dataIndex: "attribute", key: "attribute", width: "50%" },
@@ -65,7 +64,7 @@ const EducQuotation = ({ cData = {}, formData = {} }) => {
   };
 
   const handlePrevClick = () => {
-    console.log('Previous button clicked');
+    console.log('Back button clicked');
   };
 
   const handleDownload = () => {
@@ -193,7 +192,7 @@ const EducQuotation = ({ cData = {}, formData = {} }) => {
     
             {/* Buttons */}
             <div style={{ textAlign: 'left', marginTop: '20px' }}>
-                <Button style={{ marginRight: '10px' }} onClick={handlePrevClick}>Previous</Button>
+                <Button style={{ marginRight: '10px' }} onClick={handlePrevClick}>Back</Button>
                 <Button type="primary" style={{ marginRight: '10px' }} onClick={handleDownload}>Download</Button>
                 <Button type="primary" style={{ marginRight: '10px' }}>Send to Email</Button>
                 <Button type="primary">Proceed with Payment</Button>
