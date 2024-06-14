@@ -9,6 +9,9 @@ const TermLifeQuote = () => {
   const { Step } = Steps;
   const { Title, Text } = Typography;
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [reviewData, setReviewData] = useState({});
   const [generateQuoteChecked, setGenerateQuoteChecked] = useState(false);
@@ -63,7 +66,6 @@ const TermLifeQuote = () => {
     LEVEL: 'STAY THE SAME OVER TIME (LEVEL)',
     INCREASING: 'GET BIGGER OVER TIME(INCREASING)',
     };
-
   const loanTyp = {
     BULLLET: 'PAYMENT AT TERM END',
     AMORTIZATION: 'GRADUAL PAYMENT',
@@ -72,7 +74,6 @@ const TermLifeQuote = () => {
     SINGLE: 'SINGLE',
     JOINT: 'JOINT',
     };
-
   const isCoverForloan = {
     YES: 'LOAN-PREMIUM',
     NO: 'NON-LOAN PREMIUM',
@@ -240,6 +241,13 @@ const TermLifeQuote = () => {
 
     const handleReview = () => {
       setShowReviewModal(true);
+    };
+
+    const handlePolicyCheckboxChange = (e) => {
+      setIsModalVisible(e.target.checked);
+    };
+    const handleOk = () => {
+      setIsModalVisible(false);
     };
 
     return (
@@ -698,74 +706,169 @@ const TermLifeQuote = () => {
             Submit
           </Button>
         ]}>
+
         <div>
-      <h1 style={{ textAlign: 'left', fontSize: '21px', marginBottom: '20px', marginTop: '0px' }}>
-          To continue, please confirm your insurance purchase details
-              </h1>   
-        <h2>Personal Details</h2>
-        <p>First Name: {formData.name}</p>
-        <p>Second Name: {formData.secondname}</p>
-        <p>Date Of Birth: {formData.dateOfBirth}</p>
-        <p>Email: {formData.email}</p>
-        <p>Mobile: {formData.phoneNumber}</p>
-        <p>Country: {formData.country}</p>
-      </div>
+          <h1 style={{ textAlign: 'left', fontSize: '21px', marginBottom: '20px', marginTop: '0px' }}>
+            To continue, please confirm your insurance purchase details
+          </h1>   
+          <table style={{ width: '95%', borderCollapse: 'collapse' }}>
+          <tbody>
+          <tr>
+            <th colSpan="2" style={{ textAlign: 'left', borderBottom: '2px solid black', padding: '8px' }}>
+              Personal Details</th>
+          </tr>
+          <tr>
+            <td style={{ width: '120%', padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>First Name</td>
+            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.name}</td>
+          </tr>
+          <tr>
+            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Second Name </td>
+            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.secondname}</td>
+          </tr>
+          <tr>
+            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Date Of Birth</td>
+            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.dateOfBirth}</td>
+          </tr>
+          <tr>
+            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Email</td>
+            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.email}</td>
+          </tr>
+          <tr>
+            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Mobile</td>
+            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.phoneNumber}</td>
+          </tr>
+          <tr>
+            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Country</td>
+            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.country}</td>
+          </tr>
+          </tbody>
+          </table>
 
-      <div style={{ marginTop: '20px' }}>
-        <h2>Cover Details</h2>
-        <p>Premium Type: {formData.isCoverLoan}</p>
-        <p>Cover Type: {formData.coverType}</p>
-        {formData.isCoverLoan === 'YES' && (
-          <>
-            <p>Principal: {formData.principalAmount}</p>
-            <p>Term In Years: {formData.termInYears}</p>
-            <p>Installments Per Annum: {formData.installmentsPerAnnum}</p>
-            <p>Single or Joint: {formData.singleJoint}</p>
-            <p>Loan Type: {formData.loanType}</p>
-          </>
-        )}
-        {formData.isCoverLoan === 'NO' && (
-          <>
-            <p>Sum Assured: {formData.sumAssured}</p>
-            <p>Term In Years: {formData.termInYearsCover}</p>
-            <p>Benefit Escalation: {formData.benefitEscalationCover}</p>
-          </>
-        )}
-      </div>
+          <div style={{ marginTop: '20px' }}>
+          <table style={{ width: '90%', borderCollapse: 'collapse' }}>
+          <tbody>
+            <tr>
+              <th colSpan="2" style={{ textAlign: 'left', borderBottom: '2px solid black', padding: '8px' }}>Cover Details</th>
+            </tr>
+            <tr>
+              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Premium Type</td>
+              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.isCoverLoan}</td>
+            </tr>
+            <tr>
+              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Cover Type</td>
+              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.coverType}</td>
+            </tr>
+            {formData.isCoverLoan === 'YES' && (
+              <>
+                <tr>
+                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Principal</td>
+                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.principalAmount}</td>
+                </tr>
+                <tr>
+                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Term In Years</td>
+                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.termInYears}</td>
+                </tr>
+                <tr>
+                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Installments Per Annum</td>
+                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.installmentsPerAnnum}</td>
+                </tr>
+                <tr>
+                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Single or Joint</td>
+                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.singleJoint}</td>
+                </tr>
+                <tr>
+                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Loan Type</td>
+                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.loanType}</td>
+                </tr>
+              </>
+            )}
+            {formData.isCoverLoan === 'NO' && (
+              <>
+                <tr>
+                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Sum Assured</td>
+                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.sumAssured}</td>
+                </tr>
+                <tr>
+                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Term In Years</td>
+                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.termInYearsCover}</td>
+                </tr>
+                <tr>
+                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Benefit Escalation</td>
+                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.benefitEscalationCover}</td>
+                </tr>
+              </>
+            )}
+          </tbody>
+          </table>
+          </div>
 
-      <div style={{ marginTop: '20px' }}>
-        <h2>Additional Options</h2>
-        <p>Accelerated Critical Illness: {formData.acceleratedCritalIllness}</p>
-        <p>Percentage of Premium to be Returned: {formData.percentageOfPremToBReturned}</p>
-        <p>Return of Premium on Survival: {formData.returnOfPremiumOnSurvival}</p>
-        <p>Payment Frequency: {formData.premiumFrequency}</p>
+          <div style={{ marginTop: '20px' }}>
+          <table style={{ width: '75%', borderCollapse: 'collapse' }}>
+          <tbody>
+            <tr>
+              <th colSpan="2" style={{ textAlign: 'left', borderBottom: '2px solid black', padding: '8px' }}>Additional Options</th>
+            </tr>
+            <tr>
+              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Accelerated Critical Illness</td>
+              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.acceleratedCritalIllness}</td>
+            </tr>
+            <tr>
+              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Percentage of Premium to be Returned</td>
+              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.percentageOfPremToBReturned}</td>
+            </tr>
+            <tr>
+              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Return of Premium on Survival</td>
+              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.returnOfPremiumOnSurvival}</td>
+            </tr>
+            <tr>
+              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Payment Frequency</td>
+              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.premiumFrequency}</td>
+            </tr>
+          </tbody>
+          </table>
+          </div>
+        </div>
+
+      <div>
+    <Checkbox 
+    onChange={handlePolicyCheckboxChange}>Policy Exclusions</Checkbox>
+    {isModalVisible && (
+     
+     <div style={{ width: '100%', height: '50%', overflowY: 'auto', position: 'relative', border: '1px solid #ccc', padding: '16px', boxSizing: 'border-box' }}>
+
+        <h3>Policy Exclusions</h3>
+        <p>
+          When considering term life insurance, it's important to be aware of 
+          potential policy exclusions that may affect coverage. Common exclusions 
+          often include pre-existing conditions, where deaths resulting from undisclosed
+          medical conditions are not covered. Many policies have a suicide exclusion clause,
+          typically within the first two years of the policy, meaning if the policyholder 
+          commits suicide during this period, the insurer may not pay out the death benefit.
+
+          Engaging in hazardous activities, such as extreme sports like skydiving or scuba diving, 
+          may also lead to exclusions. Deaths resulting from these activities might not be covered
+          if they were not disclosed during the application process. Similarly, deaths occurring 
+          during illegal activities, including drug use or committing a crime, are often excluded from coverage.
+
+          Acts of war and terrorism can also be excluded from term life insurance policies. 
+          This means that if the policyholder dies due to war or terrorism, the insurance company may not pay
+          out the benefit. Additionally, deaths resulting from alcohol or drug abuse are commonly excluded, 
+
+          and insurers may deny claims if the death is directly linked to substance misuse.
+          Understanding these exclusions helps policyholders ensure they are adequately covered a
+          nd avoid situations that might invalidate their policy.
+        </p>
+        <Button key="agree" type="primary" onClick={handleOk}>
+          Agree
+        </Button>
       </div>
+    )}
+  </div>
+
+
     </Modal>
 
-          <div>      
-        {  
-          /*
-          <p>First Name: {formData.name}</p>
-          <p>Second Name: {formData.secondname}</p>
-          <p>Date Of Birth: {formData.dateOfBirth}</p>
-          <p>Email: {formData.email}</p>
-          <p>Mobile: {formData.phoneNumber}</p>
-          <p>Premium Type: {formData.isCoverLoan}</p>
-          <p>Cover Type: {formData.coverType}</p>
-          <p>Principal: {formData.principalAmount}</p>
-          <p>Term In Years: {formData.termInYears}</p>
-          <p>Installments Per Annum: {formData.installmentsPerAnnum}</p>
-          <p>Single or Joint: {formData.singleJoint}</p>
-          <p>Loan Type: {formData.loanType}</p>
-          <p>Sum Assured: {formData.sumAssured}</p>
-          <p>Term In Yrs Non loan: {formData.termInYearsCover}</p>
-          <p>Benefit  Escalation: {formData.benefitEscalationCover}</p>
-          <p>Acce Crit Illness: {formData.acceleratedCritalIllness}</p>
-          <p>% of Prem : {formData.percentageOfPremToBReturned}</p>
-          <p>Return of Prem On Survival: {formData.returnOfPremiumOnSurvival}</p>
-          <p>Frequency: {formData.premiumFrequency} </p> */
-         }
-          
+          <div>             
             <Row gutter={16}>
               {Object.entries(reviewData).map(([key, value]) => (
                 <Col span={12} key={key}>

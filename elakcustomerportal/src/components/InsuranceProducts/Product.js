@@ -1,6 +1,5 @@
 import { Card, Button } from "antd";
 import { NavLink } from "react-router-dom";
-import { useTheme } from "../../store/context/theme-context";
 import { useState } from "react";
 
 import FuneralExpenseModal from "../Funeral Expense/modals/FuneralExpenseModal";
@@ -9,11 +8,11 @@ import GroupCreditModal from "../GroupCredit/Modals/GroupCreditModal";
 import GroupLifeModal from "../Group Life/groupLifeModal";
 import Educamodal from "../Education/Educamodal";
 import Goalbasedmodal from "../Goal Based/Goalbasedmodal";
+import GroupTermLifeModal from "../Group Term Life/GroupTermLifeModal";
 
 const { Meta } = Card;
 
 const Product = ({ product, index }) => {
-  const { theme } = useTheme();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {
@@ -58,6 +57,17 @@ const Product = ({ product, index }) => {
           />
         );
 
+        case 4:
+          return (
+            <GroupTermLifeModal
+              isModalOpen={isModalOpen}
+              onOkay={handleOk}
+              onCancel={handleCancel}
+              product={product}
+            />
+          );
+  
+
       case 6:
         return (
           <GroupCreditModal
@@ -101,16 +111,16 @@ const Product = ({ product, index }) => {
           className="h-40 object-cover"
         />
       }
-      className={`${theme === "dark" ? "bg-gray-700 text-white" : ""} m-4`}
+      className={`m-4`}
     >
       <Meta
         title={
-          <span style={{ color: theme === "dark" ? "white" : "inherit" }}>
+          <span >
             {product.title}
           </span>
         }
         description={
-          <span style={{ color: theme === "dark" ? "gray" : "inherit" }}>
+          <span>
             {product.description}
           </span>
         }
