@@ -30,7 +30,6 @@ import Submit from "./components/Group Critical Illness/Submit";
 import GroupLifeQuotation from "./components/Group Life/GroupLifeQuotation";
 import Privacy from "./pages/TermsAndPrivacy/Privacy";
 import Terms from "./pages/TermsAndPrivacy/Terms";
-import IndividualCustomer from "./pages/FuneralExpensePages/IndividualCustomer";
 
 function App() {
   const dispatch = useDispatch();
@@ -62,13 +61,13 @@ function App() {
         >
           <Routes>
             {/* Landing Page Route */}
-            <Route path='/landing-page' element={<LandingPage />} />
+            <Route path="/landing-page" element={<LandingPage />} />
             {/* Redirect to /landing-page */}
-            <Route path='/' element={<Navigate to='/landing-page' />} />
+            <Route path="/" element={<Navigate to="/landing-page" />} />
 
             {/* Home route */}
             <Route
-              path='/home'
+              path="/home"
               element={
                 <PortalLayout>
                   <Home />
@@ -78,72 +77,65 @@ function App() {
 
             {/* Routes under /home */}
             <Route
-              path='/home/*'
+              path="/home/*"
               element={
                 <PortalLayout>
                   <Routes>
-                    <Route path='education' element={<Education />} />
-                    <Route path='goal-based' element={<GoalBased />} />
+                    <Route path="education" element={<Education />} />
+                    <Route path="goal-based" element={<GoalBased />} />
                     <Route
-                      path='funeral-expense/select-customer-type'
+                      path="funeral-expense/select-customer-type"
                       element={<CustomerTypePage />}
                     />
                     <Route
-                      path='funeral-expense/individual-customer'
-                      element={<IndividualCustomer />}
+                      path="/funeral-expense"
+                      element={<HandleCustomerSelection />}
                     />
                     <Route
-                      path='funeral-expense/group-customer'
-                      // element={<GroupCustomerPage />}
-                    />
-                    <Route
-                      path='funeral-expense/quotation-details'
+                      path="funeral-expense/quotation-details"
                       element={<FuneralExpenseQuotation />}
                     />
                     <Route
-                      path='group-life-assurance'
+                      path="group-life-assurance"
                       element={<GroupLifeAssurance />}
                     />
                     <Route
-                      path='group-life-assurance/quotation-details"
+                      path="group-life-assurance/quotation-details"
                       element={<GroupLifeQuotation />}
                     />
- 
+
                     <Route
-                      path="customer-type/critical-illness'
+                      path="customer-type/critical-illness"
                       element={<GroupCriticalIllness />}
                     />
+                    <Route path="customer-type" element={<CustomerType />} />
                     <Route
-                      path='customer-type"
-                      element={<CustomerType />}
-                    />
-                    <Route
-                      path="customer-type/critical-illness/critical-illness-quotation'
+                      path="customer-type/critical-illness/critical-illness-quotation"
                       element={<CriticalIllnessQuotation />}
                     />
                     <Route
-                      path='customer-type/critical-illness/submit'
+                      path="customer-type/critical-illness/submit"
                       element={<Submit />}
                     />
                     <Route
-                      path='group-credit/*'
+                      path="group-credit/*"
                       element={<GroupCreditRoutes />}
                     />
-                    <Route path='welcome' element={<Welcome />} />
+                    <Route path="welcome" element={<Welcome />} />
                     <Route
-                      path='term-life-quote'
+                      path="term-life-quote"
                       element={<GroupTermLifeQuote />}
                     />
-                    <Route path='*' element={<NotFound />} />
+                    <Route path="*" element={<NotFound />} />
                   </Routes>
                 </PortalLayout>
               }
             />
 
             {/* Routes outside of /home */}
-            <Route path='/terms' element={<Terms />} />
-            <Route path='/privacy' element={<Privacy />} />
-            <Route path='*' element={<NotFound />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </ConfigProvider>
       </ThemeProvider>
@@ -154,9 +146,9 @@ function App() {
 const GroupCreditRoutes = () => {
   return (
     <Routes>
-      <Route path='/' element={<GroupCredit />} />
-      <Route path='individual-cover' element={<IndividualCover />} />
-      <Route path='multiple-cover' element={<MultipleCover />} />
+      <Route path="/" element={<GroupCredit />} />
+      <Route path="individual-cover" element={<IndividualCover />} />
+      <Route path="multiple-cover" element={<MultipleCover />} />
     </Routes>
   );
 };
