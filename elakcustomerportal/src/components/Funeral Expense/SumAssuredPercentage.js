@@ -78,7 +78,7 @@ const SumAssuredPercentageForm = ({ form, formData, setFormData }) => {
                   message: "The input is not a valid number!",
                 },
               ]}
-              style={{ marginBottom: "35px" }}
+              style={{ marginBottom: "20px" }}
             >
               <InputNumber
                 style={{ width: "100%" }}
@@ -129,7 +129,7 @@ const SumAssuredPercentageForm = ({ form, formData, setFormData }) => {
                       setFormData({ ...formData, spousePercentage: value })
                     }
                   />
-                  <p className="text-[#929497] mb-[35px]">
+                  <p className="text-[#929497] mb-[20px]">
                     Enter percentage value between 20% and 100%
                   </p>
                 </div>
@@ -172,7 +172,7 @@ const SumAssuredPercentageForm = ({ form, formData, setFormData }) => {
                       setFormData({ ...formData, childrenPercentage: value })
                     }
                   />
-                  <p className="text-[#929497] mb-[35px]">
+                  <p className="text-[#929497] mb-[20px]">
                     Enter percentage value between 20% and 100%
                   </p>
                 </div>
@@ -216,7 +216,7 @@ const SumAssuredPercentageForm = ({ form, formData, setFormData }) => {
                       })
                     }
                   />
-                  <p className="text-[#929497] mb-[35px]">
+                  <p className="text-[#929497] mb-[20px]">
                     Enter percentage value between 20% and 100%
                   </p>
                 </div>
@@ -259,7 +259,7 @@ const SumAssuredPercentageForm = ({ form, formData, setFormData }) => {
                       setFormData({ ...formData, parentsPercentage: value })
                     }
                   />
-                  <p className="text-[#929497] mb-[35px]">
+                  <p className="text-[#929497] mb-[20px]">
                     Enter percentage value between 20% and 100%
                   </p>
                 </div>
@@ -288,7 +288,7 @@ const SumAssuredPercentageForm = ({ form, formData, setFormData }) => {
                   inputReadOnly={true}
                 />
                 {formData.startDate && (
-                  <p className="flex items-center mb-[35px]">
+                  <p className="flex items-center mb-[20px]">
                     <InfoCircleOutlined
                       style={{
                         color: "#D93E3E",
