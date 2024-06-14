@@ -117,21 +117,23 @@ const SumAssuredPercentageForm = ({ form, formData, setFormData }) => {
                   },
                 ]}
               >
-                <InputNumber
-                  style={{ width: "100%" }}
-                  value={formData.spousePercentage}
-                  min={0}
-                  max={100}
-                  formatter={(value) => `${value}%`}
-                  parser={(value) => value.replace("%", "")}
-                  onChange={(value) =>
-                    setFormData({ ...formData, spousePercentage: value })
-                  }
-                />
+                <div>
+                  <InputNumber
+                    style={{ width: "100%" }}
+                    value={formData.spousePercentage}
+                    min={0}
+                    max={100}
+                    formatter={(value) => `${value}%`}
+                    parser={(value) => value.replace("%", "")}
+                    onChange={(value) =>
+                      setFormData({ ...formData, spousePercentage: value })
+                    }
+                  />
+                  <p className="text-[#929497] mb-[35px]">
+                    Enter percentage value between 20% and 100%
+                  </p>
+                </div>
               </Form.Item>
-              <p className="text-[#929497] mb-[35px]">
-                Enter percentage value between 20% and 100%
-              </p>
             </Col>
           )}
         </Row>
@@ -158,21 +160,23 @@ const SumAssuredPercentageForm = ({ form, formData, setFormData }) => {
                   },
                 ]}
               >
-                <InputNumber
-                  style={{ width: "100%" }}
-                  value={formData.childrenPercentage}
-                  min={0}
-                  max={100}
-                  formatter={(value) => `${value}%`}
-                  parser={(value) => value.replace("%", "")}
-                  onChange={(value) =>
-                    setFormData({ ...formData, childrenPercentage: value })
-                  }
-                />
+                <div>
+                  <InputNumber
+                    style={{ width: "100%" }}
+                    value={formData.childrenPercentage}
+                    min={0}
+                    max={100}
+                    formatter={(value) => `${value}%`}
+                    parser={(value) => value.replace("%", "")}
+                    onChange={(value) =>
+                      setFormData({ ...formData, childrenPercentage: value })
+                    }
+                  />
+                  <p className="text-[#929497] mb-[35px]">
+                    Enter percentage value between 20% and 100%
+                  </p>
+                </div>
               </Form.Item>
-              <p className="text-[#929497] mb-[35px]">
-                Enter percentage value between 20% and 100%
-              </p>
             </Col>
           )}
           {formData.parentsInLawNumber > 0 && (
@@ -197,21 +201,26 @@ const SumAssuredPercentageForm = ({ form, formData, setFormData }) => {
                   },
                 ]}
               >
-                <InputNumber
-                  style={{ width: "100%" }}
-                  value={formData.parentsInLawPercentage}
-                  min={0}
-                  max={100}
-                  formatter={(value) => `${value}%`}
-                  parser={(value) => value.replace("%", "")}
-                  onChange={(value) =>
-                    setFormData({ ...formData, parentsInLawPercentage: value })
-                  }
-                />
+                <div>
+                  <InputNumber
+                    style={{ width: "100%" }}
+                    value={formData.parentsInLawPercentage}
+                    min={0}
+                    max={100}
+                    formatter={(value) => `${value}%`}
+                    parser={(value) => value.replace("%", "")}
+                    onChange={(value) =>
+                      setFormData({
+                        ...formData,
+                        parentsInLawPercentage: value,
+                      })
+                    }
+                  />
+                  <p className="text-[#929497] mb-[35px]">
+                    Enter percentage value between 20% and 100%
+                  </p>
+                </div>
               </Form.Item>
-              <p className="text-[#929497] mb-[35px]">
-                Enter percentage value between 20% and 100%
-              </p>
             </Col>
           )}
         </Row>
@@ -238,21 +247,23 @@ const SumAssuredPercentageForm = ({ form, formData, setFormData }) => {
                   },
                 ]}
               >
-                <InputNumber
-                  style={{ width: "100%" }}
-                  value={formData.parentsPercentage}
-                  min={0}
-                  max={100}
-                  formatter={(value) => `${value}%`}
-                  parser={(value) => value.replace("%", "")}
-                  onChange={(value) =>
-                    setFormData({ ...formData, parentsPercentage: value })
-                  }
-                />
+                <div>
+                  <InputNumber
+                    style={{ width: "100%" }}
+                    value={formData.parentsPercentage}
+                    min={0}
+                    max={100}
+                    formatter={(value) => `${value}%`}
+                    parser={(value) => value.replace("%", "")}
+                    onChange={(value) =>
+                      setFormData({ ...formData, parentsPercentage: value })
+                    }
+                  />
+                  <p className="text-[#929497] mb-[35px]">
+                    Enter percentage value between 20% and 100%
+                  </p>
+                </div>
               </Form.Item>
-              <p className="text-[#929497] mb-[35px]">
-                Enter percentage value between 20% and 100%
-              </p>
             </Col>
           )}
           <Col xs={24} sm={24} md={12} lg={12} xl={12}>
@@ -267,28 +278,32 @@ const SumAssuredPercentageForm = ({ form, formData, setFormData }) => {
               ]}
               style={{ width: "100%", cursor: "pointer" }}
             >
-              <DatePicker
-                style={{ width: "100%" }}
-                id="startDate"
-                disabledDate={disabledDate}
-                onChange={handleStartDateChange}
-                inputReadOnly={true}
-              />
-            </Form.Item>
-            {formData.startDate && (
-              <p className="flex items-center mb-[35px]">
-                <InfoCircleOutlined
-                  style={{
-                    color: "#D93E3E",
-                    marginRight: "8px",
-                  }}
+              <div>
+                {" "}
+                <DatePicker
+                  style={{ width: "100%" }}
+                  id="startDate"
+                  value={formData.startDate}
+                  disabledDate={disabledDate}
+                  onChange={handleStartDateChange}
+                  inputReadOnly={true}
                 />
-                <span className="text-[#929497]">
-                  Your cover will automatically expire on{" "}
-                  {formatDate(formData.endDate)}
-                </span>
-              </p>
-            )}
+                {formData.startDate && (
+                  <p className="flex items-center mb-[35px]">
+                    <InfoCircleOutlined
+                      style={{
+                        color: "#D93E3E",
+                        marginRight: "8px",
+                      }}
+                    />
+                    <span className="text-[#929497]">
+                      Your cover will automatically expire on{" "}
+                      {formatDate(formData.endDate)}
+                    </span>
+                  </p>
+                )}
+              </div>
+            </Form.Item>
           </Col>
         </Row>
       </Form>
