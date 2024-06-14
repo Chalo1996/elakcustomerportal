@@ -279,7 +279,6 @@ const SumAssuredPercentageForm = ({ form, formData, setFormData }) => {
               style={{ width: "100%", cursor: "pointer" }}
             >
               <div>
-                {" "}
                 <DatePicker
                   style={{ width: "100%" }}
                   id="startDate"

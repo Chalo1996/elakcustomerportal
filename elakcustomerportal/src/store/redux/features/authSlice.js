@@ -24,6 +24,7 @@ const authSlice = createSlice({
   initialState: {
     token: localStorage.getItem("authToken") || null,
     status: localStorage.getItem("authStatus") || "idle",
+    theme: "light",
     error: null,
   },
   reducers: {
@@ -32,6 +33,9 @@ const authSlice = createSlice({
     },
     setStatus(state, action) {
       state.status = action.payload;
+    },
+    changeTheme(state, action) {
+      state.theme = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -54,5 +58,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setToken, setStatus } = authSlice.actions;
+export const { setToken, setStatus, changeTheme } = authSlice.actions;
 export const { reducer: authReducer } = authSlice;
