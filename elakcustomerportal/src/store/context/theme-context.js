@@ -4,9 +4,14 @@ import { changeTheme } from "../redux/features/authSlice";
 
 const ThemeContext = createContext();
 
+const getInitialTheme = () => {
+  const savedTheme = localStorage.getItem("theme");
+  return savedTheme ? savedTheme : "light";
+};
+
 export const ThemeProvider = ({ children }) => {
   const dispatch = useDispatch();
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState(getInitialTheme());
 
   useEffect(() => {
     if (theme === "dark") {
@@ -16,6 +21,7 @@ export const ThemeProvider = ({ children }) => {
       dispatch(changeTheme("light"));
       document.body.classList.remove("dark");
     }
+    localStorage.setItem("theme", theme);
   }, [theme, dispatch]);
 
   const toggleTheme = () => {

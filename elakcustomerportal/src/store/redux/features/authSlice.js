@@ -24,7 +24,7 @@ const authSlice = createSlice({
   initialState: {
     token: localStorage.getItem("authToken") || null,
     status: localStorage.getItem("authStatus") || "idle",
-    theme: "light",
+    theme: localStorage.getItem("theme") || "light",
     error: null,
   },
   reducers: {
