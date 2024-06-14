@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { Modal, Button, Checkbox } from "antd";
-import { useTheme } from "../../store/context/theme-context";
+import { useTheme } from "../../../store/context/theme-context";
 
-const IndividualCustomerModal = ({ isModalOpen, onOkay, onCancel, customerType }) => {
+const CustomerTypeModal = ({ isModalOpen, onOkay, onCancel, customerType }) => {
   const { theme } = useTheme();
   const navigate = useNavigate();
   const customTitle = (
-    <div className="relative w-[297px] h-[48px]">
+    <div className='relative w-[297px] h-[48px]'>
       <p
         className={`${
           theme === "dark" ? "text-white bg-gray-800" : "text-[#929497]"
@@ -19,9 +19,9 @@ const IndividualCustomerModal = ({ isModalOpen, onOkay, onCancel, customerType }
 
   const handleNavigate = () => {
     if (customerType === "Personal") {
-      navigate("/home/customer-type/critical-illness");
+      navigate("/home/group-credit/individual-cover");
     } else if (customerType === "Group") {
-      navigate("/home/customer-type/critical-illness");
+      navigate("/home/group-credit/multiple-cover");
     }
   };
 
@@ -40,20 +40,20 @@ const IndividualCustomerModal = ({ isModalOpen, onOkay, onCancel, customerType }
       onOk={onOkay}
       onCancel={onCancel}
       footer={[
-        <div className="w-full h-[86px]" key="footer-row">
-          <div className="flex justify-between items-center h-full gap-3">
+        <div className='w-full h-[86px]' key='footer-row'>
+          <div className='flex justify-between items-center h-full gap-3'>
             <Button
-              key="close"
+              key='close'
               onClick={onCancel}
-              className="w-full h-[48px] px-8 py-2 border-[#A32A29] text-[#A32A29] shadow-none text-base text-center font-open-sans"
+              className='w-full h-[48px] px-8 py-2 border-[#A32A29] text-[#A32A29] shadow-none text-base text-center font-open-sans'
             >
               Cancel
             </Button>
             <Button
-              key="continue"
-              type="primary"
+              key='continue'
+              type='primary'
               onClick={handleNavigate}
-              className="w-full h-[48px] px-8 py-2 shadow-none text-base text-center font-open-sans"
+              className='w-full h-[48px] px-8 py-2 shadow-none text-base text-center font-open-sans'
             >
               Continue
             </Button>
@@ -61,29 +61,29 @@ const IndividualCustomerModal = ({ isModalOpen, onOkay, onCancel, customerType }
         </div>,
       ]}
     >
-      <div className="flex flex-col gap-3 mt-7">
+      <div className='flex flex-col gap-3 mt-7'>
         <Checkbox
           defaultChecked
-          className="non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left"
+          className='non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left'
         >
           Full name
         </Checkbox>
         <Checkbox
           defaultChecked
-          className="non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left"
+          className='non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left'
         >
           Email address
         </Checkbox>
         <Checkbox
           defaultChecked
-          className="non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left"
+          className='non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left'
         >
           Phone number
         </Checkbox>
         <Checkbox
           defaultChecked
           readOnly
-          className="non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left"
+          className='non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left'
         >
           Date of Birth
         </Checkbox>
@@ -92,4 +92,4 @@ const IndividualCustomerModal = ({ isModalOpen, onOkay, onCancel, customerType }
   );
 };
 
-export default IndividualCustomerModal;
+export default CustomerTypeModal;

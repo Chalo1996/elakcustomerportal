@@ -1,5 +1,6 @@
 import React, {useState,useEffect} from "react";
 import {Steps,Form,Input,Radio,Divider,Typography,DatePicker,Button,Row,Col,Select,Modal,InputNumber,Checkbox} from "antd";
+import { useNavigate } from 'react-router-dom';
 import moment from "moment";
 import 'tailwindcss/tailwind.css';
 
@@ -12,6 +13,9 @@ import ugxFlag from '../../assets/flags/ugx.png';
 
 const { Step } = Steps;
 const { Option } = Select;
+
+
+
 
 const Education = () => {
   const [current, setCurrent] = useState(0);
@@ -38,6 +42,18 @@ const Education = () => {
     
     ],
   });
+
+  const navigate = useNavigate();
+  const onFinish = async (values) => {
+    try {
+      await form.validateFields();
+      console.log('Received values:', values);
+      navigate("Educ-Quotation");
+    } catch (errorInfo) {
+      console.log("Failed:", errorInfo);
+    }
+  };
+
   useEffect(() => {
     if (formData.startDate && formData.termInYears) {
       const calculatedEndDate = calculateEndDate(formData.startDate, formData.termInYears);
@@ -75,6 +91,8 @@ const Education = () => {
       currency: value,
     }));
   };
+ 
+
   const PhoneAreas = [
     { code: "+211", flag: sspFlag, country: "South Sudan" },
     { code: "+243", flag: cdfFlag, country: "DRC" },
@@ -83,6 +101,7 @@ const Education = () => {
     { code: "+255", flag: tzsFlag, country: "Tanzania" },
     { code: "+256", flag: ugxFlag, country: "Uganda" },
   ];
+
   const handleChange = (newValue) => {
     const area = PhoneAreas.find((item) => item.code === newValue);
     setFormData((prevData) => ({
@@ -92,6 +111,8 @@ const Education = () => {
     }));
   };
 
+
+  
   const next = () => {
     form.validateFields().then(() => {
       if (current === 0) {
@@ -147,9 +168,13 @@ const Education = () => {
     setIsModalOpen(false);
     setCurrent(current + 1);
   };
+
+;
   
   return (
     <>
+     <br></br>
+     <br></br>
      <h1 style={{ textAlign: 'left', fontWeight: 'bold', fontSize: '20px', marginBottom: '20px' }}>Education Savings Insurance Cover</h1>
       <Steps current={current}>
         <Step title="Personal Details" />
@@ -158,13 +183,16 @@ const Education = () => {
        
       </Steps>
       <div style={{ marginTop: 20 }}>
-        <Form form={form} layout="vertical">
+        <Form form={form} layout="vertical" onFinish={onFinish}>
         {current === 0 && (
           
   <>
+  <div>
    <Row gutter={16}>
             <h3>Please, enter your personal details to continue</h3>
-          </Row>
+    </Row>
+   </div>
+    <br></br>
     <Row gutter={16}>
       <Col span={12}>
         <Form.Item label="First Name" name="firstName" 
@@ -194,7 +222,21 @@ const Education = () => {
         </Form.Item>
       </Col>
     </Row>
+    <br></br>
     <Row gutter={16}>
+    <Col span={12}>
+        <Form.Item label="Email Address" name="email" rules={[{ required: true, message: 'Please enter your email' }, { type: 'email', message: 'Please enter a valid email' }]}>
+          <Input
+              value={formData.email}
+              onChange={(event) =>
+                setFormData((prevData) => ({
+                  ...prevData,
+                  email: event.target.value,
+                }))
+              }
+          />
+        </Form.Item>
+      </Col>
       <Col span={12}>
         <Form.Item label="Telephone No" 
         name="telephone" 
@@ -216,12 +258,16 @@ const Education = () => {
                     onChange={handleChange}
                   >
                     {PhoneAreas.map((item) => (
-                      <Option value={item.code} key={item.code}>
-                        {item.code}
-                        <div
-                          className={`currency-flag currency-flag-sm currency-flag-${item.flag}`}
-                        ></div>
-                      </Option>
+                  <Option value={item.code} key={item.code}>
+                   <div style={{ display: 'flex', alignItems: 'center' }}>
+                   <img
+                      src={item.flag}
+                      alt={item.country}
+                      style={{ width: '20px', marginRight: '8px' }}
+                    />
+                    {item.code}
+                    </div>
+                  </Option>
                     ))}
                   </Select>
                 }
@@ -236,20 +282,8 @@ const Education = () => {
               />
         </Form.Item>
       </Col>
-      <Col span={12}>
-        <Form.Item label="Email" name="email" rules={[{ required: true, message: 'Please enter your email' }, { type: 'email', message: 'Please enter a valid email' }]}>
-          <Input
-              value={formData.email}
-              onChange={(event) =>
-                setFormData((prevData) => ({
-                  ...prevData,
-                  email: event.target.value,
-                }))
-              }
-          />
-        </Form.Item>
-      </Col>
     </Row>
+    <br></br>
     <Row gutter={16}>
     <Col span={12}>
         <Form.Item label="Date of Birth" name="dateOfBirth" rules={[{ required: true, message: 'Please enter your date of birth' }]}>
@@ -267,7 +301,21 @@ const Education = () => {
         </Form.Item>
       </Col>
     </Row>
-  
+    <br></br>
+    <Row gutter={16}>
+      <Col span={24}>
+        <Form.Item
+          name="termsCheckbox"
+          valuePropName="checked"
+          rules={[{ required: true, message: 'Please accept the terms and privacy policies' }]}
+        >
+          <Checkbox>
+            I accept the <button type="button" onClick={showTermsModal} style={{ border: 'none', background: 'none', padding: 0, color: 'maroon', cursor: 'pointer' }}>terms</button> & <button type="button" onClick={showPrivacyModal} style={{ border: 'none', background: 'none', padding: 0, color: 'maroon', cursor: 'pointer' }}>privacy policies</button>
+          </Checkbox>
+        </Form.Item>
+      </Col>
+    </Row>
+    
     <Modal
         title="What would you like to do?"
         open={isModalOpen}
@@ -302,9 +350,11 @@ const Education = () => {
       </Modal>
   </>
 )}
+<br></br>
 
         {current === 1 && (
   <>
+  <br></br>
     <Row gutter={16}>
       <Col span={12}>
         <Form.Item
@@ -341,7 +391,7 @@ to achieve over time."
       <Col span={12}>
         <Form.Item
           name="Premium"
-          label={formData.targetType}
+          label={formData.targetType || "Investment Premium"}
           tooltip="How much money do you want to invest?"
           required
         >
@@ -390,7 +440,7 @@ to achieve over time."
         </Form.Item>
       </Col>
     </Row>
-
+    <br></br>
     <Row gutter={16}>
       <Col span={12}>
         <Form.Item
@@ -462,7 +512,7 @@ to achieve over time."
       </Col>
      
     </Row>
-
+    <br></br>
     <Row gutter={16}>
         <Col span={12}>
           <Form.Item
@@ -493,95 +543,84 @@ to achieve over time."
           </Form.Item>
         </Col>
       </Row>
-
-        <Row gutter={16}>
-      <Col span={24}>
-        <Form.Item
-          name="termsCheckbox"
-          valuePropName="checked"
-          rules={[{ required: true, message: 'Please accept the terms and privacy policies' }]}
-        >
-          <Checkbox>
-            I accept the <button type="button" onClick={showTermsModal} style={{ border: 'none', background: 'none', padding: 0, color: '#1890ff', cursor: 'pointer' }}>terms</button> & <button type="button" onClick={showPrivacyModal} style={{ border: 'none', background: 'none', padding: 0, color: '#1890ff', cursor: 'pointer' }}>privacy policies</button>
-          </Checkbox>
-        </Form.Item>
-      </Col>
-    </Row>
   </>
 )}
       
       {current === 2 && (
   <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
-    <h3 style={{ marginBottom: '20px' }}>Please, Review and confirm Your Information details to continue</h3>
+    <h4 style={{ marginBottom: '20px' }}>Please, Review and confirm Your Information details to continue</h4>
     <div>
-      <Row gutter={16}>
-        <Col span={12}>
-        <h4 style={{ color: '#888', marginBottom: '5px' }}>Product</h4>
-          <span>Education savings</span>
-        </Col>
-      </Row>
+      <br />
+      <div>
+        <Row gutter={16}>
+          <Col span={12}>
+            <h5 style={{ color: '#888', marginBottom: '5px' }}>Product</h5>
+            <span>Education savings</span>
+          </Col>
+        </Row>
+      </div>
       <Divider />
-      <br></br>
+      <br />
       <h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Personal Information</h4>
-      <Row gutter={16}>
-        <Col span={12}>
-          <h4 style={{ color: '#888', marginBottom: '5px' }}>First Name</h4>
-          <span>{formData.firstName}</span>
-        </Col>
-        <br></br>
-        <Col span={12}>
-          <h4 style={{ color: '#888', marginBottom: '5px' }}>Last Name</h4>
-          <span>{formData.lastName}</span>
-        </Col>
-      </Row>
-      <br></br>
-      <Row gutter={16}>
-        <Col span={12}>
-          <h4 style={{ color: '#888', marginBottom: '5px' }}>Telephone No</h4>
-          <span>{formData.telephone}</span>
-        </Col>
-        <Col span={12}>
-          <h4 style={{ color: '#888', marginBottom: '5px' }}>Email</h4>
-          <span>{formData.email}</span>
-        </Col>
-      </Row>
-      <br></br>
-      <Row gutter={16}>
-        <Col span={12}>
-          <h4 style={{ color: '#888', marginBottom: '5px' }}>Date of Birth</h4>
-          <span>{formData.dateOfBirth?.format('YYYY-MM-DD')}</span>
-        </Col>
-      </Row>
-      <br></br>
-    </div>
-    <div>
+      <br />
+      <div>
+        <Row gutter={16}>
+          <Col span={12}>
+            <h4 style={{ color: '#888', marginBottom: '5px' }}>First Name</h4>
+            <span>{formData.firstName}</span>
+          </Col>
+          <br />
+          <Col span={12}>
+            <h4 style={{ color: '#888', marginBottom: '5px' }}>Last Name</h4>
+            <span>{formData.lastName}</span>
+          </Col>
+        </Row>
+        <br />
+        <Row gutter={16}>
+          <Col span={12}>
+            <h4 style={{ color: '#888', marginBottom: '5px' }}>Telephone No</h4>
+            <span>{formData.telephone}</span>
+          </Col>
+          <Col span={12}>
+            <h4 style={{ color: '#888', marginBottom: '5px' }}>Email</h4>
+            <span>{formData.email}</span>
+          </Col>
+        </Row>
+        <br />
+        <Row gutter={16}>
+          <Col span={12}>
+            <h4 style={{ color: '#888', marginBottom: '5px' }}>Date of Birth</h4>
+            <span>{formData.dateOfBirth?.format('YYYY-MM-DD')}</span>
+          </Col>
+        </Row>
+        <br />
+      </div>
       <Divider />
-      
       <h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Policy Information</h4>
       <Row gutter={16}>
         <Col span={12}>
           <h4 style={{ color: '#888', marginBottom: '5px' }}>Target Type</h4>
           <span>{formData.targetType}</span>
         </Col>
-        <br></br>
+        <br />
         <Col span={12}>
           <h4 style={{ color: '#888', marginBottom: '5px' }}>Term In Years</h4>
           <span>{formData.termInYears}</span>
         </Col>
       </Row>
-      <br></br>
+      <br />
       <Row gutter={16}>
         <Col span={12}>
           <h4 style={{ color: '#888', marginBottom: '5px' }}>Payment Frequency</h4>
           <span>{formData.frequency}</span>
         </Col>
-        <br></br>
+        <br />
         <Col span={12}>
           <h4 style={{ color: '#888', marginBottom: '5px' }}>Premium</h4>
           <span>{new Intl.NumberFormat('en-US', { style: 'currency', currency: formData.currency }).format(formData.premium)}</span>
-          </Col>
+        </Col>
       </Row>
-      <br></br>
+      <br />
       <Row gutter={16}>
         <Col span={12}>
           <h4 style={{ color: '#888', marginBottom: '5px' }}>Start Date</h4>
@@ -592,10 +631,11 @@ to achieve over time."
           <span>{formData.endDate?.format('YYYY-MM-DD')}</span>
         </Col>
       </Row>
-      <br></br>
+      <br />
     </div>
-  </div>
+      </div>
 )}
+
           <div style={{ marginTop: 20 }}>
             {current > 0 && (
               <Button style={{ marginRight: 8 }} onClick={back}>
@@ -607,6 +647,12 @@ to achieve over time."
                 Next
               </Button>
             )}
+  {current === 2 && (
+              <Button type="primary" htmlType="submit">
+                Generate Quote
+              </Button>
+            )}
+
           </div>
         </Form>
        </div>

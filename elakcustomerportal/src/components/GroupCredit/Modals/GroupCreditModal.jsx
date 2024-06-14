@@ -1,8 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { Modal, Button, Row } from "antd";
-import Img from "../../assets/groupcredit.png";
-import { useTheme } from "../../store/context/theme-context";
-
+import Img from "../../../assets/groupcredit.png";
+import { useTheme } from "../../../store/context/theme-context";
 const GroupCreditModal = ({ isModalOpen, onCancel, onOkay, product }) => {
   const { theme } = useTheme();
   const customTitle = (

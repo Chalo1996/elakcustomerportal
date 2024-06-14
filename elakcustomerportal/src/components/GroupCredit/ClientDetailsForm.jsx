@@ -1,5 +1,14 @@
-import React from "react";
-import { Form, Input, Row, Col, Select, DatePicker } from "antd";
+import React, { useState, useEffect } from "react";
+import {
+  Form,
+  Input,
+  Row,
+  Col,
+  Select,
+  DatePicker,
+  Checkbox,
+  Button,
+} from "antd";
 import moment from "moment";
 import kenyaFlag from "../../assets/flags/kes.png";
 import tzFlag from "../../assets/flags/tzs.png";
@@ -7,13 +16,26 @@ import ugFlag from "../../assets/flags/ugx.png";
 import rwandaFlag from "../../assets/flags/rwf.png";
 import ssudanFlag from "../../assets/flags/ssp.png";
 import congoFlag from "../../assets/flags/cdf.png";
+import Terms from "../../pages/TermsAndPrivacy/Terms";
+import Privacy from "../../pages/TermsAndPrivacy/Privacy";
 
 const { Item } = Form;
 const { Option } = Select;
 
-const ClientDetailsForm = ({ formData, handleFormChange }) => {
-  const handleNameChange = (e) => {
-    handleFormChange("username", e.target.value);
+const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
+  const [termsVisible, setTermsVisible] = useState(false);
+  const [privacyVisible, setPrivacyVisible] = useState(false);
+
+  const handleFirstNameChange = (e) => {
+    handleFormChange("firstname", e.target.value);
+  };
+
+  const handleLastNameChange = (e) => {
+    handleFormChange("lastname", e.target.value);
+  };
+
+  const handleSelectGender = (value) => {
+    handleFormChange("gender", value);
   };
 
   const handleCountryCodeChange = (value) => {
@@ -69,6 +91,10 @@ const ClientDetailsForm = ({ formData, handleFormChange }) => {
     handleFormChange("email", e.target.value);
   };
 
+  const handleTermsCheckBox = (e) => {
+    handleFormChange("termschecked", e.target.checked);
+  };
+
   const disabledDate = (current) => {
     if (!current) return false;
     const selectedDate = new Date(current);
@@ -99,112 +125,213 @@ const ClientDetailsForm = ({ formData, handleFormChange }) => {
     return Promise.resolve();
   };
 
-  return (
-    <Form layout='vertical'>
-      <Row gutter={[16, 16]}>
-        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-          <Item
-            label='Name'
-            name='username'
-            rules={[{ required: true, message: "Please input your name!" }]}
-          >
-            <Input
-              placeholder='Enter Name'
-              value={formData.username}
-              onChange={handleNameChange}
-            />
-          </Item>
-          <Item
-            label='Country'
-            name='country'
-            rules={[{ required: true, message: "Please select your country!" }]}
-          >
-            <Select
-              className='w-full'
-              placeholder='Select Country'
-              value={formData.country}
-              onChange={handleCountryCodeChange}
-            >
-              <Option value='Kenya'>Kenya</Option>
-              <Option value='Uganda'>Uganda</Option>
-              <Option value='Tanzania'>Tanzania</Option>
-              <Option value='Rwanda'>Rwanda</Option>
-              <Option value='Congo'>Congo</Option>
-              <Option value='South-Sudan'>South-Sudan</Option>
-            </Select>
-          </Item>
+  const handleTermsClose = () => {
+    setTermsVisible(false);
+    handleFormChange("termschecked", true);
+  };
 
-          <Item
-            label='Phone No'
-            name='phone'
-            onKeyPress={disableNotNumberKey}
-            rules={[
-              {
-                required: true,
-                message: "Please input your phone number!",
-              },
-              { validator: validatePhone },
-            ]}
-          >
-            <Input
-              addonBefore={
-                <div className='flex items-center space-x-1 mr-5'>
-                  <span className='text-sm'>{formData.countryCode}</span>
-                  {formData.countryFlag && (
-                    <img
-                      src={formData.countryFlag}
-                      alt={formData.country}
-                      className='w-6 h-4 object-contain'
-                    />
-                  )}
-                </div>
-              }
-              placeholder='700000000'
-              value={formData.phone}
-              onChange={handlePhoneChange}
-            />
-          </Item>
-        </Col>
-        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-          <Item
-            label='Email'
-            name='email'
-            rules={[
-              {
-                type: "email",
-                required: true,
-                message: "Please input your email!",
-              },
-            ]}
-          >
-            <Input
-              placeholder='Enter Email'
-              value={formData.email}
-              onChange={handleEmailChange}
-            />
-          </Item>
-          <Item
-            label='Date Of Birth'
-            name='dob'
-            rules={[
-              {
-                required: true,
-                message: "Please input your date of birth!",
-              },
-            ]}
-          >
-            <DatePicker
-              format='MM/DD/YYYY'
-              placeholder='Select Date of Birth'
-              value={formData.dob ? moment(formData.dob) : null}
-              onChange={handleDoBChange}
-              disabledDate={disabledDate}
-              className='w-full border rounded'
-            />
-          </Item>
-        </Col>
-      </Row>
-    </Form>
+  const handlePrivacyClose = () => {
+    setPrivacyVisible(false);
+    handleFormChange("termschecked", true);
+  };
+
+  useEffect(() => {
+    form.validateFields();
+  }, [formData]);
+
+  return (
+    <>
+      <Form layout='vertical' form={form}>
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <Item
+              label='First Name'
+              name='firstname'
+              rules={[
+                { required: true, message: "Please input your first name!" },
+              ]}
+            >
+              <Input
+                placeholder='Enter First Name'
+                value={formData.firstname}
+                onChange={handleFirstNameChange}
+              />
+            </Item>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <Item
+              label='Last Name'
+              name='lastname'
+              rules={[
+                { required: true, message: "Please input your last name!" },
+              ]}
+            >
+              <Input
+                placeholder='Enter Last Name'
+                value={formData.lastname}
+                onChange={handleLastNameChange}
+              />
+            </Item>
+          </Col>
+        </Row>
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <Item
+              label='Gender'
+              name='gender'
+              rules={[
+                { required: true, message: "Please select your gender!" },
+              ]}
+            >
+              <Select
+                className='w-full'
+                placeholder='Select Gender'
+                value={formData.gender}
+                onChange={handleSelectGender}
+              >
+                <Option value='Male'>Male</Option>
+                <Option value='Female'>Female</Option>
+              </Select>
+            </Item>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <Item
+              label='Date Of Birth'
+              name='dob'
+              rules={[
+                { required: true, message: "Please input your date of birth!" },
+              ]}
+            >
+              <DatePicker
+                format='MM/DD/YYYY'
+                placeholder='Select Date of Birth'
+                value={formData.dob ? moment(formData.dob) : null}
+                onChange={handleDoBChange}
+                disabledDate={disabledDate}
+                className='w-full border rounded'
+              />
+            </Item>
+          </Col>
+        </Row>
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <Item
+              label='Email'
+              name='email'
+              rules={[
+                {
+                  type: "email",
+                  required: true,
+                  message: "Please input your email!",
+                },
+              ]}
+            >
+              <Input
+                placeholder='Enter Email'
+                value={formData.email}
+                onChange={handleEmailChange}
+              />
+            </Item>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <Item
+              label='Country'
+              name='country'
+              rules={[
+                { required: true, message: "Please select your country!" },
+              ]}
+            >
+              <Select
+                className='w-full'
+                placeholder='Select Country'
+                value={formData.country}
+                onChange={handleCountryCodeChange}
+              >
+                <Option value='Kenya'>Kenya</Option>
+                <Option value='Uganda'>Uganda</Option>
+                <Option value='Tanzania'>Tanzania</Option>
+                <Option value='Rwanda'>Rwanda</Option>
+                <Option value='Congo'>Congo</Option>
+                <Option value='South-Sudan'>South-Sudan</Option>
+              </Select>
+            </Item>
+          </Col>
+        </Row>
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <Item
+              label='Phone No'
+              name='phone'
+              onKeyPress={disableNotNumberKey}
+              rules={[
+                { required: true, message: "Please input your phone number!" },
+                { validator: validatePhone },
+              ]}
+            >
+              <Input
+                addonBefore={
+                  <div className='flex items-center space-x-1 mr-5'>
+                    <span className='text-sm'>{formData.countryCode}</span>
+                    {formData.countryFlag && (
+                      <img
+                        src={formData.countryFlag}
+                        alt={formData.country}
+                        className='w-6 h-4 object-contain'
+                      />
+                    )}
+                  </div>
+                }
+                placeholder='700000000'
+                value={formData.phone}
+                onChange={handlePhoneChange}
+              />
+            </Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <Item
+              name='terms'
+              valuePropName='checked'
+              rules={[
+                {
+                  validator: (_, value) =>
+                    value
+                      ? Promise.resolve()
+                      : Promise.reject(
+                          "You must accept the terms and conditions"
+                        ),
+                },
+              ]}
+            >
+              <Checkbox
+                checked={formData.termschecked}
+                onChange={handleTermsCheckBox}
+              >
+                I Accept the{" "}
+                <Button
+                  type='link'
+                  style={{ color: "brown" }}
+                  onClick={() => setTermsVisible(true)}
+                >
+                  Terms and Conditions
+                </Button>{" "}
+                &{" "}
+                <Button
+                  type='link'
+                  style={{ color: "brown" }}
+                  onClick={() => setPrivacyVisible(true)}
+                >
+                  Privacy Policy
+                </Button>
+              </Checkbox>
+            </Item>
+          </Col>
+        </Row>
+      </Form>
+      <Terms visible={termsVisible} onClose={handleTermsClose} />
+      <Privacy visible={privacyVisible} onClose={handlePrivacyClose} />
+    </>
   );
 };
 

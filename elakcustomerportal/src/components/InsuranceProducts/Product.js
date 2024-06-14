@@ -5,8 +5,10 @@ import { useState } from "react";
 
 import FuneralExpenseModal from "../Funeral Expense/modals/FuneralExpenseModal";
 import CriticalIllnessModal from "../Group Critical Illness/CriticalIllnessModal";
-import GroupCreditModal from "../GroupCredit/GroupCreditModal";
+import GroupCreditModal from "../GroupCredit/Modals/GroupCreditModal";
 import GroupLifeModal from "../Group Life/groupLifeModal";
+import Educamodal from "../Education/Educamodal";
+import Goalbasedmodal from "../Goal Based/Goalbasedmodal";
 import GroupTermLifeModal from "../Group Term Life/GroupTermLifeModal";
 
 const { Meta } = Card;
@@ -71,6 +73,24 @@ const Product = ({ product, index }) => {
       case 6:
         return (
           <GroupCreditModal
+            isModalOpen={isModalOpen}
+            onOkay={handleOk}
+            onCancel={handleCancel}
+            product={product}
+          />
+        );
+        case 3:
+        return (
+          <Educamodal
+            isModalOpen={isModalOpen}
+            onOkay={handleOk}
+            onCancel={handleCancel}
+            product={product}
+          />
+        );
+        case 5:
+        return (
+          <Goalbasedmodal
             isModalOpen={isModalOpen}
             onOkay={handleOk}
             onCancel={handleCancel}

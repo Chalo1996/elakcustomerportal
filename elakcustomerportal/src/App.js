@@ -12,20 +12,43 @@ import GroupCriticalIllness from "./components/Group Critical Illness/CriticalIl
 import NotFound from "./pages/NotFound";
 import CustomerTypePage from "./pages/FuneralExpensePages/CustomerType";
 import LandingPage from "./pages/landingPage";
-import { GroupCredit } from "./components/GroupCredit/GroupCredit";
+import GroupCredit from "./components/GroupCredit/GroupCredit";
+import IndividualCover from "./components/GroupCredit/IndividualCover";
+import MultipleCover from "./components/GroupCredit/MultipleCover";
 import FuneralExpenseQuotation from "./pages/FuneralExpensePages/Quotation";
 import CriticalIllnessQuotation from "./components/Group Critical Illness/CriticalIllnessQuotation";
-import { authenticateUser } from "./store/redux/features/authSlice";
+import {
+  authenticateUser,
+  setStatus,
+  setToken,
+} from "./store/redux/features/authSlice";
 import HandleCustomerSelection from "./pages/FuneralExpensePages/HandleCustomerSelection";
 import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
 import Welcome from "./components/Group Term Life/Welcome";
-
+import CustomerType from "./components/Group Critical Illness/CustomerType";
+import Submit from "./components/Group Critical Illness/Submit";
+import GroupLifeQuotation from "./components/Group Life/GroupLifeQuotation";
+import Privacy from "./pages/TermsAndPrivacy/Privacy";
+import Terms from "./pages/TermsAndPrivacy/Terms";
+ 
 function App() {
   const dispatch = useDispatch();
+ 
   useEffect(() => {
-    dispatch(authenticateUser());
+    const authToken = localStorage.getItem("authToken");
+    const authStatus = localStorage.getItem("authStatus");
+ 
+    if (authToken) {
+      dispatch(setToken(authToken));
+    }
+ 
+    if (authStatus) {
+      dispatch(setStatus(authStatus));
+    } else {
+      dispatch(authenticateUser());
+    }
   }, [dispatch]);
-
+ 
   return (
     <BrowserRouter>
       <ThemeProvider>
@@ -41,7 +64,7 @@ function App() {
             <Route path="/landing-page" element={<LandingPage />} />
             {/* Redirect to /landing-page */}
             <Route path="/" element={<Navigate to="/landing-page" />} />
-
+ 
             {/* Home route */}
             <Route
               path="/home"
@@ -51,7 +74,7 @@ function App() {
                 </PortalLayout>
               }
             />
-
+ 
             {/* Routes under /home */}
             <Route
               path="/home/*"
@@ -77,23 +100,41 @@ function App() {
                       element={<GroupLifeAssurance />}
                     />
                     <Route
-                      path="critical-illness"
+                      path="group-life-assurance/quotation-details"
+                      element={<GroupLifeQuotation />}
+                    />
+ 
+                    <Route
+                      path="customer-type/critical-illness"
                       element={<GroupCriticalIllness />}
                     />
+                    <Route path="customer-type" element={<CustomerType />} />
                     <Route
-                      path="critical-illness/critical-illness-quotation"
+                      path="customer-type/critical-illness/critical-illness-quotation"
                       element={<CriticalIllnessQuotation />}
                     />
-                    {/* Add more routes here */}
-                    <Route path="group-credit/*" element={<GroupCredit />} />
-                    <Route path="welcome" element={<Welcome/>} />
-                    <Route path="term-life-quote" element={<GroupTermLifeQuote/>}/>
+                    <Route
+                      path="customer-type/critical-illness/submit"
+                      element={<Submit />}
+                    />
+                    <Route
+                      path="group-credit/*"
+                      element={<GroupCreditRoutes />}
+                    />
+                    <Route path="welcome" element={<Welcome />} />
+                    <Route
+                      path="term-life-quote"
+                      element={<GroupTermLifeQuote />}
+                    />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </PortalLayout>
               }
             />
+ 
             {/* Routes outside of /home */}
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </ConfigProvider>
@@ -101,4 +142,14 @@ function App() {
     </BrowserRouter>
   );
 }
+ 
+const GroupCreditRoutes = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<GroupCredit />} />
+      <Route path="individual-cover" element={<IndividualCover />} />
+      <Route path="multiple-cover" element={<MultipleCover />} />
+    </Routes>
+  );
+};
 export default App;
