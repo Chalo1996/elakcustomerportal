@@ -1,19 +1,13 @@
 import React, { useState } from "react";
 import { Modal, Button, Radio, Typography, Row, Divider } from "antd";
-import { useTheme } from "../../../store/context/theme-context";
 
 const { Text } = Typography;
 
 const CallBackModal = ({ isModalOpen, onClose, onContinue }) => {
   const [selectedOption, setSelectedOption] = useState(null);
-  const { theme } = useTheme();
 
   const customTitle = (
-    <p
-      className={`${
-        theme === "dark" ? "text-white bg-gray-800" : ""
-      }  text-left font-open-sans text-lg leading-6 mb-8`}
-    >
+    <p className={`text-left font-open-sans text-lg leading-6 mb-8`}>
       What would you like to do?
     </p>
   );

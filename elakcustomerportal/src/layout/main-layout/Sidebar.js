@@ -53,7 +53,7 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
       label: !collapsed && (
         <div
           className={`${
-            theme === "dark" ? "text-white bg-gray-800" : "bg-[#F7F7F7]"
+            theme === "dark" ? "text-white bg-stone-900" : "bg-[#F7F7F7]"
           } flex items-center justify-start pl-1 pr-8 py-3 rounded-lg my-7 mx-0 gap-3`}
         >
           <div className="flex-shrink-0">
@@ -150,7 +150,7 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
         overflow: "auto",
       }}
       items={items}
-      theme={theme}
+      // theme={theme}
     />
   );
 };
