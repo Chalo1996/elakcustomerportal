@@ -4,25 +4,26 @@ import axios from "axios";
 const url = "https://sisos-eu.azurewebsites.net/api/cmd";
 
 const initialState = {
-  gleData: [],
-  isLoading: true,
+  gciData: [],
+  isLoading: false,
+  error: null,
 };
 
 export const fetchData = createAsyncThunk(
-  "funeralExpense/fetchData",
+  "groupCriticalIllness/fetchData",
   async (data, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const token = state.auth.token;
+    const { getState, rejectWithValue } = thunkAPI;
+    const { token } = getState().auth;
 
     if (!token) {
-      return thunkAPI.rejectWithValue("No token found");
+      return rejectWithValue("No token found");
     }
 
     try {
       const dataToPost = {
         cmd: "ExeChain",
         data: {
-          chain: "M3TrainingGLECalculator",
+          chain: "M3TrainingGCICalculator2",
           context: JSON.stringify(data),
         },
       };
@@ -31,36 +32,42 @@ export const fetchData = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("funeralExpense response: ", response);
+      console.log("groupCriticalIllness response: ", response.data);
       return response.data.outData;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      console.error("fetchData error:", error);
+      return rejectWithValue(error.message || error.response.data);
     }
   }
 );
 
-const funeralExpenseSlice = createSlice({
-  name: "funeralExpense",
+const groupCriticalIllnessSlice = createSlice({
+  name: "groupCriticalIllness",
   initialState: initialState,
   reducers: {
     resetData: (state) => {
-      state.isLoading = true;
+      state.isLoading = false;
+      state.error = null;
+      state.gciData = [];
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchData.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(fetchData.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.gleData = action.payload;
+        state.gciData = action.payload;
+        state.error = null;
       })
       .addCase(fetchData.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.payload || "Error occurred";
       });
   },
 });
 
-export const { resetData } = funeralExpenseSlice.actions;
-export const { reducer: funeralExpenseReducer } = funeralExpenseSlice;
+export const { resetData } = groupCriticalIllnessSlice.actions;
+export const groupCriticalIllnessReducer = groupCriticalIllnessSlice.reducer;

@@ -29,7 +29,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
         <Form form={form} layout="vertical">
           <Row gutter={[16, 16]}>
             <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-              <Form.Item label="" style={{ marginBottom: "35px" }}>
+              <Form.Item label="" style={{ marginBottom: "20px" }}>
                 <Checkbox
                   checked={formData.spouse}
                   onChange={(e) =>
@@ -48,7 +48,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
             </Col>
             <Col xs={24} sm={24} md={12} lg={12} xl={12}>
               <Form.Item
-                label="Children"
+                label="How many children do you want covered?"
                 onKeyPress={preventTextInput}
                 rules={[
                   {
@@ -56,7 +56,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
                     message: "The input is not a valid number!",
                   },
                 ]}
-                style={{ marginBottom: "35px" }}
+                style={{ marginBottom: "20px" }}
               >
                 <InputNumber
                   style={{ width: "100%" }}
@@ -79,7 +79,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
           <Row gutter={[16, 16]}>
             <Col xs={24} sm={24} md={12} lg={12} xl={12}>
               <Form.Item
-                label="Parents"
+                label="How many parents do you want covered?"
                 onKeyPress={preventTextInput}
                 rules={[
                   {
@@ -87,7 +87,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
                     message: "The input is not a valid number!",
                   },
                 ]}
-                style={{ marginBottom: "35px" }}
+                style={{ marginBottom: "20px" }}
               >
                 <InputNumber
                   style={{ width: "100%" }}
@@ -108,7 +108,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
             </Col>
             <Col xs={24} sm={24} md={12} lg={12} xl={12}>
               <Form.Item
-                label="Parents In Law"
+                label="How many parents-in-law do you want covered?"
                 onKeyPress={preventTextInput}
                 rules={[
                   {
@@ -116,7 +116,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
                     message: "The input is not a valid number!",
                   },
                 ]}
-                style={{ marginBottom: "35px" }}
+                style={{ marginBottom: "20px" }}
               >
                 <InputNumber
                   style={{ width: "100%" }}
@@ -126,7 +126,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
                   onChange={(value) =>
                     setFormData({ ...formData, parentsInLawNumber: value })
                   }
-                  value={formData.prentsInLawNumber}
+                  value={formData.parentsInLawNumber}
                   max={formData.principalNumber * 2}
                   min={0}
                 />
@@ -144,7 +144,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
           <Row gutter={[16, 16]}>
             <Col xs={24} sm={24} md={12} lg={12} xl={12}>
               <Form.Item
-                label="Principal Members"
+                label="Please input the number of principal members"
                 name="principalNumber"
                 onKeyPress={preventTextInput}
                 rules={[
@@ -157,26 +157,28 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
                     message: "The input is not a valid number!",
                   },
                 ]}
-                style={{ marginBottom: "35px" }}
+                style={{ marginBottom: "20px" }}
               >
-                <InputNumber
-                  style={{ width: "100%" }}
-                  placeholder="Specify number of principal members"
-                  step={1}
-                  value={formData.principalNumber}
-                  onChange={(value) =>
-                    setFormData({ ...formData, principalNumber: value })
-                  }
-                  min={5}
-                />
-                {formData.principalNumber && (
-                  <p className="text-[#929497]">
-                    Minimum permitted number of 5 members
-                  </p>
-                )}
+                <div>
+                  <InputNumber
+                    style={{ width: "100%" }}
+                    placeholder="Specify number of principal members"
+                    step={1}
+                    value={formData.principalNumber}
+                    onChange={(value) =>
+                      setFormData({ ...formData, principalNumber: value })
+                    }
+                    min={5}
+                  />
+                  {formData.principalNumber && (
+                    <p className="text-[#929497]">
+                      Minimum permitted number of 5 members
+                    </p>
+                  )}
+                </div>
               </Form.Item>
               <Form.Item
-                label="Children"
+                label="How many children do you want covered?"
                 onKeyPress={preventTextInput}
                 rules={[
                   {
@@ -184,7 +186,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
                     message: "The input is not a valid number!",
                   },
                 ]}
-                style={{ marginBottom: "35px" }}
+                style={{ marginBottom: "20px" }}
               >
                 <InputNumber
                   style={{ width: "100%" }}
@@ -203,7 +205,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
                 </p>
               </Form.Item>
               <Form.Item
-                label="Parents In Law"
+                label="How many parents-in-law do you want covered?"
                 onKeyPress={preventTextInput}
                 rules={[
                   {
@@ -211,7 +213,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
                     message: "The input is not a valid number!",
                   },
                 ]}
-                style={{ marginBottom: "35px" }}
+                style={{ marginBottom: "20px" }}
               >
                 <InputNumber
                   style={{ width: "100%" }}
@@ -232,7 +234,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
             </Col>
             <Col xs={24} sm={24} md={12} lg={12} xl={12}>
               <Form.Item
-                label="Parents In Law"
+                label="How many spouses do you want covered?"
                 onKeyPress={preventTextInput}
                 rules={[
                   {
@@ -240,7 +242,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
                     message: "The input is not a valid number!",
                   },
                 ]}
-                style={{ marginBottom: "35px" }}
+                style={{ marginBottom: "20px" }}
               >
                 <InputNumber
                   style={{ width: "100%" }}
@@ -259,7 +261,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
                 </p>
               </Form.Item>
               <Form.Item
-                label="Parents In Law"
+                label="How many parents do you want covered?"
                 onKeyPress={preventTextInput}
                 rules={[
                   {
@@ -267,7 +269,7 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
                     message: "The input is not a valid number!",
                   },
                 ]}
-                style={{ marginBottom: "35px" }}
+                style={{ marginBottom: "20px" }}
               >
                 <InputNumber
                   style={{ width: "100%" }}

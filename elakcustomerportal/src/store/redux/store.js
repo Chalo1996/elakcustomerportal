@@ -3,7 +3,7 @@ import { groupCreditReducer } from "../../reducers/groupCreditReducers";
 import { authReducer } from "./features/authSlice";
 import { funeralExpenseReducer } from "./features/gleSlice";
 import { groupLifeAssuranceReducer } from "./features/glaSlice";
-import { educationReducer } from "./features/eduSlice";
+import { groupCriticalIllnessReducer } from "./features/gciSlice";
 
 
 const rootReducer = combineReducers({
@@ -11,7 +11,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   funeralExpense: funeralExpenseReducer,
   groupLifeAssurance: groupLifeAssuranceReducer,
-  education: educationReducer,
+  groupCriticalIllness: groupCriticalIllnessReducer,
 });
 
 export const store = configureStore({

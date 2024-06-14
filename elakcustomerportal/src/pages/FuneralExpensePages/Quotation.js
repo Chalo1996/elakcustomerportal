@@ -1,13 +1,31 @@
 import { useEffect } from "react";
-import { Card, Row, Col, Table } from "antd";
-import { useLocation } from "react-router-dom";
+import { Card, Row, Col, Table, Button } from "antd";
+import { LeftOutlined } from "@ant-design/icons";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { resetData } from "../../store/redux/features/gleSlice";
+import darkLogo from "../../assets/dark-logo.png";
+import { useTheme } from "../../store/context/theme-context";
 
 const FuneralExpenseQuotation = () => {
+  const { theme } = useTheme();
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
   const { formData = {}, tableData = [] } = location.state || {};
+
+  const handleNavigate = () => {
+    navigate("/home");
+  };
+
+  const assignKeysToData = (data) => {
+    return data.map((item, index) => ({
+      ...item,
+      key: item.id || index, // Use item.id if it exists, otherwise use index
+    }));
+  };
+
+  const policyData = assignKeysToData(tableData);
 
   useEffect(() => {
     dispatch(resetData());
@@ -38,6 +56,11 @@ const FuneralExpenseQuotation = () => {
       key: "email",
       attribute: "Email",
       value: formData.email ?? "",
+    },
+    {
+      key: "gender",
+      attribute: "Gender",
+      value: formData.gender ?? "",
     },
     {
       key: "country",
@@ -88,7 +111,17 @@ const FuneralExpenseQuotation = () => {
   ];
 
   return (
-    <>
+    <div className="pt-5 pl-4">
+      <div className="mb-4">
+        <span>
+          <button className="mb-2 focus:outline-none hover:text-[#A32A29]">
+            <LeftOutlined className="w-8 h-8" onClick={handleNavigate} />
+          </button>
+        </span>
+        <span className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
+          {formData.segment} Funeral Expense Quotation Details
+        </span>
+      </div>
       <Card style={{ border: "1px solid black" }}>
         <div style={{ width: "90%", margin: "auto" }}>
           <Row justify="space-between">
@@ -103,7 +136,11 @@ const FuneralExpenseQuotation = () => {
             </Col>
             <Col>
               <img
-                src="https://th.bing.com/th/id/OIP.slQhzvN6Tzo0RxGP9AiQSgAAAA?rs=1&pid=ImgDetMain"
+                src={
+                  theme === "dark"
+                    ? darkLogo
+                    : "https://th.bing.com/th/id/OIP.slQhzvN6Tzo0RxGP9AiQSgAAAA?rs=1&pid=ImgDetMain"
+                }
                 alt="Company Logo"
                 style={{
                   maxWidth: "100px",
@@ -141,7 +178,7 @@ const FuneralExpenseQuotation = () => {
           </p>
           <Table
             columns={policyDataColumns}
-            dataSource={tableData}
+            dataSource={policyData}
             bordered
             pagination={false}
             title={() => (
@@ -336,7 +373,20 @@ const FuneralExpenseQuotation = () => {
           </p>
         </div>
       </Card>
-    </>
+      <Row justify="end" align="middle" className="my-5">
+        <Col className="mr-4 shadow-none">
+          <Button>Download Quote</Button>
+        </Col>
+        <Col>
+          <Button className="mr-4 shadow-none">Send To Email</Button>
+        </Col>
+        <Col>
+          <Button type="primary" className="shadow-none">
+            Continue With Payment
+          </Button>
+        </Col>
+      </Row>
+    </div>
   );
 };
 

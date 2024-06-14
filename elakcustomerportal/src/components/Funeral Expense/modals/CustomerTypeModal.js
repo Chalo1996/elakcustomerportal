@@ -1,16 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { Modal, Button, Checkbox } from "antd";
-import { useTheme } from "../../../store/context/theme-context";
 
 const CustomerTypeModal = ({ isModalOpen, onOkay, onCancel, customerType }) => {
-  const { theme } = useTheme();
   const navigate = useNavigate();
   const customTitle = (
-    <div
-      className={`${
-        theme === "dark" ? "text-white bg-gray-800" : "text-[#929497]"
-      }  relative`}
-    >
+    <div className={`relative`}>
       <p className="font-medium text-left font-open-sans text-lg leading-6 w-[297px] h-[48px]">
         You'll need to provide the following personal details to continue
       </p>
@@ -36,7 +30,6 @@ const CustomerTypeModal = ({ isModalOpen, onOkay, onCancel, customerType }) => {
       title={customTitle}
       open={isModalOpen}
       style={modalStyle}
-      className={theme === "dark" ? "dark-theme" : ""}
       onOk={onOkay}
       onCancel={onCancel}
       footer={[
@@ -64,33 +57,25 @@ const CustomerTypeModal = ({ isModalOpen, onOkay, onCancel, customerType }) => {
       <div className="flex flex-col gap-3 mt-7">
         <Checkbox
           defaultChecked
-          className={`${
-            theme === "dark" ? "text-white" : "text-[#221F1F]"
-          } non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left`}
+          className={`marker:non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left`}
         >
           Full name
         </Checkbox>
         <Checkbox
           defaultChecked
-          className={`${
-            theme === "dark" ? "text-white" : "text-[#221F1F]"
-          } non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left`}
+          className={`non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left`}
         >
           Email address
         </Checkbox>
         <Checkbox
           defaultChecked
-          className={`${
-            theme === "dark" ? "text-white" : "text-[#221F1F]"
-          } non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left`}
+          className={`non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left`}
         >
           Phone number
         </Checkbox>
         <Checkbox
           defaultChecked
-          className={`${
-            theme === "dark" ? "text-white" : "text-[#221F1F]"
-          } non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left`}
+          className={`non-interactive flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left`}
         >
           Date of Birth
         </Checkbox>
