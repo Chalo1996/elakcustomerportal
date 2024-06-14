@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState, useEffect } from "react";
 import {
   Form,
   Input,
@@ -134,6 +134,11 @@ const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
     setPrivacyVisible(false);
     handleFormChange("termschecked", true);
   };
+
+  useEffect(() => {
+    form.validateFields();
+  }, [formData]);
+
   return (
     <>
       <Form layout='vertical' form={form}>

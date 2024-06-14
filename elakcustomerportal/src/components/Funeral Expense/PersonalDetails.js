@@ -17,6 +17,8 @@ const PhoneAreas = [
   { code: "+256", flag: ugxFlag, country: "Uganda" },
 ];
 
+const Genders = ["Male", "Female"];
+
 const PersonalDetailsForm = ({ form, formData, setFormData }) => {
   useEffect(() => {
     form.setFieldsValue(formData);
@@ -113,23 +115,23 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
               />
             </Form.Item>
             <Form.Item
-              label="Email Address"
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter your email address.",
-                },
-              ]}
+              label="Gender"
+              name="gender"
+              rules={[{ required: true, message: "Please select a gender." }]}
               style={{ marginBottom: "35px" }}
             >
-              <Input
-                placeholder="Enter your email address"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
+              <Select
+                value={formData.gender}
+                onChange={(value) =>
+                  setFormData({ ...formData, gender: value })
                 }
-              />
+              >
+                {Genders.map((item) => (
+                  <Option key={item} value={item}>
+                    {item}
+                  </Option>
+                ))}
+              </Select>
             </Form.Item>
             <Form.Item
               label="Date of Birth"
@@ -172,6 +174,25 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
                 value={formData.lastName}
                 onChange={(e) =>
                   setFormData({ ...formData, lastName: e.target.value })
+                }
+              />
+            </Form.Item>
+            <Form.Item
+              label="Email Address"
+              name="email"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter your email address.",
+                },
+              ]}
+              style={{ marginBottom: "35px" }}
+            >
+              <Input
+                placeholder="Enter your email address"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
                 }
               />
             </Form.Item>

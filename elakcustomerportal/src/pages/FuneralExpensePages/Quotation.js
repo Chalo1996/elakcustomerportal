@@ -3,11 +3,23 @@ import { Card, Row, Col, Table } from "antd";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { resetData } from "../../store/redux/features/gleSlice";
+import darkLogo from "../../assets/dark-logo.png";
+import { useTheme } from "../../store/context/theme-context";
 
 const FuneralExpenseQuotation = () => {
+  const { theme } = useTheme();
   const dispatch = useDispatch();
   const location = useLocation();
   const { formData = {}, tableData = [] } = location.state || {};
+
+  const assignKeysToData = (data) => {
+    return data.map((item, index) => ({
+      ...item,
+      key: item.id || index, // Use item.id if it exists, otherwise use index
+    }));
+  };
+
+  const policyData = assignKeysToData(tableData);
 
   useEffect(() => {
     dispatch(resetData());
@@ -38,6 +50,11 @@ const FuneralExpenseQuotation = () => {
       key: "email",
       attribute: "Email",
       value: formData.email ?? "",
+    },
+    {
+      key: "gender",
+      attribute: "Gender",
+      value: formData.gender ?? "",
     },
     {
       key: "country",
@@ -103,7 +120,11 @@ const FuneralExpenseQuotation = () => {
             </Col>
             <Col>
               <img
-                src="https://th.bing.com/th/id/OIP.slQhzvN6Tzo0RxGP9AiQSgAAAA?rs=1&pid=ImgDetMain"
+                src={
+                  theme === "dark"
+                    ? darkLogo
+                    : "https://th.bing.com/th/id/OIP.slQhzvN6Tzo0RxGP9AiQSgAAAA?rs=1&pid=ImgDetMain"
+                }
                 alt="Company Logo"
                 style={{
                   maxWidth: "100px",
@@ -141,7 +162,7 @@ const FuneralExpenseQuotation = () => {
           </p>
           <Table
             columns={policyDataColumns}
-            dataSource={tableData}
+            dataSource={policyData}
             bordered
             pagination={false}
             title={() => (
