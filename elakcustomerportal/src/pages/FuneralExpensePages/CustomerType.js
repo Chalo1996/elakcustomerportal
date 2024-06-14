@@ -41,15 +41,15 @@ const CustomerTypePage = () => {
           </button>
         </span>
         <span className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
-          Customer
+          Funeral Expense Cover
         </span>
 
         <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 flex flex-col gap-4">
           <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
-            Please select the type of customer
+            Please select the type of funeral expense cover
           </p>
           <p className="text-sm font-normal font-open-sans text-left text-[#929497]">
-            Select the type of customer to proceed
+            Select the type of cover to proceed
           </p>
         </div>
 
