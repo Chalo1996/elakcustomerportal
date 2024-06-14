@@ -40,6 +40,11 @@ const FuneralExpenseQuotation = () => {
       value: formData.email ?? "",
     },
     {
+      key: "gender",
+      attribute: "Gender",
+      value: formData.gender ?? "",
+    },
+    {
       key: "country",
       attribute: "Country",
       value: formData.country ?? "",
