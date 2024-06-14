@@ -35,7 +35,7 @@ const ConfirmDetailsForm = ({ formData }) => {
           <Col xs={24} sm={24} md={12}>
             <div className="flex flex-col items-start justify-start mb-4">
               <p className=" text-[#929497]">Customer</p>
-              <p>Individual</p>
+              <p>{formData.segment}</p>
             </div>
             <div className="flex flex-col items-start justify-start mb-4">
               <p className=" text-[#929497]">Sum Assured</p>
