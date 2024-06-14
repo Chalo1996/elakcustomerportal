@@ -20,7 +20,7 @@ const formatDate = (date) => {
 };
 
 const ContactDetails = ({ formData, setFormData }) => {
-  
+
   const handleInputChange = (value, field) => {
     setFormData((prevData) => ({ ...prevData, [field]: value }));
   };
@@ -43,14 +43,14 @@ const ContactDetails = ({ formData, setFormData }) => {
       layout="vertical">
       <Row gutter={[16, 16]}>
         <Col span={12}>
-          <Title level={5} style={{ marginBottom: '20px' }}>Please enter your details</Title>
-          </Col>
+          <Title level={5} style={{ marginBottom: '20px' }}>Please enter details of contact person</Title>
+        </Col>
       </Row>
       <br></br>
       <Row gutter={[16, 16]}>
-        <Col  xs={24} sm={24} md={12} lg={12} xl={12}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
-            label="First Name"
+            label="Contact First Name"
             name="firstName"
             rules={[
               { required: true, message: "Please enter your first name!" },
@@ -65,9 +65,9 @@ const ContactDetails = ({ formData, setFormData }) => {
             />
           </Form.Item>
         </Col>
-        <Col  xs={24} sm={24} md={12} lg={12} xl={12}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
-            label="Last Name"
+            label="Contact Last Name"
             name="lastName"
             rules={[
               { required: true, message: "Please enter your last name!" },
@@ -85,22 +85,22 @@ const ContactDetails = ({ formData, setFormData }) => {
       </Row>
       <br></br>
       <Row gutter={[16, 16]}>
-      <Col  xs={24} sm={24} md={12} lg={12} xl={12}>
-      <Form.Item
-                label="Gender"
-                rules={[{ required: true, message: "Please select gender." }]}
-                name="gender"
-                required
-              >
-                <Select id="gender" placeholder="Select Gender">
-                  <Select.Option value="male">Male</Select.Option>
-                  <Select.Option value="female">Female</Select.Option>
-                </Select>
-              </Form.Item>
-      </Col>  
-      <Col  xs={24} sm={24} md={12} lg={12} xl={12}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
-            label="Date of Birth"
+            label="Contact Gender"
+            rules={[{ required: true, message: "Please select gender." }]}
+            name="gender"
+            required
+          >
+            <Select id="gender" placeholder="Select Gender">
+              <Select.Option value="male">Male</Select.Option>
+              <Select.Option value="female">Female</Select.Option>
+            </Select>
+          </Form.Item>
+        </Col>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+          <Form.Item
+            label="Contact Date of Birth"
             name="dateOfBirth"
             rules={[
               {
@@ -120,9 +120,9 @@ const ContactDetails = ({ formData, setFormData }) => {
       </Row>
       <br></br>
       <Row gutter={[16, 16]}>
-      <Col  xs={24} sm={24} md={12} lg={12} xl={12}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
-            label="Email Address"
+            label="Contact Email Address"
             name="email"
             rules={[
               {
@@ -139,9 +139,9 @@ const ContactDetails = ({ formData, setFormData }) => {
             />
           </Form.Item>
         </Col>
-        <Col  xs={24} sm={24} md={12} lg={12} xl={12}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
-            label="Mobile Number"
+            label="Contact Mobile Number"
             name="mobileNumber"
             rules={[
               { len: 9, message: "The input must have exactly 9 digits." },
@@ -185,11 +185,11 @@ const ContactDetails = ({ formData, setFormData }) => {
         >
           <Checkbox>
             I accept the{" "}
-            <a href="./" style={{ color: "#A32A29" }}>
+            <a href="/home/group-life-assurance" style={{ color: "#A32A29" }}>
               terms
             </a>{" "}
             and{" "}
-            <a href="./" style={{ color: "#A32A29" }}>
+            <a href="/home/group-life-assurance" style={{ color: "#A32A29" }}>
               privacy policy
             </a>
           </Checkbox>
@@ -292,7 +292,7 @@ const CompanyDetails = ({ formData, setFormData }) => {
       <br></br>
       <Row gutter={16}>
         <Col span={12}>
-        <Form.Item
+          <Form.Item
             label="What is the average age of employees in your company?"
             name="averageAge"
             rules={[{ required: true, message: "Please enter average age of employees!" }]}
@@ -310,7 +310,7 @@ const CompanyDetails = ({ formData, setFormData }) => {
               }
               parser={(value) => value.replace(/(,*)/g, "")}
             />
-          </Form.Item>          
+          </Form.Item>
         </Col>
       </Row>
     </div>
@@ -326,8 +326,8 @@ const InsuredMembers = ({ formData, setFormData }) => {
     <div>
       <Row gutter={16}>
         <Col span={12}>
-          <Title level={5} style={{ marginBottom: '20px' }}>Please enter number of members to be covered</Title>
-          </Col>
+          <Title level={5} style={{ marginBottom: '20px' }}>Please enter the number of family members to be covered</Title>
+        </Col>
       </Row>
       <br></br>
       <Row gutter={16}>
@@ -367,7 +367,7 @@ const InsuredMembers = ({ formData, setFormData }) => {
               onKeyPress={preventTextInput}
             />
           </Form.Item>
-        </Col>        
+        </Col>
       </Row>
       <br></br>
       <Row gutter={16}>
@@ -410,14 +410,14 @@ const InsuredMembers = ({ formData, setFormData }) => {
               onChange={(value) => handleInputChange(value, 'totalNumberOfParentsInLaws')}
             />
           </Form.Item>
-        </Col>        
+        </Col>
       </Row>
     </div>
   )
 };
 
 const PolicyDetails = ({ formData, setFormData }) => {
-  const [form] = Form.useForm(); // Initialize form
+  const [form] = Form.useForm();
 
   const handleInputChange = (value, field) => {
     setFormData((prevData) => ({ ...prevData, [field]: value }));
@@ -639,7 +639,7 @@ const ReviewAndConfirm = ({ formDataToSubmit }) => {
           <Col xs={24} sm={24} md={12}>
             <div className="flex flex-col items-start justify-start mb-4">
               <p className="text-[#929497]">Number of Principal Members</p>
-              <p>{formDataToSubmit.numberPrincipalMembers} members</p>
+              <p>{formDataToSubmit.numberOfEmployees} members</p>
             </div>
             <div className="flex flex-col items-start justify-start mb-4">
               <p className="text-[#929497]">Number of Children</p>
@@ -697,17 +697,19 @@ const GroupLifeAssurance = () => {
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [action, setAction] = useState();
-  
+
   const authStatus = useSelector((state) => state.auth.status);
   const isLoading = useSelector((state) => state.groupLifeAssurance.isLoading);
   const data = useSelector((state) => state.groupLifeAssurance.glaData);
 
+  const [formDataToSubmit] = useState();
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
 
   const [formData, setFormData] = useState({
-    ContactDetails:{
+    ContactDetails: {
       firstName: "",
       lastName: "",
       email: "",
@@ -724,8 +726,8 @@ const GroupLifeAssurance = () => {
       "totalAnnualSalaries": 441014666,
       "totalNumberOfStaff": 923,
       "averageAge": 34
-  },
-  "illnessNaturalCausesAccidents": {
+    },
+    "illnessNaturalCausesAccidents": {
       "glaAsMultipleofAnnualSalary": 4,
       "criticalIllnessBenefitPercentage": 30,
       "typeOfCriticalIllnessCover": "accelerated",
@@ -737,8 +739,8 @@ const GroupLifeAssurance = () => {
       "totalNumberOfSpouses": 0,
       "totalNumberOfChilidren": 0,
       "totalNumberOfParentsAndParentsInLaw": 0
-  },
-  "accidentalOccupationalCausesOnly": {
+    },
+    "accidentalOccupationalCausesOnly": {
       "deathBenefitMultiplier": 4,
       "permananentTotalDisability": 4,
       "temporaryTotalDisability": 104,
@@ -750,12 +752,12 @@ const GroupLifeAssurance = () => {
       "accidentalOccupationalLastExpense": 100000,
       "schemeLossRatio": 0,
       "discountOnRate": 0
-  }
+    }
   });
 
   const onFormFinish = (values) => {
     let updatedFormData = { ...formData };
-  
+
     if (currentStep === 0) {
       updatedFormData.ContactDetails = values;
       if (action === 'callback') {
@@ -763,22 +765,22 @@ const GroupLifeAssurance = () => {
         return;
       }
     } else if (currentStep === 1) {
-      updatedFormData.proposedClientDetails = values;
+      formDataToSubmit.proposedClientDetails = values;
     } else if (currentStep === 2) {
-      updatedFormData.illnessNaturalCausesAccidents = values;
+      formDataToSubmit.illnessNaturalCausesAccidents = values;
     } else if (currentStep === 3) {
       updatedFormData.accidentalOccupationalCausesOnly = values;
     }
-  
+
     updatedFormData.proposedClientDetails.totalAnnualSalaries = parseFloat(updatedFormData.proposedClientDetails.totalAnnualSalaries);
     updatedFormData.proposedClientDetails.totalNumberOfStaff = parseInt(updatedFormData.proposedClientDetails.totalNumberOfStaff);
     updatedFormData.proposedClientDetails.averageAge = parseInt(updatedFormData.proposedClientDetails.averageAge);
-  
+
     updatedFormData.illnessNaturalCausesAccidents.glaAsMultipleofAnnualSalary = parseFloat(updatedFormData.illnessNaturalCausesAccidents.glaAsMultipleofAnnualSalary);
     updatedFormData.illnessNaturalCausesAccidents.totalNumberOfSpouses = parseInt(updatedFormData.illnessNaturalCausesAccidents.totalNumberOfSpouses);
     updatedFormData.illnessNaturalCausesAccidents.totalNumberOfChilidren = parseInt(updatedFormData.illnessNaturalCausesAccidents.totalNumberOfChilidren);
     updatedFormData.illnessNaturalCausesAccidents.totalNumberOfParentsAndParentsInLaw = parseInt(updatedFormData.illnessNaturalCausesAccidents.totalNumberOfSpouses) + parseInt(updatedFormData.illnessNaturalCausesAccidents.totalNumberOfParentsAndParentsInLaw);
-  
+
     updatedFormData.accidentalOccupationalCausesOnly.deathBenefitMultiplier = parseFloat(updatedFormData.accidentalOccupationalCausesOnly.deathBenefitMultiplier);
     updatedFormData.accidentalOccupationalCausesOnly.permananentTotalDisability = parseFloat(updatedFormData.accidentalOccupationalCausesOnly.permananentTotalDisability);
     updatedFormData.accidentalOccupationalCausesOnly.temporaryTotalDisability = parseInt(updatedFormData.accidentalOccupationalCausesOnly.temporaryTotalDisability);
@@ -787,7 +789,7 @@ const GroupLifeAssurance = () => {
     updatedFormData.accidentalOccupationalCausesOnly.occupationalIllness = parseInt(updatedFormData.accidentalOccupationalCausesOnly.occupationalIllness);
     updatedFormData.accidentalOccupationalCausesOnly.schemeLossRatio = parseInt(updatedFormData.accidentalOccupationalCausesOnly.schemeLossRatio);
     updatedFormData.accidentalOccupationalCausesOnly.discountOnRate = parseInt(updatedFormData.accidentalOccupationalCausesOnly.discountOnRate);
-  
+
     console.log('Form Data To Submit: ', updatedFormData);
     setFormData(updatedFormData);
     message.success('Quote generated successfully!');
@@ -835,7 +837,7 @@ const GroupLifeAssurance = () => {
       try {
         await dispatch(fetchData(formData)).unwrap();
         message.success('Quote generated successfully!');
-        setIsFormSubmitted(true); 
+        setIsFormSubmitted(true);
       } catch (error) {
         message.error('Failed to submit form data.');
       }
@@ -843,17 +845,17 @@ const GroupLifeAssurance = () => {
       message.error('Authentication failed.');
     }
   };
-  
-  
+
+
   useEffect(() => {
-    if (!isLoading && isFormSubmitted) { 
+    if (!isLoading && isFormSubmitted) {
       navigate("quotation-details", {
         state: { formData, data },
       });
-      dispatch(fetchData()); 
+      dispatch(fetchData());
     }
-  }, [isLoading, navigate, formData, data, dispatch, isFormSubmitted]); 
-  
+  }, [isLoading, navigate, formData, data, dispatch, isFormSubmitted]);
+
 
 
   const steps = [
