@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { ConfigProvider } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { ConfigProvider, theme } from "antd";
 import { ThemeProvider } from "./store/context/theme-context";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
@@ -30,9 +30,11 @@ import Submit from "./components/Group Critical Illness/Submit";
 import GroupLifeQuotation from "./components/Group Life/GroupLifeQuotation";
 import Privacy from "./pages/TermsAndPrivacy/Privacy";
 import Terms from "./pages/TermsAndPrivacy/Terms";
-import GCQuotationPage from "./pages/GroupCredit/GCQuotationPage";
+import EducQuotation from "./components/Education/EducQuotation";
+import GoalQuotation from "./components/Goal Based/GoalQuotation";
 function App() {
   const dispatch = useDispatch();
+  const lightTheme = useSelector((state) => state.auth.theme) === "light";
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
@@ -57,13 +59,16 @@ function App() {
             token: {
               colorPrimary: "#A32A29",
             },
+            algorithm: lightTheme
+              ? theme.defaultAlgorithm
+              : theme.darkAlgorithm,
           }}
         >
           <Routes>
             {/* Landing Page Route */}
             <Route path='/landing-page' element={<LandingPage />} />
             {/* Redirect to /landing-page */}
-            <Route path='/' element={<Navigate to='/landing-page' />} />
+            <Route path="/" element={<Navigate to="/landing-page" />} />
 
             {/* Home route */}
             <Route
@@ -121,10 +126,15 @@ function App() {
                       path='group-credit/*'
                       element={<GroupCreditRoutes />}
                     />
-                    <Route path='welcome' element={<Welcome />} />
+                    <Route path="welcome" element={<Welcome />} />
+                    <Route path="term-life-quote" element={<GroupTermLifeQuote />}/>
                     <Route
-                      path='term-life-quote'
-                      element={<GroupTermLifeQuote />}
+                      path="Education/Educ-Quotation"
+                      element={<EducQuotation />}
+                    />
+                    <Route
+                      path="Goal-based/Goal-Quotation"
+                      element={<GoalQuotation />}
                     />
                     <Route path='*' element={<NotFound />} />
                   </Routes>

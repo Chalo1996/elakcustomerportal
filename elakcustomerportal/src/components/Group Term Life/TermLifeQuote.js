@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { Row, Col, Form, Input, Button, DatePicker, Select, Steps, Modal, Radio, Checkbox,Typography } from 'antd';
+import { Row, Col, Space,Form, Input,Divider, Button, DatePicker, Select, Steps, Modal, Radio, Checkbox,Typography } from 'antd';
 import Title from 'antd/es/skeleton/Title';
+import {ArrowLeftOutlined} from '@ant-design/icons';
 import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
+
 const { Item } = Form;
 
 const TermLifeQuote = () => {
@@ -9,6 +12,9 @@ const TermLifeQuote = () => {
   const { Step } = Steps;
   const { Title, Text } = Typography;
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [reviewData, setReviewData] = useState({});
   const [generateQuoteChecked, setGenerateQuoteChecked] = useState(false);
@@ -63,7 +69,6 @@ const TermLifeQuote = () => {
     LEVEL: 'STAY THE SAME OVER TIME (LEVEL)',
     INCREASING: 'GET BIGGER OVER TIME(INCREASING)',
     };
-
   const loanTyp = {
     BULLLET: 'PAYMENT AT TERM END',
     AMORTIZATION: 'GRADUAL PAYMENT',
@@ -72,7 +77,6 @@ const TermLifeQuote = () => {
     SINGLE: 'SINGLE',
     JOINT: 'JOINT',
     };
-
   const isCoverForloan = {
     YES: 'LOAN-PREMIUM',
     NO: 'NON-LOAN PREMIUM',
@@ -242,12 +246,32 @@ const TermLifeQuote = () => {
       setShowReviewModal(true);
     };
 
+    const handlePolicyCheckboxChange = (e) => {
+      setIsModalVisible(e.target.checked);
+    };
+    const handleOk = () => {
+      setIsModalVisible(false);
+    };
+
+    const navigate = useNavigate();
+    const handleBackClick = () =>{
+      navigate('/home/welcome'); 
+    };
+
     return (
     <div>  
-      <h1 
-      style={{ textAlign: 'left', fontWeight: 'bold', fontSize: '24px', marginBottom: '20px' }}>
-      Term Life Cover
-      </h1>
+      <Space 
+        style={{ 
+        fontSize: '22px',  
+        marginTop: '30px',
+        fontWeight: '600', 
+        alignItems: 'center', 
+        cursor: 'pointer'  
+      }}  
+      onClick={handleBackClick}>
+      <ArrowLeftOutlined style={{ color: 'black' }}/>
+       Term Life Cover  
+      </Space>
 
       <Modal
       title="What would you like to do?"
@@ -448,7 +472,7 @@ const TermLifeQuote = () => {
      <Row gutter={16}>
      <Col span={12}>
      <Item
-      label="PRINCIPAL AMOUNT">
+      label="INSURED AMOUNT">
       <Input
         name="principalAmount"
         rules={[{ required: true, message: 'Please Enter Principal Amount' }]}
@@ -532,7 +556,7 @@ const TermLifeQuote = () => {
                   <Row gutter={16}>
                   <Col span={12}>
                   <Item
-                  label="SUM ASSURED"
+                  label="How  much would  you like to pay for the cover?"
                   rules={[{ required: true, message: 'Please Enter Sum Assured' }]}>
                   <Input
                     name="sumAssured"
@@ -690,6 +714,7 @@ const TermLifeQuote = () => {
         <Modal
         visible={showReviewModal}
         onCancel={() => setShowReviewModal(false)}
+        width={800}
         footer={[
           <Button key="close" onClick={() => setShowReviewModal(false)}>
             Close
@@ -698,74 +723,219 @@ const TermLifeQuote = () => {
             Submit
           </Button>
         ]}>
-        <div>
-      <h1 style={{ textAlign: 'left', fontSize: '21px', marginBottom: '20px', marginTop: '0px' }}>
-          To continue, please confirm your insurance purchase details
-              </h1>   
-        <h2>Personal Details</h2>
-        <p>First Name: {formData.name}</p>
-        <p>Second Name: {formData.secondname}</p>
-        <p>Date Of Birth: {formData.dateOfBirth}</p>
-        <p>Email: {formData.email}</p>
-        <p>Mobile: {formData.phoneNumber}</p>
-        <p>Country: {formData.country}</p>
-      </div>
 
-      <div style={{ marginTop: '20px' }}>
-        <h2>Cover Details</h2>
-        <p>Premium Type: {formData.isCoverLoan}</p>
-        <p>Cover Type: {formData.coverType}</p>
-        {formData.isCoverLoan === 'YES' && (
-          <>
-            <p>Principal: {formData.principalAmount}</p>
-            <p>Term In Years: {formData.termInYears}</p>
-            <p>Installments Per Annum: {formData.installmentsPerAnnum}</p>
-            <p>Single or Joint: {formData.singleJoint}</p>
-            <p>Loan Type: {formData.loanType}</p>
-          </>
-        )}
-        {formData.isCoverLoan === 'NO' && (
-          <>
-            <p>Sum Assured: {formData.sumAssured}</p>
-            <p>Term In Years: {formData.termInYearsCover}</p>
-            <p>Benefit Escalation: {formData.benefitEscalationCover}</p>
-          </>
-        )}
-      </div>
+<div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
+              <h4 style={{ marginBottom: '20px' }}>Please, Review and confirm Your Information details to continue</h4>
+              <div>
+                <br />
+                <div>
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <h5 style={{ color: '#888', marginBottom: '5px' }}>Product</h5>
+                      <span>Term Life Cover</span>
+                    </Col>
+                  </Row>
+                </div>
+                <Divider />
+                <br />
 
-      <div style={{ marginTop: '20px' }}>
-        <h2>Additional Options</h2>
-        <p>Accelerated Critical Illness: {formData.acceleratedCritalIllness}</p>
-        <p>Percentage of Premium to be Returned: {formData.percentageOfPremToBReturned}</p>
-        <p>Return of Premium on Survival: {formData.returnOfPremiumOnSurvival}</p>
-        <p>Payment Frequency: {formData.premiumFrequency}</p>
+                <h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Personal Information</h4>
+                <br />
+
+                {/*----------------------------------PERSONAL DETAILS-----------------------------------------*/}
+                <div>
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>First Name</h4>
+                      <span>{formData.name}</span>
+                    </Col>
+                    <br />
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Last Name</h4>
+                      <span>{formData.secondname}</span>
+                    </Col>
+                  </Row>
+                  <br />
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Telephone No</h4>
+                      <span>{formData.phoneNumber}</span>
+                    </Col>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Email</h4>
+                      <span>{formData.email}</span>
+                    </Col>
+                  </Row>
+                  <br />
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Date of Birth</h4>
+                      <span>{formData.dateOfBirth}</span>
+                    </Col>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Country</h4>
+                      <span>{formData.country}</span>
+                    </Col>
+                  </Row>
+                  <br />
+                </div>
+                <Divider />
+
+                {/*----------------------------------COVER DETAILS-----------------------------------------*/}
+                <h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Cover Details</h4>  
+                <br/>
+                <div>
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Premium Type</h4>
+                      <span>{formData.isCoverLoan}</span>
+                    </Col>
+                    <br />
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Cover Type</h4>
+                      <span>{formData.coverType}</span>
+                    </Col>
+                  </Row>
+                  <br />
+
+                  {formData.isCoverLoan === 'YES' &&(
+                  <>
+                  <Row gutter={16}>
+                  <Col span={12}>
+                  <h4 style={{ color: '#888', marginBottom: '5px' }}>Principal</h4>
+                  <span>{formData.principalAmount}</span>
+                  </Col>
+                  <Col span={12}>
+                  <h4 style={{ color: '#888', marginBottom: '5px' }}>Term In Years</h4>
+                  <span>{formData.termInYears}</span>
+                  </Col>
+                  </Row>
+                  <br/>
+
+                  <Row gutter={16}>
+                  <Col span={12}>
+                  <h4 style={{ color: '#888', marginBottom: '5px' }}>Installments Per Annum</h4>
+                  <span>{formData.installmentsPerAnnum}</span>
+                  </Col>
+                  <Col span={12}>
+                  <h4 style={{ color: '#888', marginBottom: '5px' }}>Single or Joint</h4>
+                  <span>{formData.singleJoint}</span>
+                  </Col>
+                  </Row>
+                  <br/>
+
+                  <Row gutter={16}>
+                  <Col span={12}>
+                  <h4 style={{ color: '#888', marginBottom: '5px' }}>Loan Type</h4>
+                  <span>{formData.loanType}</span>
+                  </Col>
+                  </Row>
+                  <br/>
+                  </>
+                  )}
+
+                  {formData.isCoverLoan === 'NO' &&(
+                  <>
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Sum Assured </h4>
+                      <span>{formData.sumAssured}</span>
+
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Term In Years</h4>
+                      <span>{formData.termInYearsCover}</span>               
+                    </Col>
+                    <Col span={12}>
+                    <h4 style={{ color: '#888', marginBottom: '5px' }}>Benefit Escalation</h4>
+                    <span>{formData.benefitEscalationCover}</span>
+                    </Col>
+                  </Row>
+                  <br/>
+                  </>
+                  )}
+
+       
+                </div>
+                <Divider/> 
+
+                   {/*----------------------------------Additional Options-----------------------------------------*/}
+                <h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}> Additional Options</h4>
+                <br/>
+                <div>
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Accelerated Critical Illness</h4>
+                      <span>{formData.acceleratedCritalIllness}</span>
+                    </Col>
+                    <br />
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Percentage of Premium to be Returned</h4>
+                      <span>{formData.percentageOfPremToBReturned}</span>
+                    </Col>
+                  </Row>
+                  <br />
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Return of Premium on Survival</h4>
+                      <span>{formData.returnOfPremiumOnSurvival}</span>
+                    </Col>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Payment Frequency</h4>
+                      <span>{formData.premiumFrequency}</span>
+                    </Col>
+                  </Row>
+                  <br />
+                  
+                </div>
+                <Divider />
+
+              </div>
+            </div>
+
+
+
+
+
+
+      <div>
+    <Checkbox 
+    onChange={handlePolicyCheckboxChange}>Policy Exclusions</Checkbox>
+    {isModalVisible && (
+     
+     <div style={{ width: '100%', height: '50%', overflowY: 'auto', position: 'relative', border: '1px solid #ccc', padding: '16px', boxSizing: 'border-box' }}>
+
+        <h3>Policy Exclusions</h3>
+        <p>
+          When considering term life insurance, it's important to be aware of 
+          potential policy exclusions that may affect coverage. Common exclusions 
+          often include pre-existing conditions, where deaths resulting from undisclosed
+          medical conditions are not covered. Many policies have a suicide exclusion clause,
+          typically within the first two years of the policy, meaning if the policyholder 
+          commits suicide during this period, the insurer may not pay out the death benefit.
+
+          Engaging in hazardous activities, such as extreme sports like skydiving or scuba diving, 
+          may also lead to exclusions. Deaths resulting from these activities might not be covered
+          if they were not disclosed during the application process. Similarly, deaths occurring 
+          during illegal activities, including drug use or committing a crime, are often excluded from coverage.
+
+          Acts of war and terrorism can also be excluded from term life insurance policies. 
+          This means that if the policyholder dies due to war or terrorism, the insurance company may not pay
+          out the benefit. Additionally, deaths resulting from alcohol or drug abuse are commonly excluded, 
+
+          and insurers may deny claims if the death is directly linked to substance misuse.
+          Understanding these exclusions helps policyholders ensure they are adequately covered a
+          nd avoid situations that might invalidate their policy.
+        </p>
+        <Button key="agree" type="primary" onClick={handleOk}>
+          Agree
+        </Button>
       </div>
+    )}
+  </div>
+
+
     </Modal>
 
-          <div>      
-        {  
-          /*
-          <p>First Name: {formData.name}</p>
-          <p>Second Name: {formData.secondname}</p>
-          <p>Date Of Birth: {formData.dateOfBirth}</p>
-          <p>Email: {formData.email}</p>
-          <p>Mobile: {formData.phoneNumber}</p>
-          <p>Premium Type: {formData.isCoverLoan}</p>
-          <p>Cover Type: {formData.coverType}</p>
-          <p>Principal: {formData.principalAmount}</p>
-          <p>Term In Years: {formData.termInYears}</p>
-          <p>Installments Per Annum: {formData.installmentsPerAnnum}</p>
-          <p>Single or Joint: {formData.singleJoint}</p>
-          <p>Loan Type: {formData.loanType}</p>
-          <p>Sum Assured: {formData.sumAssured}</p>
-          <p>Term In Yrs Non loan: {formData.termInYearsCover}</p>
-          <p>Benefit  Escalation: {formData.benefitEscalationCover}</p>
-          <p>Acce Crit Illness: {formData.acceleratedCritalIllness}</p>
-          <p>% of Prem : {formData.percentageOfPremToBReturned}</p>
-          <p>Return of Prem On Survival: {formData.returnOfPremiumOnSurvival}</p>
-          <p>Frequency: {formData.premiumFrequency} </p> */
-         }
-          
+          <div>             
             <Row gutter={16}>
               {Object.entries(reviewData).map(([key, value]) => (
                 <Col span={12} key={key}>
