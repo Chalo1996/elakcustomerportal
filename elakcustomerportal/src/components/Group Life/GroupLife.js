@@ -2,14 +2,13 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Steps, Row, Form, Input, InputNumber, Button, message, Col, Checkbox, Modal, DatePicker, Select, Radio, Divider, Typography, Card } from 'antd';
 import 'tailwindcss/tailwind.css';
 
-import { preventNumericInput, preventTextInput, disabledDate, disabledTodayDate, PhoneAreas } from "./Utilities.js"
+import { preventNumericInput, preventTextInput, disabledDate, PhoneAreas } from "./Utilities.js"
 import dayjs from 'dayjs';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchData } from "../../store/redux/features/glaSlice";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import moment from 'moment';
-
 
 const { Step } = Steps;
 const { Option } = Select;
@@ -20,6 +19,22 @@ const formatDate = (date) => {
 };
 
 const ContactDetails = ({ formData, setFormData }) => {
+  const [termsVisible, setTermsVisible] = useState(false);
+  const [privacyVisible, setPrivacyVisible] = useState(false);
+
+  const handleTermsCheckBox = (e) => {
+    handleInputChange(e.target.checked, "termschecked");
+  };
+
+  const handleTermsClose = () => {
+    setTermsVisible(false);
+    handleInputChange(true, "termschecked");
+  };
+
+  const handlePrivacyClose = () => {
+    setPrivacyVisible(false);
+    handleInputChange(true, "termschecked");
+  };
 
   const handleInputChange = (value, field) => {
     setFormData((prevData) => ({ ...prevData, [field]: value }));
@@ -39,22 +54,19 @@ const ContactDetails = ({ formData, setFormData }) => {
   );
 
   return (
-    <Form
-      layout="vertical">
+    <Form layout="vertical">
       <Row gutter={[16, 16]}>
-        <Col span={12}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Title level={5} style={{ marginBottom: '20px' }}>Please enter details of contact person</Title>
         </Col>
       </Row>
-      <br></br>
+      <br />
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
-            label="Contact First Name"
+            label="First Name"
             name="firstName"
-            rules={[
-              { required: true, message: "Please enter your first name!" },
-            ]}
+            rules={[{ required: true, message: "Please enter your first name!" }]}
           >
             <Input
               className="custom-input"
@@ -67,11 +79,9 @@ const ContactDetails = ({ formData, setFormData }) => {
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
-            label="Contact Last Name"
+            label="Last Name"
             name="lastName"
-            rules={[
-              { required: true, message: "Please enter your last name!" },
-            ]}
+            rules={[{ required: true, message: "Please enter your last name!" }]}
           >
             <Input
               className="custom-input"
@@ -83,34 +93,32 @@ const ContactDetails = ({ formData, setFormData }) => {
           </Form.Item>
         </Col>
       </Row>
-      <br></br>
+      <br />
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
-            label="Contact Gender"
-            rules={[{ required: true, message: "Please select gender." }]}
+            label="Gender"
             name="gender"
-            required
+            rules={[{ required: true, message: "Please select gender." }]}
           >
-            <Select id="gender" placeholder="Select Gender">
-              <Select.Option value="male">Male</Select.Option>
-              <Select.Option value="female">Female</Select.Option>
+            <Select
+              value={formData.gender}
+              placeholder="Select Gender"
+              onChange={(value) => handleInputChange(value, 'gender')}
+            >
+              <Option value="male">Male</Option>
+              <Option value="female">Female</Option>
             </Select>
           </Form.Item>
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
-            label="Contact Date of Birth"
+            label="Date of Birth"
             name="dateOfBirth"
-            rules={[
-              {
-                required: true,
-                message: "Please enter your date of birth!",
-              },
-            ]}
+            rules={[{ required: true, message: "Please enter your date of birth!" }]}
           >
             <DatePicker
-              value={formData.dateOfBirth}
+              value={formData.dateOfBirth ? dayjs(formData.dateOfBirth) : null}
               className="w-full custom-input"
               disabledDate={disabledDate}
               onChange={(value) => handleInputChange(value, 'dateOfBirth')}
@@ -118,18 +126,13 @@ const ContactDetails = ({ formData, setFormData }) => {
           </Form.Item>
         </Col>
       </Row>
-      <br></br>
+      <br />
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
-            label="Contact Email Address"
+            label="Email Address"
             name="email"
-            rules={[
-              {
-                required: true,
-                message: "Please enter your email address!",
-              },
-            ]}
+            rules={[{ required: true, message: "Please enter your email address!" }]}
           >
             <Input
               className="custom-input"
@@ -141,23 +144,20 @@ const ContactDetails = ({ formData, setFormData }) => {
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
-            label="Contact Mobile Number"
+            label="Mobile Number"
             name="mobileNumber"
             rules={[
               { len: 9, message: "The input must have exactly 9 digits." },
-              {
-                required: true,
-                message: "Please enter your mobile number!",
-              },
+              { required: true, message: "Please enter your mobile number!" },
             ]}
           >
             <Input
               maxLength={9}
-              value={formData.mobileNumber}
+              value={formData.ContactDetails.mobileNumber}
               onChange={(e) => handleInputChange(e.target.value, 'mobileNumber')}
               addonBefore={
                 <ChoosePhoneArea
-                  value={formData.phoneArea}
+                  value={formData.ContactDetails.phoneArea}
                   onChange={(value) => handleInputChange(value, 'phoneArea')}
                 />
               }
@@ -167,35 +167,53 @@ const ContactDetails = ({ formData, setFormData }) => {
           </Form.Item>
         </Col>
       </Row>
-      <br></br>
+      <br />
       <Row>
-        <Form.Item
-          name="terms"
-          valuePropName="checked"
-          rules={[
-            {
+        <Col span={24}>
+          <Form.Item
+            name="terms"
+            valuePropName="checked"
+            rules={[{
               validator: (_, value) =>
-                value
-                  ? Promise.resolve()
-                  : Promise.reject(
-                    "Should accept terms and privacy policy"
-                  ),
-            },
-          ]}
-        >
-          <Checkbox>
-            I accept the{" "}
-            <a href="/home/group-life-assurance" style={{ color: "#A32A29" }}>
-              terms
-            </a>{" "}
-            and{" "}
-            <a href="/home/group-life-assurance" style={{ color: "#A32A29" }}>
-              privacy policy
-            </a>
-          </Checkbox>
-        </Form.Item>
+                value ? Promise.resolve() : Promise.reject("You must accept the terms and conditions")
+            }]}
+          >
+            <Checkbox
+              checked={formData.termschecked}
+              onChange={handleTermsCheckBox}
+            >
+              I Accept the
+              <Button type="link" style={{ color: "#A32A29" }}onClick={() => setTermsVisible(true)}>
+                terms
+              </Button>
+              {"and"}
+              <Button type="link" style={{ color:"#A32A29" }} onClick={() => setPrivacyVisible(true)}>privacy policy</Button>
+            </Checkbox>
+          </Form.Item>
+        </Col>
       </Row>
-    </Form>)
+
+      {/* Modal for Terms */}
+      <Modal
+        title="Terms and Conditions"
+        visible={termsVisible}
+        onOk={handleTermsClose}
+        onCancel={() => setTermsVisible(false)}
+      >
+        <p>Terms and conditions content...</p>
+      </Modal>
+
+      {/* Modal for Privacy Policy */}
+      <Modal
+        title="Privacy Policy"
+        visible={privacyVisible}
+        onOk={handlePrivacyClose}
+        onCancel={() => setPrivacyVisible(false)}
+      >
+        <p>Privacy policy content...</p>
+      </Modal>
+    </Form>
+  );
 };
 
 const CompanyDetails = ({ formData, setFormData }) => {
@@ -206,13 +224,13 @@ const CompanyDetails = ({ formData, setFormData }) => {
   return (
     <div>
       <Row gutter={16}>
-        <Col span={12}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Title level={5} style={{ marginBottom: '20px' }}>Please enter company details</Title>
         </Col>
       </Row>
       <br />
       <Row gutter={16}>
-        <Col span={12}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
             label="What is the name of your Company"
             name="companyName"
@@ -228,14 +246,14 @@ const CompanyDetails = ({ formData, setFormData }) => {
             />
           </Form.Item>
         </Col>
-        <Col span={12}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
             name="industry"
             label="How would you classify your company?"
             rules={[{ required: true, message: "Please select Industry!" }]}
           >
             <Select
-              value={formData.industry}
+              value={formData.proposedClientDetails.industry}
               placeholder="Please select company classification"
               onChange={(value) => handleInputChange(value, 'industry')}
             >
@@ -251,7 +269,7 @@ const CompanyDetails = ({ formData, setFormData }) => {
       </Row>
       <br />
       <Row gutter={16}>
-        <Col span={12}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
             label="How many employees are to be covered by this scheme?"
             name="numberOfEmployees"
@@ -260,14 +278,14 @@ const CompanyDetails = ({ formData, setFormData }) => {
             <InputNumber
               className="w-full custom-input-number"
               name="numberOfEmployees"
-              value={formData.numberOfEmployees}
+              value={formData.proposedClientDetails.numberOfEmployees}
               onChange={(value) => handleInputChange(value, 'numberOfEmployees')}
               placeholder="Enter total number of employees"
               onKeyPress={preventTextInput}
             />
           </Form.Item>
         </Col>
-        <Col span={12}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
             label="What is the total annual salary of your company?"
             name="annualSalaries"
@@ -277,7 +295,7 @@ const CompanyDetails = ({ formData, setFormData }) => {
               onKeyPress={preventTextInput}
               addonBefore={formData.currencySymbol}
               name="annualSalaries"
-              value={formData.annualSalaries}
+              value={formData.proposedClientDetails.annualSalaries}
               onChange={(value) => handleInputChange(value, 'annualSalaries')}
               placeholder="Enter total annual salaries of all employees"
               className="w-full custom-input-number"
@@ -291,7 +309,7 @@ const CompanyDetails = ({ formData, setFormData }) => {
       </Row>
       <br></br>
       <Row gutter={16}>
-        <Col span={12}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
             label="What is the average age of employees in your company?"
             name="averageAge"
@@ -301,7 +319,7 @@ const CompanyDetails = ({ formData, setFormData }) => {
               onKeyPress={preventTextInput}
               addonBefore={formData.currencySymbol}
               name="averageAge"
-              value={formData.annualSalaries}
+              value={formData.proposedClientDetails.averageAge}
               onChange={(value) => handleInputChange(value, 'averageAge')}
               placeholder="Enter average age of employees"
               className="w-full custom-input-number"
@@ -325,13 +343,13 @@ const InsuredMembers = ({ formData, setFormData }) => {
   return (
     <div>
       <Row gutter={16}>
-        <Col span={12}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Title level={5} style={{ marginBottom: '20px' }}>Please enter the number of family members to be covered</Title>
         </Col>
       </Row>
       <br></br>
       <Row gutter={16}>
-        <Col span={12}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
             label="How many spouses would you like to be covered?"
             name="totalNumberOfSpouses"
@@ -348,7 +366,7 @@ const InsuredMembers = ({ formData, setFormData }) => {
             />
           </Form.Item>
         </Col>
-        <Col span={12}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
             label="How many children would you like to be covered?"
             name="totalNumberOfChildren"
@@ -371,7 +389,7 @@ const InsuredMembers = ({ formData, setFormData }) => {
       </Row>
       <br></br>
       <Row gutter={16}>
-        <Col span={12}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
             label="How many parents would you like to be covered?"
             name="totalNumberOfParents"
@@ -391,7 +409,7 @@ const InsuredMembers = ({ formData, setFormData }) => {
             />
           </Form.Item>
         </Col>
-        <Col span={12}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
             label="How many parents-in-law would you like to be covered?"
             name="totalNumberOfParentsInLaws"
@@ -460,7 +478,7 @@ const PolicyDetails = ({ formData, setFormData }) => {
   return (
     <Form form={form} layout="vertical">
       <Row gutter={16}>
-        <Col span={12}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Title level={5} style={{ marginBottom: '20px' }}>Please enter policy details</Title>
         </Col>
       </Row>
@@ -500,7 +518,7 @@ const PolicyDetails = ({ formData, setFormData }) => {
             </p>
           )}
         </Col>
-        <Col span={12}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
             label="What Level of Cover Do you need?"
             name="multipleOfAnnualSalary"
@@ -692,6 +710,7 @@ const ReviewAndConfirm = ({ formDataToSubmit }) => {
 };
 
 
+
 const GroupLifeAssurance = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [form] = Form.useForm();
@@ -713,7 +732,7 @@ const GroupLifeAssurance = () => {
       firstName: "",
       lastName: "",
       email: "",
-      phoneArea: "254",
+      phoneArea: "+254",
       mobileNumber: "",
       dateOfBirth: "",
       selectedOption: "",
