@@ -32,6 +32,7 @@ import Privacy from "./pages/TermsAndPrivacy/Privacy";
 import Terms from "./pages/TermsAndPrivacy/Terms";
 import EducQuotation from "./components/Education/EducQuotation";
 import GoalQuotation from "./components/Goal Based/GoalQuotation";
+import GCQuotationPage from "./pages/GroupCredit/GCQuotationPage";
 function App() {
   const dispatch = useDispatch();
   const lightTheme = useSelector((state) => state.auth.theme) === "light";
@@ -68,7 +69,7 @@ function App() {
             {/* Landing Page Route */}
             <Route path='/landing-page' element={<LandingPage />} />
             {/* Redirect to /landing-page */}
-            <Route path="/" element={<Navigate to="/landing-page" />} />
+            <Route path='/' element={<Navigate to='/landing-page' />} />
 
             {/* Home route */}
             <Route
@@ -126,14 +127,17 @@ function App() {
                       path='group-credit/*'
                       element={<GroupCreditRoutes />}
                     />
-                    <Route path="welcome" element={<Welcome />} />
-                    <Route path="term-life-quote" element={<GroupTermLifeQuote />}/>
+                    <Route path='welcome' element={<Welcome />} />
                     <Route
-                      path="Education/Educ-Quotation"
+                      path='term-life-quote'
+                      element={<GroupTermLifeQuote />}
+                    />
+                    <Route
+                      path='Education/Educ-Quotation'
                       element={<EducQuotation />}
                     />
                     <Route
-                      path="Goal-based/Goal-Quotation"
+                      path='Goal-based/Goal-Quotation'
                       element={<GoalQuotation />}
                     />
                     <Route path='*' element={<NotFound />} />
