@@ -122,10 +122,7 @@ function App() {
                       element={<GroupCreditRoutes />}
                     />
                     <Route path="welcome" element={<Welcome />} />
-                    <Route
-                      path="term-life-quote"
-                      element={<GroupTermLifeQuote />}
-                    />
+                    <Route path="term-life-quote" element={<GroupTermLifeQuote />}/>
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </PortalLayout>
