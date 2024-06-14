@@ -9,6 +9,7 @@ const QuotationTable = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { data = {}} = location.state || {};
+  
 
   useEffect(() => {
     dispatch(resetData());
