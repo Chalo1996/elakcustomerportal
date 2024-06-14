@@ -12,7 +12,7 @@ const CallBackModal = ({ isModalOpen, onClose, onContinue }) => {
     <p
       className={`${
         theme === "dark" ? "text-white bg-gray-800" : ""
-      }  text-left font-open-sans text-lg leading-6`}
+      }  text-left font-open-sans text-lg leading-6 mb-8`}
     >
       What would you like to do?
     </p>
@@ -24,6 +24,10 @@ const CallBackModal = ({ isModalOpen, onClose, onContinue }) => {
 
   const handleContinue = () => {
     onContinue(selectedOption);
+  };
+
+  const handleClick = (value) => {
+    setSelectedOption(value);
   };
 
   return (
@@ -50,16 +54,18 @@ const CallBackModal = ({ isModalOpen, onClose, onContinue }) => {
         value={selectedOption}
         style={{ width: "100%" }}
       >
-        <div className="w-full flex items-center justify-between">
+        <div
+          className="w-full flex items-center justify-between cursor-pointer"
+          onClick={() => handleClick("generateQuote")}
+        >
           <Text>Generate Quote</Text>
           <Radio value="generateQuote"></Radio>
         </div>
-        <br />
-        <br />
         <Divider />
-        <br />
-        <br />
-        <div className="w-full flex items-center justify-between">
+        <div
+          className="w-full flex items-center justify-between cursor-pointer"
+          onClick={() => handleClick("requestCallback")}
+        >
           <Text>Request a call back</Text>
           <Radio value="requestCallback"></Radio>
         </div>
@@ -69,4 +75,3 @@ const CallBackModal = ({ isModalOpen, onClose, onContinue }) => {
 };
 
 export default CallBackModal;
-

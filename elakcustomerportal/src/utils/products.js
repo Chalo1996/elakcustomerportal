@@ -17,7 +17,7 @@ const products = [
   {
     title: "Critical Illness Cover",
     image: introImage,
-    url: "critical-illness",
+    url: "customer-type",
     description:
       "Critical Illness insurance provides comprehensive coverage for against chronic illnesses such as cancer, ensuring you receive the best healthcare possible.",
   },
@@ -57,5 +57,4 @@ const products = [
       "A group credit life insurance policy is issued by an insurance company to a creditor institution, such as a bank, covering the lives of the bank's current and future debtors. Unlike other group life plans, the bank is both the policyholder and the beneficiary of the life insurance.",
   },
 ];
-
 export default products;
