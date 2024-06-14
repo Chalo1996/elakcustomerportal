@@ -30,27 +30,25 @@ import Submit from "./components/Group Critical Illness/Submit";
 import GroupLifeQuotation from "./components/Group Life/GroupLifeQuotation";
 import Privacy from "./pages/TermsAndPrivacy/Privacy";
 import Terms from "./pages/TermsAndPrivacy/Terms";
-import EducQuotation from "./components/Education/EducQuotation";
-import GoalQuotation from "./components/Goal Based/GoalQuotation";
-
+ 
 function App() {
   const dispatch = useDispatch();
-
+ 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
     const authStatus = localStorage.getItem("authStatus");
-
+ 
     if (authToken) {
       dispatch(setToken(authToken));
     }
-
+ 
     if (authStatus) {
       dispatch(setStatus(authStatus));
     } else {
       dispatch(authenticateUser());
     }
   }, [dispatch]);
-
+ 
   return (
     <BrowserRouter>
       <ThemeProvider>
@@ -66,7 +64,7 @@ function App() {
             <Route path="/landing-page" element={<LandingPage />} />
             {/* Redirect to /landing-page */}
             <Route path="/" element={<Navigate to="/landing-page" />} />
-
+ 
             {/* Home route */}
             <Route
               path="/home"
@@ -76,7 +74,7 @@ function App() {
                 </PortalLayout>
               }
             />
-
+ 
             {/* Routes under /home */}
             <Route
               path="/home/*"
@@ -105,7 +103,7 @@ function App() {
                       path="group-life-assurance/quotation-details"
                       element={<GroupLifeQuotation />}
                     />
-
+ 
                     <Route
                       path="customer-type/critical-illness"
                       element={<GroupCriticalIllness />}
@@ -133,7 +131,7 @@ function App() {
                 </PortalLayout>
               }
             />
-
+ 
             {/* Routes outside of /home */}
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
@@ -144,7 +142,7 @@ function App() {
     </BrowserRouter>
   );
 }
-
+ 
 const GroupCreditRoutes = () => {
   return (
     <Routes>
