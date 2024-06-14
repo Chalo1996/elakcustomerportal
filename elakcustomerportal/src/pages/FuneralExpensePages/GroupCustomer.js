@@ -22,6 +22,7 @@ const getInitialFormData = () => {
     : {
         firstName: "",
         lastName: "",
+        gender: "",
         email: "",
         phoneNo: "",
         phoneArea: "+254",

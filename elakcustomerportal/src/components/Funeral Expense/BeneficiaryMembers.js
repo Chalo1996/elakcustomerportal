@@ -159,21 +159,23 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
                 ]}
                 style={{ marginBottom: "35px" }}
               >
-                <InputNumber
-                  style={{ width: "100%" }}
-                  placeholder="Specify number of principal members"
-                  step={1}
-                  value={formData.principalNumber}
-                  onChange={(value) =>
-                    setFormData({ ...formData, principalNumber: value })
-                  }
-                  min={5}
-                />
-                {formData.principalNumber && (
-                  <p className="text-[#929497]">
-                    Minimum permitted number of 5 members
-                  </p>
-                )}
+                <div>
+                  <InputNumber
+                    style={{ width: "100%" }}
+                    placeholder="Specify number of principal members"
+                    step={1}
+                    value={formData.principalNumber}
+                    onChange={(value) =>
+                      setFormData({ ...formData, principalNumber: value })
+                    }
+                    min={5}
+                  />
+                  {formData.principalNumber && (
+                    <p className="text-[#929497]">
+                      Minimum permitted number of 5 members
+                    </p>
+                  )}
+                </div>
               </Form.Item>
               <Form.Item
                 label="Children"

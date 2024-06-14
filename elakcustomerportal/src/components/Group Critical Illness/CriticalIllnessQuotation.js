@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { jsPDF } from "jspdf";
 import { Table, Typography, Row, Col, Button, Checkbox } from 'antd';
 // import { useLocation } from "react-router-dom";
@@ -27,11 +28,11 @@ const CriticalIllnessQuotation = ({ formData }) => {
   const options = { month: "long", day: "numeric", year: "numeric" };
   const currentDate = today.toLocaleDateString("en-US", options);
 
-    
+  const navigate = useNavigate();
 
-    const handlePrevClick = () => {
-        setCurrent(current - 1);
-      };
+  const handlePrevClick = () => {
+    navigate('/home/customer-type/critical-illness');
+  };
 
     const { Text, Title } = Typography;
 

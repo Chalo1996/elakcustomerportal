@@ -9,6 +9,15 @@ const FuneralExpenseQuotation = () => {
   const location = useLocation();
   const { formData = {}, tableData = [] } = location.state || {};
 
+  const assignKeysToData = (data) => {
+    return data.map((item, index) => ({
+      ...item,
+      key: item.id || index, // Use item.id if it exists, otherwise use index
+    }));
+  };
+
+  const policyData = assignKeysToData(tableData);
+
   useEffect(() => {
     dispatch(resetData());
   }, [dispatch]);
@@ -38,6 +47,11 @@ const FuneralExpenseQuotation = () => {
       key: "email",
       attribute: "Email",
       value: formData.email ?? "",
+    },
+    {
+      key: "gender",
+      attribute: "Gender",
+      value: formData.gender ?? "",
     },
     {
       key: "country",
@@ -141,7 +155,7 @@ const FuneralExpenseQuotation = () => {
           </p>
           <Table
             columns={policyDataColumns}
-            dataSource={tableData}
+            dataSource={policyData}
             bordered
             pagination={false}
             title={() => (
