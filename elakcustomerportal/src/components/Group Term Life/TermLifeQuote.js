@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Col, Space,Form, Input,Divider, Button, DatePicker, Select, Steps, Modal, Radio, Checkbox,Typography } from 'antd';
+import { Row, Col, Space,Form, Input,Divider, Button, DatePicker, Select,Steps, Modal, Radio, Checkbox,Typography } from 'antd';
 import Title from 'antd/es/skeleton/Title';
 import {ArrowLeftOutlined} from '@ant-design/icons';
 import moment from 'moment';
@@ -155,27 +155,6 @@ const TermLifeQuote = () => {
     };
 
   const getRequiredRule = () => [{required: true, message: 'This Field is Mandatory!'}] 
-
-  const contextObject = {
-    name: formData.name,
-    secondname: formData.secondname,
-    principalAmount: formData.principalAmount,     //.replace(/,/g, ''),
-    termInYears: formData.termInYears,
-    annualInterestRate: formData.annualInterestRate,
-    installmentsPA: formData.installmentsPerAnnum,
-    sumAssuredCover: formData.sumAssured,
-    termYearsCover: formData.termInYearsCover,
-    loanType: formData.loanType,
-    coverType: formData.coverType,
-    isCoverLoan: formData.isCoverLoan,
-    singleJoint: formData.singleJoint,
-    benefitEscalationCover: formData.benefitEscalationCover,
-    annualEscalationRate: formData.annualEscalationRate,
-    acceleratedCritalIllness: formData.acceleratedCritalIllness,
-    returnOfPremiumOnSurvival: formData.returnOfPremiumOnSurvival,
-    percentageOfPremToBReturned: formData.percentageOfPremToBReturned,
-    premiumFrequency: formData.premiumFrequency
-    };
     
     const handlePrincipalChange = (e) => {
       let { value } = e.target; 
@@ -257,6 +236,27 @@ const TermLifeQuote = () => {
     const navigate = useNavigate();
     const handleBackClick = () =>{
       navigate('/home/welcome'); 
+    };
+
+  const contextObject = {
+    name: formData.name,
+    secondname: formData.secondname,
+    principalAmount: formData.principalAmount,     //.replace(/,/g, ''),
+    termInYears: formData.termInYears,
+    annualInterestRate: formData.annualInterestRate,
+    installmentsPA: formData.installmentsPerAnnum,
+    sumAssuredCover: formData.sumAssured,
+    termYearsCover: formData.termInYearsCover,
+    loanType: formData.loanType,
+    coverType: formData.coverType,
+    isCoverLoan: formData.isCoverLoan,
+    singleJoint: formData.singleJoint,
+    benefitEscalationCover: formData.benefitEscalationCover,
+    annualEscalationRate: formData.annualEscalationRate,
+    acceleratedCritalIllness: formData.acceleratedCritalIllness,
+    returnOfPremiumOnSurvival: formData.returnOfPremiumOnSurvival,
+    percentageOfPremToBReturned: formData.percentageOfPremToBReturned,
+    premiumFrequency: formData.premiumFrequency
     };
 
     return (
