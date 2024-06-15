@@ -36,7 +36,7 @@ const Product = ({ product, index }) => {
             product={product}
           />
         );
-
+        
       case 1:
         return (
           <CriticalIllnessModal

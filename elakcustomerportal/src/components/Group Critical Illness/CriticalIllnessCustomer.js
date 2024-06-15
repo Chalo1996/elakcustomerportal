@@ -119,5 +119,4 @@ const CriticalIllnessCustomer = () => {
     </div>
   );
 };
-
 export default CriticalIllnessCustomer;
