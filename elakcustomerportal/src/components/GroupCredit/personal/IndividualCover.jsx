@@ -6,10 +6,10 @@ import { LeftOutlined } from "@ant-design/icons";
 import {
   updateUserDetails,
   generateQuotation,
-} from "../../store/redux/actions/groupCreditActions";
-import ClientDetailsForm from "./ClientDetailsForm";
-import ProductDetailsForm from "./ProductDetailsForm";
-import ConfirmDetailsForm from "./ConfirmDetailsForm";
+} from "../../../store/redux/actions/groupCreditActions";
+import ClientDetailsForm from "../forms/ClientDetailsForm";
+import ProductDetailsForm from "../forms/ProductDetailsForm";
+import ConfirmDetailsForm from "../forms/ConfirmDetailsForm";
 
 const { Step } = Steps;
 

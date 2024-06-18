@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import Quotation from "../../components/GroupCredit/Quotation";
+import Quotation from "../../components/GroupCredit/quotes/personal/Quotation";
 
 const GCQuotationPage = () => {
   const userDetails = useSelector((state) => state.groupCredit);

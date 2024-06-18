@@ -172,7 +172,6 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
               inputReadOnly={true}
             />
           </Form.Item>
-
           <Form.Item
             label="Email Address"
             name="email"
