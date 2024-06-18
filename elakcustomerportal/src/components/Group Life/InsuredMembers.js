@@ -41,7 +41,7 @@ const InsuredMembers = ({form,  formData, setFormData }) => {
         </Col>
         <Col xs={24} sm={12}>
           <Form.Item
-            label="In case of death of a spouse, how much money would you like to be given to the family?"
+            label="Specify amount beneficiary will get in the event of death of a spouse?"
             name="spouseLastExpense"
             rules={[{ required: true, message: "Please enter spouse last expense!" }]}
           >
@@ -79,7 +79,7 @@ const InsuredMembers = ({form,  formData, setFormData }) => {
         </Col>
         <Col xs={24} sm={12}>
           <Form.Item
-            label="How much would you like to receive in the event of the death of a child?"
+            label="Specify amount beneficiary will get in the event of death of a child?"
             name="childLastExpense"
             rules={[{ required: true, message: "Please enter child last expense!" }]}
           >
@@ -117,7 +117,7 @@ const InsuredMembers = ({form,  formData, setFormData }) => {
         </Col>
         <Col xs={24} sm={12}>
           <Form.Item
-            label="How much would you like to receive in the event of the death of a parent or parent-in-law?"
+            label="Specify amount beneficiary will get in the event of death of a parent or in-law?"
             name="parentsLastExpense"
             rules={[{ required: true, message: "Please enter parents last expense!" }]}
           >
