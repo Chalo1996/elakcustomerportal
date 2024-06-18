@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from "react";
-import {Steps,Form,Input,Radio,Divider,Typography,Card,Space,DatePicker,Button,Row,Col,Select,Modal,InputNumber,Checkbox} from "antd";
+import {Steps,Form,Input,Radio,message, Divider,Typography,Card,Space,DatePicker,Button,Row,Col,Select,Modal,InputNumber,Checkbox} from "antd";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../../store/redux/features/eduSlice";
@@ -17,8 +17,6 @@ const { Step } = Steps;
 const { Option } = Select;
 
 
-
-
 const Education = () => {
   const [current, setCurrent] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,6 +29,7 @@ const Education = () => {
     firstName: '',
     lastName: '',
     tel: '',
+    phoneAreas: '',
     email: '',
     DOB: null,
     targetType: '',
@@ -50,28 +49,71 @@ const Education = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-const eduData = useSelector((state) => state.education.eduData);
-console.log("EduData from Redux:", eduData);
+const cData = useSelector((state) => state.education.eduData);
+const authStatus = useSelector((state) => state.auth.status);
+  const isLoading = useSelector((state) => state.education.isLoading);
+  
 
-  const onFinish = async (values) => {
-    try {
-      await form.validateFields();
-      console.log('Received values:', values);
-      console.log('Form Data:', formData);
-      navigate("Educ-Quotation");
-    } catch (errorInfo) {
-      console.log("Failed:", errorInfo);
+const dataToPost = {
+  "firstName": formData.firstName,
+  "lastName": formData.lastName,
+  "tel": formData.tel,
+  "phoneAreas": formData.phoneAreas,
+  "email": formData.email,
+  "DOB": formData.DOB,
+  "targetType": formData.targetType,
+  "TermInYears": formData.TermInYears,
+  "frequency": formData.frequency,
+  "premium": formData.premium,
+  "currency": formData.currency,
+  "startDate": formData.startDate,
+  "endDate": formData.endDate,
+  "gender": formData.gender,
+  };
+
+
+  const handleSubmit = async () => {
+    if (authStatus === "succeeded") {
+      try {
+        await dispatch(fetchData(dataToPost)).unwrap();
+        console.log('Form Data:', formData);
+        message.success('Quote generated successfully!');
+        setIsFormSubmitted(true);
+      } catch (error) {
+        message.error('Failed to submit form data.');
+      }
+    } else {
+      message.error('Authentication failed.');
     }
   };
 
+
   useEffect(() => {
-    if (isFormSubmitted) {
+    if (isFormSubmitted && !isLoading) {
+      const serializableFormData = JSON.parse(JSON.stringify({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        tel: formData.tel,
+        phoneAreas: formData.phoneAreas,
+        email: formData.email,
+        DOB: formData.DOB,
+        targetType: formData.targetType,
+        TermInYears: formData.TermInYears,
+        frequency: formData.frequency,
+        premium: formData.premium,
+        currency: formData.currency,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        gender: formData.gender,
+      }));
+  
+      const serializableCData = JSON.stringify(cData);
+  
       navigate("Educ-Quotation", {
-        state: { formData},
+        state: { formData: serializableFormData, cData: serializableCData },
       });
-      dispatch(fetchData(formData));
     }
-  }, [navigate, formData, dispatch, isFormSubmitted]);
+  }, [isFormSubmitted, isLoading, navigate, formData, cData]);
 
   useEffect(() => {
     if (formData.startDate && formData.TermInYears) {
@@ -103,16 +145,16 @@ console.log("EduData from Redux:", eduData);
     }
     return null;
   };
-  
+
   const onChangeCurrency = (value) => {
     setFormData((prevData) => ({
       ...prevData,
       currency: value,
     }));
   };
- 
 
-  const PhoneAreas = [
+
+  const phoneAreas = [
     { code: "+211", flag: sspFlag, country: "South Sudan" },
     { code: "+243", flag: cdfFlag, country: "DRC" },
     { code: "+250", flag: rwfFlag, country: "Rwanda" },
@@ -120,18 +162,15 @@ console.log("EduData from Redux:", eduData);
     { code: "+255", flag: tzsFlag, country: "Tanzania" },
     { code: "+256", flag: ugxFlag, country: "Uganda" },
   ];
-
   const handleChange = (newValue) => {
-    const area = PhoneAreas.find((item) => item.code === newValue);
+    const area = phoneAreas.find((item) => item.code === newValue);
     setFormData((prevData) => ({
       ...prevData,
       country: area.country,
-      telCode: area.code,
+      phoneAreas: area.code,
     }));
   };
 
-
-  
   const next = () => {
     form.validateFields().then(() => {
       if (current === 0) {
@@ -146,21 +185,15 @@ console.log("EduData from Redux:", eduData);
       console.log('Validation Failed:', errorInfo);
     });
   };
-  
-
   const back = () => {
     setCurrent(current - 1);
   };
-
-
   const disabledDate = (current) => {
     return (
       current &&
       (current < moment().subtract(80, 'years') || current > moment().subtract(18, 'years'))
     );
   };
-
-
   const showTermsModal = () => {
     setIsTermsModalVisible(true);
   };
@@ -186,8 +219,6 @@ console.log("EduData from Redux:", eduData);
     }));
   };
 
-  
-
   const handleModalOk = () => {
     setIsModalOpen(false);
     if (formData.selectedOption === 'quote') {
@@ -196,10 +227,7 @@ console.log("EduData from Redux:", eduData);
       setCurrent(0); // Open the Personal Information Details step (step 0)
     }
   };
-  
-
-;
-  
+    
   return (
     <>
      <br></br>
@@ -212,7 +240,7 @@ console.log("EduData from Redux:", eduData);
        
       </Steps>
       <div style={{ marginTop: 20 }}>
-        <Form form={form} layout="vertical" onFinish={onFinish}>
+        <Form form={form} layout="vertical">
         {current === 0 && (
           
   <>
@@ -267,50 +295,58 @@ console.log("EduData from Redux:", eduData);
         </Form.Item>
       </Col>
       <Col span={12}>
-        <Form.Item label="Telephone No" 
-        name="tel" 
-        rules={[
-          { 
-          required: true, 
-          message: 'Please enter your telephone number' 
-          },
-          {
-            pattern: "^[0-9]{9}$",
-            message: "The Phone number should be 9 digits!",
-          },
-          ]}>
-          <Input
-                addonBefore={
-                  <Select
-                    style={{ width: 100 }}
-                    defaultValue="+254"
-                    onChange={handleChange}
-                  >
-                    {PhoneAreas.map((item) => (
-                  <Option value={item.code} key={item.code}>
-                   <div style={{ display: 'flex', alignItems: 'center' }}>
-                   <img
-                      src={item.flag}
-                      alt={item.country}
-                      style={{ width: '20px', marginRight: '8px' }}
-                    />
-                    {item.code}
-                    </div>
-                  </Option>
-                    ))}
-                  </Select>
-                }
-                value={formData.tel}
-                onChange={(event) =>
-                  setFormData((prevData) => ({
-                    ...prevData,
-                    tel: event.target.value,
-                  }))
-                }
-                style={{ width: "100%" }}
-              />
-        </Form.Item>
-      </Col>
+  <Form.Item
+    label="Mobile No"
+    name="tel"
+    rules={[
+      {
+        required: true,
+        message: 'Please enter your Mobile number',
+      },
+      {
+        pattern: "^[0-9]{9}$",
+        message: "The Phone number should be 9 digits!",
+      },
+    ]}
+  >
+    <Input
+      addonBefore={
+        <Select
+          style={{ width: 100 }}
+          defaultValue="+254"
+          onChange={(value) =>
+            setFormData((prevData) => ({
+              ...prevData,
+              phoneArea: value,
+            }))
+          }
+        >
+          {phoneAreas.map((item) => (
+            <Option value={item.code} key={item.code}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <img
+                  src={item.flag}
+                  alt={item.country}
+                  style={{ width: '20px', marginRight: '8px' }}
+                />
+                {item.code}
+              </div>
+            </Option>
+          ))}
+        </Select>
+      }
+      value={formData.tel}
+      onChange={(event) =>
+        setFormData((prevData) => ({
+          ...prevData,
+          tel: event.target.value,
+        }))
+      }
+      style={{ width: '100%' }}
+    />
+  </Form.Item>
+</Col>
+
     </Row>
     <br></br>
     <Row gutter={16}>
@@ -637,7 +673,7 @@ to achieve over time."
         <br />
         <Row gutter={16}>
           <Col span={12}>
-            <h4 style={{ color: '#888', marginBottom: '5px' }}>Telephone No</h4>
+            <h4 style={{ color: '#888', marginBottom: '5px' }}>Mobile No</h4>
             <span>{formData.tel}</span>
           </Col>
           <Col span={12}>
@@ -717,7 +753,7 @@ to achieve over time."
               </Button>
             )}
   {current === 2 && (
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" onClick={handleSubmit}>
                 Generate Quote
               </Button>
             )}

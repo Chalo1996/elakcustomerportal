@@ -5,6 +5,8 @@ import { funeralExpenseReducer } from "./features/gleSlice";
 import { groupLifeAssuranceReducer } from "./features/glaSlice";
 import { groupCriticalIllnessReducer } from "./features/gciSlice";
 import { educationReducer } from "./features/eduSlice";
+import { GoalbasedReducer } from "./features/goalSlice";
+
 
 const rootReducer = combineReducers({
   groupCredit: groupCreditReducer,
@@ -13,6 +15,7 @@ const rootReducer = combineReducers({
   groupLifeAssurance: groupLifeAssuranceReducer,
   groupCriticalIllness: groupCriticalIllnessReducer,
   education: educationReducer,
+  goalBased: GoalbasedReducer,
 });
 
 export const store = configureStore({
