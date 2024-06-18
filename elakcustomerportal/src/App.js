@@ -7,7 +7,7 @@ import Home from "./pages/Home";
 import PortalLayout from "./layout/PortalLayout";
 import Education from "./components/Education/Education";
 import GoalBased from "./components/Goal Based/GoalBased";
-import GroupLifeAssurance from "./components/Group Life/GroupLife";
+import GroupLifeAssurance from "./pages/GroupLifeAssurance/GroupLife";
 import GroupCriticalIllness from "./components/Group Critical Illness/CriticalIlness";
 import NotFound from "./pages/NotFound";
 import CustomerTypePage from "./pages/FuneralExpensePages/CustomerType";
@@ -27,14 +27,16 @@ import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
 import Welcome from "./components/Group Term Life/Welcome";
 import CustomerType from "./components/Group Critical Illness/CustomerType";
 import Submit from "./components/Group Critical Illness/Submit";
-import GroupLifeQuotation from "./components/Group Life/GroupLifeQuotation";
+import GroupLifeQuotation from "./pages/GroupLifeAssurance/GroupLifeQuotation";
 import Privacy from "./pages/TermsAndPrivacy/Privacy";
 import Terms from "./pages/TermsAndPrivacy/Terms";
 import EducQuotation from "./components/Education/EducQuotation";
 import GoalQuotation from "./components/Goal Based/GoalQuotation";
 import GCQuotationPage from "./pages/GroupCredit/GCQuotationPage";
+import AnnuityPage from "./pages/AnnuityPages/Annuity";
 import GroupCustomer from "./components/Group Critical Illness/GroupCustomer";
-import UploadDetails from "./components/Group Critical Illness/UploadDetails";
+import UploadDetails from "./components/Group Critical Illness/UploadDetails"
+
 function App() {
   const dispatch = useDispatch();
   const lightTheme = useSelector((state) => state.auth.theme) === "light";
@@ -69,13 +71,13 @@ function App() {
         >
           <Routes>
             {/* Landing Page Route */}
-            <Route path='/landing-page' element={<LandingPage />} />
+            <Route path="/landing-page" element={<LandingPage />} />
             {/* Redirect to /landing-page */}
-            <Route path='/' element={<Navigate to='/landing-page' />} />
+            <Route path="/" element={<Navigate to="/landing-page" />} />
 
             {/* Home route */}
             <Route
-              path='/home'
+              path="/home"
               element={
                 <PortalLayout>
                   <Home />
@@ -85,81 +87,82 @@ function App() {
 
             {/* Routes under /home */}
             <Route
-              path='/home/*'
+              path="/home/*"
               element={
                 <PortalLayout>
                   <Routes>
-                    <Route path='education' element={<Education />} />
-                    <Route path='goal-based' element={<GoalBased />} />
+                    <Route path="education" element={<Education />} />
+                    <Route path="goal-based" element={<GoalBased />} />
                     <Route
-                      path='funeral-expense/select-customer-type'
+                      path="funeral-expense/select-customer-type"
                       element={<CustomerTypePage />}
                     />
                     <Route
-                      path='/funeral-expense'
+                      path="/funeral-expense"
                       element={<HandleCustomerSelection />}
                     />
                     <Route
-                      path='funeral-expense/quotation-details'
+                      path="funeral-expense/quotation-details"
                       element={<FuneralExpenseQuotation />}
                     />
                     <Route
-                      path='group-life-assurance'
+                      path="group-life-assurance"
                       element={<GroupLifeAssurance />}
                     />
                     <Route
-                      path='group-life-assurance/quotation-details'
+                      path="group-life-assurance/quotation-details"
                       element={<GroupLifeQuotation />}
                     />
 
                     <Route
-                      path='customer-type/critical-illness'
+                      path="customer-type/critical-illness"
                       element={<GroupCriticalIllness />}
                     />
-                    <Route path='customer-type' element={<CustomerType />} />
+                    <Route path="customer-type" element={<CustomerType />} />
                     <Route
-                      path='customer-type/critical-illness/critical-illness-quotation'
+                      path="customer-type/critical-illness/critical-illness-quotation"
                       element={<CriticalIllnessQuotation />}
                     />
                     <Route
-                      path='customer-type/critical-illness/submit'
+                      path="customer-type/critical-illness/submit"
                       element={<Submit />}
                     />
                     <Route
-                      path='customer-type/group-customer'
+                      path="customer-type/group-customer"
                       element={<GroupCustomer />}
                     />
                     <Route
-                      path='customer-type/group-customer/upload-details'
+                      path="customer-type/group-customer/upload-details"
                       element={<UploadDetails />}
                     />
                     <Route
-                      path='group-credit/*'
+                      path="group-credit/*"
                       element={<GroupCreditRoutes />}
                     />
-                    <Route path='welcome' element={<Welcome />} />
+                    <Route path="welcome" element={<Welcome />} />
                     <Route
-                      path='term-life-quote'
+                      path="term-life-quote"
                       element={<GroupTermLifeQuote />}
                     />
                     <Route
-                      path='Education/Educ-Quotation'
+                      path="Education/Educ-Quotation"
                       element={<EducQuotation />}
                     />
                     <Route
-                      path='Goal-based/Goal-Quotation'
+                      path="Goal-based/Goal-Quotation"
                       element={<GoalQuotation />}
                     />
-                    <Route path='*' element={<NotFound />} />
+                    <Route path="annuity" element={<AnnuityPage />} />
+                    <Route path="*" element={<NotFound />} />
                   </Routes>
                 </PortalLayout>
               }
             />
 
             {/* Routes outside of /home */}
-            <Route path='/terms' element={<Terms />} />
-            <Route path='/privacy' element={<Privacy />} />
-            <Route path='*' element={<NotFound />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </ConfigProvider>
       </ThemeProvider>
@@ -170,10 +173,10 @@ function App() {
 const GroupCreditRoutes = () => {
   return (
     <Routes>
-      <Route path='/' element={<GroupCredit />} />
-      <Route path='individual-cover' element={<IndividualCover />} />
-      <Route path='multiple-cover' element={<MultipleCover />} />
-      <Route path='/quotation' element={<GCQuotationPage />} />
+      <Route path="/" element={<GroupCredit />} />
+      <Route path="individual-cover" element={<IndividualCover />} />
+      <Route path="multiple-cover" element={<MultipleCover />} />
+      <Route path="/quotation" element={<GCQuotationPage />} />
     </Routes>
   );
 };

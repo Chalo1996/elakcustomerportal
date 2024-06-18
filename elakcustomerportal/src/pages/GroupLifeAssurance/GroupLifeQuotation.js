@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Card, Row, Col, Table, Divider, Button, Checkbox, Typography } from "antd";
 import { useLocation } from "react-router-dom";
-import PolicyExclusionsModal from "./Modals/PolicyExclusionsModal";
+import PolicyExclusionsModal from "../../components/Group Life/Modals/PolicyExclusionsModal";
 
 import Docxtemplater from "docxtemplater";
 import JSZip from "jszip";
 import * as FileSaver from "file-saver";
-import templateFile from "./Templates/quotationTemplate.docx";
+import templateFile from "../../components/Group Life/Templates/quotationTemplate.docx";
 
 import { LeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
