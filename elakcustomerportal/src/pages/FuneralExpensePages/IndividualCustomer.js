@@ -201,6 +201,7 @@ const IndividualCustomer = () => {
       navigate("/home/funeral-expense/quotation-details", {
         state: { formData, tableData },
       });
+      localStorage.removeItem("yourGLEData");
     }
   }, [isLoading, navigate, formData, tableData]);
 

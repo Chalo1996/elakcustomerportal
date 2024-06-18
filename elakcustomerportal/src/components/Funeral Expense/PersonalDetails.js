@@ -92,7 +92,7 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
       </div>
 
       <Form form={form} layout="vertical">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 gap-4">
           <Form.Item
             label="First Name"
             name="firstName"

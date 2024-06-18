@@ -176,6 +176,7 @@ const TermLifeQuote = () => {
     percentageOfPremToBReturned: formData.percentageOfPremToBReturned,
     premiumFrequency: formData.premiumFrequency
     };
+    
     const handlePrincipalChange = (e) => {
       let { value } = e.target; 
       value = value.replace(/[^\d,]/g, ''); 
