@@ -41,6 +41,7 @@ const RequestCallbackModal = ({
     setSelectedOption,
   }) => {
     const [isSecondModalVisible, setIsSecondModalVisible] = useState(false);
+    const [currentStep, setCurrentStep] = useState(1); 
   
     const handleOptionChange = (e) => {
       const value = e.target.value;
@@ -58,6 +59,7 @@ const RequestCallbackModal = ({
 const handleUploadDetails = () => {
     navigate('upload-details');
   };
+
 
   const navigate = useNavigate();
   
@@ -114,7 +116,7 @@ const handleUploadDetails = () => {
                 Upload Member Details
               </Button>
               <Divider style={{ margin: "8px 0", width: "100%" }} />
-              <Button type="primary" block>
+              <Button type="primary" block onClick={onContinue }>
                 Enter Member Details
               </Button>
             </Space>
@@ -1430,7 +1432,7 @@ const handleUploadDetails = () => {
           </button>
         </span>
         <span className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
-          Get Critical Illness Cover
+          Get Critical Illness Cover (Group)
         </span>
       <Steps current={current}>
         {steps.map((item) => (

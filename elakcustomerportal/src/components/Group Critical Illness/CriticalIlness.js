@@ -104,7 +104,7 @@ const GroupCriticalIllness = () => {
   const [SAChildren, setSAChildren] = useState();
   const [sumAssured, setSumAssured] = useState();
   const [coverDate, setCoverDate] = useState();
-  const [ setCoverExpiryDate] = useState();
+  const [ coverExpiryDate, setCoverExpiryDate] = useState();
   const [callbackModalVisible, setCallbackModalVisible] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -174,20 +174,20 @@ const formatPercentage = (value) => {
     navigate("/home");
   };
 
-  const handleCoverDateChange = (date, timeInYears) => {
+  const handleCoverDateChange = (date, policyTerm) => {
     if (!date) {
       form.resetFields(["coverExpiryDate"]);
-      setCoverExpiryDate();
+      setCoverExpiryDate(null);
       return null;
     }
     const oneYearLater = date
       .clone()
-      .add(timeInYears, "year")
+      .add(policyTerm, "year")
       .subtract(1, "day");
     setCoverDate(date);
-
     return oneYearLater;
   };
+  
 
   const disabledDate = (current) => {
     const today = new Date();
@@ -197,38 +197,41 @@ const formatPercentage = (value) => {
     );
   };
 
-  // // const disableCoverExpiryDate = (date) => {
-  // //   if (coverDate) {
-  // //     const currentDate = new Date(coverDate);
-  // //     let newCoverExpiryDate = new Date(coverDate);
-  // //     newCoverExpiryDate.setFullYear(currentDate.getFullYear() + 1);
-
-  // //     // Adjust for leap years
-  // //     if (currentDate.getDate() === 29 && currentDate.getMonth() === 1) {
-  // //       if (
-  // //         newCoverExpiryDate.getMonth() === 1 &&
-  // //         newCoverExpiryDate.getDate() === 28
-  // //       ) {
-  // //         newCoverExpiryDate.setDate(1); // Start from March 1
-  // //         newCoverExpiryDate.setMonth(2); // Adjust to March
-  // //       }
-  // //     }
-
-  //     const formattedCoverExpiryDate = new Date(
-  //       newCoverExpiryDate.getFullYear(),
-  //       newCoverExpiryDate.getMonth(),
-  //       newCoverExpiryDate.getDate()
-  //     );
-
-  //     return date && date < formattedCoverExpiryDate;
-  //   }
-  // };
+  const disableCoverExpiryDate = (date) => {
+    if (coverDate) {
+      const currentDate = coverDate.toDate();
+      let newCoverExpiryDate = coverDate.clone().add(policyTerm, "year").subtract(1, "day").toDate();
+  
+      // Adjust for leap years
+      if (currentDate.getDate() === 29 && currentDate.getMonth() === 1) {
+        if (
+          newCoverExpiryDate.getMonth() === 1 &&
+          newCoverExpiryDate.getDate() === 28
+        ) {
+          newCoverExpiryDate.setDate(1); // Start from March 1
+          newCoverExpiryDate.setMonth(2); // Adjust to March
+        }
+      }
+  
+      return date && date < newCoverExpiryDate;
+    }
+    return false;
+  };
+  
+  useEffect(() => {
+    if (coverDate) {
+      const newCoverExpiryDate = handleCoverDateChange(coverDate, policyTerm);
+      setCoverExpiryDate(newCoverExpiryDate);
+      form.setFieldsValue({ coverExpiryDate: newCoverExpiryDate });
+    }
+  }, [coverDate, policyTerm]);
+  
 
   const dataToPost = {
     members: [
       {
         name: "PRINCIPAL",
-        individualLives: formData.principalNumber,
+        individualLives: 1,
         sumAssuredPercentage: formData.SAPrincipal,
       },
       {
@@ -569,7 +572,7 @@ const formatPercentage = (value) => {
       //   ...prevFormData,
       //   [steps[current]]: values,
       // }));
-      setFormData({ ...formData, ...values });
+      setFormData({ ...formData, ...values, phoneArea: phoneArea });
       console.log("Form data:", formData);
     } catch (error) {
       console.error("Validation Error:", error);
@@ -634,7 +637,7 @@ const formatPercentage = (value) => {
             </Col>
             <Col span={12}>
             <div className="flex flex-col items-start justify-start mb-4">
-  <p className="text-[#929497]">Phone Number</p>
+  <p className="text-[#929497]">Mobile Number</p>
   <p>
     {formData?.phoneArea}{formData?.mobileNumber}
   </p>
@@ -777,14 +780,14 @@ const formatPercentage = (value) => {
           Please enter personal details
         </p>
       </div>
-          <Row gutter={16}>
+          <Row gutter={[16, 16]}>
             <Col
               xs={24}
               sm={24}
               md={12}
               lg={12}
               xl={12}
-              style={{ marginBottom: "16px" }}
+              style={{ marginBottom: "10px" }}
             >
               <Form.Item
                 label="First Name"
@@ -848,7 +851,7 @@ const formatPercentage = (value) => {
               md={12}
               lg={12}
               xl={12}
-              style={{ marginBottom: "16px" }}
+              style={{ marginBottom: "10px" }}
             >
               <Form.Item
                 label="Last Name"
@@ -933,14 +936,14 @@ const formatPercentage = (value) => {
           Please enter the number of family members to be covered
         </p>
       </div>
-          <Row gutter={16}>
+          <Row gutter={[16, 16]}>
             <Col
               xs={24}
               sm={24}
               md={12}
               lg={12}
               xl={12}
-              style={{ marginBottom: "16px" }}
+              style={{ marginBottom: "10px" }}
             >
               <Form.Item
         label="How many principal members do you want to cover?"
@@ -972,21 +975,21 @@ const formatPercentage = (value) => {
               md={12}
               lg={12}
               xl={12}
-              style={{ marginBottom: "16px" }}
+              style={{ marginBottom: "10px" }}
             >
                <Form.Item label="Do you want to cover your spouse?" name="spouse">
                 <Switch onChange={(checked) => setSpouse(checked)} />
               </Form.Item>
             </Col>
           </Row>
-          <Row gutter={16}>
+          <Row gutter={[16, 16]}>
             <Col
               xs={24}
               sm={24}
               md={12}
               lg={12}
               xl={12}
-              style={{ marginBottom: "16px" }}
+              style={{ marginBottom: "10px" }}
             >
               <Form.Item
                 label="Spouse Date of Birth"
@@ -1020,7 +1023,7 @@ const formatPercentage = (value) => {
               md={12}
               lg={12}
               xl={12}
-              style={{ marginBottom: "16px" }}
+              style={{ marginBottom: "10px" }}
             >
               <Form.Item
       label="How many spouses do you want to cover?"
@@ -1042,14 +1045,14 @@ const formatPercentage = (value) => {
     </Form.Item>
             </Col>
           </Row>
-          <Row gutter={16}>
+          <Row gutter={[16, 16]}>
             <Col
               xs={24}
               sm={24}
               md={12}
               lg={12}
               xl={12}
-              style={{ marginBottom: "16px" }}
+              style={{ marginBottom: "10px" }}
             >
               <Form.Item label="Do you want to cover your children?" name="childrenVisible">
                 <Switch onChange={(checked) => setChildrenVisible(checked)} />
@@ -1061,7 +1064,7 @@ const formatPercentage = (value) => {
               md={12}
               lg={12}
               xl={12}
-              style={{ marginBottom: "16px" }}
+              style={{ marginBottom: "10px" }}
             >
                <Form.Item
       label="How many children do you want to cover?"
@@ -1098,14 +1101,14 @@ const formatPercentage = (value) => {
           Please confirm the sum assured and percentage sum assured for each member
         </p>
       </div>
-          <Row gutter={16}>
+          <Row gutter={[16, 16]}>
             <Col
               xs={24}
               sm={24}
               md={12}
               lg={12}
               xl={12}
-              style={{ marginBottom: "16px" }}
+              style={{ marginBottom: "10px" }}
             >
               <Form.Item
                 label="How much would you like to pay for the cover?"
@@ -1179,7 +1182,7 @@ const formatPercentage = (value) => {
               md={12}
               lg={12}
               xl={12}
-              style={{ marginBottom: "16px" }}
+              style={{ marginBottom: "10px" }}
             >
               <Form.Item
                 label="What percentage of paid amount should be given to principal member?"
@@ -1254,7 +1257,7 @@ const formatPercentage = (value) => {
           </button>
         </span>
         <span className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
-          Get Critical Illness Cover
+          Get Critical Illness Cover (Individual)
         </span>
       <Steps current={current}>
         {steps.map((item) => (
