@@ -24,6 +24,15 @@ const CustomerDetailsForm = ({ form, formData, setFormData }) => {
     form.setFieldsValue(formData);
   }, [form, formData]);
 
+  const handleGenderChange = (value) => {
+    const spouseGenderValue = value === "Male" ? "Female" : "Male";
+    setFormData((prevData) => ({
+      ...prevData,
+      gender: value,
+      spouseGender: spouseGenderValue,
+    }));
+  };
+
   const handlePhoneAreaChange = (newValue) => {
     const selectedCountry = PhoneAreas.find((area) => area.code === newValue);
     if (selectedCountry) {
@@ -142,10 +151,7 @@ const CustomerDetailsForm = ({ form, formData, setFormData }) => {
             rules={[{ required: true, message: "Please select a gender." }]}
             style={{ marginBottom: "35px" }}
           >
-            <Select
-              value={formData.gender}
-              onChange={(value) => setFormData({ ...formData, gender: value })}
-            >
+            <Select value={formData.gender} onChange={handleGenderChange}>
               {Genders.map((item) => (
                 <Option key={item} value={item}>
                   {item}
