@@ -172,7 +172,6 @@ const IndividualCustomer = () => {
     if (selectedOption === "generateQuote") {
       setCurrent(current + 1);
     } else if (selectedOption === "requestCallback") {
-      // navigate("/home/funeral-expense/request-callback");
       setShowCallback(true);
     }
   };
@@ -201,6 +200,7 @@ const IndividualCustomer = () => {
       navigate("/home/funeral-expense/quotation-details", {
         state: { formData, tableData },
       });
+      localStorage.removeItem("yourGLEData");
     }
   }, [isLoading, navigate, formData, tableData]);
 

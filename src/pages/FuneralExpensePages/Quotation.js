@@ -76,6 +76,7 @@ const FuneralExpenseQuotation = () => {
 
   const policyDataColumns = [
     { title: "Member Type", dataIndex: "name", key: "name" },
+    { title: "Age", dataIndex: "age", key: "age" },
     { title: "Number of Members", dataIndex: "lives", key: "lives" },
     {
       title: "Sum Assured Per Member",
