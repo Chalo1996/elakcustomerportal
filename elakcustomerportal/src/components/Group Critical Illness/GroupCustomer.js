@@ -17,7 +17,6 @@ import {
   Checkbox,
   InputNumber,
   Divider,
-  Switch,
   Card,
   message
 } from "antd";
@@ -31,58 +30,103 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../../store/redux/features/gciSlice";
 
 
-
 const { Step } = Steps;
 
+
 const RequestCallbackModal = ({
-  visible,
-  onCancel,
-  onContinue,
-  selectedOption,
-  setSelectedOption,
-}) => {
-  const handleOptionChange = (e) => {
-    setSelectedOption(e.target.value);
+    visible,
+    onCancel,
+    onContinue,
+    selectedOption,
+    setSelectedOption,
+  }) => {
+    const [isSecondModalVisible, setIsSecondModalVisible] = useState(false);
+    const [currentStep, setCurrentStep] = useState(1); 
+  
+    const handleOptionChange = (e) => {
+      const value = e.target.value;
+      setSelectedOption(value);
+      if (value === 'generate') {
+        setIsSecondModalVisible(true);
+      }
+    };
+  
+    const handleSecondModalCancel = () => {
+      setIsSecondModalVisible(false);
+    };
+
+    
+const handleUploadDetails = () => {
+    navigate('upload-details');
   };
 
-  return (
-    <Modal
-      title="What would you like to do?"
-      visible={visible}
-      onCancel={onCancel}
-      width={600}
-      footer={[
-        <Button key="cancel" onClick={onCancel}>
-          Cancel
-        </Button>,
-        <Button
-          key="continue"
-          type="primary"
-          onClick={onContinue}
-          disabled={!selectedOption}
-        >
-          Continue
-        </Button>,
-      ]}
-    >
-      <div style={{ width: "100%" }}>
-        <Radio.Group
-          onChange={handleOptionChange}
-          value={selectedOption}
-          style={{ width: "100%" }}
-        >
-          <Space direction="vertical" size="small" style={{ width: "100%" }}>
-            <Radio value="generate">Generate Quote</Radio>
-            <Divider style={{ margin: "8px 0", width: "100%" }} />
-            <Radio value="callback">Request a Call Back</Radio>
-          </Space>
-        </Radio.Group>
-      </div>
-    </Modal>
-  );
-};
 
-const GroupCriticalIllness = () => {
+  const navigate = useNavigate();
+  
+    return (
+      <>
+        <Modal
+          title="What would you like to do?"
+          visible={visible}
+          onCancel={onCancel}
+          width={600}
+          footer={[
+            <Button key="cancel" onClick={onCancel}>
+              Cancel
+            </Button>,
+            <Button
+              key="continue"
+              type="primary"
+              onClick={onContinue}
+              disabled={!selectedOption}
+            >
+              Continue
+            </Button>,
+          ]}
+        >
+          <div style={{ width: "100%" }}>
+            <Radio.Group
+              onChange={handleOptionChange}
+              value={selectedOption}
+              style={{ width: "100%" }}
+            >
+              <Space direction="vertical" size="small" style={{ width: "100%" }}>
+                <Radio value="generate">Generate Quote</Radio>
+                <Divider style={{ margin: "8px 0", width: "100%" }} />
+                <Radio value="callback">Request a Call Back</Radio>
+              </Space>
+            </Radio.Group>
+          </div>
+        </Modal>
+  
+        <Modal
+          title="Select an Option"
+          visible={isSecondModalVisible}
+          onCancel={handleSecondModalCancel}
+          width={600}
+          footer={[
+            <Button key="cancel" onClick={handleSecondModalCancel}>
+              Cancel
+            </Button>,
+          ]}
+        >
+          <div style={{ width: "100%" }}>
+            <Space direction="vertical" size="small" style={{ width: "100%" }}>
+              <Button type="primary" block onClick={handleUploadDetails}> 
+                Upload Member Details
+              </Button>
+              <Divider style={{ margin: "8px 0", width: "100%" }} />
+              <Button type="primary" block onClick={onContinue }>
+                Enter Member Details
+              </Button>
+            </Space>
+          </div>
+        </Modal>
+      </>
+    );
+  };
+  
+  const GroupCustomer = () => {
   const [current, setCurrent] = useState(0);
   const [form] = Form.useForm();
   const [policyTerm, setPolicyTerm] = useState();
@@ -91,7 +135,9 @@ const GroupCriticalIllness = () => {
   // const [gender, setGender] = useState();
   const [birthDate, setBirthDate] = useState();
   const [clientEmailAddress, setClientEmailAddress] = useState();
-  // const [telNo, setTelNo] = useState();
+  const [principalAverage, setPrincipalAverage] = useState();
+  const [spouseAverage, setSpouseAverage] = useState();
+  const [childrenAverage, setChildrenAverage] = useState();
   const [phoneArea, setPhoneArea] = React.useState("+254");
   const [principalNumber, setPrincipalNumber] = React.useState();
   const [spouseNumber, setSpouseNumber] = useState();
@@ -104,7 +150,7 @@ const GroupCriticalIllness = () => {
   const [SAChildren, setSAChildren] = useState();
   const [sumAssured, setSumAssured] = useState();
   const [coverDate, setCoverDate] = useState();
-  const [ coverExpiryDate, setCoverExpiryDate] = useState();
+  const [ setCoverExpiryDate] = useState();
   const [callbackModalVisible, setCallbackModalVisible] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -126,15 +172,6 @@ const GroupCriticalIllness = () => {
       event.preventDefault();
     }
   };
-
-  const [formatter] = useState(new Intl.NumberFormat('en-KE', {
-    style: 'currency',
-    currency: 'KES',
-}));
-
-const formatPercentage = (value) => {
-  return value != null ? `${value}%` : '';
-};
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -174,20 +211,20 @@ const formatPercentage = (value) => {
     navigate("/home");
   };
 
-  const handleCoverDateChange = (date, policyTerm) => {
+  const handleCoverDateChange = (date, timeInYears) => {
     if (!date) {
       form.resetFields(["coverExpiryDate"]);
-      setCoverExpiryDate(null);
+      setCoverExpiryDate();
       return null;
     }
     const oneYearLater = date
       .clone()
-      .add(policyTerm, "year")
+      .add(timeInYears, "year")
       .subtract(1, "day");
     setCoverDate(date);
+
     return oneYearLater;
   };
-  
 
   const disabledDate = (current) => {
     const today = new Date();
@@ -197,41 +234,38 @@ const formatPercentage = (value) => {
     );
   };
 
-  const disableCoverExpiryDate = (date) => {
-    if (coverDate) {
-      const currentDate = coverDate.toDate();
-      let newCoverExpiryDate = coverDate.clone().add(policyTerm, "year").subtract(1, "day").toDate();
-  
-      // Adjust for leap years
-      if (currentDate.getDate() === 29 && currentDate.getMonth() === 1) {
-        if (
-          newCoverExpiryDate.getMonth() === 1 &&
-          newCoverExpiryDate.getDate() === 28
-        ) {
-          newCoverExpiryDate.setDate(1); // Start from March 1
-          newCoverExpiryDate.setMonth(2); // Adjust to March
-        }
-      }
-  
-      return date && date < newCoverExpiryDate;
-    }
-    return false;
-  };
-  
-  useEffect(() => {
-    if (coverDate) {
-      const newCoverExpiryDate = handleCoverDateChange(coverDate, policyTerm);
-      setCoverExpiryDate(newCoverExpiryDate);
-      form.setFieldsValue({ coverExpiryDate: newCoverExpiryDate });
-    }
-  }, [coverDate, policyTerm]);
-  
+  // // const disableCoverExpiryDate = (date) => {
+  // //   if (coverDate) {
+  // //     const currentDate = new Date(coverDate);
+  // //     let newCoverExpiryDate = new Date(coverDate);
+  // //     newCoverExpiryDate.setFullYear(currentDate.getFullYear() + 1);
+
+  // //     // Adjust for leap years
+  // //     if (currentDate.getDate() === 29 && currentDate.getMonth() === 1) {
+  // //       if (
+  // //         newCoverExpiryDate.getMonth() === 1 &&
+  // //         newCoverExpiryDate.getDate() === 28
+  // //       ) {
+  // //         newCoverExpiryDate.setDate(1); // Start from March 1
+  // //         newCoverExpiryDate.setMonth(2); // Adjust to March
+  // //       }
+  // //     }
+
+  //     const formattedCoverExpiryDate = new Date(
+  //       newCoverExpiryDate.getFullYear(),
+  //       newCoverExpiryDate.getMonth(),
+  //       newCoverExpiryDate.getDate()
+  //     );
+
+  //     return date && date < formattedCoverExpiryDate;
+  //   }
+  // };
 
   const dataToPost = {
     members: [
       {
         name: "PRINCIPAL",
-        individualLives: 1,
+        individualLives: formData.principalNumber,
         sumAssuredPercentage: formData.SAPrincipal,
       },
       {
@@ -572,7 +606,7 @@ const formatPercentage = (value) => {
       //   ...prevFormData,
       //   [steps[current]]: values,
       // }));
-      setFormData({ ...formData, ...values, phoneArea: phoneArea });
+      setFormData({ ...formData, ...values });
       console.log("Form data:", formData);
     } catch (error) {
       console.error("Validation Error:", error);
@@ -616,40 +650,68 @@ const formatPercentage = (value) => {
         <Card title="PERSONAL DETAILS">
           <Row gutter={16}>
             <Col span={12}>
-            <div className="flex flex-col items-start justify-start mb-4">
-              <p className=" text-[#929497]">First Name</p>
-              <p>{formData.firstName} </p>
-            </div>
+              <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                First Name:
+              </p>
+              <div style={{ marginTop: "0px" }}>{formData?.firstName}</div>
             </Col>
             <Col span={12}>
-            <div className="flex flex-col items-start justify-start mb-4">
-              <p className=" text-[#929497]">Last Name</p>
-              <p>{formData.lastName} </p>
-            </div>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={12}>
-            <div className="flex flex-col items-start justify-start mb-4">
-              <p className=" text-[#929497]">Email Adress</p>
-              <p>{formData.email} </p>
-            </div>
-            </Col>
-            <Col span={12}>
-            <div className="flex flex-col items-start justify-start mb-4">
-  <p className="text-[#929497]">Mobile Number</p>
-  <p>
-    {formData?.phoneArea}{formData?.mobileNumber}
-  </p>
-</div>
+              <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                Last Name:
+              </p>
+              <div style={{ marginTop: "0px" }}>{formData?.lastName}</div>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-            <div className="flex flex-col items-start justify-start mb-4">
-              <p className=" text-[#929497]">Date Of Birth</p>
-              <p>{formatDate(formData.dob)} </p>
-            </div>
+              <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                Email Address:
+              </p>
+              <div style={{ marginTop: "0px" }}>{formData?.email}</div>
+            </Col>
+            <Col span={12}>
+              <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                Mobile Number:
+              </p>
+              <div style={{ marginTop: "0px" }}>{formData?.mobileNumber}</div>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                Date of Birth:
+              </p>
+              <div style={{ marginTop: "0px" }}>{formatDate(formData.dob)}</div>
             </Col>
           </Row>
         </Card>
@@ -657,30 +719,84 @@ const formatPercentage = (value) => {
         <Card title="INSURED MEMBERS">
           <Row gutter={16}>
             <Col span={12}>
-            <div className="flex flex-col items-start justify-start mb-4">
-              <p className=" text-[#929497]">Number Of Principal Members</p>
-              <p>{1} principal member (s)</p>
-            </div>
+              <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                Number of Principal Members:{" "}
+              </p>
+              <div style={{ marginTop: "0px" }}>
+                {formData?.principalNumber}
+              </div>
             </Col>
             <Col span={12}>
-            <div className="flex flex-col items-start justify-start mb-4">
-              <p className=" text-[#929497]">Spouse Date Of Birth</p>
-              <p>{formatDate(formData.spouseDOB)} </p>
-            </div>
+            <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                Average age of Principal Members:{" "}
+              </p>
+              <div style={{ marginTop: "0px" }}>
+                {formData?.principalAverage}
+              </div>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-            <div className="flex flex-col items-start justify-start mb-4">
-              <p className=" text-[#929497]">Number Of Spouses</p>
-              <p>{formData.spouseNumber} spouse (s)</p>
-            </div>
+              <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                Number of Spouses:{" "}
+              </p>
+              <div style={{ marginTop: "0px" }}>{formData?.spouseNumber}</div>
             </Col>
             <Col span={12}>
-            <div className="flex flex-col items-start justify-start mb-4">
-              <p className=" text-[#929497]">Number Of Children</p>
-              <p>{formData.childrenNumber} children</p>
-            </div>
+            <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                Average age of Spouses:{" "}
+              </p>
+              <div style={{ marginTop: "0px" }}>{formData?.spouseAverage}</div>
+              </Col>
+              </Row>
+              <Row gutter={16}>
+              <Col span={12}>
+              <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                Number of Children:{" "}
+              </p>
+              <div style={{ marginTop: "0px" }}>{formData?.childrenNumber}</div>
+              </Col>
+              <Col span={12}>
+              <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                Average age of Children:{" "}
+              </p>
+              <div style={{ marginTop: "0px" }}>{formData?.childrenAverage}</div>
             </Col>
           </Row>
         </Card>
@@ -688,50 +804,96 @@ const formatPercentage = (value) => {
         <Card title="COVERAGE">
           <Row gutter={16}>
             <Col span={12}>
-            <div className="flex flex-col items-start justify-start mb-4">
-              <p className=" text-[#929497]">Amount to be paid for the cover</p>
-              <p>{formatter.format(formData.sumAssured)} </p>
-            </div>
+              <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                Sum Assured:{" "}
+              </p>
+              <div style={{ marginTop: "0px" }}>{formData?.sumAssured}</div>
             </Col>
             <Col span={12}>
-            <div className="flex flex-col items-start justify-start mb-4">
-              <p className=" text-[#929497]">Percentage of paid amount to be given to principal member</p>
-              <p>{formatPercentage(formData.SAPrincipal)} </p>
-            </div>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={12}>
-            <div className="flex flex-col items-start justify-start mb-4">
-              <p className=" text-[#929497]">Percentage of paid amount to be given to spouse</p>
-              <p>{formatPercentage(formData.SASpouse)} </p>
-            </div>
-            </Col>
-            <Col span={12}>
-            <div className="flex flex-col items-start justify-start mb-4">
-              <p className=" text-[#929497]">Percentage of paid amount to be given to children</p>
-              <p>{formatPercentage(formData.SAChildren)} </p>
-            </div>
+              <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                Principal member percentage of sum assured:{" "}
+              </p>
+              <div style={{ marginTop: "0px" }}>{formData?.SAPrincipal}</div>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-            <div className="flex flex-col items-start justify-start mb-4">
-              <p className=" text-[#929497]">Cover Start Date</p>
-              <p>{formatDate(formData.coverDate)} </p>
-            </div>
+              <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                Spouse percentage of sum assured:{" "}
+              </p>
+              <div style={{ marginTop: "0px" }}>{formData?.SASpouse}</div>
             </Col>
             <Col span={12}>
-            <div className="flex flex-col items-start justify-start mb-4">
-              <p className=" text-[#929497]">Duration Of the Cover</p>
-              <p>{formData.policyTerm} years</p>
-            </div>
+              <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                Children percentage of sum assured:{" "}
+              </p>
+              <div style={{ marginTop: "0px" }}>{formData?.SAChildren}</div>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                Cover Commencement Date:{" "}
+              </p>
+              <div style={{ marginTop: "0px" }}>
+                {formatDate(formData.coverDate)}
+              </div>
             </Col>
             <Col span={12}>
-            <div className="flex flex-col items-start justify-start mb-4">
-              <p className=" text-[#929497]">Cover End Date</p>
-              <p>{formatDate(formData.coverExpiryDate)} </p>
-            </div>
+              <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                Policy Term (Years):{" "}
+              </p>
+              <div style={{ marginTop: "0px" }}>{formData?.policyTerm}</div>
+            </Col>
+            <Col span={12}>
+              <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                Cover End Date:
+              </p>
+              <div style={{ marginTop: "0px" }}>
+                {formatDate(formData.coverExpiryDate)}
+              </div>
             </Col>
           </Row>
         </Card>
@@ -780,14 +942,14 @@ const formatPercentage = (value) => {
           Please enter personal details
         </p>
       </div>
-          <Row gutter={[16, 16]}>
+          <Row gutter={16}>
             <Col
               xs={24}
               sm={24}
               md={12}
               lg={12}
               xl={12}
-              style={{ marginBottom: "10px" }}
+              style={{ marginBottom: "16px" }}
             >
               <Form.Item
                 label="First Name"
@@ -851,7 +1013,7 @@ const formatPercentage = (value) => {
               md={12}
               lg={12}
               xl={12}
-              style={{ marginBottom: "10px" }}
+              style={{ marginBottom: "16px" }}
             >
               <Form.Item
                 label="Last Name"
@@ -936,101 +1098,75 @@ const formatPercentage = (value) => {
           Please enter the number of family members to be covered
         </p>
       </div>
-          <Row gutter={[16, 16]}>
+          <Row gutter={16}>
             <Col
               xs={24}
               sm={24}
               md={12}
               lg={12}
               xl={12}
-              style={{ marginBottom: "10px" }}
+              style={{ marginBottom: "16px" }}
             >
               <Form.Item
-        label="How many principal members do you want to cover?"
-        name="number"
-        initialValue={1}
-        rules={[
-          {
-            required: true,
-            validator: (_, value) => {
-              if (value !== 1) {
-                return Promise.reject(new Error("The number must be 1."));
-              }
-              return Promise.resolve();
-            },
-          },
-        ]}
-      >
-        <InputNumber
-          min={1}
-          max={1}
-          style={{ width: "100%" }}
-          readOnly
-        />
-      </Form.Item>
-               </Col>
+      label="How many principal members do you want to cover?"
+      name="principalNumber"
+      rules={[
+        {
+          required: true,
+          message: "Please enter the number of principal members.",
+        },
+      ]}
+    >
+      <InputNumber
+        id="principalNumber"
+        value={principalNumber}
+        onChange={(value) => setPrincipalNumber(parseFloat(value))}
+        style={{ width: '100%' }} 
+      />
+    </Form.Item>
+            </Col>
             <Col
               xs={24}
               sm={24}
               md={12}
               lg={12}
               xl={12}
-              style={{ marginBottom: "10px" }}
+              style={{ marginBottom: "16px" }}
             >
-               <Form.Item label="Do you want to cover your spouse?" name="spouse">
-                <Switch onChange={(checked) => setSpouse(checked)} />
-              </Form.Item>
+               <Form.Item
+      label="What is the average age of the principal members?"
+      name="principalAverage"
+      rules={[
+        {
+          required: true,
+          message: "Please enter the average age of principal members.",
+        },
+      ]}
+    >
+      <InputNumber
+        id="principalAverage"
+        value={principalAverage}
+        onChange={(value) => setPrincipalAverage(parseFloat(value))}
+        style={{ width: '100%' }} 
+      />
+    </Form.Item>
             </Col>
           </Row>
-          <Row gutter={[16, 16]}>
+          <Row gutter={16}>
             <Col
               xs={24}
               sm={24}
               md={12}
               lg={12}
               xl={12}
-              style={{ marginBottom: "10px" }}
-            >
-              <Form.Item
-                label="Spouse Date of Birth"
-                name="spouseDOB"
-                rules={[
-                  {
-                    required: spouse,
-                    message: "Please enter spouse date of birth.",
-                  },
-                ]}
-              >
-                <DatePicker
-                  style={{ width: "100%" }}
-                  disabled={!spouse}
-                  disabledDate={(current) => {
-                    const today = new Date();
-                    const eighteenYearsAgo = new Date(
-                      today.getFullYear() - 18,
-                      today.getMonth(),
-                      today.getDate()
-                    );
-                    return current && current >= eighteenYearsAgo;
-                  }}
-                />
-              </Form.Item>
-
-            </Col>
-            <Col
-              xs={24}
-              sm={24}
-              md={12}
-              lg={12}
-              xl={12}
-              style={{ marginBottom: "10px" }}
+              style={{ marginBottom: "16px" }}
             >
               <Form.Item
       label="How many spouses do you want to cover?"
       name="spouseNumber"
       rules={[
         {
-          required: spouse,
+          required: true,
           message: "Please enter the number of spouses.",
         },
       ]}
@@ -1039,39 +1175,53 @@ const formatPercentage = (value) => {
         id="spouseNumber"
         value={spouseNumber}
         onChange={(value) => setSpouseNumber(parseFloat(value))}
-        style={{ width: '100%' }}
-        disabled={!spouse} 
+        style={{ width: '100%' }} 
+      />
+    </Form.Item>
+
+            </Col>
+            <Col
+              xs={24}
+              sm={24}
+              md={12}
+              lg={12}
+              xl={12}
+              style={{ marginBottom: "16px" }}
+            >
+              <Form.Item
+      label="What is the average age of the spouses?"
+      name="spouseAverage"
+      rules={[
+        {
+          required: true,
+          message: "Please enter the average age of spouses.",
+        },
+      ]}
+    >
+      <InputNumber
+        id="spouseAverage"
+        value={spouseAverage}
+        onChange={(value) => setSpouseAverage(parseFloat(value))}
+        style={{ width: '100%' }} 
       />
     </Form.Item>
             </Col>
           </Row>
-          <Row gutter={[16, 16]}>
+          <Row gutter={16}>
             <Col
               xs={24}
               sm={24}
               md={12}
               lg={12}
               xl={12}
-              style={{ marginBottom: "10px" }}
+              style={{ marginBottom: "16px" }}
             >
-              <Form.Item label="Do you want to cover your children?" name="childrenVisible">
-                <Switch onChange={(checked) => setChildrenVisible(checked)} />
-              </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={24}
-              md={12}
-              lg={12}
-              xl={12}
-              style={{ marginBottom: "10px" }}
-            >
-               <Form.Item
+              <Form.Item
       label="How many children do you want to cover?"
       name="childrenNumber"
       rules={[
         {
-          required: childrenVisible,
+          required: true,
           message: "Please enter the number of children.",
         },
       ]}
@@ -1080,7 +1230,32 @@ const formatPercentage = (value) => {
         id="childrenNumber"
         value={childrenNumber}
         onChange={(value) => setChildrenNumber(parseFloat(value))}
-        disabled={!childrenVisible}
+        style={{ width: '100%' }} 
+      />
+    </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              sm={24}
+              md={12}
+              lg={12}
+              xl={12}
+              style={{ marginBottom: "16px" }}
+            >
+               <Form.Item
+      label="What is the average age of the children?"
+      name="childrenAverage"
+      rules={[
+        {
+          required: true,
+          message: "Please enter the average age of children.",
+        },
+      ]}
+    >
+      <InputNumber
+        id="childrenAverage"
+        value={childrenAverage}
+        onChange={(value) => setChildrenAverage(parseFloat(value))}
         style={{ width: '100%' }} 
       />
     </Form.Item>
@@ -1101,14 +1276,14 @@ const formatPercentage = (value) => {
           Please confirm the sum assured and percentage sum assured for each member
         </p>
       </div>
-          <Row gutter={[16, 16]}>
+          <Row gutter={16}>
             <Col
               xs={24}
               sm={24}
               md={12}
               lg={12}
               xl={12}
-              style={{ marginBottom: "10px" }}
+              style={{ marginBottom: "16px" }}
             >
               <Form.Item
                 label="How much would you like to pay for the cover?"
@@ -1182,7 +1357,7 @@ const formatPercentage = (value) => {
               md={12}
               lg={12}
               xl={12}
-              style={{ marginBottom: "10px" }}
+              style={{ marginBottom: "16px" }}
             >
               <Form.Item
                 label="What percentage of paid amount should be given to principal member?"
@@ -1257,7 +1432,7 @@ const formatPercentage = (value) => {
           </button>
         </span>
         <span className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
-          Get Critical Illness Cover (Individual)
+          Get Critical Illness Cover (Group)
         </span>
       <Steps current={current}>
         {steps.map((item) => (
@@ -1298,4 +1473,4 @@ const formatPercentage = (value) => {
   );
 };
 
-export default GroupCriticalIllness;
+export default GroupCustomer;

@@ -1,6 +1,8 @@
 import React, {useState,useEffect} from "react";
-import {Steps,Form,Input,Radio,Divider,Typography,DatePicker,Button,Row,Col,Select,Modal,InputNumber,Checkbox} from "antd";
+import {Steps,Form,Input,Radio,Divider,Typography,Card,Space,DatePicker,Button,Row,Col,Select,Modal,InputNumber,Checkbox} from "antd";
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { fetchData } from "../../store/redux/features/eduSlice";
 import moment from "moment";
 import 'tailwindcss/tailwind.css';
 
@@ -21,16 +23,18 @@ const Education = () => {
   const [current, setCurrent] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
   const [isPrivacyModalVisible, setIsPrivacyModalVisible] = useState(false);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [form] = Form.useForm();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    telephone: '',
+    tel: '',
     email: '',
-    dateOfBirth: null,
+    DOB: null,
     targetType: '',
-    termInYears: 0,
+    TermInYears: 0,
     frequency: '',
     premium: 0,
     currency: 'KES',
@@ -44,10 +48,16 @@ const Education = () => {
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+const eduData = useSelector((state) => state.education.eduData);
+console.log("EduData from Redux:", eduData);
+
   const onFinish = async (values) => {
     try {
       await form.validateFields();
       console.log('Received values:', values);
+      console.log('Form Data:', formData);
       navigate("Educ-Quotation");
     } catch (errorInfo) {
       console.log("Failed:", errorInfo);
@@ -55,12 +65,21 @@ const Education = () => {
   };
 
   useEffect(() => {
-    if (formData.startDate && formData.termInYears) {
-      const calculatedEndDate = calculateEndDate(formData.startDate, formData.termInYears);
+    if (isFormSubmitted) {
+      navigate("Educ-Quotation", {
+        state: { formData},
+      });
+      dispatch(fetchData(formData));
+    }
+  }, [navigate, formData, dispatch, isFormSubmitted]);
+
+  useEffect(() => {
+    if (formData.startDate && formData.TermInYears) {
+      const calculatedEndDate = calculateEndDate(formData.startDate, formData.TermInYears);
       setFormData((prevData) => ({ ...prevData, endDate: calculatedEndDate }));
       form.setFieldsValue({ endDate: calculatedEndDate });
     }
-  }, [formData.startDate, formData.termInYears,form]);
+  }, [formData.startDate, formData.TermInYears,form]);
 
   const handleStartDateChange = (date) => {
     setFormData((prevData) => ({
@@ -69,8 +88,8 @@ const Education = () => {
     }));
   };
   
-  const handletermInYearsChange = (value) => {
-    setFormData((prevData) => ({ ...prevData, termInYears: value }));
+  const handleTermInYearsChange = (value) => {
+    setFormData((prevData) => ({ ...prevData, TermInYears: value }));
   };
 
   const calculateEndDate = (startDate, years) => {
@@ -113,21 +132,20 @@ const Education = () => {
 
 
   
- const next = () => {
-  form.validateFields().then(() => {
-    if (current === 0) {
-      setIsModalOpen(true); // Only open modal for step 0
-    } else if (current === 2) {
-      // Submit the form here
-      form.submit();
-    } else {
-      setCurrent(current + 1); // Directly go to next step for other steps
-    }
-  }).catch(errorInfo => {
-    console.log('Validation Failed:', errorInfo);
-  });
-};
-
+  const next = () => {
+    form.validateFields().then(() => {
+      if (current === 0) {
+        setIsModalOpen(true); // Only open modal for step 0
+      } else if (current === 2) {
+        // Submit the form here
+        form.submit();
+      } else {
+        setCurrent(current + 1); // Directly go to next step for other steps
+      }
+    }).catch(errorInfo => {
+      console.log('Validation Failed:', errorInfo);
+    });
+  };
   
 
   const back = () => {
@@ -167,10 +185,18 @@ const Education = () => {
       selectedOption: e.target.value,
     }));
   };
+
+  
+
   const handleModalOk = () => {
     setIsModalOpen(false);
-    setCurrent(current + 1);
+    if (formData.selectedOption === 'quote') {
+      setCurrent(current + 1); // Proceed to the next step
+    } else if (formData.selectedOption === 'callback') {
+      setCurrent(0); // Open the Personal Information Details step (step 0)
+    }
   };
+  
 
 ;
   
@@ -192,7 +218,7 @@ const Education = () => {
   <>
   <div>
    <Row gutter={16}>
-            <h3>Please, enter your personal details to continue</h3>
+            <h3>Please enter your personal details to continue</h3>
     </Row>
    </div>
     <br></br>
@@ -242,7 +268,7 @@ const Education = () => {
       </Col>
       <Col span={12}>
         <Form.Item label="Telephone No" 
-        name="telephone" 
+        name="tel" 
         rules={[
           { 
           required: true, 
@@ -274,11 +300,11 @@ const Education = () => {
                     ))}
                   </Select>
                 }
-                value={formData.telephone}
+                value={formData.tel}
                 onChange={(event) =>
                   setFormData((prevData) => ({
                     ...prevData,
-                    telephone: event.target.value,
+                    tel: event.target.value,
                   }))
                 }
                 style={{ width: "100%" }}
@@ -289,15 +315,15 @@ const Education = () => {
     <br></br>
     <Row gutter={16}>
     <Col span={12}>
-        <Form.Item label="Date of Birth" name="dateOfBirth" rules={[{ required: true, message: 'Please enter your date of birth' }]}>
+        <Form.Item label="Date of Birth" name="DOB" rules={[{ required: true, message: 'Please enter your date of birth' }]}>
           <DatePicker 
           style={{ width: '100%' }} 
           disabledDate={disabledDate}
-          value={formData.dateOfBirth}
+          value={formData.DOB}
           onChange={(date) =>
             setFormData((prevData) => ({
               ...prevData,
-              dateOfBirth: date,
+              DOB: date,
             }))
           }
           />
@@ -382,6 +408,11 @@ const Education = () => {
 
         {current === 1 && (
   <>
+    <div>
+   <Row gutter={16}>
+            <h3>Please enter Insurance details to continue</h3>
+    </Row>
+   </div>
   <br></br>
     <Row gutter={16}>
       <Col span={12}>
@@ -417,56 +448,57 @@ to achieve over time."
         </Form.Item>
       </Col>
       <Col span={12}>
-        <Form.Item
-          name="Premium"
-          label={formData.targetType || "Investment Premium"}
-          tooltip="How much money do you want to invest?"
-          required
+  <Form.Item
+    name="Premium"
+    label={formData.targetType || "Investment Premium"}
+    tooltip="How much money do you want to invest?"
+    required
+  >
+    <Space.Compact style={{ width: '100%' }}>
+      <Form.Item
+        name="currency"
+        noStyle
+      >
+        <Select
+          onChange={onChangeCurrency}
+          defaultValue={formData.currency}
+          style={{ width: '20%' }}
         >
-          <Input.Group compact>
-            <Form.Item
-              name="currency"
-              noStyle
-            >
-              <Select
-                onChange={onChangeCurrency}
-                defaultValue={formData.currency}
-                style={{ width: '20%' }}
-              >
-                {formData.currencies.map((currency, index) => (
-                  <Select.Option key={index} value={currency.code}>
-                    {currency.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
-            <Form.Item
-              name="premium"
-              noStyle
-              rules={[
-                { required: true, message: 'Premium is required' },
-              ]}
-            >
-              <InputNumber
-                id="premium"
-                step={10000}
-                formatter={(value) =>
-                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                }
-                parser={(value) => value.replace(/(,*)/g, '')}
-                onChange={(value) =>
-                  setFormData((prevData) => ({
-                    ...prevData,
-                    premium: value,
-                  }))
-                }
-                value={formData.premium}
-                style={{ width: '80%' }}
-              />
-            </Form.Item>
-          </Input.Group>
-        </Form.Item>
-      </Col>
+          {formData.currencies.map((currency, index) => (
+            <Select.Option key={index} value={currency.code}>
+              {currency.name}
+            </Select.Option>
+          ))}
+        </Select>
+      </Form.Item>
+      <Form.Item
+        name="premium"
+        noStyle
+        rules={[
+          { required: true, message: 'Premium is required' },
+        ]}
+      >
+        <InputNumber
+          id="premium"
+          step={10000}
+          formatter={(value) =>
+            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+          }
+          parser={(value) => value.replace(/(,*)/g, '')}
+          onChange={(value) =>
+            setFormData((prevData) => ({
+              ...prevData,
+              premium: value,
+            }))
+          }
+          value={formData.premium}
+          style={{ width: '80%' }}
+        />
+      </Form.Item>
+    </Space.Compact>
+  </Form.Item>
+</Col>
+
     </Row>
     <br></br>
     <Row gutter={16}>
@@ -496,8 +528,8 @@ to achieve over time."
             <Option key="Quarterly" value="Quarterly">
               Quarterly
             </Option>
-            <Option key="SemiAnnual" value="SemiAnnual">
-              SemiAnnual
+            <Option key="Semi Annual" value="SemiAnnual">
+              Semi Annual
             </Option>
             <Option key="Annual" value="Annual">
               Annual
@@ -511,7 +543,7 @@ to achieve over time."
       <Col span={12}>
         <Form.Item
           label="How many years would you wish to save?"
-          name="termInYears"
+          name="TermInYears"
           style={{ width: "100%" }}
           rules={[
             {
@@ -525,9 +557,9 @@ to achieve over time."
           ]}
         >
           <Select
-            id="termInYears"
-            value={formData.termInYears}
-            onChange={handletermInYearsChange}
+            id="TermInYears"
+            value={formData.TermInYears}
+            onChange={handleTermInYearsChange}
             style={{ width: "100%" }}
           >
             {Array.from({ length: 13 }, (_, i) => (
@@ -578,6 +610,7 @@ to achieve over time."
     <h4 style={{ marginBottom: '20px' }}>Please, Review and confirm Your Information details to continue</h4>
     <div>
       <br />
+      <Card>
       <div>
         <Row gutter={16}>
           <Col span={12}>
@@ -586,10 +619,9 @@ to achieve over time."
           </Col>
         </Row>
       </div>
-      <Divider />
-      <br />
-      <h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Personal Information</h4>
-      <br />
+      </Card>
+      
+      <Card title={<h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Personal Information</h4>}>
       <div>
         <Row gutter={16}>
           <Col span={12}>
@@ -606,7 +638,7 @@ to achieve over time."
         <Row gutter={16}>
           <Col span={12}>
             <h4 style={{ color: '#888', marginBottom: '5px' }}>Telephone No</h4>
-            <span>{formData.telephone}</span>
+            <span>{formData.tel}</span>
           </Col>
           <Col span={12}>
             <h4 style={{ color: '#888', marginBottom: '5px' }}>Email</h4>
@@ -617,7 +649,7 @@ to achieve over time."
         <Row gutter={16}>
           <Col span={12}>
             <h4 style={{ color: '#888', marginBottom: '5px' }}>Date of Birth</h4>
-            <span>{formData.dateOfBirth?.format('YYYY-MM-DD')}</span>
+            <span>{formData.DOB?.format('YYYY-MM-DD')}</span>
           </Col>
           <Col>
           <h4 style={{ color: '#888', marginBottom: '5px' }}>Gender</h4>
@@ -626,8 +658,10 @@ to achieve over time."
         </Row>
         <br />
       </div>
-      <Divider />
-      <h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Policy Information</h4>
+      </Card>
+      
+      <Card title={<h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Policy Information</h4>}>
+      
       <Row gutter={16}>
         <Col span={12}>
           <h4 style={{ color: '#888', marginBottom: '5px' }}>Target Type</h4>
@@ -636,7 +670,7 @@ to achieve over time."
         <br />
         <Col span={12}>
           <h4 style={{ color: '#888', marginBottom: '5px' }}>Term In Years</h4>
-          <span>{formData.termInYears}</span>
+          <span>{formData.TermInYears}</span>
         </Col>
       </Row>
       <br />
@@ -662,9 +696,13 @@ to achieve over time."
           <span>{formData.endDate?.format('YYYY-MM-DD')}</span>
         </Col>
       </Row>
+      
+      </Card>
       <br />
     </div>
+  
       </div>
+      
 )}
 
           <div style={{ marginTop: 20 }}>
@@ -689,7 +727,7 @@ to achieve over time."
        </div>
       <Modal
         title={<b>Terms and Conditions</b>}
-        visible={isTermsModalVisible}
+        open={isTermsModalVisible}
         onOk={handleTermsModalOk}
         onCancel={handleTermsModalCancel}
       >
@@ -697,7 +735,7 @@ to achieve over time."
       </Modal>
       <Modal
         title={<b>Privacy Policy</b>}
-        visible={isPrivacyModalVisible}
+        open={isPrivacyModalVisible}
         onOk={handlePrivacyModalOk}
         onCancel={handlePrivacyModalCancel}
       >

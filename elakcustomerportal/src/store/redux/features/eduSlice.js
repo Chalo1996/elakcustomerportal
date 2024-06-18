@@ -14,6 +14,7 @@ const initialState = {
 export const fetchData = createAsyncThunk(
   "education/fetchData",
   async (data, thunkAPI) => {
+    console.log("Fetching data...");
     const state = thunkAPI.getState();
     const token = state.auth.token;
 
@@ -62,15 +63,18 @@ const educationSlice = createSlice({
         state.error = null; // Reset error state when starting a new fetch
       })
       .addCase(fetchData.fulfilled, (state, action) => {
+        console.log("Data fetched successfully:", action.payload);
         state.isLoading = false;
         state.eduData = action.payload;
       })
       .addCase(fetchData.rejected, (state, action) => {
+        console.log("Failed to fetch data:", action.payload);
         state.isLoading = false;
         state.error = action.payload; // Set error state
       });
   },
 });
 
-export const { resetData } = educationSlice.actions;
+export const { resetEducationData } = educationSlice.actions;
+
 export const { reducer: educationReducer } = educationSlice;

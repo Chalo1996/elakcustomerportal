@@ -2,19 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { jsPDF } from "jspdf";
 import { Table, Typography, Row, Col, Button, Checkbox } from 'antd';
-// import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { resetData } from "../../store/redux/features/gciSlice";
 
 
-const CriticalIllnessQuotation = ({ formData }) => {
+const CriticalIllnessQuotation = () => {
     // const [ tableColumns, setTableColumns] = useState([]);
     const [acceptedExclusions, setAcceptedExclusions] = useState(false);
-    const [current, setCurrent] = useState(0);
+    // const [current, setCurrent] = useState(0);
 
     const dispatch = useDispatch();
-//   const location = useLocation();
-//   const { data = {}} = location.state || {};
+  const location = useLocation();
+  const { formData = {}, quotationData = {} } = location.state || {};
 
   useEffect(() => {
     dispatch(resetData());
@@ -349,151 +349,153 @@ const CriticalIllnessQuotation = ({ formData }) => {
     ];
 
     const contactDetails = [
-        { key: "clientName", attribute: "Name", value: "" },
-        { key: "telNo", attribute: "Phone Number", value: "" },
-        { key: "clientEmailAddress", attribute: "Email", value: "" },
+        { key: "clientName", attribute: "Name", value: `${formData.firstName} ${formData.lastName}`},
+        { key: "telNo", attribute: "Phone Number", value: formData.mobileNumber },
+        { key: "clientEmailAddress", attribute: "Email", value: formData.email },
     ];
 
     const criticalIllnessCover = [
         {
-            name: "",
-            individualLives: "",
-            sumAssured: "",
-            totalSumAssured: "",
-            ciPremium: "",
-            totalciPremium: "",
+          name: quotationData.tableData[0].name,
+          individualLives: quotationData.tableData[0].individualLives,
+          sumAssured: quotationData.tableData[0].sumAssured,
+          totalSumAssured: quotationData.tableData[0].totalSumAssured,
+          ciPremium: quotationData.tableData[0].ciPremium,
+          totalciPremium: quotationData.tableData[0].individualLives*quotationData.tableData[0].ciPremium,
         },
         {
-            name: "",
-            individualLives: "",
-            sumAssured: "",
-            totalSumAssured: "",
-            ciPremium: "",
-            totalciPremium: "",
+          name: quotationData.tableData[1].name,
+          individualLives: quotationData.tableData[1].individualLives,
+          sumAssured: quotationData.tableData[1].sumAssured,
+          totalSumAssured: quotationData.tableData[1].totalSumAssured,
+          ciPremium: quotationData.tableData[1].ciPremium,
+          totalciPremium: quotationData.tableData[1].individualLives*quotationData.tableData[1].ciPremium,
         },
         {
-            name: "",
-            individualLives: "",
-            sumAssured: "",
-            totalSumAssured: "",
-            ciPremium: "",
-            totalciPremium: "",
+          name: quotationData.tableData[2].name,
+          individualLives: quotationData.tableData[2].individualLives,
+          sumAssured: quotationData.tableData[2].sumAssured,
+          totalSumAssured: quotationData.tableData[2].totalSumAssured,
+          ciPremium: quotationData.tableData[2].ciPremium,
+          totalciPremium:quotationData.tableData[2].individualLives*quotationData.tableData[2].ciPremium,
         },
         {
-            name: "",
-            individualLives: "",
-            sumAssured: "",
-            totalSumAssured: "",
-            ciPremium: "",
-            totalciPremium: "",
+          name: quotationData.tableData[3].name,
+          individualLives: quotationData.tableData[3].individualLives,
+          sumAssured: quotationData.tableData[3].sumAssured,
+          totalSumAssured: quotationData.tableData[3].totalSumAssured,
+          ciPremium: quotationData.tableData[3].ciPremium,
+          totalciPremium: quotationData.tableData[0].ciPremium+quotationData.tableData[1].ciPremium+quotationData.tableData[2].ciPremium,
         },
-    ];
+      ];
+      
 
-    const funeralExpenseCover = [
+      const funeralExpenseCover = [
         {
-            name: "",
-            individualLives: "",
-            sumAssured: "",
-            totalSumAssured: "",
-            ciPremium: "",
-            totalciPremium: "",
-        },
-        {
-            name: "",
-            individualLives: "",
-            sumAssured: "",
-            totalSumAssured: "",
-            ciPremium: "",
-            totalciPremium: "",
-        },
-        {
-            name: "",
-            individualLives: "",
-            sumAssured: "",
-            totalSumAssured: "",
-            ciPremium: "",
-            totalciPremium: "",
-        },
-        {
-            name: "",
-            individualLives: "",
-            sumAssured: "",
-            totalSumAssured: "",
-            ciPremium: "",
-            totalciPremium: "",
-        },
-    ];
+           name: quotationData.tableData[0].name,
+           individualLives: quotationData.tableData[0].individualLives,
+           sumAssured: 100000,
+           totalSumAssured: 100000*quotationData.tableData[0].individualLives,
+           ciPremium: quotationData.tableData[0].funeralExpense,
+           totalciPremium: quotationData.tableData[0].individualLives*quotationData.tableData[0].funeralExpense,
+         },
+         {
+           name: quotationData.tableData[1].name,
+           individualLives: quotationData.tableData[1].individualLives,
+           sumAssured:  100000,
+           totalSumAssured: 100000*quotationData.tableData[1].individualLives,
+           ciPremium: quotationData.tableData[1].funeralExpense,
+           totalciPremium: quotationData.tableData[1].individualLives*quotationData.tableData[1].funeralExpense,
+         },
+         {
+           name: quotationData.tableData[2].name,
+           individualLives: quotationData.tableData[2].individualLives,
+           sumAssured: 100000,
+           totalSumAssured: 100000*quotationData.tableData[2].individualLives,
+           ciPremium: quotationData.tableData[2].funeralExpense,
+           totalciPremium:quotationData.tableData[2].individualLives*quotationData.tableData[2].funeralExpense,
+         },
+         {
+           name: quotationData.tableData[3].name,
+           individualLives: quotationData.tableData[3].individualLives,
+           sumAssured: 100000,
+           totalSumAssured: 100000*quotationData.tableData[3].individualLives,
+           ciPremium: quotationData.tableData[3].funeralExpense,
+           totalciPremium: quotationData.tableData[0].funeralExpense+quotationData.tableData[1].funeralExpense+quotationData.tableData[2].funeralExpense,
+         },
+           ];
 
-    const terminalIllnessRider = [
-        {
-            name: "",
-            individualLives: "",
-            sumAssured: "",
-            totalSumAssured: "",
-            ciPremium: "",
-            totalciPremium: "",
-        },
-        {
-            name: "",
-            individualLives: "",
-            sumAssured: "",
-            totalSumAssured: "",
-            ciPremium: "",
-            totalciPremium: "",
-        },
-        {
-            name: "",
-            individualLives: "",
-            sumAssured: "",
-            totalSumAssured: "",
-            ciPremium: "",
-            totalciPremium: "",
-        },
-        {
-            name: "",
-            individualLives: "",
-            sumAssured: "",
-            totalSumAssured: "",
-            ciPremium: "",
-            totalciPremium: "",
-        },
-    ];
-
-    const totalPremiumDetails = [
-        {
-            name: "",
-            individualLives: "",
-            sumAssured: "",
-            totalSumAssured: "",
-            ciPremium: "",
-            totalciPremium: "",
-        },
-        {
-            name: "",
-            individualLives: "",
-            sumAssured: "",
-            totalSumAssured: "",
-            ciPremium: "",
-            totalciPremium: "",
-        },
-        {
-            name: "",
-            individualLives: "",
-            sumAssured: "",
-            totalSumAssured: "",
-            ciPremium: "",
-            totalciPremium: "",
-        },
-        {
-            name: "",
-            individualLives: "",
-            sumAssured: "",
-            totalSumAssured: "",
-            ciPremium: "",
-            totalciPremium: "",
-        },
-    ];
-
+           const terminalIllnessRider = [
+            {
+         name: quotationData.tableData[0].name,
+         individualLives: quotationData.tableData[0].individualLives,
+         sumAssured: 250000,
+         totalSumAssured: 250000*quotationData.tableData[0].individualLives,
+         ciPremium: quotationData.tableData[0].terminalExpense,
+         totalciPremium: quotationData.tableData[0].individualLives*quotationData.tableData[0].terminalExpense,
+       },
+       {
+         name: quotationData.tableData[1].name,
+         individualLives: quotationData.tableData[1].individualLives,
+         sumAssured:  187500,
+         totalSumAssured: 187500*quotationData.tableData[1].individualLives,
+         ciPremium: quotationData.tableData[1].terminalExpense,
+         totalciPremium: quotationData.tableData[1].individualLives*quotationData.tableData[1].terminalExpense,
+       },
+       {
+         name: quotationData.tableData[2].name,
+         individualLives: quotationData.tableData[2].individualLives,
+         sumAssured: 125000,
+         totalSumAssured: 125000*quotationData.tableData[2].individualLives,
+         ciPremium: quotationData.tableData[2].terminalExpense,
+         totalciPremium:quotationData.tableData[2].individualLives*quotationData.tableData[2].terminalExpense,
+       },
+       {
+         name: quotationData.tableData[3].name,
+         individualLives: quotationData.tableData[3].individualLives,
+         sumAssured: 250000+187500+125000,
+         totalSumAssured: 250000+187500+625000,
+         ciPremium: quotationData.tableData[3].terminalExpense,
+         totalciPremium: quotationData.tableData[0].terminalExpense+quotationData.tableData[1].terminalExpense+quotationData.tableData[2].terminalExpense,
+       },
+     
+         ];
+     
+     
+         const totalPremiumDetails = [
+            {
+              name: quotationData.tableData[0].name,
+              individualLives: quotationData.tableData[0].individualLives,
+              sumAssured: quotationData.tableData[0].ciPremium,
+              totalSumAssured: quotationData.tableData[0].terminalExpense,
+              ciPremium: quotationData.tableData[0].funeralExpense,
+              totalciPremium: quotationData.tableData[0].totalPremium,
+            },
+            {
+              name: quotationData.tableData[1].name,
+              individualLives: quotationData.tableData[1].individualLives,
+              sumAssured: quotationData.tableData[1].ciPremium,
+              totalSumAssured: quotationData.tableData[1].terminalExpense,
+              ciPremium: quotationData.tableData[1].funeralExpense,
+              totalciPremium: quotationData.tableData[1].totalPremium,
+            },
+            {
+              name: quotationData.tableData[2].name,
+              individualLives: quotationData.tableData[2].individualLives,
+              sumAssured: quotationData.tableData[2].ciPremium,
+              totalSumAssured: quotationData.tableData[2].terminalExpense,
+              ciPremium: quotationData.tableData[2].funeralExpense,
+              totalciPremium: quotationData.tableData[2].totalPremium,
+            },
+            {
+              name: quotationData.tableData[3].name,
+              individualLives: quotationData.tableData[3].individualLives,
+              sumAssured: quotationData.tableData[0].ciPremium+quotationData.tableData[1].ciPremium+quotationData.tableData[2].ciPremium,
+              totalSumAssured: quotationData.tableData[0].terminalExpense+quotationData.tableData[1].terminalExpense+quotationData.tableData[2].terminalExpense,
+              ciPremium: quotationData.tableData[0].funeralExpense+quotationData.tableData[1].funeralExpense+quotationData.tableData[2].funeralExpense,
+              totalciPremium: quotationData.tableData[0].totalPremium+quotationData.tableData[1].totalPremium+quotationData.tableData[2].totalPremium,
+            },
+          ];      
 
     return (
         <>
@@ -730,11 +732,10 @@ const CriticalIllnessQuotation = ({ formData }) => {
             </div>
     
             {/* Buttons */}
-            <div style={{ textAlign: 'left', marginTop: '20px' }}>
-                <Button style={{ marginRight: '10px' }} onClick={handlePrevClick}>Previous</Button>
+            <div style={{ textAlign: 'right', marginTop: '20px' }}>
+                <Button style={{ marginRight: '10px' }} >Proceed with Payment</Button>
                 <Button type="primary" style={{ marginRight: '10px' }} onClick={handleDownload}>Download</Button>
                 <Button type="primary" style={{ marginRight: '10px' }}>Send to Email</Button>
-                <Button type="primary">Proceed with Payment</Button>
             </div>
         </>
     );    

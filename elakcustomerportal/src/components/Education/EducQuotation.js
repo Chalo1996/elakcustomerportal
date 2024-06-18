@@ -14,7 +14,7 @@ const detailColumns = [
 ];
 
 const getClientData = (formData) => {
-  const { name = '', email = '', country = '', telCode = '', tel = '' } = formData || {};
+  const {name = '', email = '', country = '', telCode = '', tel = '' } = formData || {};
   return [
     { key: "name", attribute: "Name", value: name },
     { key: "email", attribute: "Email", value: email },
@@ -55,8 +55,13 @@ const getInvestmentData = (cData) => {
   ];
 };
 
-const EducQuotation = ({ cData = {}, formData = {} }) => {
+const EducQuotation = () => {
+
+  const dispatch = useDispatch();
   const location = useLocation();
+  const { cData = {}, formData = {} } = location.state || {};
+  
+
   const [acceptedExclusions, setAcceptedExclusions] = useState(false);
 
   const handleAcceptanceChange = (e) => {

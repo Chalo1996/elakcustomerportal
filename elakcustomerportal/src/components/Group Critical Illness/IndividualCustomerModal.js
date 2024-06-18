@@ -21,7 +21,7 @@ const IndividualCustomerModal = ({ isModalOpen, onOkay, onCancel, customerType }
     if (customerType === "Personal") {
       navigate("/home/customer-type/critical-illness");
     } else if (customerType === "Group") {
-      navigate("/home/customer-type/critical-illness");
+      navigate("/home/customer-type/group-customer");
     }
   };
 
