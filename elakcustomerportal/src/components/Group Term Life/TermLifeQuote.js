@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { Row, Col, Form, Input, Button, DatePicker, Select, Steps, Modal, Radio, Checkbox,Typography } from 'antd';
+import { Row, Col, Space,Form, Input,Divider, Button, DatePicker, Select, Steps, Modal, Radio, Checkbox,Typography } from 'antd';
 import Title from 'antd/es/skeleton/Title';
+import {ArrowLeftOutlined} from '@ant-design/icons';
 import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
+
 const { Item } = Form;
 
 const TermLifeQuote = () => {
@@ -173,6 +176,7 @@ const TermLifeQuote = () => {
     percentageOfPremToBReturned: formData.percentageOfPremToBReturned,
     premiumFrequency: formData.premiumFrequency
     };
+    
     const handlePrincipalChange = (e) => {
       let { value } = e.target; 
       value = value.replace(/[^\d,]/g, ''); 
@@ -250,12 +254,25 @@ const TermLifeQuote = () => {
       setIsModalVisible(false);
     };
 
+    const navigate = useNavigate();
+    const handleBackClick = () =>{
+      navigate('/home/welcome'); 
+    };
+
     return (
     <div>  
-      <h1 
-      style={{ textAlign: 'left', fontWeight: 'bold', fontSize: '24px', marginBottom: '20px' }}>
-      Term Life Cover
-      </h1>
+      <Space 
+        style={{ 
+        fontSize: '22px',  
+        marginTop: '30px',
+        fontWeight: '600', 
+        alignItems: 'center', 
+        cursor: 'pointer'  
+      }}  
+      onClick={handleBackClick}>
+      <ArrowLeftOutlined style={{ color: 'black' }}/>
+       Term Life Cover  
+      </Space>
 
       <Modal
       title="What would you like to do?"
@@ -456,7 +473,7 @@ const TermLifeQuote = () => {
      <Row gutter={16}>
      <Col span={12}>
      <Item
-      label="PRINCIPAL AMOUNT">
+      label="INSURED AMOUNT">
       <Input
         name="principalAmount"
         rules={[{ required: true, message: 'Please Enter Principal Amount' }]}
@@ -540,7 +557,7 @@ const TermLifeQuote = () => {
                   <Row gutter={16}>
                   <Col span={12}>
                   <Item
-                  label="SUM ASSURED"
+                  label="How  much would  you like to pay for the cover?"
                   rules={[{ required: true, message: 'Please Enter Sum Assured' }]}>
                   <Input
                     name="sumAssured"
@@ -698,6 +715,7 @@ const TermLifeQuote = () => {
         <Modal
         visible={showReviewModal}
         onCancel={() => setShowReviewModal(false)}
+        width={800}
         footer={[
           <Button key="close" onClick={() => setShowReviewModal(false)}>
             Close
@@ -707,127 +725,177 @@ const TermLifeQuote = () => {
           </Button>
         ]}>
 
-        <div>
-          <h1 style={{ textAlign: 'left', fontSize: '21px', marginBottom: '20px', marginTop: '0px' }}>
-            To continue, please confirm your insurance purchase details
-          </h1>   
-          <table style={{ width: '95%', borderCollapse: 'collapse' }}>
-          <tbody>
-          <tr>
-            <th colSpan="2" style={{ textAlign: 'left', borderBottom: '2px solid black', padding: '8px' }}>
-              Personal Details</th>
-          </tr>
-          <tr>
-            <td style={{ width: '120%', padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>First Name</td>
-            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.name}</td>
-          </tr>
-          <tr>
-            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Second Name </td>
-            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.secondname}</td>
-          </tr>
-          <tr>
-            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Date Of Birth</td>
-            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.dateOfBirth}</td>
-          </tr>
-          <tr>
-            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Email</td>
-            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.email}</td>
-          </tr>
-          <tr>
-            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Mobile</td>
-            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.phoneNumber}</td>
-          </tr>
-          <tr>
-            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Country</td>
-            <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.country}</td>
-          </tr>
-          </tbody>
-          </table>
+<div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
+              <h4 style={{ marginBottom: '20px' }}>Please, Review and confirm Your Information details to continue</h4>
+              <div>
+                <br />
+                <div>
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <h5 style={{ color: '#888', marginBottom: '5px' }}>Product</h5>
+                      <span>Term Life Cover</span>
+                    </Col>
+                  </Row>
+                </div>
+                <Divider />
+                <br />
 
-          <div style={{ marginTop: '20px' }}>
-          <table style={{ width: '90%', borderCollapse: 'collapse' }}>
-          <tbody>
-            <tr>
-              <th colSpan="2" style={{ textAlign: 'left', borderBottom: '2px solid black', padding: '8px' }}>Cover Details</th>
-            </tr>
-            <tr>
-              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Premium Type</td>
-              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.isCoverLoan}</td>
-            </tr>
-            <tr>
-              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Cover Type</td>
-              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.coverType}</td>
-            </tr>
-            {formData.isCoverLoan === 'YES' && (
-              <>
-                <tr>
-                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Principal</td>
-                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.principalAmount}</td>
-                </tr>
-                <tr>
-                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Term In Years</td>
-                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.termInYears}</td>
-                </tr>
-                <tr>
-                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Installments Per Annum</td>
-                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.installmentsPerAnnum}</td>
-                </tr>
-                <tr>
-                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Single or Joint</td>
-                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.singleJoint}</td>
-                </tr>
-                <tr>
-                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Loan Type</td>
-                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.loanType}</td>
-                </tr>
-              </>
-            )}
-            {formData.isCoverLoan === 'NO' && (
-              <>
-                <tr>
-                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Sum Assured</td>
-                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.sumAssured}</td>
-                </tr>
-                <tr>
-                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Term In Years</td>
-                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.termInYearsCover}</td>
-                </tr>
-                <tr>
-                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Benefit Escalation</td>
-                  <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.benefitEscalationCover}</td>
-                </tr>
-              </>
-            )}
-          </tbody>
-          </table>
-          </div>
+                <h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Personal Information</h4>
+                <br />
 
-          <div style={{ marginTop: '20px' }}>
-          <table style={{ width: '75%', borderCollapse: 'collapse' }}>
-          <tbody>
-            <tr>
-              <th colSpan="2" style={{ textAlign: 'left', borderBottom: '2px solid black', padding: '8px' }}>Additional Options</th>
-            </tr>
-            <tr>
-              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Accelerated Critical Illness</td>
-              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.acceleratedCritalIllness}</td>
-            </tr>
-            <tr>
-              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Percentage of Premium to be Returned</td>
-              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.percentageOfPremToBReturned}</td>
-            </tr>
-            <tr>
-              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Return of Premium on Survival</td>
-              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.returnOfPremiumOnSurvival}</td>
-            </tr>
-            <tr>
-              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>Payment Frequency</td>
-              <td style={{ padding: '8px', textAlign: 'left', borderTop: '1px solid #ddd' }}>{formData.premiumFrequency}</td>
-            </tr>
-          </tbody>
-          </table>
-          </div>
-        </div>
+                {/*----------------------------------PERSONAL DETAILS-----------------------------------------*/}
+                <div>
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>First Name</h4>
+                      <span>{formData.name}</span>
+                    </Col>
+                    <br />
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Last Name</h4>
+                      <span>{formData.secondname}</span>
+                    </Col>
+                  </Row>
+                  <br />
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Telephone No</h4>
+                      <span>{formData.phoneNumber}</span>
+                    </Col>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Email</h4>
+                      <span>{formData.email}</span>
+                    </Col>
+                  </Row>
+                  <br />
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Date of Birth</h4>
+                      <span>{formData.dateOfBirth}</span>
+                    </Col>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Country</h4>
+                      <span>{formData.country}</span>
+                    </Col>
+                  </Row>
+                  <br />
+                </div>
+                <Divider />
+
+                {/*----------------------------------COVER DETAILS-----------------------------------------*/}
+                <h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Cover Details</h4>  
+                <br/>
+                <div>
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Premium Type</h4>
+                      <span>{formData.isCoverLoan}</span>
+                    </Col>
+                    <br />
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Cover Type</h4>
+                      <span>{formData.coverType}</span>
+                    </Col>
+                  </Row>
+                  <br />
+
+                  {formData.isCoverLoan === 'YES' &&(
+                  <>
+                  <Row gutter={16}>
+                  <Col span={12}>
+                  <h4 style={{ color: '#888', marginBottom: '5px' }}>Principal</h4>
+                  <span>{formData.principalAmount}</span>
+                  </Col>
+                  <Col span={12}>
+                  <h4 style={{ color: '#888', marginBottom: '5px' }}>Term In Years</h4>
+                  <span>{formData.termInYears}</span>
+                  </Col>
+                  </Row>
+                  <br/>
+
+                  <Row gutter={16}>
+                  <Col span={12}>
+                  <h4 style={{ color: '#888', marginBottom: '5px' }}>Installments Per Annum</h4>
+                  <span>{formData.installmentsPerAnnum}</span>
+                  </Col>
+                  <Col span={12}>
+                  <h4 style={{ color: '#888', marginBottom: '5px' }}>Single or Joint</h4>
+                  <span>{formData.singleJoint}</span>
+                  </Col>
+                  </Row>
+                  <br/>
+
+                  <Row gutter={16}>
+                  <Col span={12}>
+                  <h4 style={{ color: '#888', marginBottom: '5px' }}>Loan Type</h4>
+                  <span>{formData.loanType}</span>
+                  </Col>
+                  </Row>
+                  <br/>
+                  </>
+                  )}
+
+                  {formData.isCoverLoan === 'NO' &&(
+                  <>
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Sum Assured </h4>
+                      <span>{formData.sumAssured}</span>
+
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Term In Years</h4>
+                      <span>{formData.termInYearsCover}</span>               
+                    </Col>
+                    <Col span={12}>
+                    <h4 style={{ color: '#888', marginBottom: '5px' }}>Benefit Escalation</h4>
+                    <span>{formData.benefitEscalationCover}</span>
+                    </Col>
+                  </Row>
+                  <br/>
+                  </>
+                  )}
+
+       
+                </div>
+                <Divider/> 
+
+                   {/*----------------------------------Additional Options-----------------------------------------*/}
+                <h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}> Additional Options</h4>
+                <br/>
+                <div>
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Accelerated Critical Illness</h4>
+                      <span>{formData.acceleratedCritalIllness}</span>
+                    </Col>
+                    <br />
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Percentage of Premium to be Returned</h4>
+                      <span>{formData.percentageOfPremToBReturned}</span>
+                    </Col>
+                  </Row>
+                  <br />
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Return of Premium on Survival</h4>
+                      <span>{formData.returnOfPremiumOnSurvival}</span>
+                    </Col>
+                    <Col span={12}>
+                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Payment Frequency</h4>
+                      <span>{formData.premiumFrequency}</span>
+                    </Col>
+                  </Row>
+                  <br />
+                  
+                </div>
+                <Divider />
+
+              </div>
+            </div>
+
+
+
+
+
 
       <div>
     <Checkbox 

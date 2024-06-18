@@ -1,14 +1,16 @@
+import React, { useState } from "react";
 import { Card, Button } from "antd";
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
 
 import FuneralExpenseModal from "../Funeral Expense/modals/FuneralExpenseModal";
 import CriticalIllnessModal from "../Group Critical Illness/CriticalIllnessModal";
 import GroupCreditModal from "../GroupCredit/Modals/GroupCreditModal";
-import GroupLifeModal from "../Group Life/groupLifeModal";
+import GroupLifeModal from "../Group Life/Modals/groupLifeModal";
 import Educamodal from "../Education/Educamodal";
 import Goalbasedmodal from "../Goal Based/Goalbasedmodal";
 import GroupTermLifeModal from "../Group Term Life/GroupTermLifeModal";
+
+import "./Product.css"; // Ensure this path is correct
 
 const { Meta } = Card;
 
@@ -36,7 +38,6 @@ const Product = ({ product, index }) => {
             product={product}
           />
         );
-
       case 1:
         return (
           <CriticalIllnessModal
@@ -46,7 +47,6 @@ const Product = ({ product, index }) => {
             product={product}
           />
         );
-
       case 2:
         return (
           <GroupLifeModal
@@ -56,18 +56,15 @@ const Product = ({ product, index }) => {
             product={product}
           />
         );
-
-        case 4:
-          return (
-            <GroupTermLifeModal
-              isModalOpen={isModalOpen}
-              onOkay={handleOk}
-              onCancel={handleCancel}
-              product={product}
-            />
-          );
-  
-
+      case 4:
+        return (
+          <GroupTermLifeModal
+            isModalOpen={isModalOpen}
+            onOkay={handleOk}
+            onCancel={handleCancel}
+            product={product}
+          />
+        );
       case 6:
         return (
           <GroupCreditModal
@@ -77,7 +74,7 @@ const Product = ({ product, index }) => {
             product={product}
           />
         );
-        case 3:
+      case 3:
         return (
           <Educamodal
             isModalOpen={isModalOpen}
@@ -86,7 +83,7 @@ const Product = ({ product, index }) => {
             product={product}
           />
         );
-        case 5:
+      case 5:
         return (
           <Goalbasedmodal
             isModalOpen={isModalOpen}
@@ -95,7 +92,7 @@ const Product = ({ product, index }) => {
             product={product}
           />
         );
-      //Add cases for additional product modals here...
+      // Add cases for additional product modals here...
       default:
         return null;
     }
@@ -104,32 +101,15 @@ const Product = ({ product, index }) => {
   return (
     <Card
       bordered={false}
-      cover={
-        <img
-          alt={product.title}
-          src={product.image}
-          className="h-40 object-cover"
-        />
-      }
-      className={`m-4`}
+      cover={<img alt={product.title} src={product.image} className="h-40 object-cover" />}
+      className={`m-4 card-hover`} // Apply the hover class
     >
       <Meta
-        title={
-          <span >
-            {product.title}
-          </span>
-        }
-        description={
-          <span>
-            {product.description}
-          </span>
-        }
+        title={<span>{product.title}</span>}
+        description={<span>{product.description}</span>}
       />
       <div className="flex flex-col lg:flex-row justify-start mt-4 gap-1">
-        <Button
-          className="border-0 shadow-none text-[#A32A29]"
-          onClick={showModal}
-        >
+        <Button className="border-0 shadow-none text-[#A32A29]" onClick={showModal}>
           Learn More
         </Button>
 
@@ -141,4 +121,5 @@ const Product = ({ product, index }) => {
     </Card>
   );
 };
+
 export default Product;

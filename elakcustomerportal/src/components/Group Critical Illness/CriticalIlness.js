@@ -127,6 +127,15 @@ const GroupCriticalIllness = () => {
     }
   };
 
+  const [formatter] = useState(new Intl.NumberFormat('en-KE', {
+    style: 'currency',
+    currency: 'KES',
+}));
+
+const formatPercentage = (value) => {
+  return value != null ? `${value}%` : '';
+};
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -604,68 +613,40 @@ const GroupCriticalIllness = () => {
         <Card title="PERSONAL DETAILS">
           <Row gutter={16}>
             <Col span={12}>
-              <p
-                style={{
-                  fontWeight: "lighter",
-                  color: "#888",
-                  marginBottom: "10px",
-                }}
-              >
-                First Name:
-              </p>
-              <div style={{ marginTop: "0px" }}>{formData?.firstName}</div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className=" text-[#929497]">First Name</p>
+              <p>{formData.firstName} </p>
+            </div>
             </Col>
             <Col span={12}>
-              <p
-                style={{
-                  fontWeight: "lighter",
-                  color: "#888",
-                  marginBottom: "10px",
-                }}
-              >
-                Last Name:
-              </p>
-              <div style={{ marginTop: "0px" }}>{formData?.lastName}</div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className=" text-[#929497]">Last Name</p>
+              <p>{formData.lastName} </p>
+            </div>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-              <p
-                style={{
-                  fontWeight: "lighter",
-                  color: "#888",
-                  marginBottom: "10px",
-                }}
-              >
-                Email Address:
-              </p>
-              <div style={{ marginTop: "0px" }}>{formData?.email}</div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className=" text-[#929497]">Email Adress</p>
+              <p>{formData.email} </p>
+            </div>
             </Col>
             <Col span={12}>
-              <p
-                style={{
-                  fontWeight: "lighter",
-                  color: "#888",
-                  marginBottom: "10px",
-                }}
-              >
-                Mobile Number:
-              </p>
-              <div style={{ marginTop: "0px" }}>{formData?.mobileNumber}</div>
+            <div className="flex flex-col items-start justify-start mb-4">
+  <p className="text-[#929497]">Phone Number</p>
+  <p>
+    {formData?.phoneArea}{formData?.mobileNumber}
+  </p>
+</div>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-              <p
-                style={{
-                  fontWeight: "lighter",
-                  color: "#888",
-                  marginBottom: "10px",
-                }}
-              >
-                Date of Birth:
-              </p>
-              <div style={{ marginTop: "0px" }}>{formatDate(formData.dob)}</div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className=" text-[#929497]">Date Of Birth</p>
+              <p>{formatDate(formData.dob)} </p>
+            </div>
             </Col>
           </Row>
         </Card>
@@ -673,58 +654,30 @@ const GroupCriticalIllness = () => {
         <Card title="INSURED MEMBERS">
           <Row gutter={16}>
             <Col span={12}>
-              <p
-                style={{
-                  fontWeight: "lighter",
-                  color: "#888",
-                  marginBottom: "10px",
-                }}
-              >
-                Number of Principal Members:{" "}
-              </p>
-              <div style={{ marginTop: "0px" }}>
-                {formData?.principalNumber}
-              </div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className=" text-[#929497]">Number Of Principal Members</p>
+              <p>{1} principal member (s)</p>
+            </div>
             </Col>
             <Col span={12}>
-              <p
-                style={{
-                  fontWeight: "lighter",
-                  color: "#888",
-                  marginBottom: "10px",
-                }}
-              >
-                Spouse Date of Birth:{" "}
-              </p>
-              <div style={{ marginTop: "0px" }}>
-                {formatDate(formData.spouseDOB)}
-              </div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className=" text-[#929497]">Spouse Date Of Birth</p>
+              <p>{formatDate(formData.spouseDOB)} </p>
+            </div>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-              <p
-                style={{
-                  fontWeight: "lighter",
-                  color: "#888",
-                  marginBottom: "10px",
-                }}
-              >
-                Number of Spouses:{" "}
-              </p>
-              <div style={{ marginTop: "0px" }}>{formData?.spouseNumber}</div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className=" text-[#929497]">Number Of Spouses</p>
+              <p>{formData.spouseNumber} spouse (s)</p>
+            </div>
             </Col>
             <Col span={12}>
-              <p
-                style={{
-                  fontWeight: "lighter",
-                  color: "#888",
-                  marginBottom: "10px",
-                }}
-              >
-                Number of Children:{" "}
-              </p>
-              <div style={{ marginTop: "0px" }}>{formData?.childrenNumber}</div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className=" text-[#929497]">Number Of Children</p>
+              <p>{formData.childrenNumber} children</p>
+            </div>
             </Col>
           </Row>
         </Card>
@@ -732,96 +685,50 @@ const GroupCriticalIllness = () => {
         <Card title="COVERAGE">
           <Row gutter={16}>
             <Col span={12}>
-              <p
-                style={{
-                  fontWeight: "lighter",
-                  color: "#888",
-                  marginBottom: "10px",
-                }}
-              >
-                Sum Assured:{" "}
-              </p>
-              <div style={{ marginTop: "0px" }}>{formData?.sumAssured}</div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className=" text-[#929497]">Amount to be paid for the cover</p>
+              <p>{formatter.format(formData.sumAssured)} </p>
+            </div>
             </Col>
             <Col span={12}>
-              <p
-                style={{
-                  fontWeight: "lighter",
-                  color: "#888",
-                  marginBottom: "10px",
-                }}
-              >
-                Principal member percentage of sum assured:{" "}
-              </p>
-              <div style={{ marginTop: "0px" }}>{formData?.SAPrincipal}</div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className=" text-[#929497]">Percentage of paid amount to be given to principal member</p>
+              <p>{formatPercentage(formData.SAPrincipal)} </p>
+            </div>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-              <p
-                style={{
-                  fontWeight: "lighter",
-                  color: "#888",
-                  marginBottom: "10px",
-                }}
-              >
-                Spouse percentage of sum assured:{" "}
-              </p>
-              <div style={{ marginTop: "0px" }}>{formData?.SASpouse}</div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className=" text-[#929497]">Percentage of paid amount to be given to spouse</p>
+              <p>{formatPercentage(formData.SASpouse)} </p>
+            </div>
             </Col>
             <Col span={12}>
-              <p
-                style={{
-                  fontWeight: "lighter",
-                  color: "#888",
-                  marginBottom: "10px",
-                }}
-              >
-                Children percentage of sum assured:{" "}
-              </p>
-              <div style={{ marginTop: "0px" }}>{formData?.SAChildren}</div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className=" text-[#929497]">Percentage of paid amount to be given to children</p>
+              <p>{formatPercentage(formData.SAChildren)} </p>
+            </div>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-              <p
-                style={{
-                  fontWeight: "lighter",
-                  color: "#888",
-                  marginBottom: "10px",
-                }}
-              >
-                Cover Commencement Date:{" "}
-              </p>
-              <div style={{ marginTop: "0px" }}>
-                {formatDate(formData.coverDate)}
-              </div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className=" text-[#929497]">Cover Start Date</p>
+              <p>{formatDate(formData.coverDate)} </p>
+            </div>
             </Col>
             <Col span={12}>
-              <p
-                style={{
-                  fontWeight: "lighter",
-                  color: "#888",
-                  marginBottom: "10px",
-                }}
-              >
-                Policy Term (Years):{" "}
-              </p>
-              <div style={{ marginTop: "0px" }}>{formData?.policyTerm}</div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className=" text-[#929497]">Duration Of the Cover</p>
+              <p>{formData.policyTerm} years</p>
+            </div>
             </Col>
             <Col span={12}>
-              <p
-                style={{
-                  fontWeight: "lighter",
-                  color: "#888",
-                  marginBottom: "10px",
-                }}
-              >
-                Cover End Date:
-              </p>
-              <div style={{ marginTop: "0px" }}>
-                {formatDate(formData.coverExpiryDate)}
-              </div>
+            <div className="flex flex-col items-start justify-start mb-4">
+              <p className=" text-[#929497]">Cover End Date</p>
+              <p>{formatDate(formData.coverExpiryDate)} </p>
+            </div>
             </Col>
           </Row>
         </Card>
@@ -1036,23 +943,29 @@ const GroupCriticalIllness = () => {
               style={{ marginBottom: "16px" }}
             >
               <Form.Item
-      label="How many principal members do you want to cover?"
-      name="principalNumber"
-      rules={[
-        {
-          required: true,
-          message: "Please enter the number of principal members.",
-        },
-      ]}
-    >
-      <InputNumber
-        id="principalNumber"
-        value={principalNumber}
-        onChange={(value) => setPrincipalNumber(parseFloat(value))}
-        style={{ width: '100%' }} 
-      />
-    </Form.Item>
-            </Col>
+        label="How many principal members do you want to cover?"
+        name="number"
+        initialValue={1}
+        rules={[
+          {
+            required: true,
+            validator: (_, value) => {
+              if (value !== 1) {
+                return Promise.reject(new Error("The number must be 1."));
+              }
+              return Promise.resolve();
+            },
+          },
+        ]}
+      >
+        <InputNumber
+          min={1}
+          max={1}
+          style={{ width: "100%" }}
+          readOnly
+        />
+      </Form.Item>
+               </Col>
             <Col
               xs={24}
               sm={24}
@@ -1114,7 +1027,7 @@ const GroupCriticalIllness = () => {
       name="spouseNumber"
       rules={[
         {
-          required: true,
+          required: spouse,
           message: "Please enter the number of spouses.",
         },
       ]}
@@ -1123,7 +1036,8 @@ const GroupCriticalIllness = () => {
         id="spouseNumber"
         value={spouseNumber}
         onChange={(value) => setSpouseNumber(parseFloat(value))}
-        style={{ width: '100%' }} 
+        style={{ width: '100%' }}
+        disabled={!spouse} 
       />
     </Form.Item>
             </Col>
