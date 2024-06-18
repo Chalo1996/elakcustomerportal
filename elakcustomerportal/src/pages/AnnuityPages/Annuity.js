@@ -7,6 +7,7 @@ import CustomerDetailsForm from "../../components/Annuity/CustomerDetails";
 import CallBackForm from "../../components/Funeral Expense/CallBack";
 import CallBackModal from "../../components/Funeral Expense/modals/CallBackModal";
 import ProductParametersForm from "../../components/Annuity/ProductParameters";
+import CoverageForm from "../../components/Annuity/Coverage";
 
 const { Step } = Steps;
 
@@ -72,7 +73,8 @@ const AnnuityPage = () => {
   const [form1] = Form.useForm();
   const [form2] = Form.useForm();
   const [form3] = Form.useForm();
-  const forms = [form2, form3];
+  const [form4] = Form.useForm();
+  const forms = [form2, form3, form4];
 
   const handleNavigate = () => {
     navigate("/home");
@@ -141,6 +143,16 @@ const AnnuityPage = () => {
       content: (
         <ProductParametersForm
           form={form3}
+          formData={formData}
+          setFormData={setFormData}
+        />
+      ),
+    },
+    {
+      title: "Coverage",
+      content: (
+        <CoverageForm
+          form={form4}
           formData={formData}
           setFormData={setFormData}
         />
