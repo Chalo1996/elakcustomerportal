@@ -10,9 +10,8 @@ import Educamodal from "../Education/Educamodal";
 import Goalbasedmodal from "../Goal Based/Goalbasedmodal";
 import GroupTermLifeModal from "../Group Term Life/GroupTermLifeModal";
 
-import "./Product.css"; 
-import AnnuityModal from "../Annuity/Modals/AnnuityModal";
-
+import "./Product.css";
+import AnnuityModal from "../Annuity/modals/AnnuityModal";
 
 const { Meta } = Card;
 
@@ -58,27 +57,18 @@ const Product = ({ product, index }) => {
             product={product}
           />
         );
-      case 4:
-        return (
-          <GroupTermLifeModal
-            isModalOpen={isModalOpen}
-            onOkay={handleOk}
-            onCancel={handleCancel}
-            product={product}
-          />
-        );
-      case 6:
-        return (
-          <GroupCreditModal
-            isModalOpen={isModalOpen}
-            onOkay={handleOk}
-            onCancel={handleCancel}
-            product={product}
-          />
-        );
       case 3:
         return (
           <Educamodal
+            isModalOpen={isModalOpen}
+            onOkay={handleOk}
+            onCancel={handleCancel}
+            product={product}
+          />
+        );
+      case 4:
+        return (
+          <GroupTermLifeModal
             isModalOpen={isModalOpen}
             onOkay={handleOk}
             onCancel={handleCancel}
@@ -94,7 +84,16 @@ const Product = ({ product, index }) => {
             product={product}
           />
         );
-        case 7:
+      case 6:
+        return (
+          <GroupCreditModal
+            isModalOpen={isModalOpen}
+            onOkay={handleOk}
+            onCancel={handleCancel}
+            product={product}
+          />
+        );
+      case 7:
         return (
           <AnnuityModal
             isModalOpen={isModalOpen}
@@ -103,7 +102,6 @@ const Product = ({ product, index }) => {
             product={product}
           />
         );
-      // Add cases for additional product modals here...
       default:
         return null;
     }
@@ -112,7 +110,13 @@ const Product = ({ product, index }) => {
   return (
     <Card
       bordered={false}
-      cover={<img alt={product.title} src={product.image} className="h-40 object-cover" />}
+      cover={
+        <img
+          alt={product.title}
+          src={product.image}
+          className="h-40 object-cover"
+        />
+      }
       className={`m-4 card-hover`} // Apply the hover class
     >
       <Meta
@@ -120,7 +124,10 @@ const Product = ({ product, index }) => {
         description={<span>{product.description}</span>}
       />
       <div className="flex flex-col lg:flex-row justify-start mt-4 gap-1">
-        <Button className="border-0 shadow-none text-[#A32A29]" onClick={showModal}>
+        <Button
+          className="border-0 shadow-none text-[#A32A29]"
+          onClick={showModal}
+        >
           Learn More
         </Button>
 
