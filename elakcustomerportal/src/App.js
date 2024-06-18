@@ -13,8 +13,8 @@ import NotFound from "./pages/NotFound";
 import CustomerTypePage from "./pages/FuneralExpensePages/CustomerType";
 import LandingPage from "./pages/landingPage";
 import GroupCredit from "./components/GroupCredit/GroupCredit";
-import IndividualCover from "./components/GroupCredit/IndividualCover";
-import MultipleCover from "./components/GroupCredit/MultipleCover";
+import IndividualCover from "./components/GroupCredit/personal/IndividualCover";
+import MultipleCover from "./components/GroupCredit/group/MultipleCover";
 import FuneralExpenseQuotation from "./pages/FuneralExpensePages/Quotation";
 import CriticalIllnessQuotation from "./components/Group Critical Illness/CriticalIllnessQuotation";
 import {
@@ -34,6 +34,8 @@ import EducQuotation from "./components/Education/EducQuotation";
 import GoalQuotation from "./components/Goal Based/GoalQuotation";
 import GCQuotationPage from "./pages/GroupCredit/GCQuotationPage";
 import AnnuityPage from "./pages/AnnuityPages/Annuity";
+import GroupCustomer from "./components/Group Critical Illness/GroupCustomer";
+import UploadDetails from "./components/Group Critical Illness/UploadDetails"
 
 function App() {
   const dispatch = useDispatch();
@@ -124,6 +126,14 @@ function App() {
                     <Route
                       path="customer-type/critical-illness/submit"
                       element={<Submit />}
+                    />
+                    <Route
+                      path="customer-type/group-customer"
+                      element={<GroupCustomer />}
+                    />
+                    <Route
+                      path="customer-type/group-customer/upload-details"
+                      element={<UploadDetails />}
                     />
                     <Route
                       path="group-credit/*"
