@@ -1,29 +1,60 @@
-import {useState} from "react"
-import { Form, Row } from "antd";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Form, Row, Skeleton, Col } from "antd";
 import ProductPackage from "./ProductPackage";
 
-const productPackages = [
-  { name: "Imara", benefit: 10000 },
-  { name: "Bora", benefit: 50000 },
-  { name: "Jambo", benefit: 100000 },
-  { name: "Zuri", benefit: 150000 },
-  { name: "Fahari", benefit: 200000 },
-  { name: "Imani", benefit: 300000 },
-  { name: "Nuru", benefit: 400000 },
-  { name: "Pendo", benefit: 500000 },
-];
-
 const ProductPackagesForm = ({ form, formData, setFormData }) => {
-    const [selectedPackage, setSelectedPackage] = useState(formData.productName);
+  const token = useSelector((state) => state.auth.token);
+  const [productPlans, setProductPlans] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedPackage, setSelectedPackage] = useState(formData.productName);
 
-    const handleSelect = (name, benefit) => {
-      setFormData({
-        ...formData,
-        productName: name,
-        benefitAmount: benefit,
-      });
-      setSelectedPackage(name);
+  useEffect(() => {
+    const url = "https://sisos-eu.azurewebsites.net/api/cmd";
+    const dataToPost = {
+      cmd: "RepoProduct",
+      data: { operation: "GET", filter: "code='GLE'" },
     };
+
+    const fetchProductPackages = async () => {
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(dataToPost),
+        });
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+        const product = data.outData[0];
+        const productConfig = JSON.parse(product.configJson);
+        const productPlans = productConfig.Plans || [];
+        setProductPlans(productPlans);
+      } catch (error) {
+        console.error("Error fetching product packages: ", error);
+      }
+      setLoading(false);
+    };
+
+    if (productPlans.length === 0) {
+      fetchProductPackages();
+    }
+  }, [token, productPlans]);
+
+  const handleSelect = (name, benefit) => {
+    setFormData({
+      ...formData,
+      productName: name,
+      benefitAmount: benefit,
+    });
+    setSelectedPackage(name);
+  };
 
   return (
     <>
@@ -37,17 +68,27 @@ const ProductPackagesForm = ({ form, formData, setFormData }) => {
       </div>
 
       <Form form={form} className="mb-10">
-        <Row gutter={[16, 16]}>
-          {productPackages.map((pkg, index) => (
-            <ProductPackage
-              key={index}
-              name={pkg.name}
-              benefit={pkg.benefit}
-              onSelect={handleSelect}
-              selected={pkg.name === selectedPackage}
-            />
-          ))}
-        </Row>
+        {loading ? (
+          <Row gutter={[16, 16]}>
+            {[...Array(8)].map((_, index) => (
+              <Col key={index} xs={24} sm={12} lg={8}>
+                <Skeleton active />
+              </Col>
+            ))}
+          </Row>
+        ) : (
+          <Row gutter={[16, 16]}>
+            {productPlans.map((pkg, index) => (
+              <ProductPackage
+                key={index}
+                name={pkg.name}
+                benefit={pkg.sumInsured}
+                onSelect={handleSelect}
+                selected={pkg.name === selectedPackage}
+              />
+            ))}
+          </Row>
+        )}
       </Form>
     </>
   );
