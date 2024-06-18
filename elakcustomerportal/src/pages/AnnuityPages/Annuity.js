@@ -29,7 +29,7 @@ const getInitialFormData = () => {
         annuityType: "Deferred Annuity",
         paymentFrequency: "Monthly",
         frequencyValue: 12,
-        isDefferedAnnuity: true,
+        isDeferredAnnuity: true,
         startDate: null,
         deferrementPeriod: 180,
         purchasePrice: 1000000,
@@ -58,6 +58,8 @@ const AnnuityPage = () => {
     return {
       ...initialData,
       birthDate: initialData.birthDate ? dayjs(initialData.birthDate) : null,
+      startDate: initialData.startDate ? dayjs(initialData.startDate) : null,
+      spouseDob: initialData.spouseDob ? dayjs(initialData.spouseDob) : null,
     };
   });
   const [showCallback, setShowCallback] = useState(false);
@@ -135,7 +137,7 @@ const AnnuityPage = () => {
       ),
     },
     {
-      title: "Personal Information",
+      title: "Product Preferences",
       content: (
         <ProductParametersForm
           form={form3}
