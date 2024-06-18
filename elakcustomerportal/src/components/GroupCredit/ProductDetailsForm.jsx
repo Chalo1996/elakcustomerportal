@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Form,
   Input,
@@ -58,16 +58,12 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
     }
   };
 
-  useEffect(() => {
-    form.validateFields();
-  }, [formData]);
-
   return (
     <Form layout='vertical' form={form}>
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Item
-            label='Sum Assured'
+            label='How much would you like to pay for the cover?'
             name='sumAssured'
             onKeyPress={disableNotNumberKey}
             rules={[
@@ -89,7 +85,7 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Item
-            label='Terms In Months'
+            label='For how long would you like to pay for the cover?'
             name='termsInMonths'
             onKeyPress={disableNotNumberKey}
             rules={[
@@ -110,7 +106,7 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Item
-            label='Premium Frequency'
+            label='How would you like to pay for the cover?'
             name='frequency'
             rules={[
               {
@@ -136,7 +132,11 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Item
-            label={<Text>Number of Premium Installments</Text>}
+            label={
+              <Text>
+                How many times per year would you like to pay for the cover?
+              </Text>
+            }
             name='installments'
           >
             <Space direction='vertical' wrap style={{ width: "100%" }}>

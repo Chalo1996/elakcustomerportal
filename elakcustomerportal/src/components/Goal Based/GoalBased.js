@@ -30,7 +30,7 @@ const GoalBased = () => {
     email: '',
     dateOfBirth: null,
     GoalType: '',
-    termInYears: 0,
+    termInMonths: 0,
     frequency: '',
     premium: 0,
     currency: 'KES',
@@ -42,6 +42,14 @@ const GoalBased = () => {
 
     ],
   });
+ 
+
+  const handleGoalTypeChange = (value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      GoalType: value,
+    }));
+  };
 
   const navigate = useNavigate();
   const onFinish = async (values) => {
@@ -69,7 +77,7 @@ const GoalBased = () => {
     }));
   };
 
-  const handletermInYearsChange = (value) => {
+  const handletermInMonthsChange = (value) => {
     setFormData((prevData) => ({ ...prevData, termInYears: value }));
   };
 
@@ -300,6 +308,30 @@ const GoalBased = () => {
                     />
                   </Form.Item>
                 </Col>
+                <Col span={12}>
+      <Form.Item
+  label="Gender"
+  name="gender"
+  rules={[{ required: true, message: "Please select gender." }]}
+>
+  <Select
+    id="gender"
+    placeholder="Select Gender"
+    value={formData.gender}
+    onChange={(value) =>
+      setFormData((prevData) => ({
+        ...prevData,
+        gender: value,
+      }))
+    }
+    style={{ width: "100%" }}
+  >
+    <Select.Option value="Male">Male</Select.Option>
+    <Select.Option value="Female">Female</Select.Option>
+  </Select>
+</Form.Item>
+
+</Col>
               </Row>
               <br></br>
               <Row gutter={16}>
@@ -356,92 +388,164 @@ const GoalBased = () => {
             <>
               <br></br>
               <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item
-                    label="Goal Type"
-                    tooltip="Understand your choice:
-Short Term 
+              <Col span={12}>
+        <Form.Item
+          label="Target Type"
+          tooltip="Understand your choice:
+Investment Premium 
 With this option, you can comfortably set a specific sum for your regular insurance payments. 
-Medium Term
-By selecting this option, you have the flexibility to set a specific Medium Term that you aspire 
+Fund value
+By selecting this option, you have the flexibility to set a specific fund value that you aspire 
 to achieve over time."
-                    name="GoalType"
-                    id="GoalType"
-                    style={{ width: "100%" }}
-                  >
-                    <Select
-                      onChange={(value) =>
-                        setFormData((prevData) => ({
-                          ...prevData,
-                          GoalType: value,
-                        }))
-                      }
-                      defaultValue={formData.GoalType}
-                      style={{ width: "100%" }}
-                    >
-                      <Option key="1" value="Short Term">
-                        Short Term
-                      </Option>
-                      <Option key="2" value="Medium Term">
-                        Medium Term
-                      </Option>
-                    </Select>
-                  </Form.Item>
-                </Col>
+          name="targetType"
+          id="targetType"
+          style={{ width: "100%" }}
+        >
+          <Select
+            onChange={(value) =>
+              setFormData((prevData) => ({
+                ...prevData,
+                targetType: value,
+              }))
+            }
+            defaultValue={formData.targetType}
+            style={{ width: "100%" }}
+          >
+            <Option key="1" value="Investment Premium">
+              Investment Premium
+            </Option>
+            <Option key="2" value="Fund Value">
+              Fund Value
+            </Option>
+          </Select>
+        </Form.Item>
+             </Col>
+             <Col span={12}>
+        <Form.Item
+          label="Goal Type"
+          tooltip={`Understand your choice:
+            Short Term: Choose 6 to 24 Months
+            Medium Term: Choose 25 to 60 Months
+            Long Term: Choose 61 to 120 Months`}
+          name="goalType"
+          id="GoalType"
+          style={{ width: '100%' }}
+        >
+          <Select
+            onChange={handleGoalTypeChange}
+            placeholder="Select Goal Type"
+            defaultValue={formData.GoalType}
+            style={{ width: '100%' }}
+          >
+            <Option value="Short Term">Short Term</Option>
+            <Option value="Medium Term">Medium Term</Option>
+            <Option value="Long Term">Long Term</Option>
+          </Select>
+        </Form.Item>
+
+        {formData.GoalType === 'Short Term' && (
+          <Form.Item label="Optional Benefit" name="optionalBenefit">
+            <Select placeholder="Select an option">
+              <Option value="None">None</Option>
+              <Option value="Optional Benefit">Optional Benefit</Option>
+            </Select>
+          </Form.Item>
+        )}
+      </Col>
                 <Col span={12}>
-                  <Form.Item
-                    name="Premium"
-                    label={formData.GoalType || "Short Term"}
-                    tooltip="How much money do you want to invest?"
-                    required
-                  >
-                    <Input.Group compact>
-                      <Form.Item
-                        name="currency"
-                        noStyle
-                      >
-                        <Select
-                          onChange={onChangeCurrency}
-                          defaultValue={formData.currency}
-                          style={{ width: '20%' }}
-                        >
-                          {formData.currencies.map((currency, index) => (
-                            <Select.Option key={index} value={currency.code}>
-                              {currency.name}
-                            </Select.Option>
-                          ))}
-                        </Select>
-                      </Form.Item>
-                      <Form.Item
-                        name="premium"
-                        noStyle
-                        rules={[
-                          { required: true, message: 'Premium is required' },
-                        ]}
-                      >
-                        <InputNumber
-                          id="premium"
-                          step={10000}
-                          formatter={(value) =>
-                            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                          }
-                          parser={(value) => value.replace(/(,*)/g, '')}
-                          onChange={(value) =>
-                            setFormData((prevData) => ({
-                              ...prevData,
-                              premium: value,
-                            }))
-                          }
-                          value={formData.premium}
-                          style={{ width: '80%' }}
-                        />
-                      </Form.Item>
-                    </Input.Group>
+                  <Form.Item>
+                  
                   </Form.Item>
                 </Col>
+         
+      </Row>
+      <Row gutter={16}>
+      <Col span={12}>
+        <Form.Item
+          name="Premium"
+          label={formData.targetType || "Investment Premium"}
+          tooltip="How much money do you want to invest?"
+          required
+        >
+          <Input.Group compact>
+            <Form.Item
+              name="currency"
+              noStyle
+            >
+              <Select
+                onChange={onChangeCurrency}
+                defaultValue={formData.currency}
+                style={{ width: '20%' }}
+              >
+                {formData.currencies.map((currency, index) => (
+                  <Select.Option key={index} value={currency.code}>
+                    {currency.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              name="premium"
+              noStyle
+              rules={[
+                { required: true, message: 'Premium is required' },
+              ]}
+            >
+              <InputNumber
+                id="premium"
+                step={10000}
+                formatter={(value) =>
+                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                }
+                parser={(value) => value.replace(/(,*)/g, '')}
+                onChange={(value) =>
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    premium: value,
+                  }))
+                }
+                value={formData.premium}
+                style={{ width: '80%' }}
+              />
+            </Form.Item>
+          </Input.Group>
+        </Form.Item>
+      </Col>
+      
+               
               </Row>
               <br></br>
               <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item
+                    label="How many years would you wish to save?"
+                    name="termInMonths"
+                    style={{ width: "100%" }}
+                    rules={[
+                      {
+                        type: 'number',
+                        message: 'Please select the term in years.',
+                      },
+                      {
+                        required: true,
+                        message: 'Please input the term in years.',
+                      },
+                    ]}
+                  >
+                    <Select
+                      id="termInMonths"
+                      value={formData.termInYears}
+                      onChange={handletermInMonthsChange}
+                      style={{ width: "100%" }}
+                    >
+                      {Array.from({ length: 13 }, (_, i) => (
+                        <Select.Option key={i + 3} value={i + 3}>
+                          {i + 3}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
                 <Col span={12}>
                   <Form.Item
                     name="frequency"
@@ -469,7 +573,7 @@ to achieve over time."
                         Quarterly
                       </Option>
                       <Option key="SemiAnnual" value="SemiAnnual">
-                        SemiAnnual
+                        Semi Annual
                       </Option>
                       <Option key="Annual" value="Annual">
                         Annual
@@ -477,36 +581,6 @@ to achieve over time."
                       <Option key="One off" value="One off">
                         One off
                       </Option>
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item
-                    label="How many years would you wish to save?"
-                    name="termInYears"
-                    style={{ width: "100%" }}
-                    rules={[
-                      {
-                        type: 'number',
-                        message: 'Please select the term in years.',
-                      },
-                      {
-                        required: true,
-                        message: 'Please input the term in years.',
-                      },
-                    ]}
-                  >
-                    <Select
-                      id="termInYears"
-                      value={formData.termInYears}
-                      onChange={handletermInYearsChange}
-                      style={{ width: "100%" }}
-                    >
-                      {Array.from({ length: 13 }, (_, i) => (
-                        <Select.Option key={i + 3} value={i + 3}>
-                          {i + 3}
-                        </Select.Option>
-                      ))}
                     </Select>
                   </Form.Item>
                 </Col>
@@ -530,6 +604,7 @@ to achieve over time."
 
                   </Form.Item>
                 </Col>
+              
                 <Col span={12}>
                   <Form.Item
                     label="The Insurance cover policy will expire on"

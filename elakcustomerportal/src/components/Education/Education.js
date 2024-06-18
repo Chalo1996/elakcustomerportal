@@ -113,18 +113,21 @@ const Education = () => {
 
 
   
-  const next = () => {
-    form.validateFields().then(() => {
-      if (current === 0) {
-        setIsModalOpen(true); // Only open modal for step 0
-      } else {
-        setCurrent(current + 1); // Directly go to next step for other steps
-      }
-    }).catch(errorInfo => {
-      console.log('Validation Failed:', errorInfo);
-    });
-  };
-  
+ const next = () => {
+  form.validateFields().then(() => {
+    if (current === 0) {
+      setIsModalOpen(true); // Only open modal for step 0
+    } else if (current === 2) {
+      // Submit the form here
+      form.submit();
+    } else {
+      setCurrent(current + 1); // Directly go to next step for other steps
+    }
+  }).catch(errorInfo => {
+    console.log('Validation Failed:', errorInfo);
+  });
+};
+
   
 
   const back = () => {
@@ -300,6 +303,31 @@ const Education = () => {
           />
         </Form.Item>
       </Col>
+      <Col span={12}>
+      <Form.Item
+  label="Gender"
+  name="gender"
+  rules={[{ required: true, message: "Please select gender." }]}
+>
+  <Select
+    id="gender"
+    placeholder="Select Gender"
+    value={formData.gender}
+    onChange={(value) =>
+      setFormData((prevData) => ({
+        ...prevData,
+        gender: value,
+      }))
+    }
+    style={{ width: "100%" }}
+  >
+    <Select.Option value="Male">Male</Select.Option>
+    <Select.Option value="Female">Female</Select.Option>
+  </Select>
+</Form.Item>
+
+</Col>
+
     </Row>
     <br></br>
     <Row gutter={16}>
@@ -510,7 +538,6 @@ to achieve over time."
           </Select>
         </Form.Item>
       </Col>
-     
     </Row>
     <br></br>
     <Row gutter={16}>
@@ -591,6 +618,10 @@ to achieve over time."
           <Col span={12}>
             <h4 style={{ color: '#888', marginBottom: '5px' }}>Date of Birth</h4>
             <span>{formData.dateOfBirth?.format('YYYY-MM-DD')}</span>
+          </Col>
+          <Col>
+          <h4 style={{ color: '#888', marginBottom: '5px' }}>Gender</h4>
+            <span>{formData.gender}</span>
           </Col>
         </Row>
         <br />
