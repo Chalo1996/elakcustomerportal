@@ -197,7 +197,7 @@ const GoalBased = () => {
             <>
               <div>
                 <Row gutter={16}>
-                  <h3>Please, enter your personal details to continue</h3>
+                  <h3>Please enter your personal details to continue</h3>
                 </Row>
               </div>
               <br></br>
@@ -386,6 +386,11 @@ const GoalBased = () => {
 
           {current === 1 && (
             <>
+               <div>
+                <Row gutter={16}>
+                  <h3>Please enter your Insurance details to continue</h3>
+                </Row>
+              </div>
               <br></br>
               <Row gutter={16}>
               <Col span={12}>
