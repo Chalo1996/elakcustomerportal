@@ -5,13 +5,13 @@ import { Steps, Button, Typography, message, Form } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 
-import ContactDetails from "./ContactDetails";
-import CompanyDetails from './CompanyDetails';
-import InsuredMembers from './InsuredMembers';
-import PolicyDetails from './PolicyDetails';
-import ReviewAndConfirm from './ReviewAndConfirm';
-import ToDoModal from "./Modals/ToDoModal";
-import CallBackForm from "./CallBackForm";
+import ContactDetails from "../../components/Group Life/ContactDetails";
+import CompanyDetails from '../../components/Group Life/CompanyDetails';
+import InsuredMembers from '../../components/Group Life/InsuredMembers';
+import PolicyDetails from '../../components/Group Life/PolicyDetails';
+import ReviewAndConfirm from '../../components/Group Life/ReviewAndConfirm';
+import ToDoModal from "../../components/Group Life/Modals/ToDoModal";
+import CallBackForm from "../../components/Group Life/CallBackForm";
 import { fetchData } from "../../store/redux/features/glaSlice";
 
 const { Step } = Steps;
@@ -43,9 +43,9 @@ const GroupLifeAssurance = () => {
     nameOfClient: "",
     industry: "",
     intermediaryName: "",
-    totalAnnualSalaries: 0,
-    totalNumberOfStaff: 0,
-    averageAge: 0,
+    totalAnnualSalaries: "",
+    totalNumberOfStaff: "",
+    averageAge: "",
     policyStartDate: null,
     policyEndDate: null,
     glaAsMultipleofAnnualSalary: 4,
