@@ -10,7 +10,9 @@ import Educamodal from "../Education/Educamodal";
 import Goalbasedmodal from "../Goal Based/Goalbasedmodal";
 import GroupTermLifeModal from "../Group Term Life/GroupTermLifeModal";
 
-import "./Product.css"; // Ensure this path is correct
+import "./Product.css"; 
+import AnnuityModal from "../Annuity/Modals/AnnuityModal";
+
 
 const { Meta } = Card;
 
@@ -86,6 +88,15 @@ const Product = ({ product, index }) => {
       case 5:
         return (
           <Goalbasedmodal
+            isModalOpen={isModalOpen}
+            onOkay={handleOk}
+            onCancel={handleCancel}
+            product={product}
+          />
+        );
+        case 7:
+        return (
+          <AnnuityModal
             isModalOpen={isModalOpen}
             onOkay={handleOk}
             onCancel={handleCancel}

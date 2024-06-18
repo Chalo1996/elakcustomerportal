@@ -33,6 +33,8 @@ import Terms from "./pages/TermsAndPrivacy/Terms";
 import EducQuotation from "./components/Education/EducQuotation";
 import GoalQuotation from "./components/Goal Based/GoalQuotation";
 import GCQuotationPage from "./pages/GroupCredit/GCQuotationPage";
+import Annuity from "./components/Annuity/Annuity";
+
 function App() {
   const dispatch = useDispatch();
   const lightTheme = useSelector((state) => state.auth.theme) === "light";
@@ -139,6 +141,10 @@ function App() {
                     <Route
                       path='Goal-based/Goal-Quotation'
                       element={<GoalQuotation />}
+                    />
+                    <Route
+                      path='annuity'
+                      element={<Annuity />}
                     />
                     <Route path='*' element={<NotFound />} />
                   </Routes>
