@@ -38,6 +38,7 @@ export const groupCreditReducer = (state = initialState, action) => {
         [action.payload.field]: action.payload.value,
       };
     case SET_QUOTATION_DATA:
+      console.log("FORM DATA", state);
       console.log("QUOTATION DATA", state.quotationData);
       return {
         ...state,
