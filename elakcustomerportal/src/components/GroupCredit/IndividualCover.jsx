@@ -6,7 +6,7 @@ import { LeftOutlined } from "@ant-design/icons";
 import {
   updateUserDetails,
   generateQuotation,
-} from "../../redux/actions/groupCreditActions";
+} from "../../store/redux/actions/groupCreditActions";
 import ClientDetailsForm from "./ClientDetailsForm";
 import ProductDetailsForm from "./ProductDetailsForm";
 import ConfirmDetailsForm from "./ConfirmDetailsForm";
