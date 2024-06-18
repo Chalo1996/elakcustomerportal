@@ -1,5 +1,5 @@
 import axios from "axios";
-import token from "../../components/GroupCredit/Token/chaloToken";
+import token from "../../../components/GroupCredit/Token/chaloToken";
 import { notification } from "antd";
 
 export const UPDATE_USER_DETAILS = "UPDATE_USER_DETAILS";

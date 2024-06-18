@@ -2,7 +2,7 @@ import {
   UPDATE_USER_DETAILS,
   SET_QUOTATION_DATA,
   SET_LOADING,
-} from "../redux/actions/groupCreditActions";
+} from "../actions/groupCreditActions";
 
 const initialState = {
   firstname: "",
