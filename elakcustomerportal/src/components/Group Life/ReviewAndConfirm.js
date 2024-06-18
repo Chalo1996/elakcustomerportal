@@ -80,10 +80,16 @@ const ReviewAndConfirm = ({ formDataToSubmit }) => {
                 <p>{formatter.format(formDataToSubmit.annualSalaries)}</p>
               </div>
             </Col>
+            <Col xs={24} sm={24} md={12}>
+              <div className="flex flex-col items-start justify-start mb-4">
+                <p className="text-[#929497]">Employees average age</p>
+                <p>{formDataToSubmit.averageAge} years</p>
+              </div>
+            </Col>
           </Row>
         </Card>
   
-        <Card title="Insured Members" className="mb-10">
+        <Card title="Policy Coverage" className="mb-10">
           <Row gutter={[16, 16]}>
             <Col xs={24} sm={24} md={12}>
               <div className="flex flex-col items-start justify-start mb-4">
@@ -122,9 +128,6 @@ const ReviewAndConfirm = ({ formDataToSubmit }) => {
               </div>
             </Col>
           </Row>
-        </Card>
-  
-        <Card title="Policy Details" className="mb-10">
           <Row gutter={[16, 16]}>
             <Col xs={24} sm={24} md={12}>
               <div className="flex flex-col items-start justify-start mb-4">
