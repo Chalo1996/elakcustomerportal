@@ -13,8 +13,8 @@ import NotFound from "./pages/NotFound";
 import CustomerTypePage from "./pages/FuneralExpensePages/CustomerType";
 import LandingPage from "./pages/landingPage";
 import GroupCredit from "./components/GroupCredit/GroupCredit";
-import IndividualCover from "./components/GroupCredit/IndividualCover";
-import MultipleCover from "./components/GroupCredit/MultipleCover";
+import IndividualCover from "./components/GroupCredit/personal/IndividualCover";
+import MultipleCover from "./components/GroupCredit/group/MultipleCover";
 import FuneralExpenseQuotation from "./pages/FuneralExpensePages/Quotation";
 import CriticalIllnessQuotation from "./components/Group Critical Illness/CriticalIllnessQuotation";
 import {
