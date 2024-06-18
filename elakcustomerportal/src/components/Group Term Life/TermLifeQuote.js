@@ -36,15 +36,15 @@ phoneNumber: '',
 premiumType: '',
 isCoverLoan:'',
 coverType: '',
-principalAmount: '',
-termInYears: '',
-installmentsPerAnnum: '',
+principalAmount: 1000000,
+termInYears: 4,
+installmentsPerAnnum: 12,
 annualEscalationRate: 0,
 annualInterestRate: 23,
-singleJoint: '',
+singleJoint: 'SINGLE',
 loanType: '',
 sumAssured: 1000000,
-termInYearsCover: '',
+termInYearsCover: 15,
 benefitEscalationCover: '',
 acceleratedCritalIllness: '',
 percentageOfPremToBReturned: '',
@@ -293,28 +293,6 @@ acceleratedCritalIllness: formData.acceleratedCritalIllness,
 returnOfPremiumOnSurvival: formData.returnOfPremiumOnSurvival,
 percentageOfPremToBReturned: formData.percentageOfPremToBReturned,
 premiumFrequency: formData.premiumFrequency,
-
-
-///Dummy Context
-/*
-dateOfBirth: '1999-01-01',
-principalAmount: 1002000,
-termInYears: 2,
-annualInterestRate: 23,
-installmentsPA: 12,
-sumAssuredCover: 1203020,
-termYearsCover: 9,
-annualEscalationRate: 0,
-percentageOfPremToBReturned: 50,
-loanType: 'BULLET',
-coverType: 'INDIVIDUAL',
-isCoverLoan: 'YES',
-singleJoint: 'SINGLE',
-benefitEscalationCover: 'LEVEL',
-acceleratedCritalIllness: 'YES',
-returnOfPremiumOnSurvival: 'YES',
-premiumFrequency: 'ANNUAL'
-*/
 };
 
 function getOutData(outData) {
@@ -342,10 +320,11 @@ fetch('https://sisos-eu.azurewebsites.net/api/cmd', {
     } 
     else{  
       setQuotationData(outData.premiumData[0]);
+      console.log(outData);
     }
   })
   .catch(error => {
-    console.error('Error:', error.message);
+    //console.error('Error:', error.message);
    });
   console.log('Context:', contextObject);  
  
@@ -820,7 +799,7 @@ style={{ width: '100%' }}>
 <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
 <h4 style={{ marginBottom: '20px' }}>Please, Review and confirm Your Information details to continue</h4>
 <div>
-<br />
+<br/>
 <div>
 <Row gutter={16}>
 <Col span={12}>
@@ -834,7 +813,7 @@ style={{ width: '100%' }}>
 
 <h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Personal Information</h4>
 <br/>
-{/*----------------------------------PERSONAL DETAILS-----------------------------------------*/}
+{/*---------------------------------PERSONAL DETAILS-----------------------------------------*/}
 <div>
 <Row gutter={16}>
 <Col span={12}>
