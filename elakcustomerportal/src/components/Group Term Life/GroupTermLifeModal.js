@@ -6,7 +6,7 @@ import happyfamily from "../../assets/happyfamily.png";
 const GroupTermLifeModal = ({ isModalOpen, onCancel, onOkay, product }) => {
   const customTitle = (
      <p className="text-lg font-medium text-center font-roboto text-black">
-      Group Term Life    
+      Group Term Life   
     </p>
   );
   return (
@@ -27,7 +27,7 @@ const GroupTermLifeModal = ({ isModalOpen, onCancel, onOkay, product }) => {
             key="close"
             type="primary"
             className="shadow-none font-semibold text-lg leading-6 text-center text-white w-[177px] h-[48px] p-[12px_48px] gap-0 rounded-tl-lg ">
-            <NavLink to="welcome">
+            <NavLink to="term-life-quote">
               Apply Now
             </NavLink>
           </Button>

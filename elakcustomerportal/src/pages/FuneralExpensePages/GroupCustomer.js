@@ -200,6 +200,7 @@ const GroupCustomer = () => {
       navigate("/home/funeral-expense/quotation-details", {
         state: { formData, tableData },
       });
+      localStorage.removeItem("groupGLEData");
     }
   }, [isLoading, navigate, formData, tableData]);
 

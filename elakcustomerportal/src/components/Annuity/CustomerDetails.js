@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Form, Input, Row, Col, DatePicker, Select, Checkbox } from "antd";
+import { Form, Input, DatePicker, Select, Checkbox, Row, Col } from "antd";
 import sspFlag from "../../assets/flags/ssp.png";
 import cdfFlag from "../../assets/flags/cdf.png";
 import rwfFlag from "../../assets/flags/rwf.png";
@@ -19,7 +19,7 @@ const PhoneAreas = [
 
 const Genders = ["Male", "Female"];
 
-const PersonalDetailsForm = ({ form, formData, setFormData }) => {
+const CustomerDetailsForm = ({ form, formData, setFormData }) => {
   useEffect(() => {
     form.setFieldsValue(formData);
   }, [form, formData]);
@@ -35,12 +35,6 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
     }
   };
 
-  const validateTerms = (_, value) => {
-    return value
-      ? Promise.resolve()
-      : Promise.reject(new Error("Please agree to our terms to proceed"));
-  };
-
   const validateBirthDate = (_, value) => {
     if (!value) {
       return Promise.resolve();
@@ -49,8 +43,9 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
     const today = new Date();
     const selectedDate = new Date(value);
 
+    // Calculate minimum and maximum dates
     const minDate = new Date(
-      today.getFullYear() - 70,
+      today.getFullYear() - 60,
       today.getMonth(),
       today.getDate()
     );
@@ -60,15 +55,23 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
       today.getDate()
     );
 
+    // Check if selected date is within the acceptable range
     if (selectedDate >= minDate && selectedDate <= maxDate) {
       return Promise.resolve();
     }
 
+    // Reject with appropriate error message
     if (selectedDate < maxDate) {
-      return Promise.reject(new Error("Maximum required age is 70 years."));
+      return Promise.reject(new Error("Maximum required age is 60 years."));
     } else {
       return Promise.reject(new Error("Minimum required age is 18 years."));
     }
+  };
+
+  const validateTerms = (_, value) => {
+    return value
+      ? Promise.resolve()
+      : Promise.reject(new Error("Please agree to our terms to proceed"));
   };
 
   const preventNumericInput = (event) => {
@@ -86,7 +89,7 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
   return (
     <>
       <div className="w-[710px] h-[76px] top-[408px] left-[425px] mt-3 py-3 px-0 flex flex-col gap-4">
-        <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
+        <p className="font-open-sans text-[18px] font-semibold leading-[28px] text-left">
           Please enter your details
         </p>
       </div>
@@ -169,7 +172,6 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
               onChange={(value) =>
                 setFormData({ ...formData, birthDate: value })
               }
-              inputReadOnly={true}
             />
           </Form.Item>
           <Form.Item
@@ -270,4 +272,4 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
   );
 };
 
-export default PersonalDetailsForm;
+export default CustomerDetailsForm;

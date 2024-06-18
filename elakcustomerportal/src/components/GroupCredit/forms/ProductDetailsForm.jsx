@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Form,
   Input,
@@ -9,7 +9,9 @@ import {
   Typography,
   InputNumber,
   Switch,
+  Tooltip,
 } from "antd";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 const { Item } = Form;
 const { Text } = Typography;
@@ -19,7 +21,7 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
     handleFormChange("sumAssured", value);
   };
 
-  const handleTermsInMonths = (value) => {
+  const handleTermsInMonthsChange = (value) => {
     handleFormChange("termsInMonths", value);
   };
 
@@ -45,7 +47,7 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
     handleFormChange("installments", installmentValue);
   };
 
-  const handlePremiumInstallments = (e) => {
+  const handlePremiumInstallmentsChange = (e) => {
     handleFormChange("installments", e.target.value);
   };
 
@@ -58,16 +60,12 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
     }
   };
 
-  useEffect(() => {
-    form.validateFields();
-  }, [formData]);
-
   return (
     <Form layout='vertical' form={form}>
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Item
-            label='Sum Assured'
+            label='How much would you like to pay for the cover?'
             name='sumAssured'
             onKeyPress={disableNotNumberKey}
             rules={[
@@ -81,7 +79,9 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
               style={{ width: "100%" }}
               value={formData.sumAssured}
               prefix='KSH'
-              formatter={(value) => value.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
               parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
               onChange={handleSumChange}
             />
@@ -89,7 +89,7 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Item
-            label='Terms In Months'
+            label='For how long in months would you like to pay for the cover?'
             name='termsInMonths'
             onKeyPress={disableNotNumberKey}
             rules={[
@@ -102,7 +102,7 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
             <InputNumber
               style={{ width: "100%" }}
               value={formData.termsInMonths}
-              onChange={handleTermsInMonths}
+              onChange={handleTermsInMonthsChange}
             />
           </Item>
         </Col>
@@ -110,7 +110,7 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Item
-            label='Premium Frequency'
+            label='How would you like to pay for the cover?'
             name='frequency'
             rules={[
               {
@@ -136,14 +136,18 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Item
-            label={<Text>Number of Premium Installments</Text>}
+            label={
+              <Text>
+                How many times per year would you like to pay for the cover?
+              </Text>
+            }
             name='installments'
           >
             <Space direction='vertical' wrap style={{ width: "100%" }}>
               <Input
                 readOnly
                 value={formData.installments}
-                onChange={handlePremiumInstallments}
+                onChange={handlePremiumInstallmentsChange}
               />
             </Space>
           </Item>
@@ -151,12 +155,23 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
       </Row>
       <Row>
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-          <Item label='Retrenchment Cover?'>
-            <Switch
-              defaultChecked={formData.retrenchment}
-              onChange={handleRetrenchmentChange}
-            />
-          </Item>
+          <div className='flex items-center'>
+            <Item
+              label={
+                <span>
+                  Retrenchment Cover
+                  <Tooltip title='Retrenchment cover provides protection in case of job loss'>
+                    <QuestionCircleOutlined className='ml-2' />
+                  </Tooltip>
+                </span>
+              }
+            >
+              <Switch
+                defaultChecked={formData.retrenchment}
+                onChange={handleRetrenchmentChange}
+              />
+            </Item>
+          </div>
         </Col>
       </Row>
     </Form>

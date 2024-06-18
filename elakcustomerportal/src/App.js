@@ -7,14 +7,14 @@ import Home from "./pages/Home";
 import PortalLayout from "./layout/PortalLayout";
 import Education from "./components/Education/Education";
 import GoalBased from "./components/Goal Based/GoalBased";
-import GroupLifeAssurance from "./components/Group Life/GroupLife";
+import GroupLifeAssurance from "./pages/GroupLifeAssurance/GroupLife";
 import GroupCriticalIllness from "./components/Group Critical Illness/CriticalIlness";
 import NotFound from "./pages/NotFound";
 import CustomerTypePage from "./pages/FuneralExpensePages/CustomerType";
 import LandingPage from "./pages/landingPage";
 import GroupCredit from "./components/GroupCredit/GroupCredit";
-import IndividualCover from "./components/GroupCredit/IndividualCover";
-import MultipleCover from "./components/GroupCredit/MultipleCover";
+import IndividualCover from "./components/GroupCredit/personal/IndividualCover";
+import MultipleCover from "./components/GroupCredit/group/MultipleCover";
 import FuneralExpenseQuotation from "./pages/FuneralExpensePages/Quotation";
 import CriticalIllnessQuotation from "./components/Group Critical Illness/CriticalIllnessQuotation";
 import {
@@ -27,11 +27,16 @@ import GroupTermLifeQuote from "./components/Group Term Life/TermLifeQuote";
 import Welcome from "./components/Group Term Life/Welcome";
 import CustomerType from "./components/Group Critical Illness/CustomerType";
 import Submit from "./components/Group Critical Illness/Submit";
-import GroupLifeQuotation from "./components/Group Life/GroupLifeQuotation";
+import GroupLifeQuotation from "./pages/GroupLifeAssurance/GroupLifeQuotation";
 import Privacy from "./pages/TermsAndPrivacy/Privacy";
 import Terms from "./pages/TermsAndPrivacy/Terms";
 import EducQuotation from "./components/Education/EducQuotation";
 import GoalQuotation from "./components/Goal Based/GoalQuotation";
+import GCQuotationPage from "./pages/GroupCredit/GCQuotationPage";
+import AnnuityPage from "./pages/AnnuityPages/Annuity";
+import GroupCustomer from "./components/Group Critical Illness/GroupCustomer";
+import UploadDetails from "./components/Group Critical Illness/UploadDetails"
+
 function App() {
   const dispatch = useDispatch();
   const lightTheme = useSelector((state) => state.auth.theme) === "light";
@@ -123,11 +128,22 @@ function App() {
                       element={<Submit />}
                     />
                     <Route
+                      path="customer-type/group-customer"
+                      element={<GroupCustomer />}
+                    />
+                    <Route
+                      path="customer-type/group-customer/upload-details"
+                      element={<UploadDetails />}
+                    />
+                    <Route
                       path="group-credit/*"
                       element={<GroupCreditRoutes />}
                     />
                     <Route path="welcome" element={<Welcome />} />
-                    <Route path="term-life-quote" element={<GroupTermLifeQuote />}/>
+                    <Route
+                      path="term-life-quote"
+                      element={<GroupTermLifeQuote />}
+                    />
                     <Route
                       path="Education/Educ-Quotation"
                       element={<EducQuotation />}
@@ -136,6 +152,7 @@ function App() {
                       path="Goal-based/Goal-Quotation"
                       element={<GoalQuotation />}
                     />
+                    <Route path="annuity" element={<AnnuityPage />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </PortalLayout>
@@ -159,6 +176,7 @@ const GroupCreditRoutes = () => {
       <Route path="/" element={<GroupCredit />} />
       <Route path="individual-cover" element={<IndividualCover />} />
       <Route path="multiple-cover" element={<MultipleCover />} />
+      <Route path="/quotation" element={<GCQuotationPage />} />
     </Routes>
   );
 };

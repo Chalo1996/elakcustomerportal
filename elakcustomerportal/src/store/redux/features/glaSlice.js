@@ -30,11 +30,13 @@ export const fetchData = createAsyncThunk(
       const response = await axios.post(url, dataToPost, {
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
         },
       });
       console.log("groupLifeAssurance response: ", response.data);
       return response.data.outData;
-    } catch (error) {
+    }
+    catch (error) {
       console.error("fetchData error:", error);
       return rejectWithValue(error.message || error.response.data);
     }
@@ -55,16 +57,14 @@ const groupLifeAssuranceSlice = createSlice({
     builder
       .addCase(fetchData.pending, (state) => {
         state.isLoading = true;
-        state.error = null;
       })
       .addCase(fetchData.fulfilled, (state, action) => {
         state.isLoading = false;
         state.glaData = action.payload;
-        state.error = null;
       })
       .addCase(fetchData.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload || "Error occurred";
+        state.error = action.payload;
       });
   },
 });

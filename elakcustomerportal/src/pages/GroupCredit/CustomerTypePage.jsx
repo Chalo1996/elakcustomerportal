@@ -40,7 +40,7 @@ const CustomerTypePage = () => {
           </button>
         </span>
         <span className='font-open-sans text-[16px] font-semibold leading-[24px] text-left'>
-          Customer
+          Group Credit Cover
         </span>
 
         <div className='w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 flex flex-col gap-4'>

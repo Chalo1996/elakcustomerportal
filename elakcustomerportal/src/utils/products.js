@@ -2,9 +2,10 @@ import gleImg from "../assets/funeral-expense.jpg";
 import glaImg from "../assets/glaImg.png";
 import edu from "../assets/edu.png";
 import goal from "../assets/goal.png";
-import introImage from "../assets/introImage.jpg"
+import introImage from "../assets/introImage.jpg";
 import happyfamily from "../assets/happyfamily.png";
 import groupcreditImg from "../assets/groupcredit.png";
+import annuityImg from "../assets/annuityImg.jpg";
 
 const products = [
   {
@@ -37,7 +38,7 @@ const products = [
   },
   {
     title: "Term Life Insurance",
-    url: "welcome",
+    url: "term-life-quote",
     image: happyfamily,
     description:
       "Term life insurance is a type of life insurance policy that provides coverage for a specified period during  which if the policyholder dies, a death benefit is paid out to the designated beneficiaries.",
@@ -55,6 +56,13 @@ const products = [
     url: "group-credit",
     description:
       "A group credit life insurance policy is issued by an insurance company to a creditor institution, such as a bank, covering the lives of the bank's current and future debtors. Unlike other group life plans, the bank is both the policyholder and the beneficiary of the life insurance.",
+  },
+  {
+    title: "Annuity Insurance Policy",
+    url: "annuity",
+    image: annuityImg,
+    description:
+      "Annuities provide a steady income stream during retirement, offering peace of mind and financial stability. Whether you're planning for retirement or looking to convert your savings into a reliable income, our annuity solutions are designed to meet your needs.",
   },
 ];
 export default products;

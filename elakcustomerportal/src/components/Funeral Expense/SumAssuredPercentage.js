@@ -63,7 +63,7 @@ const SumAssuredPercentageForm = ({ form, formData, setFormData }) => {
         </p>
       </div>
       <Form form={form} layout="vertical">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 gap-4">
           <Form.Item
             label={
               <span className="text-[#929497]">
