@@ -7,8 +7,7 @@ import dayjs from "dayjs";
 
 import ContactDetails from "../../components/Group Life/ContactDetails";
 import CompanyDetails from '../../components/Group Life/CompanyDetails';
-import InsuredMembers from '../../components/Group Life/InsuredMembers';
-import PolicyDetails from '../../components/Group Life/PolicyDetails';
+import PolicyCoverage from '../../components/Group Life/PolicyCoverage';
 import ReviewAndConfirm from '../../components/Group Life/ReviewAndConfirm';
 import ToDoModal from "../../components/Group Life/Modals/ToDoModal";
 import CallBackForm from "../../components/Group Life/CallBackForm";
@@ -51,14 +50,14 @@ const GroupLifeAssurance = () => {
     glaAsMultipleofAnnualSalary: 4,
     criticalIllnessBenefitPercentage: 30,
     typeOfCriticalIllnessCover: "nil",
-    mainMemberLastExpense: 100000,
+    mainMemberLastExpense: "",
     typeOfMainMemberLastExpense: "nil",
-    spouseLastExpense: 0,
-    childLastExpense: 0,
-    parentsLastExpense: 0,
-    totalNumberOfSpouses: 0,
-    totalNumberOfChilidren: 0,
-    totalNumberOfParentsAndParentsInLaw: 0,
+    spouseLastExpense: null,
+    childLastExpense: null,
+    parentsLastExpense: null,
+    totalNumberOfSpouses: null,
+    totalNumberOfChilidren: null,
+    totalNumberOfParentsAndParentsInLaw: null,
     deathBenefitMultiplier: null,
     permananentTotalDisability: null,
     temporaryTotalDisability: 104,
@@ -67,7 +66,7 @@ const GroupLifeAssurance = () => {
     medicalReimbursment: 500000,
     lifeAssistantBenefit: 0,
     occupationalIllness: 0,
-    accidentalOccupationalLastExpense: 100000,
+    accidentalOccupationalLastExpense: null,
     schemeLossRatio: 0,
     discountOnRate: 0,
   };
@@ -104,7 +103,7 @@ const GroupLifeAssurance = () => {
       glaAsMultipleofAnnualSalary: formData.multipleOfAnnualSalary,
       criticalIllnessBenefitPercentage: 30,
       typeOfCriticalIllnessCover: "nil",
-      mainMemberLastExpense: 100000,
+      mainMemberLastExpense: formData.mainMemberLastExpense,
       typeOfMainMemberLastExpense: "nil",
       spouseLastExpense: formData.spouseLastExpense,
       childLastExpense: formData.childLastExpense,
@@ -122,7 +121,7 @@ const GroupLifeAssurance = () => {
       medicalReimbursment: 500000,
       lifeAssistantBenefit: 0,
       occupationalIllness: 0,
-      accidentalOccupationalLastExpense: 100000,
+      accidentalOccupationalLastExpense: formData.mainMemberLastExpense,
       schemeLossRatio: 0,
       discountOnRate: 0,
     },
@@ -196,12 +195,8 @@ const GroupLifeAssurance = () => {
       content: <CompanyDetails form={form} formData={formData} setFormData={setFormData} />,
     },
     {
-      title: "Insured Members",
-      content: <InsuredMembers form={form} formData={formData} setFormData={setFormData} />,
-    },
-    {
-      title: "Policy Details",
-      content: <PolicyDetails form={form} formData={formData} setFormData={setFormData} />,
+      title: "Coverage",
+      content: <PolicyCoverage form={form} formData={formData} setFormData={setFormData} />,
     },
     {
       title: "Review",
@@ -239,7 +234,7 @@ const GroupLifeAssurance = () => {
                 {action === 'callback' ? 'Submit' : 'Continue'}
               </Button>
             )}
-            {currentStep > 3 && (
+            {currentStep > 2 && (
               <Button type="primary" onClick={handleSubmit}>
                 Generate Quote
               </Button>
