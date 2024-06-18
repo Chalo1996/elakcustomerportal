@@ -1,17 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { Modal, Button, Row } from "antd";
 import Img from "../../../assets/annuityImg.jpg";
-import { useTheme } from "../../../store/context/theme-context";
 
 const AnnuityModal = ({ isModalOpen, onCancel, onOkay, product }) => {
-  const { theme } = useTheme();
   const customTitle = (
-    <p
-      className={`${
-        theme === "dark" ? "text-white bg-gray-800" : "text-black"
-      } text-lg font-medium text-center font-roboto `}
-    >
-      Annuity Cover
+    <p className="text-lg font-medium text-center font-roboto">
+      Annuity Insurance Policy
     </p>
   );
 
@@ -21,7 +15,6 @@ const AnnuityModal = ({ isModalOpen, onCancel, onOkay, product }) => {
       open={isModalOpen}
       onOk={onOkay}
       onCancel={onCancel}
-      className={theme === "dark" ? "dark-theme" : ""}
       style={{
         width: "741px",
         height: "710px",
@@ -33,9 +26,7 @@ const AnnuityModal = ({ isModalOpen, onCancel, onOkay, product }) => {
           <Button
             key="close"
             type="primary"
-            className={`${
-              theme === "dark" ? "text-white" : ""
-            } shadow-none font-semibold text-lg leading-6 text-center w-[177px] h-[48px] p-[12px_48px] gap-0 rounded-tl-lg `}
+            className="shadow-none font-semibold text-lg leading-6 text-center w-[177px] h-[48px] p-[12px_48px] gap-0 rounded-tl-lg"
           >
             <NavLink to="annuity">Apply Now</NavLink>
           </Button>
@@ -49,32 +40,33 @@ const AnnuityModal = ({ isModalOpen, onCancel, onOkay, product }) => {
           className="object-cover text-center rounded-[16px] h-[232px] w-[311px] m-auto"
         />
         <div className="py-3 px-0">
-          <p
-            className={`${
-              theme === "dark" ? "text-white" : "text-[#221F1F]"
-            } text-left  font-semibold text-[16px] leading-6`}
-          >
-            Life is a journey...
+          <p className="text-left  font-semibold text-[16px] leading-6">
+            Life is a journey, and securing your financial future is essential.
           </p>
           <p className="text-left font-normal text-[#929497] text-base leading-5 mb-4">
-          Group life insurance – also known as death in service insurance – is an attractive
-          employee benefit designed to financially support your employee’s loved ones by providing
-          them with a cash lump-sum payment.
+            Annuities provide a steady income stream during retirement, offering
+            peace of mind and financial stability. With our annuity plans, you
+            can enjoy a guaranteed income for life, ensuring you have the funds
+            you need to live comfortably in your golden years. Whether you're
+            planning for retirement or looking to convert your savings into a
+            reliable income, our annuity solutions are designed to meet your
+            needs.
           </p>
         </div>
         <div className="py-3 px-0">
-          <p
-            className={`${
-              theme === "dark" ? "text-white" : "text-[#221F1F]"
-            } text-left  font-semibold text-[16px] leading-6`}
-          >
-            Our Annuity cover
+          <p className="text-left font-semibold text-[16px] leading-6">
+            Our Annuity Insurance Policy
           </p>
           <p className="text-left font-normal text-[#929497] text-base leading-5 mb-4">
-          We will make a lump sum payment to your beneficiaries within 48 hours of a notice of death. 
-          This payment is intended to cover funeral expenses and provide financial stability during a difficult time. 
-          With a range of coverage options to choose from, your peace of mind and the well-being of your employees and 
-          their families are just a click away.
+            Our annuity policy offers a range of options tailored to fit your
+            retirement goals. Choose from immediate annuities, which start
+            paying out right away, or deferred annuities, which allow your
+            investment to grow tax-deferred until you're ready to receive
+            payments. With flexible payment options and the ability to customize
+            your plan, you can ensure a comfortable and secure future. Our
+            annuity products come with a variety of features, including
+            inflation protection, lifetime income, and beneficiary benefits, so
+            you can tailor your plan to your unique needs.
           </p>
         </div>
       </div>
