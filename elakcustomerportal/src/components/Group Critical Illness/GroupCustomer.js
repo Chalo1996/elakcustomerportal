@@ -17,7 +17,6 @@ import {
   Checkbox,
   InputNumber,
   Divider,
-  Switch,
   Card,
   message
 } from "antd";
@@ -31,58 +30,101 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../../store/redux/features/gciSlice";
 
 
-
 const { Step } = Steps;
 
+
 const RequestCallbackModal = ({
-  visible,
-  onCancel,
-  onContinue,
-  selectedOption,
-  setSelectedOption,
-}) => {
-  const handleOptionChange = (e) => {
-    setSelectedOption(e.target.value);
+    visible,
+    onCancel,
+    onContinue,
+    selectedOption,
+    setSelectedOption,
+  }) => {
+    const [isSecondModalVisible, setIsSecondModalVisible] = useState(false);
+  
+    const handleOptionChange = (e) => {
+      const value = e.target.value;
+      setSelectedOption(value);
+      if (value === 'generate') {
+        setIsSecondModalVisible(true);
+      }
+    };
+  
+    const handleSecondModalCancel = () => {
+      setIsSecondModalVisible(false);
+    };
+
+    
+const handleUploadDetails = () => {
+    navigate('upload-details');
   };
 
-  return (
-    <Modal
-      title="What would you like to do?"
-      visible={visible}
-      onCancel={onCancel}
-      width={600}
-      footer={[
-        <Button key="cancel" onClick={onCancel}>
-          Cancel
-        </Button>,
-        <Button
-          key="continue"
-          type="primary"
-          onClick={onContinue}
-          disabled={!selectedOption}
+  const navigate = useNavigate();
+  
+    return (
+      <>
+        <Modal
+          title="What would you like to do?"
+          visible={visible}
+          onCancel={onCancel}
+          width={600}
+          footer={[
+            <Button key="cancel" onClick={onCancel}>
+              Cancel
+            </Button>,
+            <Button
+              key="continue"
+              type="primary"
+              onClick={onContinue}
+              disabled={!selectedOption}
+            >
+              Continue
+            </Button>,
+          ]}
         >
-          Continue
-        </Button>,
-      ]}
-    >
-      <div style={{ width: "100%" }}>
-        <Radio.Group
-          onChange={handleOptionChange}
-          value={selectedOption}
-          style={{ width: "100%" }}
+          <div style={{ width: "100%" }}>
+            <Radio.Group
+              onChange={handleOptionChange}
+              value={selectedOption}
+              style={{ width: "100%" }}
+            >
+              <Space direction="vertical" size="small" style={{ width: "100%" }}>
+                <Radio value="generate">Generate Quote</Radio>
+                <Divider style={{ margin: "8px 0", width: "100%" }} />
+                <Radio value="callback">Request a Call Back</Radio>
+              </Space>
+            </Radio.Group>
+          </div>
+        </Modal>
+  
+        <Modal
+          title="Select an Option"
+          visible={isSecondModalVisible}
+          onCancel={handleSecondModalCancel}
+          width={600}
+          footer={[
+            <Button key="cancel" onClick={handleSecondModalCancel}>
+              Cancel
+            </Button>,
+          ]}
         >
-          <Space direction="vertical" size="small" style={{ width: "100%" }}>
-            <Radio value="generate">Generate Quote</Radio>
-            <Divider style={{ margin: "8px 0", width: "100%" }} />
-            <Radio value="callback">Request a Call Back</Radio>
-          </Space>
-        </Radio.Group>
-      </div>
-    </Modal>
-  );
-};
-
-const GroupCriticalIllness = () => {
+          <div style={{ width: "100%" }}>
+            <Space direction="vertical" size="small" style={{ width: "100%" }}>
+              <Button type="primary" block onClick={handleUploadDetails}> 
+                Upload Member Details
+              </Button>
+              <Divider style={{ margin: "8px 0", width: "100%" }} />
+              <Button type="primary" block>
+                Enter Member Details
+              </Button>
+            </Space>
+          </div>
+        </Modal>
+      </>
+    );
+  };
+  
+  const GroupCustomer = () => {
   const [current, setCurrent] = useState(0);
   const [form] = Form.useForm();
   const [policyTerm, setPolicyTerm] = useState();
@@ -91,7 +133,9 @@ const GroupCriticalIllness = () => {
   // const [gender, setGender] = useState();
   const [birthDate, setBirthDate] = useState();
   const [clientEmailAddress, setClientEmailAddress] = useState();
-  // const [telNo, setTelNo] = useState();
+  const [principalAverage, setPrincipalAverage] = useState();
+  const [spouseAverage, setSpouseAverage] = useState();
+  const [childrenAverage, setChildrenAverage] = useState();
   const [phoneArea, setPhoneArea] = React.useState("+254");
   const [principalNumber, setPrincipalNumber] = React.useState();
   const [spouseNumber, setSpouseNumber] = useState();
@@ -687,17 +731,17 @@ const GroupCriticalIllness = () => {
               </div>
             </Col>
             <Col span={12}>
-              <p
+            <p
                 style={{
                   fontWeight: "lighter",
                   color: "#888",
                   marginBottom: "10px",
                 }}
               >
-                Spouse Date of Birth:{" "}
+                Average age of Principal Members:{" "}
               </p>
               <div style={{ marginTop: "0px" }}>
-                {formatDate(formData.spouseDOB)}
+                {formData?.principalAverage}
               </div>
             </Col>
           </Row>
@@ -715,6 +759,20 @@ const GroupCriticalIllness = () => {
               <div style={{ marginTop: "0px" }}>{formData?.spouseNumber}</div>
             </Col>
             <Col span={12}>
+            <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                Average age of Spouses:{" "}
+              </p>
+              <div style={{ marginTop: "0px" }}>{formData?.spouseAverage}</div>
+              </Col>
+              </Row>
+              <Row gutter={16}>
+              <Col span={12}>
               <p
                 style={{
                   fontWeight: "lighter",
@@ -725,6 +783,18 @@ const GroupCriticalIllness = () => {
                 Number of Children:{" "}
               </p>
               <div style={{ marginTop: "0px" }}>{formData?.childrenNumber}</div>
+              </Col>
+              <Col span={12}>
+              <p
+                style={{
+                  fontWeight: "lighter",
+                  color: "#888",
+                  marginBottom: "10px",
+                }}
+              >
+                Average age of Children:{" "}
+              </p>
+              <div style={{ marginTop: "0px" }}>{formData?.childrenAverage}</div>
             </Col>
           </Row>
         </Card>
@@ -1061,46 +1131,26 @@ const GroupCriticalIllness = () => {
               xl={12}
               style={{ marginBottom: "16px" }}
             >
-               <Form.Item label="Do you want to cover your spouse?" name="spouse">
-                <Switch onChange={(checked) => setSpouse(checked)} />
-              </Form.Item>
+               <Form.Item
+      label="What is the average age of the principal members?"
+      name="principalAverage"
+      rules={[
+        {
+          required: true,
+          message: "Please enter the average age of principal members.",
+        },
+      ]}
+    >
+      <InputNumber
+        id="principalAverage"
+        value={principalAverage}
+        onChange={(value) => setPrincipalAverage(parseFloat(value))}
+        style={{ width: '100%' }} 
+      />
+    </Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>
-            <Col
-              xs={24}
-              sm={24}
-              md={12}
-              lg={12}
-              xl={12}
-              style={{ marginBottom: "16px" }}
-            >
-              <Form.Item
-                label="Spouse Date of Birth"
-                name="spouseDOB"
-                rules={[
-                  {
-                    required: spouse,
-                    message: "Please enter spouse date of birth.",
-                  },
-                ]}
-              >
-                <DatePicker
-                  style={{ width: "100%" }}
-                  disabled={!spouse}
-                  disabledDate={(current) => {
-                    const today = new Date();
-                    const eighteenYearsAgo = new Date(
-                      today.getFullYear() - 18,
-                      today.getMonth(),
-                      today.getDate()
-                    );
-                    return current && current >= eighteenYearsAgo;
-                  }}
-                />
-              </Form.Item>
-
-            </Col>
             <Col
               xs={24}
               sm={24}
@@ -1126,6 +1176,33 @@ const GroupCriticalIllness = () => {
         style={{ width: '100%' }} 
       />
     </Form.Item>
+
+            </Col>
+            <Col
+              xs={24}
+              sm={24}
+              md={12}
+              lg={12}
+              xl={12}
+              style={{ marginBottom: "16px" }}
+            >
+              <Form.Item
+      label="What is the average age of the spouses?"
+      name="spouseAverage"
+      rules={[
+        {
+          required: true,
+          message: "Please enter the average age of spouses.",
+        },
+      ]}
+    >
+      <InputNumber
+        id="spouseAverage"
+        value={spouseAverage}
+        onChange={(value) => setSpouseAverage(parseFloat(value))}
+        style={{ width: '100%' }} 
+      />
+    </Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>
@@ -1137,9 +1214,23 @@ const GroupCriticalIllness = () => {
               xl={12}
               style={{ marginBottom: "16px" }}
             >
-              <Form.Item label="Do you want to cover your children?" name="childrenVisible">
-                <Switch onChange={(checked) => setChildrenVisible(checked)} />
-              </Form.Item>
+              <Form.Item
+      label="How many children do you want to cover?"
+      name="childrenNumber"
+      rules={[
+        {
+          required: true,
+          message: "Please enter the number of children.",
+        },
+      ]}
+    >
+      <InputNumber
+        id="childrenNumber"
+        value={childrenNumber}
+        onChange={(value) => setChildrenNumber(parseFloat(value))}
+        style={{ width: '100%' }} 
+      />
+    </Form.Item>
             </Col>
             <Col
               xs={24}
@@ -1150,20 +1241,19 @@ const GroupCriticalIllness = () => {
               style={{ marginBottom: "16px" }}
             >
                <Form.Item
-      label="How many children do you want to cover?"
-      name="childrenNumber"
+      label="What is the average age of the children?"
+      name="childrenAverage"
       rules={[
         {
-          required: childrenVisible,
-          message: "Please enter the number of children.",
+          required: true,
+          message: "Please enter the average age of children.",
         },
       ]}
     >
       <InputNumber
-        id="childrenNumber"
-        value={childrenNumber}
-        onChange={(value) => setChildrenNumber(parseFloat(value))}
-        disabled={!childrenVisible}
+        id="childrenAverage"
+        value={childrenAverage}
+        onChange={(value) => setChildrenAverage(parseFloat(value))}
         style={{ width: '100%' }} 
       />
     </Form.Item>
@@ -1381,4 +1471,4 @@ const GroupCriticalIllness = () => {
   );
 };
 
-export default GroupCriticalIllness;
+export default GroupCustomer;

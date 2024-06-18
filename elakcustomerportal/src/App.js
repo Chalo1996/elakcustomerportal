@@ -32,6 +32,8 @@ import Privacy from "./pages/TermsAndPrivacy/Privacy";
 import Terms from "./pages/TermsAndPrivacy/Terms";
 import EducQuotation from "./components/Education/EducQuotation";
 import GoalQuotation from "./components/Goal Based/GoalQuotation";
+import GroupCustomer from "./components/Group Critical Illness/GroupCustomer";
+import UploadDetails from "./components/Group Critical Illness/UploadDetails";
 function App() {
   const dispatch = useDispatch();
   const lightTheme = useSelector((state) => state.auth.theme) === "light";
@@ -117,6 +119,14 @@ function App() {
                     <Route
                       path="customer-type/critical-illness/critical-illness-quotation"
                       element={<CriticalIllnessQuotation />}
+                    />
+                    <Route
+                      path="customer-type/group-customer"
+                      element={<GroupCustomer />}
+                    />
+                    <Route
+                      path="customer-type/group-customer/upload-details"
+                      element={<UploadDetails />}
                     />
                     <Route
                       path="customer-type/critical-illness/submit"
