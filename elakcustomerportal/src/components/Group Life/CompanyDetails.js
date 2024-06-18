@@ -100,6 +100,8 @@ const CompanyDetails = ({form, formData, setFormData }) => {
           >
             <InputNumber
               className="w-full custom-input-number"
+              min={18}
+              max={60}
               placeholder="Enter average age of employees"
               onKeyPress={preventTextInput}
               formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
