@@ -2,15 +2,52 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LeftOutlined } from "@ant-design/icons/";
 import { Steps, Button, Form } from "antd";
+import dayjs from "dayjs";
 import CustomerDetailsForm from "../../components/Annuity/CustomerDetails";
 import CallBackForm from "../../components/Funeral Expense/CallBack";
 import CallBackModal from "../../components/Funeral Expense/modals/CallBackModal";
+import ProductParametersForm from "../../components/Annuity/ProductParameters";
 
 const { Step } = Steps;
 
 const getInitialFormData = () => {
-  const savedFormData = localStorage.getItem("yourGLEData");
-  return savedFormData ? JSON.parse(savedFormData) : {};
+  const savedFormData = localStorage.getItem("yourAnnuityData");
+  return savedFormData
+    ? JSON.parse(savedFormData)
+    : {
+        firstName: "",
+        lastName: "",
+        email: "",
+        birthDate: null,
+        gender: "",
+        phoneArea: "+254",
+        phoneNo: "",
+        country: "Kenya",
+        spouseDob: null,
+        spouseGender: "",
+        targetType: "Pre-determined Purchase Price",
+        annuityType: "Deferred Annuity",
+        paymentFrequency: "Monthly",
+        frequencyValue: 12,
+        isDefferedAnnuity: true,
+        startDate: null,
+        deferrementPeriod: 180,
+        purchasePrice: 1000000,
+        isPurchasePrice: true,
+        annuityPerMonth: 50000,
+        segment: "Joint Life",
+        isSingleLife: false,
+        spouseReversion: 25,
+        guaranteedPeriod: 10,
+        residualPremium: "Yes",
+        longTermCare: "Yes",
+        criticalIllness: "Yes",
+        totalDisability: "Yes",
+        funeralExpense: "Yes",
+        displayFrequency: "Month",
+        initialized: false,
+        terms: false,
+      };
 };
 
 const AnnuityPage = () => {
@@ -20,6 +57,7 @@ const AnnuityPage = () => {
     const initialData = getInitialFormData();
     return {
       ...initialData,
+      birthDate: initialData.birthDate ? dayjs(initialData.birthDate) : null,
     };
   });
   const [showCallback, setShowCallback] = useState(false);
@@ -31,7 +69,8 @@ const AnnuityPage = () => {
 
   const [form1] = Form.useForm();
   const [form2] = Form.useForm();
-  const forms = [form1];
+  const [form3] = Form.useForm();
+  const forms = [form2, form3];
 
   const handleNavigate = () => {
     navigate("/home");
@@ -40,7 +79,11 @@ const AnnuityPage = () => {
   const handleNext = async () => {
     try {
       await forms[current].validateFields();
-      setCurrent(current + 1);
+      if (current === 0) {
+        setIsModalVisible(true);
+      } else {
+        setCurrent(current + 1);
+      }
     } catch (error) {
       console.log("Validation Failed:", error);
     }
@@ -85,7 +128,17 @@ const AnnuityPage = () => {
       title: "Personal Information",
       content: (
         <CustomerDetailsForm
-          form={form1}
+          form={form2}
+          formData={formData}
+          setFormData={setFormData}
+        />
+      ),
+    },
+    {
+      title: "Personal Information",
+      content: (
+        <ProductParametersForm
+          form={form3}
           formData={formData}
           setFormData={setFormData}
         />
@@ -108,7 +161,7 @@ const AnnuityPage = () => {
             </span>
           </div>
           <CallBackForm
-            form={form2}
+            form={form1}
             formData={formData}
             setFormData={setFormData}
           />
@@ -131,7 +184,7 @@ const AnnuityPage = () => {
               </button>
             </span>
             <span className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
-              Get Funeral Expense Cover
+              Get Annuity Cover
             </span>
           </div>
 
