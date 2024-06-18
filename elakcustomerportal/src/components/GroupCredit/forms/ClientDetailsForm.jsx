@@ -22,27 +22,36 @@ import Privacy from "../../../pages/TermsAndPrivacy/Privacy";
 const { Item } = Form;
 const { Option } = Select;
 
+const countryOptions = [
+  { label: "Kenya", value: "+254", flag: kenyaFlag },
+  { label: "Uganda", value: "+256", flag: ugFlag },
+  { label: "Tanzania", value: "+255", flag: tzFlag },
+  { label: "Rwanda", value: "+250", flag: rwandaFlag },
+  { label: "Congo", value: "+243", flag: congoFlag },
+  { label: "South-Sudan", value: "+211", flag: ssudanFlag },
+];
+
 const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
   const [termsVisible, setTermsVisible] = useState(false);
   const [privacyVisible, setPrivacyVisible] = useState(false);
+
+  const initialFormData = {
+    ...formData,
+    country: "Kenya",
+    countryCode: formData.countryCode || "+254",
+    countryFlag: formData.countryFlag || kenyaFlag,
+  };
 
   const handleInputChange = (key, value) => {
     handleFormChange(key, value);
   };
 
-  const handleCountryChange = (value) => {
-    const countryData = {
-      Kenya: { code: "+254", flag: kenyaFlag },
-      Uganda: { code: "+256", flag: ugFlag },
-      Tanzania: { code: "+255", flag: tzFlag },
-      Rwanda: { code: "+250", flag: rwandaFlag },
-      Congo: { code: "+243", flag: congoFlag },
-      "South-Sudan": { code: "+211", flag: ssudanFlag },
-    };
-
-    handleFormChange("country", value);
-    handleFormChange("countryCode", countryData[value]?.code || "+000");
-    handleFormChange("countryFlag", countryData[value]?.flag || null);
+  const handlePhonePrefixChange = (value) => {
+    handleFormChange("countryCode", value);
+    const selectedCountry = countryOptions.find(
+      (country) => country.value === value
+    );
+    handleFormChange("countryFlag", selectedCountry?.flag || null);
   };
 
   const handlePhoneChange = (e) => {
@@ -84,7 +93,7 @@ const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
 
   return (
     <>
-      <Form layout='vertical' form={form}>
+      <Form layout='vertical' form={form} initialValues={initialFormData}>
         <Row gutter={[16, 16]}>
           <Col xs={24} sm={24} md={12}>
             <Item
@@ -180,6 +189,45 @@ const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
           </Col>
           <Col xs={24} sm={24} md={12}>
             <Item
+              label='Mobile Number'
+              name='phone'
+              onKeyPress={(e) => !/[0-9]/.test(e.key) && e.preventDefault()}
+              rules={[
+                { required: true, message: "Please input your phone number!" },
+                { validator: validatePhone },
+              ]}
+            >
+              <Input
+                addonBefore={
+                  <Select
+                    value={formData.countryCode || "+254"}
+                    onChange={handlePhonePrefixChange}
+                    style={{ width: 120 }}
+                  >
+                    {countryOptions.map((country) => (
+                      <Option key={country.value} value={country.value}>
+                        <div className='flex items-center'>
+                          <img
+                            src={country.flag}
+                            alt={country.label}
+                            className='w-6 h-4 object-contain mr-2'
+                          />
+                          {country.value}
+                        </div>
+                      </Option>
+                    ))}
+                  </Select>
+                }
+                placeholder='700000000'
+                value={formData.phone}
+                onChange={handlePhoneChange}
+              />
+            </Item>
+          </Col>
+        </Row>
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={12}>
+            <Item
               label='Country'
               name='country'
               rules={[
@@ -190,7 +238,7 @@ const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
                 className='w-full'
                 placeholder='Select Country'
                 value={formData.country}
-                onChange={handleCountryChange}
+                onChange={(value) => handleInputChange("country", value)}
               >
                 <Option value='Kenya'>Kenya</Option>
                 <Option value='Uganda'>Uganda</Option>
@@ -199,37 +247,6 @@ const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
                 <Option value='Congo'>Congo</Option>
                 <Option value='South-Sudan'>South-Sudan</Option>
               </Select>
-            </Item>
-          </Col>
-        </Row>
-        <Row gutter={[16, 16]}>
-          <Col xs={24} sm={24} md={12}>
-            <Item
-              label='Phone No'
-              name='phone'
-              onKeyPress={(e) => !/[0-9]/.test(e.key) && e.preventDefault()}
-              rules={[
-                { required: true, message: "Please input your phone number!" },
-                { validator: validatePhone },
-              ]}
-            >
-              <Input
-                addonBefore={
-                  <div className='flex items-center space-x-1 mr-5'>
-                    <span className='text-sm'>{formData.countryCode}</span>
-                    {formData.countryFlag && (
-                      <img
-                        src={formData.countryFlag}
-                        alt={formData.country}
-                        className='w-6 h-4 object-contain'
-                      />
-                    )}
-                  </div>
-                }
-                placeholder='700000000'
-                value={formData.phone}
-                onChange={handlePhoneChange}
-              />
             </Item>
           </Col>
         </Row>
@@ -255,9 +272,10 @@ const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
                   handleInputChange("termschecked", e.target.checked)
                 }
               >
-                I Accept the
+                I accept the
                 <Button
                   type='link'
+                  className='text-red-800 p-1'
                   style={{ color: "brown" }}
                   onClick={() => setTermsVisible(true)}
                 >
@@ -266,6 +284,7 @@ const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
                 &
                 <Button
                   type='link'
+                  className='text-red-800 p-1'
                   style={{ color: "brown" }}
                   onClick={() => setPrivacyVisible(true)}
                 >

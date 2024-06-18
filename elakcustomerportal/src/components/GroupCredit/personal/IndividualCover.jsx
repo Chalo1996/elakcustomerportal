@@ -16,6 +16,7 @@ const { Step } = Steps;
 const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isNextDisabled, setIsNextDisabled] = useState(true);
+  const [hasInteracted, setHasInteracted] = useState(false);
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
@@ -35,6 +36,7 @@ const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
   };
 
   const handleFormChange = (field, value) => {
+    setHasInteracted(true);
     dispatch(updateUserDetails(field, value));
   };
 
@@ -52,6 +54,7 @@ const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
 
   useEffect(() => {
     const validateForm = async () => {
+      if (!hasInteracted) return;
       try {
         await form.validateFields();
         setIsNextDisabled(false);
@@ -60,7 +63,7 @@ const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
       }
     };
     validateForm();
-  }, [form, userDetails]);
+  }, [form, userDetails, hasInteracted]);
 
   const contextObject = {
     userInfo: {
@@ -138,7 +141,6 @@ const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
         {currentStep > 0 && (
           <Button
             className='h-full px-4 py-2 shadow-none text-center mr-2'
-            type='primary'
             onClick={prev}
           >
             Previous
