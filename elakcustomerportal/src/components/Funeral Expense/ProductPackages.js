@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Form, Row, Skeleton, Col } from "antd";
 import ProductPackage from "./ProductPackage";
+import ErrorPage from "../../layout/ErrorPage";
 
 const ProductPackagesForm = ({ form, formData, setFormData }) => {
   const token = useSelector((state) => state.auth.token);
   const [productPlans, setProductPlans] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(formData.productName);
 
   useEffect(() => {
@@ -37,6 +39,7 @@ const ProductPackagesForm = ({ form, formData, setFormData }) => {
         const productPlans = productConfig.Plans || [];
         setProductPlans(productPlans);
       } catch (error) {
+        setError(true);
         console.error("Error fetching product packages: ", error);
       }
       setLoading(false);
@@ -55,6 +58,16 @@ const ProductPackagesForm = ({ form, formData, setFormData }) => {
     });
     setSelectedPackage(name);
   };
+
+  if (error) {
+    return (
+      <ErrorPage
+        title="Failed to Fetch Product Packages"
+        subtitle="Sorry, there was an issue fetching the product packages. Please try again later."
+        onRetry={() => window.location.reload()}
+      />
+    );
+  }
 
   return (
     <>
