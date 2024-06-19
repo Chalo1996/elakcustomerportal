@@ -2,20 +2,14 @@ import React from "react";
 import { Col, Row, Table, Typography } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { resetStore } from "../../../../store/redux/actions/groupCreditActions";
 
 const { Text, Title } = Typography;
 
 const Quotation = ({ formData, quotationData }) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const handleNavigate = () => {
-    dispatch(resetStore());
     navigate("/home/group-credit/");
   };
-
   const {
     firstname,
     lastname,

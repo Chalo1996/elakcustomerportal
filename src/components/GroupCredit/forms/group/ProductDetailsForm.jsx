@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Form,
   Input,
@@ -15,19 +15,25 @@ const { Item } = Form;
 const { Text } = Typography;
 
 const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
+  const [hasInteracted, setHasInteracted] = useState(false);
+
   const handleSumChange = (value) => {
+    setHasInteracted(true);
     handleFormChange("sumAssured", value);
   };
 
   const handleTermsInMonthsChange = (value) => {
+    setHasInteracted(true);
     handleFormChange("termsInMonths", value);
   };
 
   const handleNumOfPartnersChange = (value) => {
+    setHasInteracted(true);
     handleFormChange("numOfPartners", parseInt(value));
   };
 
   const handleFrequencyChange = (value) => {
+    setHasInteracted(true);
     handleFormChange("frequency", value);
     let installmentValue;
     switch (value) {
@@ -50,10 +56,12 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
   };
 
   const handlePremiumInstallmentsChange = (e) => {
+    setHasInteracted(true);
     handleFormChange("installments", e.target.value);
   };
 
   const handlePartnerDoBChange = (index, date, dateString) => {
+    setHasInteracted(true);
     const updatedDates = [...formData.partnerDates];
     updatedDates[index] = dateString;
     handleFormChange("partnerDates", updatedDates);
@@ -79,8 +87,14 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
   };
 
   useEffect(() => {
+    form.resetFields(
+      Array.from(
+        { length: formData.numOfPartners },
+        (_, index) => `dob_partner_${index}`
+      )
+    );
     handleFormChange("partnerDates", Array(formData.numOfPartners).fill(null));
-  }, [formData.numOfPartners]);
+  }, [formData.numOfPartners, form]);
 
   return (
     <Form layout='vertical' form={form}>
@@ -178,28 +192,23 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Item
-            label={<Text>Other Partner Details</Text>}
+            label={<Text strong>Other Partner Details</Text>}
             name='partners'
-            rules={[
-              {
-                required: true,
-                message: "Please select the number of partners",
-              },
-            ]}
-            s
           >
-            <Select
-              style={{ width: "100%" }}
-              onChange={handleNumOfPartnersChange}
-              options={[
-                { value: "1", label: 1 },
-                { value: "2", label: 2 },
-                { value: "3", label: 3 },
-                { value: "4", label: 4 },
-                { value: "5", label: 5 },
-                { value: "6", label: 6 },
-              ]}
-            />
+            <Space direction='vertical' wrap style={{ width: "100%" }}>
+              <Select
+                style={{ width: "100%" }}
+                onChange={handleNumOfPartnersChange}
+                options={[
+                  { value: "1", label: 1 },
+                  { value: "2", label: 2 },
+                  { value: "3", label: 3 },
+                  { value: "4", label: 4 },
+                  { value: "5", label: 5 },
+                  { value: "6", label: 6 },
+                ]}
+              />
+            </Space>
           </Item>
         </Col>
       </Row>
@@ -223,7 +232,6 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
                   handlePartnerDoBChange(index, date, dateString)
                 }
                 disabledDate={disabledDate}
-                needConfirm
               />
             </Item>
           </Col>

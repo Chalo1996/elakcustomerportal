@@ -2,7 +2,6 @@ import {
   UPDATE_USER_DETAILS,
   SET_QUOTATION_DATA,
   SET_LOADING,
-  RESET_STORE,
 } from "../actions/groupCreditActions";
 
 const initialState = {
@@ -36,6 +35,7 @@ const initialState = {
 export const groupCreditReducer = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_USER_DETAILS:
+      console.log(state);
       return {
         ...state,
         [action.payload.field]: action.payload.value,
@@ -50,8 +50,6 @@ export const groupCreditReducer = (state = initialState, action) => {
         ...state,
         loading: action.payload,
       };
-    case RESET_STORE:
-      return initialState;
     default:
       return state;
   }

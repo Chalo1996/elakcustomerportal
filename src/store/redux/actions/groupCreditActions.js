@@ -5,17 +5,12 @@ import { notification } from "antd";
 export const UPDATE_USER_DETAILS = "UPDATE_USER_DETAILS";
 export const SET_QUOTATION_DATA = "SET_QUOTATION_DATA";
 export const SET_LOADING = "SET_LOADING";
-export const RESET_STORE = "RESET_STORE";
 
 const url = "https://sisos-eu.azurewebsites.net/api/cmd";
 
 export const updateUserDetails = (field, value) => ({
   type: UPDATE_USER_DETAILS,
   payload: { field, value },
-});
-
-export const resetStore = () => ({
-  type: RESET_STORE,
 });
 
 export const setQuotationData = (data) => ({

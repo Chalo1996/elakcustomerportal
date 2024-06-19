@@ -2,20 +2,14 @@ import React from "react";
 import { Col, Row, Table, Typography } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { resetStore } from "../../../../store/redux/actions/groupCreditActions";
 
 const { Text, Title } = Typography;
 
 const Quotation = ({ formData, quotationData }) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const handleNavigate = () => {
-    dispatch(resetStore());
     navigate("/home/group-credit/");
   };
-
   const {
     firstname,
     lastname,
@@ -288,6 +282,16 @@ const Quotation = ({ formData, quotationData }) => {
           <Text strong style={{ color: "red" }}>
             Medical Requirements
           </Text>
+          {/* <br />
+            <Text>1. Medical Examiner's Report</Text>
+            <br />
+            <Text>
+              2. Blood Profile (ESR, CBC) and Blood Chemistry Studies (FBS,
+              Cholesterol, SGPT, SGOT, Creatinine or Serum Urea)
+            </Text>
+            <br />
+            <Text>3. Urinalysis Report</Text>
+            <br /> */}
           <br />
           <Text>1. {medicalRequirements}</Text>
           <br />

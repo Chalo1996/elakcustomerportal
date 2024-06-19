@@ -28,39 +28,40 @@ const LandingPage = () => {
 
   return (
     <Layout style={{ height: '100vh', display: 'flex' }}>
-      <Sider width="60%" style={{ backgroundColor: '#A32A29', padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'left', alignItems: 'left' }}>
+      <Sider width="60%" style={{ backgroundColor: '#A32A29', padding: '60px', display: 'flex', flexDirection: 'column', justifyContent: 'left', alignItems: 'left' }}>
         <img src={logo} alt="Equity Logo" style={{ marginBottom: '20px' }} /> {/* Add the logo */}
         <div style={{ color: 'white', textAlign: 'left' }}>
           <Title level={1} style={{ color: 'white' }}>Welcome to <br></br>EQUITY Assurance</Title>
           <Text style={{ color: 'white', fontSize: '20px' }}>The insurer you can trust</Text>
         </div>
       </Sider>
-      <Content style={{ padding: '50px', backgroundColor: '#fff' }}>
+      <Content style={{ padding: '30px', backgroundColor: '#fff' }}>
         <div style={{ maxWidth: '400px', margin: 'auto' }}>
-          <Title level={2} style={{ marginBottom: '20px' }}>Hello There</Title>
-          <Text style={{ display: 'block', marginBottom: '20px' }}>Please select an account option</Text>
+          <Title level={4} style={{ marginBottom: '5px' }}>Hello There</Title>
+          <Text className="text-[#929497]" style={{ display: 'block', marginBottom: '60px' }}>Please select an account option</Text>
           <Space direction="vertical" size={16} style={{ width: '100%' }}>
             <Radio.Group value={accountType} onChange={handleRadioChange} style={{ width: '100%' }} >
               <Row style={{ alignItems: 'left', marginBottom: '10px' }}>
-                <Avatar size={40} style={{ cursor: 'pointer', marginRight: '10px', backgroundColor: '#A32A29' }}>P</Avatar>
-                <Text style={{ flex: 1 }}>Personal</Text>
+                <Avatar size={50} style={{ cursor: 'pointer', marginRight: '10px', backgroundColor: '#A32A29' }}>P</Avatar>
+                <Text style={{ flex: 1, marginTop: '10px' }}>Personal</Text>
                 <Radio value="personal" />
               </Row>
               <Divider style={{ margin: '10px 10' }} />
               <Row style={{ alignItems: 'left' }}>
-                <Avatar size={40} style={{ cursor: 'pointer', marginRight: '10px', backgroundColor: '#A32A29'}}>CS</Avatar>
-                <Text style={{ flex: 1 }}>Corporate/SME</Text>
+                <Avatar size={50} style={{ cursor: 'pointer', marginRight: '10px', backgroundColor: '#A32A29'}}>CS</Avatar>
+                <Text style={{ flex: 1, marginTop: '10px' }}>Corporate/SME</Text>
                 <Radio value="corporate" disabled />
               </Row>
             </Radio.Group>
           </Space>
-          <div style={{ textAlign: 'right', marginTop: '20px' }}>
+          <div style={{ textAlign: 'left', marginTop: '60px' }}>
             <Button type="primary" onClick={handleContinue} style={{ backgroundColor: '#A32A29', borderColor: '#A32A29' }}>
               Continue
             </Button>
           </div>
         </div>
       </Content>
+      <Sider width="10%"style={{ backgroundColor: '#fff' }}></Sider>
     </Layout>
   );
 };

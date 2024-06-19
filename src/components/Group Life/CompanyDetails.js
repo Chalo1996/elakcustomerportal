@@ -11,15 +11,27 @@ const CompanyDetails = ({form, formData, setFormData }) => {
     setFormData(prevData => ({ ...prevData, [field]: value }));
   }, [setFormData]);
 
+  const validateTotalNumberOfStaff = (value) => {
+    if (value < 2) {
+      throw new Error("Number of employees should be two and above");
+    }
+  };
+
+  const validateAverageAge = (value) => {
+    if (value < 20 || value > 60) {
+      throw new Error("Average age must be between 20 and 60.");
+    }
+  };
+
   return (
     <Form  form={form} layout="vertical" initialValues={formData}>
-      <Row gutter={16}>
+      <Row gutter={16} style={{ marginBottom: '25px' }}>
         <Col span={24}>
-          <Title level={5} style={{ marginBottom: '20px' }}>Please enter company details</Title>
+          <Title level={5} >Please enter company details</Title>
         </Col>
       </Row>
 
-      <Row gutter={16} style={{ marginBottom: '20px' }}>
+      <Row gutter={16} style={{ marginBottom: '25px' }}>
         <Col xs={24} sm={12}>
           <Form.Item
             label="What is the name of your Company"
@@ -55,12 +67,27 @@ const CompanyDetails = ({form, formData, setFormData }) => {
         </Col>
       </Row>
 
-      <Row gutter={16} style={{ marginBottom: '20px' }}>
+      <Row gutter={16} style={{ marginBottom: '25px' }}>
         <Col xs={24} sm={12}>
           <Form.Item
-            label="How many employees are to be covered by this scheme?"
+            label="How many employees are to be covered by this cover?"
             name="numberOfEmployees"
-            rules={[{ required: true, message: "Please enter number of employees!" }]}
+            rules={[
+                  {
+                    required: true,
+                    message: 'Please input total number of employees!',
+                  },
+                  {
+                    validator: (_, value) => {
+                      try {
+                        validateTotalNumberOfStaff(value); 
+                        return Promise.resolve();
+                      } catch (error) {
+                        return Promise.reject(error.message);
+                      }
+                    },
+                  },
+                ]}
           >
             <InputNumber
               className="w-full custom-input-number"
@@ -91,17 +118,27 @@ const CompanyDetails = ({form, formData, setFormData }) => {
         </Col>
       </Row>
 
-      <Row gutter={16} style={{ marginBottom: '20px' }}>
+      <Row gutter={16} style={{ marginBottom: '25px' }}>
         <Col xs={24} sm={12}>
           <Form.Item
             label="What is the average age of employees in your company?"
             name="averageAge"
-            rules={[{ required: true, message: "Please enter average age of employees!" }]}
+            rules={[
+                  {
+                    validator: (_, value) => {
+                      try {
+                        validateAverageAge(value);
+                        return Promise.resolve();
+                      } catch (error) {
+                        return Promise.reject(error.message);
+                      }
+                    },
+                  },
+                  { required: true, message: 'Please input Average Age!' }
+                ]}
           >
             <InputNumber
               className="w-full custom-input-number"
-              min={18}
-              max={60}
               placeholder="Enter average age of employees"
               onKeyPress={preventTextInput}
               formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
