@@ -124,6 +124,10 @@ function App() {
                       element={<CriticalIllnessQuotation />}
                     />
                     <Route
+                      path="customer-type/group-customer/critical-illness-quotation"
+                      element={<CriticalIllnessQuotation />}
+                    />
+                    <Route
                       path="customer-type/critical-illness/submit"
                       element={<Submit />}
                     />
