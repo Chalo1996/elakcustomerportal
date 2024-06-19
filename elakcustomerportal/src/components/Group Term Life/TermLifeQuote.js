@@ -272,13 +272,6 @@ percentageOfPremToBReturned: formData.percentageOfPremToBReturned,
 premiumFrequency: formData.premiumFrequency,
 };
 
-
-  fetch('https://sisos-eu.azurewebsites.net/api/cmd', {
-};
-
-function getOutData(outData) {
-    console.log('Out Data:', outData);
-}
 fetch('https://sisos-eu.azurewebsites.net/api/cmd', {
     method: 'POST',
     headers: {
