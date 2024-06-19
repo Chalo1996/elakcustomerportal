@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { Table, Card, Row, Col, Checkbox, Button } from 'antd';
+import { Table, Card, Row, Col, Checkbox, Button, Typography } from 'antd';
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { resetData } from "../../store/redux/features/eduSlice";
+import { LeftOutlined } from "@ant-design/icons";
+import PolicyExclusionsModal from "../Group Life/Modals/PolicyExclusionsModal";
+
+const { Title } = Typography;
 
 const renderFormattedValue = (value) => Math.round(value).toLocaleString("en-us");
 const formatCurrency = (value) => `KES ${Math.round(value).toLocaleString()}`;
@@ -14,12 +19,15 @@ const detailColumns = [
 ];
 
 const getClientData = (formData) => {
-  const {name = '', email = '', country = '', telCode = '', tel = '' } = formData || {};
+  const {firstName = '', lastName = '', email = '',  phoneAreas= '', tel = '' } = formData || {};
+  console.log('phoneAreas:', phoneAreas);
+  const name = `${firstName} ${lastName}`;
+
   return [
     { key: "name", attribute: "Name", value: name },
     { key: "email", attribute: "Email", value: email },
-    { key: "country", attribute: "Country", value: country },
-    { key: "tel", attribute: "Tel", value: `${telCode} ${tel}` }
+    
+    { key: "tel", attribute: "Mobile Number", value: tel}
   ];
 };
 
@@ -56,12 +64,31 @@ const getInvestmentData = (cData) => {
 };
 
 const EducQuotation = () => {
+  const [isPolicyModalVisible, setIsPolicyModalVisible] = useState(false);
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+  const [isPolicyAccepted, setIsPolicyAccepted] = useState(false);
+  
 
+  const handleNavigate = () => {
+    navigate(-1);
+  };
+
+const handleCheckboxChange = (e) => {
+  setIsPolicyModalVisible(true);
+  setIsCheckboxChecked(e.target.checked);
+};
+
+const handleModalAccept = () => {
+  setIsPolicyAccepted(true);
+  setIsPolicyModalVisible(false);
+};
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
   const { cData = {}, formData = {} } = location.state || {};
   
-
+  const parsedCData = JSON.parse(cData);
+  
   const [acceptedExclusions, setAcceptedExclusions] = useState(false);
 
   const handleAcceptanceChange = (e) => {
@@ -78,7 +105,7 @@ const EducQuotation = () => {
 
   const clientData = getClientData(formData);
   const policyData = getPolicyData(formData);
-  const investmentData = getInvestmentData(cData);
+  const investmentData = getInvestmentData(parsedCData);
 
   const tableColumns = [
     { title: 'Year', dataIndex: 'year', key: 'year' },
@@ -91,6 +118,15 @@ const EducQuotation = () => {
   ];
 
   return (
+    <>
+      <div className="flex items-center">
+        <button className="mb-5 focus:outline-none hover:text-[#A32A29]">
+          <LeftOutlined className="w-8 h-8" onClick={handleNavigate} />
+        </button>
+        <Title level={5} style={{ marginBottom: '20px' }} className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
+        Education Savings Insurance Cover
+        </Title>
+      </div>
     <Card style={{ border: "1px solid maroon" }}>
       <div style={{ width: "90%", margin: "auto" }}>
         {/* Header */}
@@ -160,7 +196,7 @@ const EducQuotation = () => {
         <h4 style={{ fontWeight: "bold", marginTop: "5px" }}>Fund Projections</h4>
         <Table
           columns={tableColumns}
-          dataSource={cData.fundProjections?.details || []}
+          dataSource={parsedCData.fundProjections?.details || []}
           bordered
           pagination={false}
           style={{ marginBottom: "20px", border: "1px solid maroon" }}
@@ -181,29 +217,39 @@ const EducQuotation = () => {
             <strong>Equity Life Assurance (Kenya) Limited</strong>
           </h3>
         </div>
-      </div>
-      {/* Checkbox for accepting policy exclusions */}
-      <div style={{ margin: '20px 0', textAlign: 'left' }}>
-                <Checkbox
-                    checked={acceptedExclusions}
-                    onChange={handleAcceptanceChange}
-                >
-                    I accept the {" "}
-        <a href="./" style={{ color: "#A32A29" }}>
-            policy exclusions
-        </a>
-                </Checkbox>
-            </div>
-    
-            {/* Buttons */}
-            <div style={{ textAlign: 'left', marginTop: '20px' }}>
-                <Button style={{ marginRight: '10px' }} onClick={handlePrevClick}>Back</Button>
-                <Button type="primary" style={{ marginRight: '10px' }} onClick={handleDownload}>Download</Button>
-                <Button type="primary" style={{ marginRight: '10px' }}>Send to Email</Button>
-                <Button type="primary">Proceed with Payment</Button>
-            </div>
-   
+      </div> 
     </Card>
+    <div style={{ marginTop: "20px" }}>
+        <Checkbox checked={isCheckboxChecked} onChange={handleCheckboxChange}>
+          I accept the{" "}
+          <span onClick={() => setIsPolicyModalVisible(true)} style={{ textAlign: "right", marginTop: "20px", color: "#A32A29" }}>
+            policy exclusions
+          </span>
+        </Checkbox>
+
+        <div style={{ textAlign: "right", marginTop: "20px", color: "#A32A29" }}>
+          <Button
+            type="primary"
+            style={{ marginRight: "10px" }}
+            disabled={!isPolicyAccepted || !isCheckboxChecked}
+          >
+            Continue with Payment
+          </Button>
+          <Button className="mr-4" style={{ marginRight: "10px" }} onClick={handleDownload}>
+            Download
+          </Button>
+          <Button className="mr-4" style={{ marginRight: "10px" }}>
+            Send to Email
+          </Button>
+        </div>
+
+        <PolicyExclusionsModal
+          visible={isPolicyModalVisible}
+          onCancel={() => setIsPolicyModalVisible(false)}
+          onAccept={handleModalAccept}
+        />
+      </div>
+    </>
   );
 };
 

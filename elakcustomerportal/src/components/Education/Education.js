@@ -1,5 +1,6 @@
 import React, {useState,useEffect} from "react";
-import {Steps,Form,Input,Radio,Divider,Typography,Card,Space,DatePicker,Button,Row,Col,Select,Modal,InputNumber,Checkbox} from "antd";
+import {Steps,Form,Input,Radio,message, Divider,Typography,Card,Space,DatePicker,Button,Row,Col,Select,Modal,InputNumber,Checkbox} from "antd";
+import { LeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../../store/redux/features/eduSlice";
@@ -15,8 +16,7 @@ import ugxFlag from '../../assets/flags/ugx.png';
 
 const { Step } = Steps;
 const { Option } = Select;
-
-
+const { Title } = Typography;
 
 
 const Education = () => {
@@ -31,6 +31,7 @@ const Education = () => {
     firstName: '',
     lastName: '',
     tel: '',
+    phoneAreas: '',
     email: '',
     DOB: null,
     targetType: '',
@@ -50,29 +51,67 @@ const Education = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-const eduData = useSelector((state) => state.education.eduData);
-console.log("EduData from Redux:", eduData);
+const cData = useSelector((state) => state.education.eduData);
+const authStatus = useSelector((state) => state.auth.status);
+const isLoading = useSelector((state) => state.education.isLoading);
+  
 
-  const onFinish = async (values) => {
-    try {
-      await form.validateFields();
-      console.log('Received values:', values);
-      console.log('Form Data:', formData);
-      navigate("Educ-Quotation");
-    } catch (errorInfo) {
-      console.log("Failed:", errorInfo);
+const dataToPost = {
+  "firstName": formData.firstName,
+  "lastName": formData.lastName,
+  "tel": formData.tel,
+  "phoneAreas": formData.phoneAreas,
+  "email": formData.email,
+  "DOB": formData.DOB,
+  "targetType": formData.targetType,
+  "TermInYears": formData.TermInYears,
+  "frequency": formData.frequency,
+  "premium": formData.premium,
+  "currency": formData.currency,
+  "startDate": formData.startDate,
+  "endDate": formData.endDate,
+  "gender": formData.gender,
+  };
+  const handleSubmit = async () => {
+    if (authStatus === "succeeded") {
+      try {
+        await dispatch(fetchData(dataToPost)).unwrap();
+        console.log('Form Data:', formData);
+        message.success('Quote generated successfully!');
+        setIsFormSubmitted(true);
+      } catch (error) {
+        message.error('Failed to submit form data.');
+      }
+    } else {
+      message.error('Authentication failed.');
     }
   };
-
   useEffect(() => {
-    if (isFormSubmitted) {
+    if (isFormSubmitted && !isLoading) {
+      const serializableFormData = JSON.parse(JSON.stringify({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        tel: formData.tel,
+        phoneAreas: formData.phoneAreas,
+        email: formData.email,
+        DOB: formData.DOB,
+        targetType: formData.targetType,
+        TermInYears: formData.TermInYears,
+        frequency: formData.frequency,
+        premium: formData.premium,
+        currency: formData.currency,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        gender: formData.gender,
+      }));
+  
+      const serializableCData = JSON.stringify(cData);
+  
       navigate("Educ-Quotation", {
-        state: { formData},
+        state: { formData: serializableFormData, cData: serializableCData },
       });
-      dispatch(fetchData(formData));
     }
-  }, [navigate, formData, dispatch, isFormSubmitted]);
-
+  }, [isFormSubmitted, isLoading, navigate, formData, cData]);
   useEffect(() => {
     if (formData.startDate && formData.TermInYears) {
       const calculatedEndDate = calculateEndDate(formData.startDate, formData.TermInYears);
@@ -80,18 +119,15 @@ console.log("EduData from Redux:", eduData);
       form.setFieldsValue({ endDate: calculatedEndDate });
     }
   }, [formData.startDate, formData.TermInYears,form]);
-
   const handleStartDateChange = (date) => {
     setFormData((prevData) => ({
       ...prevData,
       startDate: date ? moment(date).startOf('day') : null,
     }));
   };
-  
   const handleTermInYearsChange = (value) => {
     setFormData((prevData) => ({ ...prevData, TermInYears: value }));
   };
-
   const calculateEndDate = (startDate, years) => {
     const startMoment = moment.utc(startDate); // Parse as UTC date
     const localStartMoment = startMoment.local(); // Convert to local date
@@ -103,16 +139,14 @@ console.log("EduData from Redux:", eduData);
     }
     return null;
   };
-  
+
   const onChangeCurrency = (value) => {
     setFormData((prevData) => ({
       ...prevData,
       currency: value,
     }));
   };
- 
-
-  const PhoneAreas = [
+  const phoneAreas = [
     { code: "+211", flag: sspFlag, country: "South Sudan" },
     { code: "+243", flag: cdfFlag, country: "DRC" },
     { code: "+250", flag: rwfFlag, country: "Rwanda" },
@@ -120,18 +154,14 @@ console.log("EduData from Redux:", eduData);
     { code: "+255", flag: tzsFlag, country: "Tanzania" },
     { code: "+256", flag: ugxFlag, country: "Uganda" },
   ];
-
   const handleChange = (newValue) => {
-    const area = PhoneAreas.find((item) => item.code === newValue);
+    const area = phoneAreas.find((item) => item.code === newValue);
     setFormData((prevData) => ({
       ...prevData,
       country: area.country,
-      telCode: area.code,
+      phoneAreas: area.code,
     }));
   };
-
-
-  
   const next = () => {
     form.validateFields().then(() => {
       if (current === 0) {
@@ -146,21 +176,18 @@ console.log("EduData from Redux:", eduData);
       console.log('Validation Failed:', errorInfo);
     });
   };
-  
-
+  const handleNavigate = () => {
+    navigate(-1); // Navigates to the previous page
+  };
   const back = () => {
     setCurrent(current - 1);
   };
-
-
   const disabledDate = (current) => {
     return (
       current &&
       (current < moment().subtract(80, 'years') || current > moment().subtract(18, 'years'))
     );
   };
-
-
   const showTermsModal = () => {
     setIsTermsModalVisible(true);
   };
@@ -185,9 +212,6 @@ console.log("EduData from Redux:", eduData);
       selectedOption: e.target.value,
     }));
   };
-
-  
-
   const handleModalOk = () => {
     setIsModalOpen(false);
     if (formData.selectedOption === 'quote') {
@@ -196,15 +220,19 @@ console.log("EduData from Redux:", eduData);
       setCurrent(0); // Open the Personal Information Details step (step 0)
     }
   };
-  
-
-;
-  
+    
   return (
-    <>
-     <br></br>
-     <br></br>
-     <h1 style={{ textAlign: 'left', fontWeight: 'bold', fontSize: '20px', marginBottom: '20px' }}>Education Savings Insurance Cover</h1>
+    <div>
+      <div className="flex items-center">
+        <button className="mb-5 focus:outline-none hover:text-[#A32A29]">
+          <LeftOutlined className="w-8 h-8" onClick={handleNavigate} />
+        </button>
+        <Title level={5} style={{ marginBottom: '20px' }} className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
+        Education Savings Insurance Cover
+        </Title>
+      </div>
+      <br />
+    
       <Steps current={current}>
         <Step title="Personal Details" />
         <Step title="Product Details" />
@@ -212,7 +240,7 @@ console.log("EduData from Redux:", eduData);
        
       </Steps>
       <div style={{ marginTop: 20 }}>
-        <Form form={form} layout="vertical" onFinish={onFinish}>
+        <Form form={form} layout="vertical">
         {current === 0 && (
           
   <>
@@ -254,82 +282,6 @@ console.log("EduData from Redux:", eduData);
     <br></br>
     <Row gutter={16}>
     <Col span={12}>
-        <Form.Item label="Email Address" name="email" rules={[{ required: true, message: 'Please enter your email' }, { type: 'email', message: 'Please enter a valid email' }]}>
-          <Input
-              value={formData.email}
-              onChange={(event) =>
-                setFormData((prevData) => ({
-                  ...prevData,
-                  email: event.target.value,
-                }))
-              }
-          />
-        </Form.Item>
-      </Col>
-      <Col span={12}>
-        <Form.Item label="Telephone No" 
-        name="tel" 
-        rules={[
-          { 
-          required: true, 
-          message: 'Please enter your telephone number' 
-          },
-          {
-            pattern: "^[0-9]{9}$",
-            message: "The Phone number should be 9 digits!",
-          },
-          ]}>
-          <Input
-                addonBefore={
-                  <Select
-                    style={{ width: 100 }}
-                    defaultValue="+254"
-                    onChange={handleChange}
-                  >
-                    {PhoneAreas.map((item) => (
-                  <Option value={item.code} key={item.code}>
-                   <div style={{ display: 'flex', alignItems: 'center' }}>
-                   <img
-                      src={item.flag}
-                      alt={item.country}
-                      style={{ width: '20px', marginRight: '8px' }}
-                    />
-                    {item.code}
-                    </div>
-                  </Option>
-                    ))}
-                  </Select>
-                }
-                value={formData.tel}
-                onChange={(event) =>
-                  setFormData((prevData) => ({
-                    ...prevData,
-                    tel: event.target.value,
-                  }))
-                }
-                style={{ width: "100%" }}
-              />
-        </Form.Item>
-      </Col>
-    </Row>
-    <br></br>
-    <Row gutter={16}>
-    <Col span={12}>
-        <Form.Item label="Date of Birth" name="DOB" rules={[{ required: true, message: 'Please enter your date of birth' }]}>
-          <DatePicker 
-          style={{ width: '100%' }} 
-          disabledDate={disabledDate}
-          value={formData.DOB}
-          onChange={(date) =>
-            setFormData((prevData) => ({
-              ...prevData,
-              DOB: date,
-            }))
-          }
-          />
-        </Form.Item>
-      </Col>
-      <Col span={12}>
       <Form.Item
   label="Gender"
   name="gender"
@@ -353,9 +305,95 @@ console.log("EduData from Redux:", eduData);
 </Form.Item>
 
 </Col>
+    <Col span={12}>
+        <Form.Item label="Date of Birth" name="DOB" rules={[{ required: true, message: 'Please enter your date of birth' }]}>
+          <DatePicker 
+          style={{ width: '100%' }} 
+          disabledDate={disabledDate}
+          value={formData.DOB}
+          onChange={(date) =>
+            setFormData((prevData) => ({
+              ...prevData,
+              DOB: date,
+            }))
+          }
+          />
+        </Form.Item>
+      </Col>
+
 
     </Row>
     <br></br>
+    <Row gutter={16}>
+    <Col span={12}>
+        <Form.Item label="Email Address" name="email" rules={[{ required: true, message: 'Please enter your email' }, { type: 'email', message: 'Please enter a valid email' }]}>
+          <Input
+              value={formData.email}
+              onChange={(event) =>
+                setFormData((prevData) => ({
+                  ...prevData,
+                  email: event.target.value,
+                }))
+              }
+          />
+        </Form.Item>
+      </Col>
+      <Col span={12}>
+  <Form.Item
+    label="Mobile No"
+    name="tel"
+    rules={[
+      {
+        required: true,
+        message: 'Please enter your Mobile number',
+      },
+      {
+        pattern: "^[0-9]{9}$",
+        message: "The Phone number should be 9 digits!",
+      },
+    ]}
+  >
+    <Input
+      addonBefore={
+        <Select
+          style={{ width: 100 }}
+          defaultValue="+254"
+          onChange={(value) =>
+            setFormData((prevData) => ({
+              ...prevData,
+              phoneArea: value,
+            }))
+          }
+        >
+          {phoneAreas.map((item) => (
+            <Option value={item.code} key={item.code}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <img
+                  src={item.flag}
+                  alt={item.country}
+                  style={{ width: '20px', marginRight: '8px' }}
+                />
+                {item.code}
+              </div>
+            </Option>
+          ))}
+        </Select>
+      }
+      value={formData.tel}
+      onChange={(event) =>
+        setFormData((prevData) => ({
+          ...prevData,
+          tel: event.target.value,
+        }))
+      }
+      style={{ width: '100%' }}
+    />
+  </Form.Item>
+</Col>
+
+    </Row>
+    <br></br>
+   
     <Row gutter={16}>
       <Col span={24}>
         <Form.Item
@@ -417,12 +455,9 @@ console.log("EduData from Redux:", eduData);
     <Row gutter={16}>
       <Col span={12}>
         <Form.Item
-          label="Target Type"
-          tooltip="Understand your choice:
-Investment Premium 
-With this option, you can comfortably set a specific sum for your regular insurance payments. 
-Fund value
-By selecting this option, you have the flexibility to set a specific fund value that you aspire 
+          label="What is your intended Target?"
+          tooltip="Investment Premium:You can comfortably set a specific sum for your regular insurance payments. 
+Fund value: You have the flexibility to set a specific fund value that you aspire 
 to achieve over time."
           name="targetType"
           id="targetType"
@@ -505,7 +540,7 @@ to achieve over time."
       <Col span={12}>
         <Form.Item
           name="frequency"
-          label="Premium Frequency"
+          label="How frequently do you want to make your contributions?"
           style={{ width: "100%" }}
         >
           <Select
@@ -606,22 +641,20 @@ to achieve over time."
 )}
       
       {current === 2 && (
-  <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
-    <h4 style={{ marginBottom: '20px' }}>Please, Review and confirm Your Information details to continue</h4>
-    <div>
-      <br />
-      <Card>
+  <Card className="mb-10">
+
+    <p>Please, Review and confirm Your Information details to continue</p>
+    
+      <Card title="Product" className="mb-10">
       <div>
         <Row gutter={16}>
           <Col span={12}>
-            <h5 style={{ color: '#888', marginBottom: '5px' }}>Product</h5>
             <span>Education savings</span>
           </Col>
         </Row>
       </div>
       </Card>
-      
-      <Card title={<h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Personal Information</h4>}>
+      <Card title="Personal Information" className="mb-10">
       <div>
         <Row gutter={16}>
           <Col span={12}>
@@ -637,7 +670,7 @@ to achieve over time."
         <br />
         <Row gutter={16}>
           <Col span={12}>
-            <h4 style={{ color: '#888', marginBottom: '5px' }}>Telephone No</h4>
+            <h4 style={{ color: '#888', marginBottom: '5px' }}>Mobile No</h4>
             <span>{formData.tel}</span>
           </Col>
           <Col span={12}>
@@ -659,8 +692,7 @@ to achieve over time."
         <br />
       </div>
       </Card>
-      
-      <Card title={<h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Policy Information</h4>}>
+      <Card title="Policy Information" className="mb-10">
       
       <Row gutter={16}>
         <Col span={12}>
@@ -699,25 +731,23 @@ to achieve over time."
       
       </Card>
       <br />
-    </div>
-  
-      </div>
-      
+   
+      </Card>
 )}
 
           <div style={{ marginTop: 20 }}>
             {current > 0 && (
               <Button style={{ marginRight: 8 }} onClick={back}>
-                Back
+                Go Back
               </Button>
             )}
             {current < 2 &&  (
               <Button type="primary" onClick={next}>
-                Next
+              Continue
               </Button>
             )}
   {current === 2 && (
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" onClick={handleSubmit}>
                 Generate Quote
               </Button>
             )}
@@ -741,7 +771,7 @@ to achieve over time."
       >
         <p>Privacy policy content goes here...</p>
       </Modal>
-    </>
+    </div>
   );
 };
 
