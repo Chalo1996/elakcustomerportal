@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { resetData } from "../../store/redux/features/gleSlice";
 import darkLogo from "../../assets/dark-logo.png";
 import { useTheme } from "../../store/context/theme-context";
-import ExclusionsModal from "../../shared/Exclusions";
+import FuneralExclusionsModal from "../../components/Funeral Expense/modals/Exclusions";
 
 const FuneralExpenseQuotation = () => {
   const { theme } = useTheme();
@@ -38,6 +38,14 @@ const FuneralExpenseQuotation = () => {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+  };
+
+  const handleCheckbox = (e) => {
+    if (isPolicyChecked) {
+      setIsPolicyChecked(e.target.value);
+    } else {
+      showModal();
+    }
   };
 
   useEffect(() => {
@@ -452,10 +460,7 @@ const FuneralExpenseQuotation = () => {
       <Form className="mt-2">
         <Form.Item name="terms" valuePropName="checked">
           <span>
-            <Checkbox
-              checked={isPolicyChecked}
-              onChange={(e) => setIsPolicyChecked(e.target.checked)}
-            ></Checkbox>
+            <Checkbox checked={isPolicyChecked} onChange={handleCheckbox} />
             <span className="ml-2">
               I accept the{" "}
               <Link onClick={showModal} style={{ color: "#A32A29" }}>
@@ -488,7 +493,7 @@ const FuneralExpenseQuotation = () => {
         </Col>
       </Row>
 
-      <ExclusionsModal
+      <FuneralExclusionsModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         onCancel={handleCancel}

@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { resetData } from "../../store/redux/features/eduSlice";
 import { LeftOutlined } from "@ant-design/icons";
-import PolicyExclusionsModal from "../../components/Group Life/Modals/PolicyExclusionsModal";
+import PolicyExclusionsModal from "../Group Life/Modals/PolicyExclusionsModal";
 
 const { Title } = Typography;
 

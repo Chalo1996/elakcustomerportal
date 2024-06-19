@@ -1,6 +1,6 @@
 import { Modal, Button, Row, Divider } from "antd";
 
-const ExclusionsModal = ({
+const FuneralExclusionsModal = ({
   isModalOpen,
   setIsModalOpen,
   onCancel,
@@ -79,4 +79,4 @@ const ExclusionsModal = ({
   );
 };
 
-export default ExclusionsModal;
+export default FuneralExclusionsModal;
