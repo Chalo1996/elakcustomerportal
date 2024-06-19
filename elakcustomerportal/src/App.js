@@ -164,6 +164,10 @@ function App() {
                       element={<AnnuityQuotation />}
                     />
                     <Route path="*" element={<NotFound />} />
+                    <Route 
+                      path="group-life-assurance/call-back-submission" 
+                      element={<SubmittedCallBack />}
+                    />
                   </Routes>
                 </PortalLayout>
               }

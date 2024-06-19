@@ -4,8 +4,8 @@ import 'tailwindcss/tailwind.css';
 
 import { preventNumericInput, preventTextInput, disabledDate, PhoneAreas } from "./Utilities.js";
 import dayjs from 'dayjs';
-import TermsModal from './Modals/TermsModal.js';
-import PrivacyPolicyModal from './Modals/PrivacyPolicyModal.js';
+import TermsModal from './modals/TermsModal.js';
+import PrivacyPolicyModal from './modals/PrivacyPolicyModal.js';
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -16,7 +16,7 @@ const ChoosePhoneArea = ({ value, onChange }) => (
       <Option key={area.code} value={area.code}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <span>{area.code}</span>
-          <img src={area.flag} alt={area.country} style={{ width: '20px', marginLeft: '8px' }} />
+          <img src={area.flag} alt={area.country} style={{ width: '25px', marginLeft: '8px' }} />
         </div>
       </Option>
     ))}
@@ -40,13 +40,13 @@ const ContactDetails = ({ form, formData, setFormData }) => {
   };
 
   return (
-    <Form layout="vertical" form={form} initialValues={formData}>
-      <Row gutter={[16, 16]} >
+    <Form layout="vertical" form={form} initialValues={formData} >
+      <Row gutter={[16, 16]} style={{ marginBottom: '25px' }} >
         <Col span={24}>
-          <Title level={5} style={{ marginBottom: '20px' }}>Please enter details of contact person</Title>
+          <Title level={5} >Please enter details of contact person</Title>
         </Col>
       </Row>
-      <Row gutter={[16, 16]} style={{ marginBottom: '10px' }} >
+      <Row gutter={[16, 16]} style={{ marginBottom: '25px' }} >
         <Col xs={24} sm={12}>
           <Form.Item
             label="First Name"
@@ -76,7 +76,7 @@ const ContactDetails = ({ form, formData, setFormData }) => {
           </Form.Item>
         </Col>
       </Row>
-      <Row gutter={[16, 16]} style={{ marginBottom: '10px' }} >
+      <Row gutter={[16, 16]} style={{ marginBottom: '25px' }} >
         <Col xs={24} sm={12}>
           <Form.Item
             label="Gender"
@@ -94,21 +94,6 @@ const ContactDetails = ({ form, formData, setFormData }) => {
         </Col>
         <Col xs={24} sm={12}>
           <Form.Item
-            label="Email Address"
-            name="email"
-            rules={[{ required: true, message: "Please enter your email address!" }]}
-          >
-            <Input
-              className="custom-input"
-              placeholder="Enter your email address"
-              onChange={(e) => handleInputChange(e.target.value, 'email')}
-            />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row gutter={[16, 16]} style={{ marginBottom: '10px' }}>
-      <Col xs={24} sm={12}>
-          <Form.Item
             label="Date of Birth"
             name="dateOfBirth"
             rules={[{ required: true, message: "Please enter your date of birth!" }]}
@@ -118,6 +103,21 @@ const ContactDetails = ({ form, formData, setFormData }) => {
               disabledDate={disabledDate}
               onChange={(date) => handleInputChange(date, 'dateOfBirth')}
               value={formData.dateOfBirth ? dayjs(formData.dateOfBirth) : null}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row gutter={[16, 16]} style={{ marginBottom: '25px' }}>
+      <Col xs={24} sm={12}>
+          <Form.Item
+            label="Email Address"
+            name="email"
+            rules={[{ required: true, message: "Please enter your email address!" }]}
+          >
+            <Input
+              className="custom-input"
+              placeholder="Enter your email address"
+              onChange={(e) => handleInputChange(e.target.value, 'email')}
             />
           </Form.Item>
         </Col>
@@ -145,7 +145,7 @@ const ContactDetails = ({ form, formData, setFormData }) => {
           </Form.Item>
         </Col>
       </Row>
-      <Row>
+      <Row gutter={[16, 16]}>
         <Col span={24}>
           <Form.Item
             name="terms"
