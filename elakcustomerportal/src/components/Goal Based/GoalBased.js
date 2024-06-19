@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Steps, Form, Input, Radio, Divider, Typography, DatePicker, Button, Row, Col, Select, Modal, InputNumber, Checkbox } from "antd";
+import React, {useState,useEffect} from "react";
+import {Steps,Form,Input,Radio,message, Divider,Typography,Card,Space,DatePicker,Button,Row,Col,Select,Modal,InputNumber,Checkbox} from "antd";
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { fetchData } from "../../store/redux/features/eduSlice";
 import moment from "moment";
 import 'tailwindcss/tailwind.css';
 
@@ -15,22 +17,24 @@ const { Step } = Steps;
 const { Option } = Select;
 
 
-
-
-const GoalBased = () => {
+const Goalbased = () => {
   const [current, setCurrent] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
   const [isPrivacyModalVisible, setIsPrivacyModalVisible] = useState(false);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [form] = Form.useForm();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    telephone: '',
+    tel: '',
+    phoneAreas: '',
     email: '',
-    dateOfBirth: null,
+    DOB: null,
+    targetType: '',
+    TermInYears: 0,
     GoalType: '',
-    termInMonths: 0,
     frequency: '',
     premium: 0,
     currency: 'KES',
@@ -39,36 +43,88 @@ const GoalBased = () => {
     currencies: [
       { code: 'KES', name: 'KES' },
       { code: 'USD', name: 'USD' },
-
+    
     ],
   });
- 
-
-  const handleGoalTypeChange = (value) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      GoalType: value,
-    }));
-  };
 
   const navigate = useNavigate();
-  const onFinish = async (values) => {
-    try {
-      await form.validateFields();
-      console.log('Received values:', values);
-      navigate("Goal-Quotation");
-    } catch (errorInfo) {
-      console.log("Failed:", errorInfo);
+  const dispatch = useDispatch();
+
+const cData = useSelector((state) => state.Goalbased.eduData);
+const authStatus = useSelector((state) => state.auth.status);
+  const isLoading = useSelector((state) => state.Goalbased.isLoading);
+  
+
+const dataToPost = {
+  "firstName": formData.firstName,
+  "lastName": formData.lastName,
+  "tel": formData.tel,
+  "phoneAreas": formData.phoneAreas,
+  "email": formData.email,
+  "DOB": formData.DOB,
+  "targetType": formData.targetType,
+  "TermInYears": formData.TermInYears,
+  "frequency": formData.frequency,
+  "GoalType": formData.GoalType,
+  "premium": formData.premium,
+  "currency": formData.currency,
+  "startDate": formData.startDate,
+  "endDate": formData.endDate,
+  "gender": formData.gender,
+  };
+
+
+  const handleSubmit = async () => {
+    if (authStatus === "succeeded") {
+      try {
+        await dispatch(fetchData(dataToPost)).unwrap();
+        console.log('Form Data:', formData);
+        message.success('Quote generated successfully!');
+        setIsFormSubmitted(true);
+      } catch (error) {
+        message.error('Failed to submit form data.');
+      }
+    } else {
+      message.error('Authentication failed.');
     }
   };
 
+
   useEffect(() => {
-    if (formData.startDate && formData.termInYears) {
-      const calculatedEndDate = calculateEndDate(formData.startDate, formData.termInYears);
+    if (isFormSubmitted && !isLoading) {
+      const serializableFormData = JSON.parse(JSON.stringify({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        tel: formData.tel,
+        phoneAreas: formData.phoneAreas,
+        email: formData.email,
+        DOB: formData.DOB,
+        targetType: formData.targetType,
+        TermInYears: formData.TermInYears,
+        frequency: formData.frequency,
+        GoalType: formData.GoalType,
+        premium: formData.premium,
+        currency: formData.currency,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        gender: formData.gender,
+      }));
+  
+      const serializableCData = JSON.stringify(cData);
+  
+      navigate("Goal-Quotation", {
+        state: { formData: serializableFormData, cData: serializableCData },
+      });
+    }
+  }, [isFormSubmitted, isLoading, navigate, formData, cData]);
+
+  useEffect(() => {
+    if (formData.startDate && formData.TermInYears) {
+      const calculatedEndDate = calculateEndDate(formData.startDate, formData.TermInYears);
       setFormData((prevData) => ({ ...prevData, endDate: calculatedEndDate }));
       form.setFieldsValue({ endDate: calculatedEndDate });
     }
-  }, [formData.startDate, formData.termInYears, form]);
+  }, [formData.startDate, formData.TermInYears,form]);
 
   const handleStartDateChange = (date) => {
     setFormData((prevData) => ({
@@ -76,17 +132,17 @@ const GoalBased = () => {
       startDate: date ? moment(date).startOf('day') : null,
     }));
   };
-
-  const handletermInMonthsChange = (value) => {
-    setFormData((prevData) => ({ ...prevData, termInYears: value }));
+  
+  const handleTermInYearsChange = (value) => {
+    setFormData((prevData) => ({ ...prevData, TermInYears: value }));
   };
 
   const calculateEndDate = (startDate, years) => {
     const startMoment = moment.utc(startDate); // Parse as UTC date
     const localStartMoment = startMoment.local(); // Convert to local date
-
+  
     console.log('startDate:', localStartMoment.format('YYYY-MM-DD'));  // Debug log
-
+  
     if (localStartMoment.isValid() && years) {
       return localStartMoment.add(years, 'years');
     }
@@ -100,8 +156,14 @@ const GoalBased = () => {
     }));
   };
 
-
-  const PhoneAreas = [
+  const handleGoalTypeChange = (value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      GoalType: value,
+    }));
+  };
+  
+  const phoneAreas = [
     { code: "+211", flag: sspFlag, country: "South Sudan" },
     { code: "+243", flag: cdfFlag, country: "DRC" },
     { code: "+250", flag: rwfFlag, country: "Rwanda" },
@@ -109,22 +171,22 @@ const GoalBased = () => {
     { code: "+255", flag: tzsFlag, country: "Tanzania" },
     { code: "+256", flag: ugxFlag, country: "Uganda" },
   ];
-
   const handleChange = (newValue) => {
-    const area = PhoneAreas.find((item) => item.code === newValue);
+    const area = phoneAreas.find((item) => item.code === newValue);
     setFormData((prevData) => ({
       ...prevData,
       country: area.country,
-      telCode: area.code,
+      phoneAreas: area.code,
     }));
   };
-
-
 
   const next = () => {
     form.validateFields().then(() => {
       if (current === 0) {
-        setIsModalOpen(true);
+        setIsModalOpen(true); // Only open modal for step 0
+      } else if (current === 2) {
+        // Submit the form here
+        form.submit();
       } else {
         setCurrent(current + 1); // Directly go to next step for other steps
       }
@@ -132,22 +194,15 @@ const GoalBased = () => {
       console.log('Validation Failed:', errorInfo);
     });
   };
-
-
-
   const back = () => {
     setCurrent(current - 1);
   };
-
-
   const disabledDate = (current) => {
     return (
       current &&
       (current < moment().subtract(80, 'years') || current > moment().subtract(18, 'years'))
     );
   };
-
-
   const showTermsModal = () => {
     setIsTermsModalVisible(true);
   };
@@ -172,12 +227,15 @@ const GoalBased = () => {
       selectedOption: e.target.value,
     }));
   };
+
   const handleModalOk = () => {
     setIsModalOpen(false);
-    setCurrent(current + 1);
+    if (formData.selectedOption === 'quote') {
+      setCurrent(current + 1); // Proceed to the next step
+    } else if (formData.selectedOption === 'callback') {
+      setCurrent(0); // Open the Personal Information Details step (step 0)
+    }
   };
-
-  ;
 
   return (
     <>
@@ -191,7 +249,7 @@ const GoalBased = () => {
 
       </Steps>
       <div style={{ marginTop: 20 }}>
-        <Form form={form} layout="vertical" onFinish={onFinish}>
+        <Form form={form} layout="vertical" >
           {current === 0 && (
 
             <>
@@ -265,7 +323,7 @@ const GoalBased = () => {
                           defaultValue="+254"
                           onChange={handleChange}
                         >
-                          {PhoneAreas.map((item) => (
+                          {phoneAreas.map((item) => (
                             <Option value={item.code} key={item.code}>
                               <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <img
@@ -521,36 +579,36 @@ to achieve over time."
               </Row>
               <br></br>
               <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item
-                    label="How many years would you wish to save?"
-                    name="termInMonths"
-                    style={{ width: "100%" }}
-                    rules={[
-                      {
-                        type: 'number',
-                        message: 'Please select the term in years.',
-                      },
-                      {
-                        required: true,
-                        message: 'Please input the term in years.',
-                      },
-                    ]}
-                  >
-                    <Select
-                      id="termInMonths"
-                      value={formData.termInYears}
-                      onChange={handletermInMonthsChange}
-                      style={{ width: "100%" }}
-                    >
-                      {Array.from({ length: 13 }, (_, i) => (
-                        <Select.Option key={i + 3} value={i + 3}>
-                          {i + 3}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
+              <Col span={12}>
+        <Form.Item
+          label="How many years would you wish to save?"
+          name="TermInYears"
+          style={{ width: "100%" }}
+          rules={[
+            {
+              type: 'number',
+              message: 'Please select the term in years.',
+            },
+            {
+              required: true,
+              message: 'Please input the term in years.',
+            },
+          ]}
+        >
+          <Select
+            id="TermInYears"
+            value={formData.TermInYears}
+            onChange={handleTermInYearsChange}
+            style={{ width: "100%" }}
+          >
+            {Array.from({ length: 13 }, (_, i) => (
+              <Select.Option key={i + 3} value={i + 3}>
+                {i + 3}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+      </Col>
                 <Col span={12}>
                   <Form.Item
                     name="frequency"
@@ -728,7 +786,7 @@ to achieve over time."
               </Button>
             )}
             {current === 2 && (
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" onClick={handleSubmit}>
                 Generate Quote
               </Button>
             )}
@@ -756,4 +814,4 @@ to achieve over time."
   );
 };
 
-export default GoalBased;
+export default Goalbased;

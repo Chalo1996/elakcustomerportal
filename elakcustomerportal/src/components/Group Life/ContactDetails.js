@@ -159,7 +159,7 @@ const ContactDetails = ({ form, formData, setFormData }) => {
               checked={formData.termschecked}
               onChange={termsAndPrivacyPolicyCheckBox}
             >
-              I Accept the
+              I accept the
               <span
                 style={{ color: "#A32A29", cursor: "pointer" }}
                 onClick={(e) => { e.stopPropagation(); setTermsVisible(true); }}

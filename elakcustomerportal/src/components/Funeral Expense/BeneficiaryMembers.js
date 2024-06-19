@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Form, InputNumber, Checkbox } from "antd";
+import { Form, InputNumber, Switch } from "antd";
 
 const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
   // eslint-disable-next-line
@@ -21,28 +21,31 @@ const BeneficiaryMembersForm = ({ form, formData, setFormData }) => {
   return (
     <>
       <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 mt-3 flex flex-col gap-4">
-        <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
+        <p className="font-open-sans text-[16px] font-semibold leading-[28px] text-left">
           Please enter the number of family members to be covered
         </p>
       </div>
       {isIndividual && (
         <Form form={form} layout="vertical">
           <div className="grid md:grid-cols-2 gap-4">
-            <Form.Item label="" style={{ marginBottom: "20px" }}>
-              <Checkbox
+            <Form.Item
+              label="Do you want to cover your spouse?"
+              style={{ marginBottom: "20px" }}
+            >
+              <Switch
                 checked={formData.spouse}
-                onChange={(e) =>
+                onChange={(checked) =>
                   setFormData({
                     ...formData,
-                    spouse: e.target.checked,
-                    spouseNumber: e.target.checked ? 1 : 0,
+                    spouse: checked,
+                    spouseNumber: checked ? 1 : 0,
                   })
                 }
                 className="flex items-center mb-3 font-open-sans text-base font-semibold leading-35 text-left"
-              >
-                Spouse
-              </Checkbox>
-              <p className="text-[#929497] ml-6">Checkbox to select spouse</p>
+              />
+              <p className="text-[#929497]">
+                Toggle switch to select/unselect spouse
+              </p>
             </Form.Item>
             <Form.Item
               label="How many children do you want covered?"
