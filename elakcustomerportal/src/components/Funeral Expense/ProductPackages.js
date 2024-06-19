@@ -72,7 +72,7 @@ const ProductPackagesForm = ({ form, formData, setFormData }) => {
   return (
     <>
       <div className="w-[710px] h-[76px] top-[408px] left-[425px] mt-3 mb-10 py-3 px-0 flex flex-col gap-1">
-        <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
+        <p className="font-open-sans text-[16px] font-semibold leading-[28px] text-left">
           Please select your preferred product package.
         </p>
         <p className="text-sm font-normal font-open-sans text-left text-[#929497]">

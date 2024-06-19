@@ -19,7 +19,7 @@ const ConfirmDetailsForm = ({ formData }) => {
 
   return (
     <Card className="mb-10 mt-10">
-      <p className="font-open-sans text-[15px] font-semibold text-left">
+      <p className="font-open-sans text-[16px] font-semibold leading-[28px] text-left">
         To continue, please confirm your insurance purchase details
       </p>
 
