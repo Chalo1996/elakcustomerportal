@@ -11,25 +11,27 @@ const ConfirmDetailsForm = ({ formData, form }) => {
         <Row gutter={[16, 16]}>
           <Col xs={24} sm={24} md={12}>
             <div className='flex flex-col items-start justify-start mb-4'>
-              <p className=' text-[#929497]'>Full Name</p>
+              <p className='text-[#929497]'>Full Name</p>
               <p>
                 {formData.firstname} {formData.lastname}
               </p>
             </div>
             <div className='flex flex-col items-start justify-start mb-4'>
-              <p className=' text-[#929497]'>Gender</p>
+              <p className='text-[#929497]'>Gender</p>
               <p>{formData.gender}</p>
             </div>
             <div className='flex flex-col items-start justify-start mb-4'>
-              <p className=' text-[#929497]'>Email Address</p>
+              <p className='text-[#929497]'>Email Address</p>
               <p>{formData.email}</p>
             </div>
+          </Col>
+          <Col xs={24} sm={24} md={12}>
             <div className='flex flex-col items-start justify-start mb-4'>
-              <p className=' text-[#929497]'>Country</p>
+              <p className='text-[#929497]'>Country</p>
               <p>{formData.country}</p>
             </div>
             <div className='flex flex-col items-start justify-start mb-4'>
-              <p className=' text-[#929497]'>Mobile Number</p>
+              <p className='text-[#929497]'>Mobile Number</p>
               <p>
                 {formData.countryCode}
                 {formData.phone}
@@ -43,19 +45,27 @@ const ConfirmDetailsForm = ({ formData, form }) => {
         <Row gutter={[16, 16]}>
           <Col xs={24} sm={24} md={12}>
             <div className='flex flex-col items-start justify-start mb-4'>
-              <p className=' text-[#929497]'>Sum Assured</p>
-              <p>{formData.sumAssured}</p>
+              <p className='text-[#929497]'>Sum Assured</p>
+              <p>KES {formData.sumAssured.toLocaleString()}</p>
             </div>
+          </Col>
+          <Col xs={24} sm={24} md={12}>
             <div className='flex flex-col items-start justify-start mb-4'>
-              <p className=' text-[#929497]'>Terms In Months</p>
+              <p className='text-[#929497]'>Terms In Months</p>
               <p>{formData.termsInMonths}</p>
             </div>
+          </Col>
+        </Row>
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={12}>
             <div className='flex flex-col items-start justify-start mb-4'>
-              <p className=' text-[#929497]'>Premium Frequency</p>
+              <p className='text-[#929497]'>Premium Frequency</p>
               <p>{formData.frequency}</p>
             </div>
+          </Col>
+          <Col xs={24} sm={24} md={12}>
             <div className='flex flex-col items-start justify-start mb-4'>
-              <p className=' text-[#929497]'>Number of Premium Installments</p>
+              <p className='text-[#929497]'>Number of Premium Installments</p>
               <p>{formData.installments}</p>
             </div>
           </Col>
@@ -66,7 +76,7 @@ const ConfirmDetailsForm = ({ formData, form }) => {
         <Row gutter={[16, 16]}>
           <Col xs={24} sm={24} md={12}>
             <div className='flex flex-col items-start justify-start mb-4'>
-              <p className=' text-[#929497]'>Retrenchment Cover/ Job Loss</p>
+              <p className='text-[#929497]'>Retrenchment Cover/ Job Loss</p>
               <p>{formData.retrenchment ? "Yes" : "No"}</p>
             </div>
           </Col>

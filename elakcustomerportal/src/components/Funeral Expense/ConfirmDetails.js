@@ -10,6 +10,13 @@ const ConfirmDetailsForm = ({ formData }) => {
     return `${year}-${month}-${day}`;
   };
 
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("en-KE", {
+      style: "currency",
+      currency: "KES",
+    }).format(amount);
+  };
+
   return (
     <Card className="mb-10 mt-10">
       <p className="font-open-sans text-[15px] font-semibold text-left">
@@ -39,7 +46,7 @@ const ConfirmDetailsForm = ({ formData }) => {
             </div>
             <div className="flex flex-col items-start justify-start mb-4">
               <p className=" text-[#929497]">Sum Assured</p>
-              <p>{formData.benefitAmount}</p>
+              <p>{formatCurrency(formData.benefitAmount)}</p>
             </div>
           </Col>
         </Row>

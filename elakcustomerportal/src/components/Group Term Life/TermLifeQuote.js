@@ -38,15 +38,15 @@ phoneNumber: '',
 premiumType: '',
 isCoverLoan:'',
 coverType: '',
-principalAmount: '',
-termInYears: '',
-installmentsPerAnnum: '',
+principalAmount: 1000000,
+termInYears: 4,
+installmentsPerAnnum: 12,
 annualEscalationRate: 0,
 annualInterestRate: 23,
-singleJoint: '',
+singleJoint: 'SINGLE',
 loanType: '',
 sumAssured: 1000000,
-termInYearsCover: '',
+termInYearsCover: 15,
 benefitEscalationCover: '',
 acceleratedCritalIllness: '',
 percentageOfPremToBReturned: '',
@@ -274,6 +274,12 @@ premiumFrequency: formData.premiumFrequency,
 
 
   fetch('https://sisos-eu.azurewebsites.net/api/cmd', {
+};
+
+function getOutData(outData) {
+    console.log('Out Data:', outData);
+}
+fetch('https://sisos-eu.azurewebsites.net/api/cmd', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -295,11 +301,12 @@ premiumFrequency: formData.premiumFrequency,
     } 
     else{  
       setQuotationData(outData.premiumData[0]);
+      console.log(outData);
       console.log(quotationData);
     }
   })
   .catch(error => {
-    console.error('Error:', error.message);
+    //console.error('Error:', error.message);
    });
    console.log('ContextObject', contextObject);
 
@@ -774,7 +781,7 @@ style={{ width: '100%' }}>
 <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
 <h4 style={{ marginBottom: '20px' }}>Please, Review and confirm Your Information details to continue</h4>
 <div>
-<br />
+<br/>
 <div>
 <Row gutter={16}>
 <Col span={12}>
@@ -788,7 +795,7 @@ style={{ width: '100%' }}>
 
 <h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Personal Information</h4>
 <br/>
-{/*----------------------------------PERSONAL DETAILS-----------------------------------------*/}
+{/*---------------------------------PERSONAL DETAILS-----------------------------------------*/}
 <div>
 <Row gutter={16}>
 <Col span={12}>
