@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { Table, Card, Row, Col, Checkbox, Button } from 'antd';
+import { Table, Card, Row, Col, Checkbox, Button, Typography } from 'antd';
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { resetData } from "../../store/redux/features/eduSlice";
+import { useNavigate } from "react-router-dom";
+import { resetData } from "../../store/redux/features/goalSlice";
+import { LeftOutlined } from "@ant-design/icons";
+import PolicyExclusionsModal from "../../components/Group Life/Modals/PolicyExclusionsModal";
+
+const { Title } = Typography;
 
 const renderFormattedValue = (value) => Math.round(value).toLocaleString("en-us");
 const formatCurrency = (value) => `KES ${Math.round(value).toLocaleString()}`;
@@ -21,7 +26,6 @@ const getClientData = (formData) => {
   return [
     { key: "name", attribute: "Name", value: name },
     { key: "email", attribute: "Email", value: email },
-    
     { key: "tel", attribute: "Mobile Number", value: tel}
   ];
 };
@@ -59,7 +63,25 @@ const getInvestmentData = (cData) => {
 };
 
 const GoalQuotation = () => {
+  const [isPolicyModalVisible, setIsPolicyModalVisible] = useState(false);
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+  const [isPolicyAccepted, setIsPolicyAccepted] = useState(false);
+  
 
+  const handleNavigate = () => {
+    navigate(-1);
+  };
+
+const handleCheckboxChange = (e) => {
+  setIsPolicyModalVisible(true);
+  setIsCheckboxChecked(e.target.checked);
+};
+
+const handleModalAccept = () => {
+  setIsPolicyAccepted(true);
+  setIsPolicyModalVisible(false);
+};
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
   const { cData = {}, formData = {} } = location.state || {};
@@ -95,6 +117,15 @@ const GoalQuotation = () => {
   ];
 
   return (
+    <>
+      <div className="flex items-center">
+        <button className="mb-5 focus:outline-none hover:text-[#A32A29]">
+          <LeftOutlined className="w-8 h-8" onClick={handleNavigate} />
+        </button>
+        <Title level={5} style={{ marginBottom: '20px' }} className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
+        Goalbased Savings Insurance Cover
+        </Title>
+      </div>
     <Card style={{ border: "1px solid maroon" }}>
       <div style={{ width: "90%", margin: "auto" }}>
         {/* Header */}
@@ -104,7 +135,7 @@ const GoalQuotation = () => {
               EQUITY LIFE ASSURANCE (KENYA) LIMITED
             </h2>
             <h3 style={{ fontWeight: "bold", marginBottom: 0 }}>Quotation</h3>
-            <h3 style={{ fontWeight: "bold", marginBottom: 0 }}>Education Savings Product</h3>
+            <h3 style={{ fontWeight: "bold", marginBottom: 0 }}>Goalbased Savings Product</h3>
           </Col>
           <Col>
             <img
@@ -185,29 +216,39 @@ const GoalQuotation = () => {
             <strong>Equity Life Assurance (Kenya) Limited</strong>
           </h3>
         </div>
-      </div>
-      {/* Checkbox for accepting policy exclusions */}
-      <div style={{ margin: '20px 0', textAlign: 'left' }}>
-                <Checkbox
-                    checked={acceptedExclusions}
-                    onChange={handleAcceptanceChange}
-                >
-                    I accept the {" "}
-        <a href="./" style={{ color: "#A32A29" }}>
-            policy exclusions
-        </a>
-                </Checkbox>
-            </div>
-    
-            {/* Buttons */}
-            <div style={{ textAlign: 'left', marginTop: '20px' }}>
-                <Button style={{ marginRight: '10px' }} onClick={handlePrevClick}>Back</Button>
-                <Button type="primary" style={{ marginRight: '10px' }} onClick={handleDownload}>Download</Button>
-                <Button type="primary" style={{ marginRight: '10px' }}>Send to Email</Button>
-                <Button type="primary">Continue with Payment</Button>
-            </div>
-   
+      </div> 
     </Card>
+    <div style={{ marginTop: "20px" }}>
+        <Checkbox checked={isCheckboxChecked} onChange={handleCheckboxChange}>
+          I accept the{" "}
+          <span onClick={() => setIsPolicyModalVisible(true)} style={{ textAlign: "right", marginTop: "20px", color: "#A32A29" }}>
+            policy exclusions
+          </span>
+        </Checkbox>
+
+        <div style={{ textAlign: "right", marginTop: "20px", color: "#A32A29" }}>
+          <Button
+            type="primary"
+            style={{ marginRight: "10px" }}
+            disabled={!isPolicyAccepted || !isCheckboxChecked}
+          >
+            Continue with Payment
+          </Button>
+          <Button className="mr-4" style={{ marginRight: "10px" }} onClick={handleDownload}>
+            Download
+          </Button>
+          <Button className="mr-4" style={{ marginRight: "10px" }}>
+            Send to Email
+          </Button>
+        </div>
+
+        <PolicyExclusionsModal
+          visible={isPolicyModalVisible}
+          onCancel={() => setIsPolicyModalVisible(false)}
+          onAccept={handleModalAccept}
+        />
+      </div>
+    </>
   );
 };
 

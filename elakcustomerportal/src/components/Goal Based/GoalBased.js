@@ -2,7 +2,7 @@ import React, {useState,useEffect} from "react";
 import {Steps,Form,Input,Radio,message, Divider,Typography,Card,Space,DatePicker,Button,Row,Col,Select,Modal,InputNumber,Checkbox} from "antd";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchData } from "../../store/redux/features/eduSlice";
+import { fetchData } from "../../store/redux/features/goalSlice";
 import moment from "moment";
 import 'tailwindcss/tailwind.css';
 
@@ -50,7 +50,7 @@ const Goalbased = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-const cData = useSelector((state) => state.Goalbased.eduData);
+const cData = useSelector((state) => state.Goalbased.goalbasedData);
 const authStatus = useSelector((state) => state.auth.status);
   const isLoading = useSelector((state) => state.Goalbased.isLoading);
   

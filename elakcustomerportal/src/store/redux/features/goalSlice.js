@@ -5,14 +5,14 @@ const url = "https://sisos-eu.azurewebsites.net/api/cmd";
 
 // Initial state with added error field and isLoading set to false initially
 const initialState = {
-  eduData: [],
+  goalbasedData: [],
   isLoading: false,
   error: null,
 };
 
 // Async thunk for fetching data
 export const fetchData = createAsyncThunk(
-  "Goalbased/fetchData",
+  "goalbased/fetchData",
   async (data, thunkAPI) => {
     console.log("Fetching data...");
     const state = thunkAPI.getState();
@@ -35,7 +35,7 @@ export const fetchData = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Goalbased response: ", response);
+      console.log("goalbased response: ", response);
       return response.data.outData;
     } catch (error) {
       // Handling error response
@@ -45,8 +45,8 @@ export const fetchData = createAsyncThunk(
 );
 
 // Slice definition
-const GoalbasedSlice = createSlice({
-  name: "Goalbased",
+const goalbasedSlice = createSlice({
+  name: "goalbased",
   initialState: initialState,
   reducers: {
     resetData: (state) => {
@@ -75,6 +75,6 @@ const GoalbasedSlice = createSlice({
   },
 });
 
-export const { resetGoalbasedData } = GoalbasedSlice.actions;
+export const { resetGoalbasedData } = goalbasedSlice.actions;
 
-export const { reducer: GoalbasedReducer } = GoalbasedSlice;
+export const { reducer: goalbasedReducer } = goalbasedSlice;
