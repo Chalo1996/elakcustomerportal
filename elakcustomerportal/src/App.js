@@ -38,6 +38,7 @@ import AnnuityPage from "./pages/AnnuityPages/Annuity";
 import GroupCustomer from "./components/Group Critical Illness/GroupCustomer";
 import UploadDetails from "./components/Group Critical Illness/UploadDetails";
 import AnnuityQuotation from "./pages/AnnuityPages/Quotation";
+import SubmittedCallBack from "./components/Group Life/SubmittedCallBackForm";
 
 function App() {
   const dispatch = useDispatch();
