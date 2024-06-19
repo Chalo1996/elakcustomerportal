@@ -72,7 +72,7 @@ const coverTypes = { INDIVIDUAL: 'Individual', KEYMANRISK: 'Another Key Person',
 const countryCodes = { Kenya: '+254', Uganda: '+256', Tanzania: '+255', Rwanda: '+250', 'South Sudan': '+211', DRC: '+243' };
 const acceleratedCI = { YES: 'YES', NO: 'NO',};
 
-const PhoneAreas = [
+const phoneAreas = [
   { code: "+211", flag: sspFlag, country: "South Sudan" },
   { code: "+243", flag: cdfFlag, country: "DRC" },
   { code: "+250", flag: rwfFlag, country: "Rwanda" },
@@ -251,7 +251,7 @@ const columns = [
 ];
 const personalCredentials = [
 { key: 'name', attribute: 'Name', value: formData.name },
-//{ key: 'country', attribute: 'Country', value: formData.country},
+{ key: 'country', attribute: 'Country', value: formData.country},
 { key: 'phone', attribute: 'Phone', value: formData.phoneNumber},
 { key: 'email', attribute: 'Email', value: formData.email },
 ];
@@ -434,17 +434,49 @@ return current && (current > today || current > eighteenYearsAgo);
 }}/>
 </Form.Item>
 
-<Form.Item
-label="Mobile Number"
-name="phoneNumber"
-rules={[{ required: true, message: 'Please input your phone number!'}]}>
-<Input
-name="phoneNumber"
-placeholder="712345678"
-addonBefore={countryCodes[formData.country]}
-value={formData.phoneNumber}
-onChange={handleInputChange}/>
-</Form.Item>
+
+
+        <Form.Item
+            label="Mobile No"
+            name="tel"
+            rules={[
+              { required: true, message: 'Please enter your Mobile number',},{ pattern: "^[0-9]{9}$", message: "The Phone number should be 9 digits!",},]}>
+            <Input
+              addonBefore={
+                <Select
+                  style={{ width: 100 }}
+                  defaultValue="+254"
+                  onChange={(value) =>
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      phoneArea: value,
+                    }))
+                  }>
+                  {phoneAreas.map((item) => (
+                    <Option value={item.code} key={item.code}>
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <img
+                          src={item.flag}
+                          alt={item.country}
+                          style={{ width: '20px', marginRight: '8px' }}/>
+                        {item.code}
+                      </div>
+                    </Option>
+                  ))}
+                </Select>
+              }
+              value={formData.phoneNumber}
+              onChange={(event) =>
+                setFormData((prevData) => ({
+                  ...prevData,
+                  phoneNumber: event.target.value,
+                }))
+              }
+              style={{ width: '100%' }}/>
+          </Form.Item>
+
+
+
 </Col>
 
 <Col span={12}>
@@ -504,7 +536,7 @@ style={{ width: '100%' }}>
 <Item
 name="coverType"
 rules={[{ required: true, message: 'This field is required' }]}
-label="Do you want a cover for individual protection">
+label="Do you want a cover for individual protection?">
 <Select
 placeholder="Individual"
 value={formData.coverType}
@@ -775,7 +807,7 @@ style={{ width: '100%' }}>
 <>
 {/*------------------------------------Review Page----------------------------------------------------------------*/}
   {!isDivVisible ? (
-      <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
+      <div style={{ padding: '20px', backgroundColor: 'white', border: '1px solid #ccc', borderRadius: '5px' }}>
       <h4 style={{ marginBottom: '20px' }}>Please, Review and confirm Your Information details to continue</h4>
       <div>
       <br/>
@@ -936,39 +968,8 @@ style={{ width: '100%' }}>
       </div>
       <Divider/>
       </div>
-      <div>
-      <Checkbox
-      onChange={handlePolicyCheckboxChange}>Policy Exclusions</Checkbox>
-      {isModalVisible && (
-      <div style={{ width: '100%', height: '50%', overflowY: 'auto', position: 'relative', border: '1px solid #ccc', padding: '16px', boxSizing: 'border-box' }}>
-      <h3>Policy Exclusions</h3>
-      <p>
-      When considering term life insurance, it's important to be aware of
-      potential policy exclusions that may affect coverage. Common exclusions
-      often include pre-existing conditions, where deaths resulting from undisclosed
-      medical conditions are not covered. Many policies have a suicide exclusion clause,
-      typically within the first two years of the policy, meaning if the policyholder
-      commits suicide during this period, the insurer may not pay out the death benefit.
 
-      Engaging in hazardous activities, such as extreme sports like skydiving or scuba diving,
-      may also lead to exclusions. Deaths resulting from these activities might not be covered
-      if they were not disclosed during the application process. Similarly, deaths occurring
-      during illegal activities, including drug use or committing a crime, are often excluded from coverage.
 
-      Acts of war and terrorism can also be excluded from term life insurance policies.
-      This means that if the policyholder dies due to war or terrorism, the insurance company may not pay
-      out the benefit. Additionally, deaths resulting from alcohol or drug abuse are commonly excluded,
-
-      and insurers may deny claims if the death is directly linked to substance misuse.
-      Understanding these exclusions helps policyholders ensure they are adequately covered a
-      nd avoid situations that might invalidate their policy.
-      </p>
-      <Button key="agree" type="primary" onClick={handleOk}>
-      Agree
-      </Button>
-      </div>
-      )}
-      </div>
       <div>
       <Row gutter={16}>
       {Object.entries(reviewData).map(([key, value]) => (
@@ -1075,7 +1076,7 @@ style={{ width: '100%' }}>
 
   <Title
   style={{ textAlign: 'start'}} level={4}>
-  <span style={{ fontWeight: 'bold', color: 'black' }}>Premium Details</span>
+  <span style={{ fontWeight: 'bold',  width: '100%' ,color: 'black' }}>Premium Details</span>
   </Title>
   <div style={{ border: '1px solid #ccc', padding: '16px', borderRadius: '8px', weight: 800}}>
     <Row gutter={[16, 16]} style={{ flexDirection: 'column' }}>
@@ -1088,7 +1089,6 @@ style={{ width: '100%' }}>
     </Row>
   </div>
     
-    
     <Title
     style={{ textAlign: 'start'}} level={4}>
     <span style={{ fontWeight: 'bold', color: 'black' }}>Notes:</span>
@@ -1098,25 +1098,20 @@ style={{ width: '100%' }}>
     Quotation is valid for 90 days since the date of issue <br />
     Medical underwriting will be required for a Sum Assured (SA) above KShs 5 million Term & Conditions
     </Title>
-    
     <Title style={{ textAlign: 'start' }} level={4}>
     <span style={{ fontWeight: 'bold', color: 'black' }}>Terms and Conditions</span>
     </Title>
-    
     <Title style={{ textAlign: 'start' }} level={4}>
     <span style={{ color: 'maroon', textDecoration: 'underline' }}>
     https://www.equity.co.ke/insurance/termlife
     </span>
     </Title>
-    
     <Title style={{ textAlign: 'start' }} level={4}>
     <span style={{ fontWeight: 'bold', color: 'black' }}>Contacts</span>
     </Title>
-    
     <Title style={{ textAlign: 'start', color: 'blue', textDecoration: 'underline' }} level={4}>
     Email: <span style={{ color: 'blue', textDecoration: 'underline' }}>quotations@equityinsurance.co.ke</span>
     </Title>
-    
     <Title style={{ textAlign: 'start', color: 'black' }} level={4}>
     Tel: 0765000000
     </Title>
@@ -1125,27 +1120,6 @@ style={{ width: '100%' }}>
     )}
 </>
 )}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <Form.Item>
     {currentStep > 0 && (
     <Button
@@ -1165,11 +1139,45 @@ style={{ width: '100%' }}>
       <Button
       type="primary"
       onClick={toggleDivVisibility} 
-      style={{ marginRight: 8 }}>
+      style={{ marginRight: 8,marginLeft: 10 , marginTop: '20px'}}>
       Quote
-      </Button>
+      </Button>    
     )}
     </Form.Item>
+
+      <div>
+      <Checkbox
+      onChange={handlePolicyCheckboxChange}>Policy Exclusions</Checkbox>
+      {isModalVisible && (
+      <div style={{ width: '100%', height: '50%', overflowY: 'auto', position: 'relative', border: '1px solid #ccc', padding: '16px', boxSizing: 'border-box' }}>
+      <h3>Policy Exclusions</h3>
+      <p>
+      When considering term life insurance, it's important to be aware of
+      potential policy exclusions that may affect coverage. Common exclusions
+      often include pre-existing conditions, where deaths resulting from undisclosed
+      medical conditions are not covered. Many policies have a suicide exclusion clause,
+      typically within the first two years of the policy, meaning if the policyholder
+      commits suicide during this period, the insurer may not pay out the death benefit.
+
+      Engaging in hazardous activities, such as extreme sports like skydiving or scuba diving,
+      may also lead to exclusions. Deaths resulting from these activities might not be covered
+      if they were not disclosed during the application process. Similarly, deaths occurring
+      during illegal activities, including drug use or committing a crime, are often excluded from coverage.
+
+      Acts of war and terrorism can also be excluded from term life insurance policies.
+      This means that if the policyholder dies due to war or terrorism, the insurance company may not pay
+      out the benefit. Additionally, deaths resulting from alcohol or drug abuse are commonly excluded,
+
+      and insurers may deny claims if the death is directly linked to substance misuse.
+      Understanding these exclusions helps policyholders ensure they are adequately covered a
+      nd avoid situations that might invalidate their policy.
+      </p>
+      <Button key="agree" type="primary" onClick={handleOk}>
+      Agree
+      </Button>
+      </div>
+      )}
+      </div>
     </Form>
     </div>
   );
