@@ -52,7 +52,7 @@ const goalbasedSlice = createSlice({
     resetData: (state) => {
       // Reset state values
       state.isLoading = false;
-      state.eduData = [];
+      state.goalbasedData = [];
       state.error = null;
     },
   },
@@ -65,7 +65,7 @@ const goalbasedSlice = createSlice({
       .addCase(fetchData.fulfilled, (state, action) => {
         console.log("Data fetched successfully:", action.payload);
         state.isLoading = false;
-        state.eduData = action.payload;
+        state.goalbasedData = action.payload;
       })
       .addCase(fetchData.rejected, (state, action) => {
         console.log("Failed to fetch data:", action.payload);
