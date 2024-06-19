@@ -4,8 +4,8 @@ import 'tailwindcss/tailwind.css';
 
 import { preventNumericInput, preventTextInput, disabledDate, PhoneAreas } from "./Utilities.js";
 import dayjs from 'dayjs';
-import TermsModal from './modals/TermsModal.js';
-import PrivacyPolicyModal from './modals/PrivacyPolicyModal.js';
+import TermsModal from './Modals/TermsModal.js';
+import PrivacyPolicyModal from './Modals/PrivacyPolicyModal.js';
 
 const { Option } = Select;
 const { Title } = Typography;

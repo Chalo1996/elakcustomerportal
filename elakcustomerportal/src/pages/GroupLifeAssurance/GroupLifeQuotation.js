@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Card, Row, Col, Table, Button, Checkbox, Typography } from "antd";
 import { useLocation } from "react-router-dom";
-import PolicyExclusionsModal from "../../components/Group Life/modals/PolicyExclusionsModal";
+import PolicyExclusionsModal from "../../components/Group Life/Modals/PolicyExclusionsModal";
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import * as FileSaver from "file-saver";

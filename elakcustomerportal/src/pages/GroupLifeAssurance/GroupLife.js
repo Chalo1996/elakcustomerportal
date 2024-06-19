@@ -9,7 +9,7 @@ import ContactDetails from "../../components/Group Life/ContactDetails";
 import CompanyDetails from '../../components/Group Life/CompanyDetails';
 import PolicyCoverage from '../../components/Group Life/PolicyCoverage';
 import ReviewAndConfirm from '../../components/Group Life/ReviewAndConfirm';
-import ToDoModal from "../../components/Group Life/modals/ToDoModal";
+import ToDoModal from "../../components/Group Life/Modals/ToDoModal";
 import CallBackForm from "../../components/Group Life/CallBackForm";
 import { fetchData } from "../../store/redux/features/glaSlice";
 
