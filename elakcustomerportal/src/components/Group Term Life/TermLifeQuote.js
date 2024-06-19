@@ -968,39 +968,8 @@ style={{ width: '100%' }}>
       </div>
       <Divider/>
       </div>
-      <div>
-      <Checkbox
-      onChange={handlePolicyCheckboxChange}>Policy Exclusions</Checkbox>
-      {isModalVisible && (
-      <div style={{ width: '100%', height: '50%', overflowY: 'auto', position: 'relative', border: '1px solid #ccc', padding: '16px', boxSizing: 'border-box' }}>
-      <h3>Policy Exclusions</h3>
-      <p>
-      When considering term life insurance, it's important to be aware of
-      potential policy exclusions that may affect coverage. Common exclusions
-      often include pre-existing conditions, where deaths resulting from undisclosed
-      medical conditions are not covered. Many policies have a suicide exclusion clause,
-      typically within the first two years of the policy, meaning if the policyholder
-      commits suicide during this period, the insurer may not pay out the death benefit.
 
-      Engaging in hazardous activities, such as extreme sports like skydiving or scuba diving,
-      may also lead to exclusions. Deaths resulting from these activities might not be covered
-      if they were not disclosed during the application process. Similarly, deaths occurring
-      during illegal activities, including drug use or committing a crime, are often excluded from coverage.
 
-      Acts of war and terrorism can also be excluded from term life insurance policies.
-      This means that if the policyholder dies due to war or terrorism, the insurance company may not pay
-      out the benefit. Additionally, deaths resulting from alcohol or drug abuse are commonly excluded,
-
-      and insurers may deny claims if the death is directly linked to substance misuse.
-      Understanding these exclusions helps policyholders ensure they are adequately covered a
-      nd avoid situations that might invalidate their policy.
-      </p>
-      <Button key="agree" type="primary" onClick={handleOk}>
-      Agree
-      </Button>
-      </div>
-      )}
-      </div>
       <div>
       <Row gutter={16}>
       {Object.entries(reviewData).map(([key, value]) => (
@@ -1194,8 +1163,44 @@ style={{ width: '100%' }}>
       style={{ marginRight: 8,marginLeft: 10 , marginTop: '20px'}}>
       Quote
       </Button>
+
+      
     )}
     </Form.Item>
+
+    <div>
+      <Checkbox
+      onChange={handlePolicyCheckboxChange}>Policy Exclusions</Checkbox>
+      {isModalVisible && (
+      <div style={{ width: '100%', height: '50%', overflowY: 'auto', position: 'relative', border: '1px solid #ccc', padding: '16px', boxSizing: 'border-box' }}>
+      <h3>Policy Exclusions</h3>
+      <p>
+      When considering term life insurance, it's important to be aware of
+      potential policy exclusions that may affect coverage. Common exclusions
+      often include pre-existing conditions, where deaths resulting from undisclosed
+      medical conditions are not covered. Many policies have a suicide exclusion clause,
+      typically within the first two years of the policy, meaning if the policyholder
+      commits suicide during this period, the insurer may not pay out the death benefit.
+
+      Engaging in hazardous activities, such as extreme sports like skydiving or scuba diving,
+      may also lead to exclusions. Deaths resulting from these activities might not be covered
+      if they were not disclosed during the application process. Similarly, deaths occurring
+      during illegal activities, including drug use or committing a crime, are often excluded from coverage.
+
+      Acts of war and terrorism can also be excluded from term life insurance policies.
+      This means that if the policyholder dies due to war or terrorism, the insurance company may not pay
+      out the benefit. Additionally, deaths resulting from alcohol or drug abuse are commonly excluded,
+
+      and insurers may deny claims if the death is directly linked to substance misuse.
+      Understanding these exclusions helps policyholders ensure they are adequately covered a
+      nd avoid situations that might invalidate their policy.
+      </p>
+      <Button key="agree" type="primary" onClick={handleOk}>
+      Agree
+      </Button>
+      </div>
+      )}
+      </div>
     </Form>
     </div>
   );
