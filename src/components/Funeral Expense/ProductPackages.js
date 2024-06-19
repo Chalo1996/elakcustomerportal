@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Form, Row, Skeleton, Col } from "antd";
 import ProductPackage from "./ProductPackage";
-import ErrorPage from "../../layout/ErrorPage";
+import ErrorPage from "../../shared/ErrorPage";
 
 const ProductPackagesForm = ({ form, formData, setFormData }) => {
   const token = useSelector((state) => state.auth.token);

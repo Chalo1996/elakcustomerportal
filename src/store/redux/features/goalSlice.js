@@ -5,14 +5,14 @@ const url = "https://sisos-eu.azurewebsites.net/api/cmd";
 
 // Initial state with added error field and isLoading set to false initially
 const initialState = {
-  eduData: [],
+  goalbasedData: [],
   isLoading: false,
   error: null,
 };
 
 // Async thunk for fetching data
 export const fetchData = createAsyncThunk(
-  "Goalbased/fetchData",
+  "goalbased/fetchData",
   async (data, thunkAPI) => {
     console.log("Fetching data...");
     const state = thunkAPI.getState();
@@ -35,7 +35,7 @@ export const fetchData = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Goalbased response: ", response);
+      console.log("goalbased response: ", response);
       return response.data.outData;
     } catch (error) {
       // Handling error response
@@ -45,14 +45,14 @@ export const fetchData = createAsyncThunk(
 );
 
 // Slice definition
-const GoalbasedSlice = createSlice({
-  name: "Goalbased",
+const goalbasedSlice = createSlice({
+  name: "goalbased",
   initialState: initialState,
   reducers: {
     resetData: (state) => {
       // Reset state values
       state.isLoading = false;
-      state.eduData = [];
+      state.goalbasedData = [];
       state.error = null;
     },
   },
@@ -65,7 +65,7 @@ const GoalbasedSlice = createSlice({
       .addCase(fetchData.fulfilled, (state, action) => {
         console.log("Data fetched successfully:", action.payload);
         state.isLoading = false;
-        state.eduData = action.payload;
+        state.goalbasedData = action.payload;
       })
       .addCase(fetchData.rejected, (state, action) => {
         console.log("Failed to fetch data:", action.payload);
@@ -75,6 +75,6 @@ const GoalbasedSlice = createSlice({
   },
 });
 
-export const { resetGoalbasedData } = GoalbasedSlice.actions;
+export const { resetGoalbasedData } = goalbasedSlice.actions;
 
-export const { reducer: GoalbasedReducer } = GoalbasedSlice;
+export const { reducer: goalbasedReducer } = goalbasedSlice;
