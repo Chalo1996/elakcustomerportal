@@ -35,7 +35,8 @@ import GoalQuotation from "./components/Goal Based/GoalQuotation";
 import GCQuotationPage from "./pages/GroupCredit/GCQuotationPage";
 import AnnuityPage from "./pages/AnnuityPages/Annuity";
 import GroupCustomer from "./components/Group Critical Illness/GroupCustomer";
-import UploadDetails from "./components/Group Critical Illness/UploadDetails"
+import UploadDetails from "./components/Group Critical Illness/UploadDetails";
+import AnnuityQuotation from "./pages/AnnuityPages/Quotation";
 
 function App() {
   const dispatch = useDispatch();
@@ -153,6 +154,10 @@ function App() {
                       element={<GoalQuotation />}
                     />
                     <Route path="annuity" element={<AnnuityPage />} />
+                    <Route
+                      path="annuity/quotation-details"
+                      element={<AnnuityQuotation />}
+                    />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </PortalLayout>
