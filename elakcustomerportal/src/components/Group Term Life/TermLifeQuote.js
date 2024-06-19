@@ -1120,27 +1120,6 @@ style={{ width: '100%' }}>
     )}
 </>
 )}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <Form.Item>
     {currentStep > 0 && (
     <Button
@@ -1162,13 +1141,11 @@ style={{ width: '100%' }}>
       onClick={toggleDivVisibility} 
       style={{ marginRight: 8,marginLeft: 10 , marginTop: '20px'}}>
       Quote
-      </Button>
-
-      
+      </Button>    
     )}
     </Form.Item>
 
-    <div>
+      <div>
       <Checkbox
       onChange={handlePolicyCheckboxChange}>Policy Exclusions</Checkbox>
       {isModalVisible && (
