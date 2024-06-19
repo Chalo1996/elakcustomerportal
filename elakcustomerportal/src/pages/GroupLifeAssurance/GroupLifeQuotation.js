@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Card, Row, Col, Table, Button, Checkbox, Typography } from "antd";
 import { useLocation } from "react-router-dom";
-import PolicyExclusionsModal from "../../components/Group Life/Modals/PolicyExclusionsModal";
+import PolicyExclusionsModal from "../../components/Group Life/modals/PolicyExclusionsModal";
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import * as FileSaver from "file-saver";
@@ -54,7 +54,6 @@ const QuotationTable = () => {
       ),
       annualPremiumWIBA: formatCurrency(data.gpaWibaglaPremium),
       totalPremium: formatCurrency(data.totalPremium),
-      // Additional data
       policyStartDate: new Date(data.proposedClientDetails.policyStartDate).toLocaleDateString(),
       policyEndDate: new Date(data.proposedClientDetails.policyEndDate).toLocaleDateString(),
       averageAge: data.proposedClientDetails.averageAge,
@@ -95,12 +94,14 @@ const QuotationTable = () => {
   
 
   const location = useLocation();
-  const { data = {} } = location.state || {};
+  const { data = {}, formData= {} } = location.state || {};
 
   const proposedClientDetails = [
     { key: "nameOfClient", attribute: "Name of Client", value: data.proposedClientDetails.nameOfClient },
     { key: "totalAnnualSalaries", attribute: "Total Annual Salaries", value: formatCurrency(data.proposedClientDetails.totalAnnualSalaries) },
     { key: "totalNumberOfStaff", attribute: "Total Number of Staff", value: data.proposedClientDetails.totalNumberOfStaff },
+    { key: "mobileNumber", attribute: "Mobile Number", value: `${formData.phoneArea} ${formData.mobileNumber}`},
+    { key: "email", attribute: "Email Address", value: formData.email },
     { key: "glaAsMultipleofAnnualSalary", attribute: "GLA Benefit Level as Multiple of Annual Salary", value: data.gla.benefits[0].benefitLevel },
     { key: "criticalIllnessBenefitPercentage", attribute: "Critical Illness Benefit Percentage", value: `${data.criticalIllnessBenefitPercentage}%` },
     { key: "mainMemberLastExpense", attribute: "Main Member Last Expense SA", value: formatCurrency(data.mainMemberLastExpense) },
@@ -144,10 +145,10 @@ const QuotationTable = () => {
   };
 
   return (
-    <>
-      <div className="flex items-center" style={{ marginBottom: "20px", marginTop: "20px" }}>
-          <button className="mb-1 focus:outline-none hover:text-[#A32A29]">
-            <LeftOutlined className="w-8 h-8" onClick={handleNavigate} />
+    <div className="pt-5 pl-4">
+      <div className="flex items-center" style={{ marginBottom: "20px", marginTop: "10px" }} >
+          <button className="mb-1.5 focus:outline-none hover:text-[#A32A29]" >
+            <LeftOutlined className="w-8 h-8" onClick={handleNavigate}/>
           </button>
           <Title level={5} className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
             Group Life Assurance Cover
@@ -290,7 +291,7 @@ const QuotationTable = () => {
           onAccept={handleModalAccept}
         />
       </div>
-    </>
+    </div>
   );
 };
 

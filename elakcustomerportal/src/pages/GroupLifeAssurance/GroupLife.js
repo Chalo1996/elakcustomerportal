@@ -9,9 +9,10 @@ import ContactDetails from "../../components/Group Life/ContactDetails";
 import CompanyDetails from '../../components/Group Life/CompanyDetails';
 import PolicyCoverage from '../../components/Group Life/PolicyCoverage';
 import ReviewAndConfirm from '../../components/Group Life/ReviewAndConfirm';
-import ToDoModal from "../../components/Group Life/Modals/ToDoModal";
+import ToDoModal from "../../components/Group Life/modals/ToDoModal";
 import CallBackForm from "../../components/Group Life/CallBackForm";
 import { fetchData } from "../../store/redux/features/glaSlice";
+
 
 const { Step } = Steps;
 const { Title } = Typography;
@@ -22,6 +23,7 @@ const GroupLifeAssurance = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [action, setAction] = useState();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [loading, setLoading]= useState(false);
 
   const authStatus = useSelector((state) => state.auth.status);
   const isLoading = useSelector((state) => state.groupLifeAssurance.isLoading);
@@ -43,6 +45,7 @@ const GroupLifeAssurance = () => {
     industry: "",
     intermediaryName: "",
     totalAnnualSalaries: "",
+    flatAmount: "",
     totalNumberOfStaff: "",
     averageAge: "",
     policyStartDate: null,
@@ -94,6 +97,7 @@ const GroupLifeAssurance = () => {
       intermediaryName: "Direct Customer",
       benefitType: "multipleOfSalary",
       totalAnnualSalaries: formData.annualSalaries,
+      flatAmount: formData.flatAmount,
       totalNumberOfStaff: formData.numberOfEmployees,
       averageAge: formData.averageAge,
       policyStartDate: formData.policyStartDate,
@@ -159,24 +163,27 @@ const GroupLifeAssurance = () => {
   };
 
   const handleSubmitCallback = () => {
-    console.log("clicked");
+    navigate("call-back-submission")
+    message.success('Form submited successfully!');
+    console.log(dataToPost.ContactDetails);
   };
 
   const handleSubmit = async () => {
-    // ... your existing logic
-    if (authStatus === "succeeded") {
+    if (authStatus === 'succeeded') {
       try {
+        setLoading(true); 
         await dispatch(fetchData(dataToPost)).unwrap();
         message.success('Quote generated successfully!');
         setIsFormSubmitted(true);
       } catch (error) {
         message.error('Failed to submit form data.');
+      } finally {
+        setLoading(false); 
       }
     } else {
       message.error('Authentication failed.');
     }
   };
-
   useEffect(() => {
     if (isFormSubmitted && !isLoading) {
       navigate("quotation-details", {
@@ -205,12 +212,12 @@ const GroupLifeAssurance = () => {
   ];
 
   return (
-    <div>
+    <div className="pt-5 pl-4">
       <div className="flex items-center">
         <button className="mb-5 focus:outline-none hover:text-[#A32A29]">
-          <LeftOutlined className="w-8 h-8" onClick={handleNavigate} />
+          <LeftOutlined className="w-8 h-4" style={{ marginTop: '10px' }}onClick={handleNavigate} />
         </button>
-        <Title level={4} style={{ marginBottom: '20px' }} className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
+        <Title level={5} style={{ marginBottom: '10px' }} className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
           Group Life Assurance Cover
         </Title>
       </div>
@@ -235,7 +242,7 @@ const GroupLifeAssurance = () => {
               </Button>
             )}
             {currentStep > 2 && (
-              <Button type="primary" onClick={handleSubmit}>
+              <Button type="primary" onClick={handleSubmit} loading={loading}>
                 Generate Quote
               </Button>
             )}
@@ -248,14 +255,13 @@ const GroupLifeAssurance = () => {
             formData={formData}
             setFormData={setFormData}
           />
-
           <div className="steps-action">
             <Button
               type="primary"
               onClick={handleSubmitCallback}
               className="h-full px-4 py-2 shadow-none text-center mr-3"
             >
-              Submit
+              Submit  
             </Button>
           </div>
         </>
