@@ -3,14 +3,18 @@ import axios from "axios";
 
 const url = "https://sisos-eu.azurewebsites.net/api/cmd";
 
+// Initial state with added error field and isLoading set to false initially
 const initialState = {
-  gleData: [],
-  isLoading: true,
+  eduData: [],
+  isLoading: false,
+  error: null,
 };
 
+// Async thunk for fetching data
 export const fetchData = createAsyncThunk(
-  "funeralExpense/fetchData",
+  "Goalbased/fetchData",
   async (data, thunkAPI) => {
+    console.log("Fetching data...");
     const state = thunkAPI.getState();
     const token = state.auth.token;
 
@@ -22,7 +26,7 @@ export const fetchData = createAsyncThunk(
       const dataToPost = {
         cmd: "ExeChain",
         data: {
-          chain: "M3TrainingGLECalculator",
+          chain: "M3TrainingGOALBASED",
           context: JSON.stringify(data),
         },
       };
@@ -31,37 +35,46 @@ export const fetchData = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("funeralExpense response: ", response);
+      console.log("Goalbased response: ", response);
       return response.data.outData;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      // Handling error response
+      return thunkAPI.rejectWithValue(error.response?.data || "An error occurred");
     }
   }
 );
 
-const funeralExpenseSlice = createSlice({
-  name: "funeralExpense",
+// Slice definition
+const GoalbasedSlice = createSlice({
+  name: "Goalbased",
   initialState: initialState,
   reducers: {
     resetData: (state) => {
-      state.isLoading = true;
-      state.gleData = [];
+      // Reset state values
+      state.isLoading = false;
+      state.eduData = [];
+      state.error = null;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchData.pending, (state) => {
         state.isLoading = true;
+        state.error = null; // Reset error state when starting a new fetch
       })
       .addCase(fetchData.fulfilled, (state, action) => {
+        console.log("Data fetched successfully:", action.payload);
         state.isLoading = false;
-        state.gleData = action.payload;
+        state.eduData = action.payload;
       })
       .addCase(fetchData.rejected, (state, action) => {
+        console.log("Failed to fetch data:", action.payload);
         state.isLoading = false;
+        state.error = action.payload; // Set error state
       });
   },
 });
 
-export const { resetData } = funeralExpenseSlice.actions;
-export const { reducer: funeralExpenseReducer } = funeralExpenseSlice;
+export const { resetGoalbasedData } = GoalbasedSlice.actions;
+
+export const { reducer: GoalbasedReducer } = GoalbasedSlice;

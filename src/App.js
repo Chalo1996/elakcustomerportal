@@ -32,10 +32,12 @@ import Privacy from "./pages/TermsAndPrivacy/Privacy";
 import Terms from "./pages/TermsAndPrivacy/Terms";
 import EducQuotation from "./components/Education/EducQuotation";
 import GoalQuotation from "./components/Goal Based/GoalQuotation";
-import GCQuotationPage from "./pages/GroupCredit/GCQuotationPage";
+import GCQuotationPageGroup from "./pages/GroupCredit/group/GCQuotationPage";
+import GCQuotationPagePersonal from "./pages/GroupCredit/personal/GCQuotationPage";
 import AnnuityPage from "./pages/AnnuityPages/Annuity";
 import GroupCustomer from "./components/Group Critical Illness/GroupCustomer";
-import UploadDetails from "./components/Group Critical Illness/UploadDetails"
+import UploadDetails from "./components/Group Critical Illness/UploadDetails";
+import AnnuityQuotation from "./pages/AnnuityPages/Quotation";
 
 function App() {
   const dispatch = useDispatch();
@@ -124,6 +126,10 @@ function App() {
                       element={<CriticalIllnessQuotation />}
                     />
                     <Route
+                      path="customer-type/group-customer/critical-illness-quotation"
+                      element={<CriticalIllnessQuotation />}
+                    />
+                    <Route
                       path="customer-type/critical-illness/submit"
                       element={<Submit />}
                     />
@@ -153,6 +159,10 @@ function App() {
                       element={<GoalQuotation />}
                     />
                     <Route path="annuity" element={<AnnuityPage />} />
+                    <Route
+                      path="annuity/quotation-details"
+                      element={<AnnuityQuotation />}
+                    />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </PortalLayout>
@@ -176,7 +186,8 @@ const GroupCreditRoutes = () => {
       <Route path="/" element={<GroupCredit />} />
       <Route path="individual-cover" element={<IndividualCover />} />
       <Route path="multiple-cover" element={<MultipleCover />} />
-      <Route path="/quotation" element={<GCQuotationPage />} />
+      <Route path="/personal/quotation" element={<GCQuotationPagePersonal />} />
+      <Route path="/group/quotation" element={<GCQuotationPageGroup />} />
     </Routes>
   );
 };

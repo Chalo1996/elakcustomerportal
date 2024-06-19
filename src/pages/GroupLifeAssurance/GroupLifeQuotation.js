@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Card, Row, Col, Table, Divider, Button, Checkbox, Typography } from "antd";
+import { Card, Row, Col, Table, Button, Checkbox, Typography } from "antd";
 import { useLocation } from "react-router-dom";
 import PolicyExclusionsModal from "../../components/Group Life/Modals/PolicyExclusionsModal";
-
 import Docxtemplater from "docxtemplater";
-import JSZip from "jszip";
+import PizZip from "pizzip";
 import * as FileSaver from "file-saver";
 import templateFile from "../../components/Group Life/Templates/quotationTemplate.docx";
 
@@ -39,14 +38,14 @@ const QuotationTable = () => {
       customerName: data.proposedClientDetails.nameOfClient,
       annualSalaries: formatCurrency(data.proposedClientDetails.totalAnnualSalaries),
       numberOfStaff: data.proposedClientDetails.totalNumberOfStaff,
+      benefitDescriptionGla: data.gla.benefits[0].benefitDescriptionGla,
       GLABenefitLevel: data.gla.benefits[0].benefitLevel,
       criticalillnessBenefitPercentage: `${data.criticalIllnessBenefitPercentage}%`,
       lastExpenseSA: formatCurrency(data.mainMemberLastExpense),
-      benefitName: data.gla.benefits[0].benefitName,
-      level: data.gla.benefits[0].level,
-      insuredSum: formatCurrency(data.gla.benefits[0].insuredSum),
+      benefitName: data.gla.benefits[0].benefitDescriptionGla,
+      level: data.gla.benefits[0].benefitLevel,
+      insuredSum: formatCurrency(data.gla.benefits[0].derivedSumAssured),
       premium: formatCurrency(data.gla.benefits[0].premium),
-      currency: "KES",
       annualPremiumGLA: formatCurrency(data.glaPremium),
       FCL: formatCurrency(
         data.negotiatedFreeCoverLimit === null
@@ -55,33 +54,45 @@ const QuotationTable = () => {
       ),
       annualPremiumWIBA: formatCurrency(data.gpaWibaglaPremium),
       totalPremium: formatCurrency(data.totalPremium),
+      // Additional data
+      policyStartDate: new Date(data.proposedClientDetails.policyStartDate).toLocaleDateString(),
+      policyEndDate: new Date(data.proposedClientDetails.policyEndDate).toLocaleDateString(),
+      averageAge: data.proposedClientDetails.averageAge,
+      industry: data.proposedClientDetails.industry,
+      intermediaryName: data.proposedClientDetails.intermediaryName,
+      deathDerivedSumAssured: formatCurrency(data.deathDerivedSumAssured),
+      gpaWibaBenefits: data.gpaWiba.gpaWibaBenefits.map(benefit => ({
+        description: benefit.benefitDescriptionGpaWiba,
+        level: benefit.benefitLevel,
+        percentage: benefit.percentage,
+        derivedSumAssured: formatCurrency(benefit.derivedSumAssured),
+        premium: formatCurrency(benefit.premium)
+      }))
     };
-
+  
     fetch(templateFile)
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
-        const zip = new JSZip();
-        return zip.loadAsync(buffer).then(() => {
-          const doc = new Docxtemplater();
-          doc.loadZip(zip);
-
-          doc.setData(docData);
-
-          try {
-            doc.render();
-          } catch (error) {
-            console.error("Error rendering document:", error);
-            return;
-          }
-
-          const generatedDoc = doc.getZip().generate({ type: "blob" });
-          FileSaver.saveAs(generatedDoc, "Quotation.docx");
-        });
+        const zip = new PizZip(buffer);
+        const doc = new Docxtemplater(zip);
+  
+        doc.setData(docData);
+  
+        try {
+          doc.render();
+        } catch (error) {
+          console.error("Error rendering document:", error);
+          return;
+        }
+  
+        const generatedDoc = doc.getZip().generate({ type: "blob" });
+        FileSaver.saveAs(generatedDoc, "Quotation.docx");
       })
       .catch((error) => {
         console.error("Error loading template file:", error);
       });
   };
+  
 
   const location = useLocation();
   const { data = {} } = location.state || {};
@@ -134,15 +145,15 @@ const QuotationTable = () => {
 
   return (
     <>
-      <Card style={{ border: "1px solid maroon" }}>
-        <div className="flex items-center">
-          <button className="mb-5 focus:outline-none hover:text-[#A32A29]">
-            <LeftOutlined className="w-8 h-8" style={{ marginTop: "2px", marginLeft: "60px" }} onClick={handleNavigate} />
+      <div className="flex items-center" style={{ marginBottom: "20px", marginTop: "20px" }}>
+          <button className="mb-1 focus:outline-none hover:text-[#A32A29]">
+            <LeftOutlined className="w-8 h-8" onClick={handleNavigate} />
           </button>
-          <Title level={4} style={{ marginBottom: "20px" }} className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
+          <Title level={5} className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
             Group Life Assurance Cover
           </Title>
-        </div>
+      </div>
+      <Card style={{ border: "1px solid maroon" }}>
         <div style={{ width: "90%", margin: "auto" }}>
           <Row justify="space-between" style={{ border: "1px solid maroon", padding: "10px" }}>
             <Col>
@@ -248,8 +259,8 @@ const QuotationTable = () => {
         <div style={{ width: "100%", backgroundColor: "maroon", textAlign: "center", padding: "6px", marginTop: "20px" }}>
           <h3 style={{ color: "white", margin: 0 }}><strong>Equity Life Assurance (Kenya) Limited</strong></h3>
         </div>
-
-        <Divider />
+      </Card>
+      <div style={{ marginTop: "20px" }}>
         <Checkbox checked={isCheckboxChecked} onChange={handleCheckboxChange}>
           I accept the{" "}
           <span onClick={() => setIsPolicyModalVisible(true)} style={{ textAlign: "right", marginTop: "20px", color: "#A32A29" }}>
@@ -278,7 +289,7 @@ const QuotationTable = () => {
           onCancel={() => setIsPolicyModalVisible(false)}
           onAccept={handleModalAccept}
         />
-      </Card>
+      </div>
     </>
   );
 };

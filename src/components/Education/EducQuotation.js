@@ -14,12 +14,15 @@ const detailColumns = [
 ];
 
 const getClientData = (formData) => {
-  const {name = '', email = '', country = '', telCode = '', tel = '' } = formData || {};
+  const {firstName = '', lastName = '', email = '',  phoneAreas= '', tel = '' } = formData || {};
+  console.log('phoneAreas:', phoneAreas);
+  const name = `${firstName} ${lastName}`;
+
   return [
     { key: "name", attribute: "Name", value: name },
     { key: "email", attribute: "Email", value: email },
-    { key: "country", attribute: "Country", value: country },
-    { key: "tel", attribute: "Tel", value: `${telCode} ${tel}` }
+    
+    { key: "tel", attribute: "Mobile Number", value: tel}
   ];
 };
 
@@ -61,7 +64,8 @@ const EducQuotation = () => {
   const location = useLocation();
   const { cData = {}, formData = {} } = location.state || {};
   
-
+  const parsedCData = JSON.parse(cData);
+  
   const [acceptedExclusions, setAcceptedExclusions] = useState(false);
 
   const handleAcceptanceChange = (e) => {
@@ -78,7 +82,7 @@ const EducQuotation = () => {
 
   const clientData = getClientData(formData);
   const policyData = getPolicyData(formData);
-  const investmentData = getInvestmentData(cData);
+  const investmentData = getInvestmentData(parsedCData);
 
   const tableColumns = [
     { title: 'Year', dataIndex: 'year', key: 'year' },
@@ -160,7 +164,7 @@ const EducQuotation = () => {
         <h4 style={{ fontWeight: "bold", marginTop: "5px" }}>Fund Projections</h4>
         <Table
           columns={tableColumns}
-          dataSource={cData.fundProjections?.details || []}
+          dataSource={parsedCData.fundProjections?.details || []}
           bordered
           pagination={false}
           style={{ marginBottom: "20px", border: "1px solid maroon" }}
@@ -200,7 +204,7 @@ const EducQuotation = () => {
                 <Button style={{ marginRight: '10px' }} onClick={handlePrevClick}>Back</Button>
                 <Button type="primary" style={{ marginRight: '10px' }} onClick={handleDownload}>Download</Button>
                 <Button type="primary" style={{ marginRight: '10px' }}>Send to Email</Button>
-                <Button type="primary">Proceed with Payment</Button>
+                <Button type="primary">Continue with Payment</Button>
             </div>
    
     </Card>

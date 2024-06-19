@@ -9,7 +9,7 @@ import {
   Checkbox,
   Button,
 } from "antd";
-import moment from "moment";
+import dayjs from "dayjs";
 import kenyaFlag from "../../../assets/flags/kes.png";
 import tzFlag from "../../../assets/flags/tzs.png";
 import ugFlag from "../../../assets/flags/ugx.png";
@@ -37,7 +37,6 @@ const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
 
   const initialFormData = {
     ...formData,
-    country: "Kenya",
     countryCode: formData.countryCode || "+254",
     countryFlag: formData.countryFlag || kenyaFlag,
   };
@@ -47,7 +46,7 @@ const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
   };
 
   const handlePhonePrefixChange = (value) => {
-    handleFormChange("countryCode", value);
+    handleFormChange("countryCode", value ? value : formData.countryCode);
     const selectedCountry = countryOptions.find(
       (country) => country.value === value
     );
@@ -74,7 +73,7 @@ const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
 
   const validatePhone = (_, value) => {
     const cleanedPhoneNumber = value.replace(/[ -()]/g, "");
-    const phoneRegex = /^\d{10}$/;
+    const phoneRegex = /^\d{9,10}$/;
     if (value && !phoneRegex.test(cleanedPhoneNumber)) {
       return Promise.reject("Please enter a valid phone number");
     }
@@ -176,14 +175,17 @@ const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
               ]}
             >
               <DatePicker
-                format='MM/DD/YYYY'
                 placeholder='Select Date of Birth'
-                value={formData.dob ? moment(formData.dob, "MM/DD/YYYY") : null}
-                onChange={(date, dateString) =>
-                  handleInputChange("dob", dateString)
+                value={formData.dob ? dayjs(formData.dob, "MM/DD/YYYY") : null}
+                onChange={(date) =>
+                  handleInputChange(
+                    "dob",
+                    date ? date.format("MM/DD/YYYY") : null
+                  )
                 }
                 disabledDate={disabledDate}
                 className='w-full border rounded'
+                needConfirm
               />
             </Item>
           </Col>

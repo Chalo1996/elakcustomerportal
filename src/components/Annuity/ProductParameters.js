@@ -10,6 +10,7 @@ const TargetTypes = [
   "Pre-determined Purchase Price",
   "Pre-determined Annuity Amount",
 ];
+const SpouseReversionRates = [25, 50, 75, 100];
 const PaymentFrequencies = {
   Weekly: 52,
   Monthly: 12,
@@ -232,12 +233,20 @@ const ProductParametersForm = ({ form, formData, setFormData }) => {
   return (
     <>
       <div className="w-[710px] h-[76px] top-[408px] left-[425px] mt-3 py-3 px-0 flex flex-col gap-4">
-        <p className="font-open-sans text-[18px] font-semibold leading-[28px] text-left">
+        <p className="font-open-sans text-[16px] font-semibold leading-[28px] text-left">
           Please enter or select your product preferences
         </p>
       </div>
 
       <Form form={form} layout="vertical">
+        <div className="mb-2">
+          <span>
+            <strong>Spouse Details {">"}</strong>
+            <span className="text-[#A32A29]">
+              <em>*Applicable to joint life annuities only</em>
+            </span>
+          </span>
+        </div>
         <div className="grid md:grid-cols-2 gap-4">
           <Form.Item
             label="Single/Joint Life"
@@ -298,8 +307,36 @@ const ProductParametersForm = ({ form, formData, setFormData }) => {
                   ))}
                 </Select>
               </Form.Item>
+              <Form.Item
+                label="Spouse's Reversionary Rate"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select a reversionary rate.",
+                  },
+                ]}
+              >
+                <Select
+                  value={formData.spouseReversion}
+                  onChange={(value) =>
+                    setFormData({ ...formData, spouseReversion: value })
+                  }
+                >
+                  {SpouseReversionRates.map((item) => (
+                    <Option key={item} value={item}>
+                      {`${item}%`}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
             </>
           )}
+        </div>
+
+        <div className="mb-2">
+          <span>
+            <strong>Product Configuration Details</strong>
+          </span>
         </div>
         <div className="grid md:grid-cols-2 gap-4">
           <Form.Item

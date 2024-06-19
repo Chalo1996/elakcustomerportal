@@ -28,101 +28,111 @@ import tzsFlag from "../../assets/flags/tzs.png";
 import ugxFlag from "../../assets/flags/ugx.png";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../../store/redux/features/gciSlice";
+import UploadDetails from "./UploadDetails";
 
 
 const { Step } = Steps;
 
 
 const RequestCallbackModal = ({
-    visible,
-    onCancel,
-    onContinue,
-    selectedOption,
-    setSelectedOption,
-  }) => {
-    const [isSecondModalVisible, setIsSecondModalVisible] = useState(false);
-  
-    const handleOptionChange = (e) => {
-      const value = e.target.value;
-      setSelectedOption(value);
-      if (value === 'generate') {
-        setIsSecondModalVisible(true);
-      }
-    };
-  
-    const handleSecondModalCancel = () => {
-      setIsSecondModalVisible(false);
-    };
+  visible,
+  onCancel,
+  onContinue,
+  selectedOption,
+  setSelectedOption,
+}) => {
+  const [isSecondModalVisible, setIsSecondModalVisible] = useState(false);
+  const [showUploadDetails, setShowUploadDetails] = useState(false);
 
-    
-const handleUploadDetails = () => {
-    navigate('upload-details');
+  const handleOptionChange = (e) => {
+    const value = e.target.value;
+    setSelectedOption(value);
+    if (value === 'generate') {
+      setIsSecondModalVisible(true);
+    }
   };
 
-  const navigate = useNavigate();
-  
-    return (
-      <>
-        <Modal
-          title="What would you like to do?"
-          visible={visible}
-          onCancel={onCancel}
-          width={600}
-          footer={[
-            <Button key="cancel" onClick={onCancel}>
-              Cancel
-            </Button>,
-            <Button
-              key="continue"
-              type="primary"
-              onClick={onContinue}
-              disabled={!selectedOption}
-            >
-              Continue
-            </Button>,
-          ]}
-        >
-          <div style={{ width: "100%" }}>
-            <Radio.Group
-              onChange={handleOptionChange}
-              value={selectedOption}
-              style={{ width: "100%" }}
-            >
-              <Space direction="vertical" size="small" style={{ width: "100%" }}>
-                <Radio value="generate">Generate Quote</Radio>
-                <Divider style={{ margin: "8px 0", width: "100%" }} />
-                <Radio value="callback">Request a Call Back</Radio>
-              </Space>
-            </Radio.Group>
-          </div>
-        </Modal>
-  
-        <Modal
-          title="Select an Option"
-          visible={isSecondModalVisible}
-          onCancel={handleSecondModalCancel}
-          width={600}
-          footer={[
-            <Button key="cancel" onClick={handleSecondModalCancel}>
-              Cancel
-            </Button>,
-          ]}
-        >
-          <div style={{ width: "100%" }}>
-            <Space direction="vertical" size="small" style={{ width: "100%" }}>
-              <Button type="primary" block onClick={handleUploadDetails}> 
-                Upload Member Details
-              </Button>
-              <Divider style={{ margin: "8px 0", width: "100%" }} />
-              <Button type="primary" block>
-                Enter Member Details
-              </Button>
+  const handleSecondModalCancel = () => {
+    setIsSecondModalVisible(false);
+  };
+
+  const handleUploadDetails = () => {
+    setIsSecondModalVisible(false); // Close the second modal
+    setShowUploadDetails(true); // Set state to show the UploadDetails component
+  };
+
+  const handleEnterDetails = () => {
+    setIsSecondModalVisible(false);
+    onContinue(); // Trigger onContinue action if needed
+    // Handle navigation or any other action for "Enter Details"
+  };
+
+  return (
+    <>
+      <Modal
+        title="What would you like to do?"
+        visible={visible}
+        onCancel={onCancel}
+        width={600}
+        footer={[
+          <Button key="cancel" onClick={onCancel}>
+            Cancel
+          </Button>,
+          <Button
+            key="continue"
+            type="primary"
+            onClick={onContinue}
+            disabled={!selectedOption}
+          >
+            Continue
+          </Button>,
+        ]}
+      >
+        <div style={{ width: '100%' }}>
+          <Radio.Group
+            onChange={handleOptionChange}
+            value={selectedOption}
+            style={{ width: '100%' }}
+          >
+            <Space direction="vertical" size="small" style={{ width: '100%' }}>
+              <Radio value="generate">Generate Quote</Radio>
+              <Divider style={{ margin: '8px 0', width: '100%' }} />
+              <Radio value="callback">Request a Call Back</Radio>
             </Space>
-          </div>
-        </Modal>
-      </>
-    );
-  };
+          </Radio.Group>
+        </div>
+      </Modal>
+
+      <Modal
+        title="Select an Option"
+        visible={isSecondModalVisible}
+        onCancel={handleSecondModalCancel}
+        width={600}
+        footer={[
+          <Button key="cancel" onClick={handleSecondModalCancel}>
+            Cancel
+          </Button>,
+        ]}
+      >
+        <div style={{ width: '100%' }}>
+          <Space direction="vertical" size="small" style={{ width: '100%' }}>
+          <Button type="primary" block onClick={handleEnterDetails}>
+              Enter Member Details
+            </Button>
+            <Divider style={{ margin: '8px 0', width: '100%' }} />
+            <Button type="primary" block onClick={handleUploadDetails}>
+              Upload Member Details
+            </Button>
+          </Space>
+        </div>
+      </Modal>
+
+      {showUploadDetails && (
+        <UploadDetails />
+      )}
+    </>
+  );
+};
   
   const GroupCustomer = () => {
   const [current, setCurrent] = useState(0);
@@ -148,12 +158,13 @@ const handleUploadDetails = () => {
   const [SAChildren, setSAChildren] = useState();
   const [sumAssured, setSumAssured] = useState();
   const [coverDate, setCoverDate] = useState();
-  const [ setCoverExpiryDate] = useState();
+  const [coverExpiryDate, setCoverExpiryDate] = useState();
   const [callbackModalVisible, setCallbackModalVisible] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [formData, setFormData] = useState({});
   const [ setShowHiddenFields] = useState(false);
+  // const [showUploadDetails, setShowUploadDetails] = useState(false);
 
   const authStatus = useSelector((state) => state.auth.status);
   const isLoading = useSelector((state) => state.groupCriticalIllness.isLoading);
@@ -209,20 +220,20 @@ const handleUploadDetails = () => {
     navigate("/home");
   };
 
-  const handleCoverDateChange = (date, timeInYears) => {
+  const handleCoverDateChange = (date, policyTerm) => {
     if (!date) {
       form.resetFields(["coverExpiryDate"]);
-      setCoverExpiryDate();
+      setCoverExpiryDate(null);
       return null;
     }
     const oneYearLater = date
       .clone()
-      .add(timeInYears, "year")
+      .add(policyTerm, "year")
       .subtract(1, "day");
     setCoverDate(date);
-
     return oneYearLater;
   };
+  
 
   const disabledDate = (current) => {
     const today = new Date();
@@ -232,32 +243,35 @@ const handleUploadDetails = () => {
     );
   };
 
-  // // const disableCoverExpiryDate = (date) => {
-  // //   if (coverDate) {
-  // //     const currentDate = new Date(coverDate);
-  // //     let newCoverExpiryDate = new Date(coverDate);
-  // //     newCoverExpiryDate.setFullYear(currentDate.getFullYear() + 1);
-
-  // //     // Adjust for leap years
-  // //     if (currentDate.getDate() === 29 && currentDate.getMonth() === 1) {
-  // //       if (
-  // //         newCoverExpiryDate.getMonth() === 1 &&
-  // //         newCoverExpiryDate.getDate() === 28
-  // //       ) {
-  // //         newCoverExpiryDate.setDate(1); // Start from March 1
-  // //         newCoverExpiryDate.setMonth(2); // Adjust to March
-  // //       }
-  // //     }
-
-  //     const formattedCoverExpiryDate = new Date(
-  //       newCoverExpiryDate.getFullYear(),
-  //       newCoverExpiryDate.getMonth(),
-  //       newCoverExpiryDate.getDate()
-  //     );
-
-  //     return date && date < formattedCoverExpiryDate;
-  //   }
-  // };
+  const disableCoverExpiryDate = (date) => {
+    if (coverDate) {
+      const currentDate = coverDate.toDate();
+      let newCoverExpiryDate = coverDate.clone().add(policyTerm, "year").subtract(1, "day").toDate();
+  
+      // Adjust for leap years
+      if (currentDate.getDate() === 29 && currentDate.getMonth() === 1) {
+        if (
+          newCoverExpiryDate.getMonth() === 1 &&
+          newCoverExpiryDate.getDate() === 28
+        ) {
+          newCoverExpiryDate.setDate(1); // Start from March 1
+          newCoverExpiryDate.setMonth(2); // Adjust to March
+        }
+      }
+  
+      return date && date < newCoverExpiryDate;
+    }
+    return false;
+  };
+  
+  useEffect(() => {
+    if (coverDate) {
+      const newCoverExpiryDate = handleCoverDateChange(coverDate, policyTerm);
+      setCoverExpiryDate(newCoverExpiryDate);
+      form.setFieldsValue({ coverExpiryDate: newCoverExpiryDate });
+    }
+  }, [coverDate, policyTerm]);
+  
 
   const dataToPost = {
     members: [
@@ -570,7 +584,7 @@ const handleUploadDetails = () => {
       expenseLoading: 10,
       profitLoading: 5,
       morbidityLoading: 5,
-      segment: "Individual Customer",
+      segment: "Group Customer",
       TISelector: "Yes",
     },
   };
@@ -1430,7 +1444,7 @@ const handleUploadDetails = () => {
           </button>
         </span>
         <span className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
-          Get Critical Illness Cover
+          Get Critical Illness Cover (Group)
         </span>
       <Steps current={current}>
         {steps.map((item) => (

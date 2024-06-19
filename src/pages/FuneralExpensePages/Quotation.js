@@ -123,7 +123,7 @@ const FuneralExpenseQuotation = () => {
           {formData.segment} Funeral Expense Quotation Details
         </span>
       </div>
-      <Card style={{ border: "1px solid black" }}>
+      <Card className={`border ${theme === "dark" ? "" : "border-black"}`}>
         <div style={{ width: "90%", margin: "auto" }}>
           <Row justify="space-between">
             <Col>
@@ -169,7 +169,7 @@ const FuneralExpenseQuotation = () => {
             dataSource={customerTableData}
             bordered
             pagination={false}
-            style={{ border: "1px solid black" }}
+            className={`${theme === "dark" ? "" : "border border-black"}`}
             scroll={{ x: "max-content" }}
             showHeader={false}
           />
@@ -195,7 +195,7 @@ const FuneralExpenseQuotation = () => {
                   : "Group Funeral Expense Cover"}
               </p>
             )}
-            style={{ border: "1px solid black" }}
+            className={`${theme === "dark" ? "" : "border border-black"}`}
             scroll={{ x: "max-content" }}
           />
 
@@ -237,11 +237,9 @@ const FuneralExpenseQuotation = () => {
 
           <div className="overflow-x-auto">
             <table
-              style={{
-                borderCollapse: "collapse",
-                border: "1px solid black",
-                width: "100%",
-              }}
+              className={`border ${
+                theme === "dark" ? "" : "border-black"
+              } border-collapse w-[100%]`}
             >
               <thead>
                 <tr
@@ -251,13 +249,25 @@ const FuneralExpenseQuotation = () => {
                     textAlign: "left",
                   }}
                 >
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Category of Member
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Minimum Entry Age
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Maximum Entry Age
                   </th>
                 </tr>
@@ -265,13 +275,25 @@ const FuneralExpenseQuotation = () => {
               <tbody>
                 {ageInfoData.map((row, index) => (
                   <tr key={index}>
-                    <td style={{ border: "1px solid black", padding: "8px" }}>
+                    <td
+                      className={`border ${
+                        theme === "dark" ? "" : "border-black"
+                      } border-collapse p-2`}
+                    >
                       {row.category}
                     </td>
-                    <td style={{ border: "1px solid black", padding: "8px" }}>
+                    <td
+                      className={`border ${
+                        theme === "dark" ? "" : "border-black"
+                      } border-collapse p-2`}
+                    >
                       {row.minAge}
                     </td>
-                    <td style={{ border: "1px solid black", padding: "8px" }}>
+                    <td
+                      className={`border ${
+                        theme === "dark" ? "" : "border-black"
+                      } border-collapse p-2`}
+                    >
                       {row.maxAge}
                     </td>
                   </tr>
@@ -285,25 +307,53 @@ const FuneralExpenseQuotation = () => {
             format
           </p>
           <div className="overflow-x-auto">
-            <table>
+            <table
+              className={`border ${
+                theme === "dark" ? "" : "border-black"
+              } border-collapse w-[100%]`}
+            >
               <thead>
                 <tr>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Name
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Date of Birth
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     ID/Passport Number
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Phone Number
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Main Member
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Relation to Member
                   </th>
                 </tr>
@@ -311,22 +361,34 @@ const FuneralExpenseQuotation = () => {
               <tbody>
                 <tr>
                   <td
-                    style={{ border: "1px solid black", padding: "8px" }}
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
                   ></td>
                   <td
-                    style={{ border: "1px solid black", padding: "8px" }}
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
                   ></td>
                   <td
-                    style={{ border: "1px solid black", padding: "8px" }}
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
                   ></td>
                   <td
-                    style={{ border: "1px solid black", padding: "8px" }}
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
                   ></td>
                   <td
-                    style={{ border: "1px solid black", padding: "8px" }}
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
                   ></td>
                   <td
-                    style={{ border: "1px solid black", padding: "8px" }}
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
                   ></td>
                 </tr>
               </tbody>

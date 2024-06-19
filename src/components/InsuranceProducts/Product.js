@@ -9,9 +9,8 @@ import GroupLifeModal from "../Group Life/Modals/groupLifeModal";
 import Educamodal from "../Education/Educamodal";
 import Goalbasedmodal from "../Goal Based/Goalbasedmodal";
 import GroupTermLifeModal from "../Group Term Life/GroupTermLifeModal";
-
 import "./Product.css";
-import AnnuityModal from "../Annuity/Modals/AnnuityModal"
+import AnnuityModal from "../Annuity/modals/AnnuityModal";
 
 const { Meta } = Card;
 
