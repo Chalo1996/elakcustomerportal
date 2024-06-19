@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Card, Row, Col, Table, Button } from "antd";
+import { useEffect, useState } from "react";
+import { Card, Row, Col, Table, Button, Form, Checkbox } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -9,6 +9,9 @@ import { useTheme } from "../../store/context/theme-context";
 
 const FuneralExpenseQuotation = () => {
   const { theme } = useTheme();
+  const [isPolicyChecked, setIsPolicyChecked] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -26,6 +29,16 @@ const FuneralExpenseQuotation = () => {
   };
 
   const policyData = assignKeysToData(tableData);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     dispatch(resetData());
@@ -436,17 +449,39 @@ const FuneralExpenseQuotation = () => {
           </p>
         </div>
       </Card>
-      <Row justify="end" align="middle" className="my-5">
+      <Form className="mt-2">
+        <Form.Item name="terms" valuePropName="checked">
+          <Checkbox
+            checked={isPolicyChecked}
+            onChange={(e) => setIsPolicyChecked(e.target.checked)}
+          >
+            I accept the{" "}
+            <a href="#terms" style={{ color: "#A32A29" }}>
+              policy exclusions
+            </a>
+          </Checkbox>
+        </Form.Item>
+      </Form>
+      <Row
+        gutter={[16, 16]}
+        justify="start"
+        align="middle"
+        className="mb-5 max-w-sm"
+      >
+        <Col>
+          <Button
+            type="primary"
+            className="shadow-none"
+            disabled={!isPolicyChecked}
+          >
+            Continue With Payment
+          </Button>
+        </Col>
         <Col className="mr-4 shadow-none">
           <Button>Download Quote</Button>
         </Col>
         <Col>
           <Button className="mr-4 shadow-none">Send To Email</Button>
-        </Col>
-        <Col>
-          <Button type="primary" className="shadow-none">
-            Continue With Payment
-          </Button>
         </Col>
       </Row>
     </div>
