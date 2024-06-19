@@ -15,7 +15,7 @@ const initialState = {
   countryCode: "+254",
   countryFlag: null,
   termschecked: false,
-  sumAssured: 5000000,
+  sumAssured: "",
   termsInMonths: "",
   frequency: "Single",
   installments: 1,
