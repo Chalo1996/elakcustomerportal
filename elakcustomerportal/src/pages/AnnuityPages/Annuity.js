@@ -8,6 +8,7 @@ import CallBackForm from "../../components/Funeral Expense/CallBack";
 import CallBackModal from "../../components/Funeral Expense/modals/CallBackModal";
 import ProductParametersForm from "../../components/Annuity/ProductParameters";
 import CoverageForm from "../../components/Annuity/Coverage";
+import ConfirmDetailsForm from "../../components/Annuity/ConfirmDetails";
 
 const { Step } = Steps;
 
@@ -157,6 +158,10 @@ const AnnuityPage = () => {
           setFormData={setFormData}
         />
       ),
+    },
+    {
+      title: "Review",
+      content: <ConfirmDetailsForm formData={formData} />,
     },
   ];
 

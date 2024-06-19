@@ -35,7 +35,7 @@ const ConfirmDetailsForm = ({ formData }) => {
               <p>{formData.productName}</p>
             </div>
             <div className="flex flex-col items-start justify-start mb-4">
-              <p className=" text-[#929497]">Cover Date</p>
+              <p className=" text-[#929497]">Cover Start Date</p>
               <p>{formatDate(formData.startDate)}</p>
             </div>
           </Col>
@@ -53,29 +53,33 @@ const ConfirmDetailsForm = ({ formData }) => {
       </Card>
 
       <Card title="Personal Details" className="mb-10">
-        <Row gutter={[16, 16]}>
-          <Col xs={24} sm={24} md={12}>
-            <div className="flex flex-col items-start justify-start mb-4">
-              <p className=" text-[#929497]">Full Name</p>
-              <p>
-                {formData.firstName} {formData.lastName}
-              </p>
-            </div>
-            <div className="flex flex-col items-start justify-start mb-4">
-              <p className=" text-[#929497]">Email Address</p>
-              <p>{formData.email}</p>
-            </div>
-          </Col>
-          <Col xs={24} sm={24} md={12}>
-            <div className="flex flex-col items-start justify-start mb-4">
-              <p className=" text-[#929497]">Mobile Number</p>
-              <p>
-                {formData.phoneArea}
-                {formData.phoneNo}
-              </p>
-            </div>
-          </Col>
-        </Row>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col items-start justify-start mb-4">
+            <p className=" text-[#929497]">Full Name</p>
+            <p>
+              {formData.firstName} {formData.lastName}
+            </p>
+          </div>
+          <div className="flex flex-col items-start justify-start mb-4">
+            <p className=" text-[#929497]">Date of Birth</p>
+            <p>{formatDate(formData.birthDate)}</p>
+          </div>
+          <div className="flex flex-col items-start justify-start mb-4">
+            <p className=" text-[#929497]">Gender</p>
+            <p>{formData.gender}</p>
+          </div>
+          <div className="flex flex-col items-start justify-start mb-4">
+            <p className=" text-[#929497]">Email Address</p>
+            <p>{formData.email}</p>
+          </div>
+          <div className="flex flex-col items-start justify-start mb-4">
+            <p className=" text-[#929497]">Mobile Number</p>
+            <p>
+              {formData.phoneArea}
+              {formData.phoneNo}
+            </p>
+          </div>
+        </div>
       </Card>
 
       <Card title="Beneficiary Details" className="mb-10">
