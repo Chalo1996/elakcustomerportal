@@ -691,105 +691,111 @@ const dataToPost = {
             </>
           )}
 
-          {current === 2 && (
-            <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
-              <h4 style={{ marginBottom: '20px' }}>Please, Review and confirm Your Information details to continue</h4>
-              <div>
-                <br />
-                <div>
-                  <Row gutter={16}>
-                    <Col span={12}>
-                      <h5 style={{ color: '#888', marginBottom: '5px' }}>Product</h5>
-                      <span>GoalBased savings</span>
-                    </Col>
-                  </Row>
-                </div>
-                <Divider />
-                <br />
-                <h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Personal Information</h4>
-                <br />
-                <div>
-                  <Row gutter={16}>
-                    <Col span={12}>
-                      <h4 style={{ color: '#888', marginBottom: '5px' }}>First Name</h4>
-                      <span>{formData.firstName}</span>
-                    </Col>
-                    <br />
-                    <Col span={12}>
-                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Last Name</h4>
-                      <span>{formData.lastName}</span>
-                    </Col>
-                  </Row>
-                  <br />
-                  <Row gutter={16}>
-                    <Col span={12}>
-                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Telephone No</h4>
-                      <span>{formData.telephone}</span>
-                    </Col>
-                    <Col span={12}>
-                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Email</h4>
-                      <span>{formData.email}</span>
-                    </Col>
-                  </Row>
-                  <br />
-                  <Row gutter={16}>
-                    <Col span={12}>
-                      <h4 style={{ color: '#888', marginBottom: '5px' }}>Date of Birth</h4>
-                      <span>{formData.DOB?.format('YYYY-MM-DD')}</span>
-                    </Col>
-                  </Row>
-                  <br />
-                </div>
-                <Divider />
-                <h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Policy Information</h4>
-                <Row gutter={16}>
-                  <Col span={12}>
-                    <h4 style={{ color: '#888', marginBottom: '5px' }}>Goal Type</h4>
-                    <span>{formData.goalType}</span>
-                  </Col>
-                  <br />
-                  <Col span={12}>
-                    <h4 style={{ color: '#888', marginBottom: '5px' }}>Term In Years</h4>
-                    <span>{formData.termInYears}</span>
-                  </Col>
-                </Row>
-                <br />
-                <Row gutter={16}>
-                  <Col span={12}>
-                    <h4 style={{ color: '#888', marginBottom: '5px' }}>Payment Frequency</h4>
-                    <span>{formData.frequency}</span>
-                  </Col>
-                  <br />
-                  <Col span={12}>
-                    <h4 style={{ color: '#888', marginBottom: '5px' }}>Premium</h4>
-                    <span>{new Intl.NumberFormat('en-US', { style: 'currency', currency: formData.currency }).format(formData.premium)}</span>
-                  </Col>
-                </Row>
-                <br />
-                <Row gutter={16}>
-                  <Col span={12}>
-                    <h4 style={{ color: '#888', marginBottom: '5px' }}>Start Date</h4>
-                    <span>{formData.startDate?.format('YYYY-MM-DD')}</span>
-                  </Col>
-                  <Col span={12}>
-                    <h4 style={{ color: '#888', marginBottom: '5px' }}>End Date</h4>
-                    <span>{formData.endDate?.format('YYYY-MM-DD')}</span>
-                  </Col>
-                </Row>
-                <br />
-              </div>
-            </div>
-          )}
+       
+                {current === 2 && (
+  <Card className="mb-10">
+
+    <p>Please, Review and confirm Your Information details to continue</p>
+    
+      <Card title="Product" className="mb-10">
+      <div>
+        <Row gutter={16}>
+          <Col span={12}>
+            <span>GoalBased savings</span>
+          </Col>
+        </Row>
+      </div>
+      </Card>
+      <Card title="Personal Information" className="mb-10">
+      <div>
+        <Row gutter={16}>
+          <Col span={12}>
+            <h4 style={{ color: '#888', marginBottom: '5px' }}>First Name</h4>
+            <span>{formData.firstName}</span>
+          </Col>
+          <br />
+          <Col span={12}>
+            <h4 style={{ color: '#888', marginBottom: '5px' }}>Last Name</h4>
+            <span>{formData.lastName}</span>
+          </Col>
+        </Row>
+        <br />
+        <Row gutter={16}>
+          <Col span={12}>
+            <h4 style={{ color: '#888', marginBottom: '5px' }}>Mobile No</h4>
+            <span>{formData.tel}</span>
+          </Col>
+          <Col span={12}>
+            <h4 style={{ color: '#888', marginBottom: '5px' }}>Email</h4>
+            <span>{formData.email}</span>
+          </Col>
+        </Row>
+        <br />
+        <Row gutter={16}>
+          <Col span={12}>
+            <h4 style={{ color: '#888', marginBottom: '5px' }}>Date of Birth</h4>
+            <span>{formData.DOB?.format('YYYY-MM-DD')}</span>
+          </Col>
+          <Col>
+          <h4 style={{ color: '#888', marginBottom: '5px' }}>Gender</h4>
+            <span>{formData.gender}</span>
+          </Col>
+        </Row>
+        <br />
+      </div>
+      </Card>
+      <Card title="Policy Information" className="mb-10">
+      
+      <Row gutter={16}>
+        <Col span={12}>
+          <h4 style={{ color: '#888', marginBottom: '5px' }}>Target Type</h4>
+          <span>{formData.targetType}</span>
+        </Col>
+        <br />
+        <Col span={12}>
+          <h4 style={{ color: '#888', marginBottom: '5px' }}>Term In Years</h4>
+          <span>{formData.TermInYears}</span>
+        </Col>
+      </Row>
+      <br />
+      <Row gutter={16}>
+        <Col span={12}>
+          <h4 style={{ color: '#888', marginBottom: '5px' }}>Payment Frequency</h4>
+          <span>{formData.frequency}</span>
+        </Col>
+        <br />
+        <Col span={12}>
+          <h4 style={{ color: '#888', marginBottom: '5px' }}>Premium</h4>
+          <span>{new Intl.NumberFormat('en-US', { style: 'currency', currency: formData.currency }).format(formData.premium)}</span>
+        </Col>
+      </Row>
+      <br />
+      <Row gutter={16}>
+        <Col span={12}>
+          <h4 style={{ color: '#888', marginBottom: '5px' }}>Start Date</h4>
+          <span>{formData.startDate?.format('YYYY-MM-DD')}</span>
+        </Col>
+        <Col span={12}>
+          <h4 style={{ color: '#888', marginBottom: '5px' }}>End Date</h4>
+          <span>{formData.endDate?.format('YYYY-MM-DD')}</span>
+        </Col>
+      </Row>
+      
+      </Card>
+      <br />
+   
+      </Card>
+)}
 
           <div style={{ marginTop: 20 }}>
             {current > 0 && (
               <Button style={{ marginRight: 8 }} onClick={back}>
-                Back
+               Go Back
               </Button>
             )}
             {current < 2 && (
               <Button type="primary" onClick={next}>
-                Next
+                Continue
               </Button>
             )}
             {current === 2 && (
