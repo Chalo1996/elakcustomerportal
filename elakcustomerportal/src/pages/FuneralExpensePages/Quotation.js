@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Card, Row, Col, Table, Button, Form, Checkbox } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -6,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { resetData } from "../../store/redux/features/gleSlice";
 import darkLogo from "../../assets/dark-logo.png";
 import { useTheme } from "../../store/context/theme-context";
+import ExclusionsModal from "../../shared/Exclusions";
 
 const FuneralExpenseQuotation = () => {
   const { theme } = useTheme();
@@ -33,9 +35,7 @@ const FuneralExpenseQuotation = () => {
   const showModal = () => {
     setIsModalOpen(true);
   };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
+
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -451,15 +451,18 @@ const FuneralExpenseQuotation = () => {
       </Card>
       <Form className="mt-2">
         <Form.Item name="terms" valuePropName="checked">
-          <Checkbox
-            checked={isPolicyChecked}
-            onChange={(e) => setIsPolicyChecked(e.target.checked)}
-          >
-            I accept the{" "}
-            <a href="#terms" style={{ color: "#A32A29" }}>
-              policy exclusions
-            </a>
-          </Checkbox>
+          <span>
+            <Checkbox
+              checked={isPolicyChecked}
+              onChange={(e) => setIsPolicyChecked(e.target.checked)}
+            ></Checkbox>
+            <span className="ml-2">
+              I accept the{" "}
+              <Link onClick={showModal} style={{ color: "#A32A29" }}>
+                policy exclusions
+              </Link>
+            </span>
+          </span>
         </Form.Item>
       </Form>
       <Row
@@ -484,6 +487,13 @@ const FuneralExpenseQuotation = () => {
           <Button className="mr-4 shadow-none">Send To Email</Button>
         </Col>
       </Row>
+
+      <ExclusionsModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        onCancel={handleCancel}
+        setIsPolicyChecked={setIsPolicyChecked}
+      />
     </div>
   );
 };
