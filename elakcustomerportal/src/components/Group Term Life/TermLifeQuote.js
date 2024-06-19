@@ -1,23 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, createContext, useContext } from 'react';
 import { Row, Col, Table, Space,Form, Input,Divider, Button, DatePicker, Select,Steps, Modal, Radio, Checkbox,Typography } from 'antd';
-import Title from 'antd/es/skeleton/Title';
 import {ArrowLeftOutlined} from '@ant-design/icons';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
+import sspFlag from '../../assets/flags/ssp.png';
+import cdfFlag from '../../assets/flags/cdf.png';
+import rwfFlag from '../../assets/flags/rwf.png';
+import kesFlag from '../../assets/flags/kes.png';
+import tzsFlag from '../../assets/flags/tzs.png';
+import ugxFlag from '../../assets/flags/ugx.png';
 
 const { Item } = Form;
+const QuotationDataContext = createContext();
+export const useQuotationData = () => useContext(QuotationDataContext);
 
 const TermLifeQuote = () => {
 const { Option } = Select;
 const { Step } = Steps;
 const { Title, Text } = Typography;
 
+const [isFirstDivVisible, setFirstDivVisible] = useState(true);
+const [quoteData, setQuoteData] = useState(null);
+const [refreshKey, setRefreshKey] = useState(0);
 const [quotationData, setQuotationData] = React.useState(null);
 const [isDivVisible, setIsDivVisible] = useState(false);
 const [selectedOption, setSelectedOption] = useState(null);
 const [isModalVisible, setIsModalVisible] = useState(false);
-const [isChecked, setIsChecked] = useState(false);
-const [modalOpen, setModalOpen] = useState(false);
 const [showReviewModal, setShowReviewModal] = useState(false);
 const [reviewData, setReviewData] = useState({});
 const [generateQuoteChecked, setGenerateQuoteChecked] = useState(false);
@@ -31,7 +40,7 @@ secondname: '',
 dateOfBirth: '',
 email: '',
 country:'',
-countryCode: '+254',
+countryCode: '',
 phoneNumber: '',
 premiumType: '',
 isCoverLoan:'',
@@ -43,7 +52,7 @@ annualEscalationRate: 0,
 annualInterestRate: 23,
 singleJoint: '',
 loanType: '',
-sumAssured: 1000000,
+sumAssured: '',
 termInYearsCover: '',
 benefitEscalationCover: '',
 acceleratedCritalIllness: '',
@@ -52,51 +61,31 @@ returnOfPremiumOnSurvival: '',
 paymentFrequency: ''
 });
 
-const retOfPremSurvival = {
-YES: 'YES',
-NO: 'NO',
+const retOfPremSurvival = { YES: 'YES', NO: 'NO',};
+const premiumFrequency = { ANNUAL: 'Annual', ONEOFF: 'Oneoff',};
+const percentPremRet = { '20': '20%', '50': '50%','80': '80%', '100': '100%',};
+const benefitEscalation = { LEVEL: 'Stay the same over time', INCREASING: 'Get bigger over time',};
+const loanTyp = { BULLLET: 'Payment at term end', AMORTIZATION: 'Gradual Payment',};
+const singleJoint = { SINGLE: 'Single', JOINT: 'Joint',};
+const isCoverForloan = { YES: 'Loan-Premium', NO: 'Non-LoanPremium',};
+const coverTypes = { INDIVIDUAL: 'Individual', KEYMANRISK: 'Another Key Person',};
+const countryCodes = { Kenya: '+254', Uganda: '+256', Tanzania: '+255', Rwanda: '+250', 'South Sudan': '+211', DRC: '+243' };
+const acceleratedCI = { YES: 'YES', NO: 'NO',};
+
+const PhoneAreas = [
+  { code: "+211", flag: sspFlag, country: "South Sudan" },
+  { code: "+243", flag: cdfFlag, country: "DRC" },
+  { code: "+250", flag: rwfFlag, country: "Rwanda" },
+  { code: "+254", flag: kesFlag, country: "Kenya" },
+  { code: "+255", flag: tzsFlag, country: "Tanzania" },
+  { code: "+256", flag: ugxFlag, country: "Uganda" },
+];
+
+const toggleVisibility = () => {
+  setFirstDivVisible(!isFirstDivVisible);
 };
-const premiumFrequency = {
-ANNUAL: 'Annual',
-ONEOFF: 'Oneoff',
-};
-const percentPremRet = {
-'20': '20%',
-'50': '50%',
-'80': '80%',
-'100': '100%',
-};
-const acceleratedCI = {
-YES: 'YES',
-NO: 'NO',
-};
-const benefitEscalation = {
-LEVEL: 'Stay the same over time',
-INCREASING: 'Get bigger over time',
-};
-const loanTyp = {
-BULLLET: 'Payment at term end',
-AMORTIZATION: 'Gradual Payment',
-};
-const singleJoint = {
-SINGLE: 'Single',
-JOINT: 'Joint',
-};
-const isCoverForloan = {
-YES: 'Loan-Premium',
-NO: 'Non-LoanPremium',
-};
-const coverTypes = {
-INDIVIDUAL: 'Individual',
-KEYMANRISK: 'Another Key Person',
-};
-const countryCodes = {
-Kenya: '+254',
-Uganda: '+256',
-Tanzania: '+255',
-Rwanda: '+250',
-'South Sudan': '+211',
-DRC: '+243'
+const updateQuoteData = (data) => {
+  setQuoteData(data);
 };
 const handleChange = (changedValues, allValues) => {
 setFormData(allValues);
@@ -193,6 +182,7 @@ if (value === 'NO') {
 setFormData(prevFormData => ({
 ...prevFormData,
 returnOfPremiumOnSurvival: value,
+
 percentageOfPremToBReturned: 0,
 }));
 } else {
@@ -243,6 +233,11 @@ const getCurrentDate = () => {
     const year = today.getFullYear();
     return `${day}/${month}/${year}`;
 };
+
+const handleRefresh = () => {
+  setRefreshKey((prevKey) => prevKey + 1);
+};
+
 const isCoverLoan = formData.isCoverLoan;            
 const amountCovered = isCoverLoan === 'YES' ? formData.principalAmount : formData.sumAssured;
 const yearsCover = isCoverLoan === 'YES' ? formData.termInYears : formData.termInYearsCover;
@@ -256,7 +251,7 @@ const columns = [
 ];
 const personalCredentials = [
 { key: 'name', attribute: 'Name', value: formData.name },
-{ key: 'country', attribute: 'Country', value: formData.country},
+//{ key: 'country', attribute: 'Country', value: formData.country},
 { key: 'phone', attribute: 'Phone', value: formData.phoneNumber},
 { key: 'email', attribute: 'Email', value: formData.email },
 ];
@@ -275,9 +270,8 @@ const selectedOPtionalBenefits = [
 ];
 
 const contextObject = {
-//Correct Context
 dateOfBirth: formData.dateOfBirth,
-principalAmount: formData.principalAmount,   //.replace(/,/g, ''),
+principalAmount: formData.principalAmount, //.replace(/,/g, ''),
 termInYears: formData.termInYears,
 annualInterestRate: formData.annualInterestRate,
 installmentsPA: formData.installmentsPerAnnum,
@@ -293,33 +287,8 @@ acceleratedCritalIllness: formData.acceleratedCritalIllness,
 returnOfPremiumOnSurvival: formData.returnOfPremiumOnSurvival,
 percentageOfPremToBReturned: formData.percentageOfPremToBReturned,
 premiumFrequency: formData.premiumFrequency,
-
-
-///Dummy Context
-/*
-dateOfBirth: '1999-01-01',
-principalAmount: 1002000,
-termInYears: 2,
-annualInterestRate: 23,
-installmentsPA: 12,
-sumAssuredCover: 1203020,
-termYearsCover: 9,
-annualEscalationRate: 0,
-percentageOfPremToBReturned: 50,
-loanType: 'BULLET',
-coverType: 'INDIVIDUAL',
-isCoverLoan: 'YES',
-singleJoint: 'SINGLE',
-benefitEscalationCover: 'LEVEL',
-acceleratedCritalIllness: 'YES',
-returnOfPremiumOnSurvival: 'YES',
-premiumFrequency: 'ANNUAL'
-*/
 };
 
-function getOutData(outData) {
-    console.log('Out Data:', outData);
-}
 fetch('https://sisos-eu.azurewebsites.net/api/cmd', {
     method: 'POST',
     headers: {
@@ -342,13 +311,15 @@ fetch('https://sisos-eu.azurewebsites.net/api/cmd', {
     } 
     else{  
       setQuotationData(outData.premiumData[0]);
+      console.log(outData);
+      console.log(quotationData);
     }
   })
   .catch(error => {
-    console.error('Error:', error.message);
+    //console.error('Error:', error.message);
    });
-  console.log('Context:', contextObject);  
- 
+   console.log('ContextObject', contextObject);
+
 
 return (
 <div>
@@ -370,16 +341,16 @@ Term Life Cover
     visible={showModal}
     onCancel={() => setShowModal(false)}
     footer={[
-        <Row justify="start" key="footer-row" className="mt-4">
-        <Button
-            key="submit"
-            type="primary"
-            onClick={handleGenerateQuote}
-            disabled={!selectedOption}
-            className="shadow-none">
-            Continue
-        </Button>
-        </Row>,
+      <Row justify="start" key="footer-row" className="mt-4">
+      <Button
+          key="submit"
+          type="primary"
+          onClick={handleGenerateQuote}
+          disabled={!selectedOption}
+          className="shadow-none">
+          Continue
+      </Button>
+      </Row>,
     ]}>
     <br></br>
     <Radio.Group 
@@ -464,17 +435,15 @@ return current && (current > today || current > eighteenYearsAgo);
 </Form.Item>
 
 <Form.Item
-label="Country"
-name="country"
-rules={[{ required: true, message: 'Select Country Code!'},]}>
-<Select
-value={formData.country}
-placeholder="KENYA"
-onChange={(value) => handleSelectChange(value, 'country')}>
-{Object.keys(countryCodes).map((country) => (
-<Select.Option key={country} value={country}>{country}</Select.Option>
-))}
-</Select>
+label="Mobile Number"
+name="phoneNumber"
+rules={[{ required: true, message: 'Please input your phone number!'}]}>
+<Input
+name="phoneNumber"
+placeholder="712345678"
+addonBefore={countryCodes[formData.country]}
+value={formData.phoneNumber}
+onChange={handleInputChange}/>
 </Form.Item>
 </Col>
 
@@ -490,26 +459,13 @@ value={formData.email}
 onChange={handleInputChange}/>
 </Form.Item>
 
-<Form.Item
-label="Mobile Number"
-name="phoneNumber"
-rules={[{ required: true, message: 'Please input your phone number!'}]}>
-<Input
-name="phoneNumber"
-placeholder="712345678"
-addonBefore={countryCodes[formData.country]}
-value={formData.phoneNumber}
-onChange={handleInputChange}/>
-</Form.Item>
 </Col>
 </Row>
 
 <Row gutter={16}>
 <Col span={12}>
 <Form.Item
-style={{ marginTop: '60px', marginLeft: '0px' }}
-
-
+style={{ marginTop: '30px', marginLeft: '0px' }}
 valuePropName="checked">
 <Checkbox style={{ color: '#8B4513', checkboxStyle: { color: '#8B4513' } }}>I accept the Terms and Conditions</Checkbox>
 </Form.Item>
@@ -592,7 +548,7 @@ value={formData.termInYears}
 onChange={(value) => handleSelectChange(value, 'termInYears')}
 style={{ width: '100%' }}>
 {Object.keys(yrsDrpDwnLoan).map((year) => (
-<Option key={year} value={year}>
+<Option key={year} value={parseInt(year)}>
 {year}
 </Option>
 ))}
@@ -600,7 +556,6 @@ style={{ width: '100%' }}>
 </Item>
 
 <Item
-name="installmentsPerAnnum"
 rules={[{ required: true, message: 'This field is required' }]}
 label="Number Of Instalments Per Annum">
 <Select
@@ -610,7 +565,7 @@ value={formData.installmentsPerAnnum}
 onChange={(value) => handleSelectChange(value, 'installmentsPerAnnum')}
 style={{ width: '100%' }}>
 {Object.keys(instPerAnnDropDown).map((year) => (
-<Option key={year} value={year}>
+<Option key={year} value={parseInt(year)}>
 {year}
 </Option>
 ))}
@@ -682,7 +637,7 @@ value={formData.termInYearsCover}
 onChange={(value) => handleSelectChange(value, 'termInYearsCover')}
 style={{ width: '100%' }}>
 {Object.keys(yrsDrpDwnCover).map((year) => (
-<Option key={year} value={year}>
+<Option key={year} value={parseInt(year)}>
 {year}
 </Option>
 ))}
@@ -724,14 +679,15 @@ Please Enter Additional Details
 </h1>
 <Row gutter={16}>
 <Col span={12}>
-<Item
+
+<Item 
 name="acceleratedCritalIllness"
 label="Have you been diagnosed with any critical illness?"
-style={{ marginTop: '22px' }}
-rules={getRequiredRule()}>
+rules={getRequiredRule()}
+style={{ marginTop: '22px' }}>
 <Select
 name="acceleratedCritalIllness"
-placeholder="YES"
+placeholder="NO"
 value={formData.acceleratedCritalIllness}
 onChange={(value) => handleSelectChange(value, 'acceleratedCritalIllness')}
 style={{ width: '100%' }}>
@@ -739,9 +695,9 @@ style={{ width: '100%' }}>
 <Option key={option} value={option}>
 {acceleratedCI[option]}
 </Option>
-))}
-</Select>
+))}</Select>
 </Item>
+
 
 <Item
 rules={getRequiredRule()}
@@ -817,225 +773,222 @@ style={{ width: '100%' }}>
 
 {currentStep === 3 &&(
 <>
-<div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
-<h4 style={{ marginBottom: '20px' }}>Please, Review and confirm Your Information details to continue</h4>
-<div>
-<br />
-<div>
-<Row gutter={16}>
-<Col span={12}>
-<h5 style={{ color: '#888', marginBottom: '5px' }}>Product</h5>
-<span>Term Life Cover</span>
-</Col>
-</Row>
-</div>
-<Divider/>
-<br/>
+{/*------------------------------------Review Page----------------------------------------------------------------*/}
+  {!isDivVisible ? (
+      <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
+      <h4 style={{ marginBottom: '20px' }}>Please, Review and confirm Your Information details to continue</h4>
+      <div>
+      <br/>
+      <div>
+      <Row gutter={16}>
+      <Col span={12}>
+      <h5 style={{ color: '#888', marginBottom: '5px' }}>Product</h5>
+      <span>Term Life Cover</span>
+      </Col>
+      </Row>
+      </div>
+      <Divider/>
+      <br/>
 
-<h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Personal Information</h4>
-<br/>
-{/*----------------------------------PERSONAL DETAILS-----------------------------------------*/}
-<div>
-<Row gutter={16}>
-<Col span={12}>
-<h4 style={{ color: '#888', marginBottom: '5px' }}>First Name</h4>
-<span>{formData.name}</span>
-</Col>
-<br />
-<Col span={12}>
-<h4 style={{ color: '#888', marginBottom: '5px' }}>Last Name</h4>
-<span>{formData.secondname}</span>
-</Col>
-</Row>
-<br />
-<Row gutter={16}>
-<Col span={12}>
-<h4 style={{ color: '#888', marginBottom: '5px' }}>Telephone No</h4>
-<span>{formData.phoneNumber}</span>
-</Col>
-<Col span={12}>
-<h4 style={{ color: '#888', marginBottom: '5px' }}>Email</h4>
-<span>{formData.email}</span>
-</Col>
-</Row>
-<br />
-<Row gutter={16}>
-<Col span={12}>
-<h4 style={{ color: '#888', marginBottom: '5px' }}>Date of Birth</h4>
-<span>{formData.dateOfBirth}</span>
-</Col>
-<Col span={12}>
-<h4 style={{ color: '#888', marginBottom: '5px' }}>Country</h4>
-<span>{formData.country}</span>
-</Col>
-</Row>
-<br />
-</div>
-<Divider />
+      
+      <h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Personal Information</h4>
+      <br/>
+      {/*---------------------------------PERSONAL DETAILS-----------------------------------------*/}
+      <div>
+      <Row gutter={16}>
+      <Col span={12}>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>First Name</h4>
+      <span>{formData.name}</span>
+      </Col>
+      <br />
+      <Col span={12}>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>Last Name</h4>
+      <span>{formData.secondname}</span>
+      </Col>
+      </Row>
+      <br />
+      <Row gutter={16}>
+      <Col span={12}>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>Telephone No</h4>
+      <span>{formData.phoneNumber}</span>
+      </Col>
+      <Col span={12}>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>Email</h4>
+      <span>{formData.email}</span>
+      </Col>
+      </Row>
+      <br />
+      <Row gutter={16}>
+      <Col span={12}>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>Date of Birth</h4>
+      <span>{formData.dateOfBirth}</span>
+      </Col>
+      <Col span={12}>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>Country</h4>
+      <span>{formData.country}</span>
+      </Col>
+      </Row>
+      <br />
+      </div>
+      <Divider/>
 
-{/*----------------------------------COVER DETAILS-----------------------------------------*/}
-<h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Cover Details</h4>
-<br/>
-<div>
-<Row gutter={16}>
-<Col span={12}>
-<h4 style={{ color: '#888', marginBottom: '5px' }}>Premium Type</h4>
-<span>{formData.isCoverLoan}</span>
-</Col>
-<br />
-<Col span={12}>
-<h4 style={{ color: '#888', marginBottom: '5px' }}>Cover Type</h4>
-<span>{formData.coverType}</span>
-</Col>
-</Row>
-<br />
+      {/*----------------------------------COVER DETAILS-----------------------------------------*/}
+      <h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Cover Details</h4>
+      <br/>
+      <div>
+      <Row gutter={16}>
+      <Col span={12}>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>Premium Type</h4>
+      <span>{formData.isCoverLoan}</span>
+      </Col>
+      <br />
+      <Col span={12}>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>Cover Type</h4>
+      <span>{formData.coverType}</span>
+      </Col>
+      </Row>
+      <br />
 
-{formData.isCoverLoan === 'YES' &&(
-<>
-<Row gutter={16}>
-<Col span={12}>
-<h4 style={{ color: '#888', marginBottom: '5px' }}>Principal</h4>
-<span>{formData.principalAmount}</span>
-</Col>
-<Col span={12}>
-<h4 style={{ color: '#888', marginBottom: '5px' }}>Term In Years</h4>
-<span>{formData.termInYears}</span>
-</Col>
-</Row>
-<br/>
+      {formData.isCoverLoan === 'YES' &&(
+      <>
+      <Row gutter={16}>
+      <Col span={12}>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>Principal</h4>
+      <span>{formData.principalAmount}</span>
+      </Col>
+      <Col span={12}>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>Term In Years</h4>
+      <span>{formData.termInYears}</span>
+      </Col>
+      </Row>
+      <br/>
 
-<Row gutter={16}>
-<Col span={12}>
-<h4 style={{ color: '#888', marginBottom: '5px' }}>Installments Per Annum</h4>
-<span>{formData.installmentsPerAnnum}</span>
-</Col>
-<Col span={12}>
-<h4 style={{ color: '#888', marginBottom: '5px' }}>Single or Joint</h4>
-<span>{formData.singleJoint}</span>
-</Col>
-</Row>
-<br/>
+      <Row gutter={16}>
+      <Col span={12}>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>Installments Per Annum</h4>
+      <span>{formData.installmentsPerAnnum}</span>
+      </Col>
+      <Col span={12}>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>Single or Joint</h4>
+      <span>{formData.singleJoint}</span>
+      </Col>
+      </Row>
+      <br/>
 
-<Row gutter={16}>
-<Col span={12}>
-<h4 style={{ color: '#888', marginBottom: '5px' }}>Loan Type</h4>
-<span>{formData.loanType}</span>
-</Col>
-</Row>
-<br/>
-</>
-)}
+      <Row gutter={16}>
+      <Col span={12}>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>Loan Type</h4>
+      <span>{formData.loanType}</span>
+      </Col>
+      </Row>
+      <br/>
+      </>
+      )}
 
-{formData.isCoverLoan === 'NO' &&(
-<>
-<Row gutter={16}>
-<Col span={12}>
-<h4 style={{ color: '#888', marginBottom: '5px' }}>Sum Assured </h4>
-<span>{formData.sumAssured}</span>
+      {formData.isCoverLoan === 'NO' &&(
+      <>
+      <Row gutter={16}>
+      <Col span={12}>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>Sum Assured </h4>
+      <span>{formData.sumAssured}</span>
 
-<h4 style={{ color: '#888', marginBottom: '5px' }}>Term In Years</h4>
-<span>{formData.termInYearsCover}</span>
-</Col>
-<Col span={12}>
-<h4 style={{ color: '#888', marginBottom: '5px' }}>Benefit Escalation</h4>
-<span>{formData.benefitEscalationCover}</span>
-</Col>
-</Row>
-<br/>
-</>
-)}
-</div>
-<Divider/>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>Term In Years</h4>
+      <span>{formData.termInYearsCover}</span>
+      </Col>
+      <Col span={12}>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>Benefit Escalation</h4>
+      <span>{formData.benefitEscalationCover}</span>
+      </Col>
+      </Row>
+      <br/>
+      </>
+      )}
+      </div>
+      <Divider/>
 
-{/*----------------------------------Additional Options-----------------------------------------*/}
-<h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}> Additional Options</h4>
-<br/>
-<div>
-<Row gutter={16}>
-<Col span={12}>
-<h4 style={{ color: '#888', marginBottom: '5px' }}>Accelerated Critical Illness</h4>
-<span>{formData.acceleratedCritalIllness}</span>
-</Col>
-<br />
-<Col span={12}>
-<h4 style={{ color: '#888', marginBottom: '5px' }}>Percentage of Premium to be Returned</h4>
-<span>{formData.percentageOfPremToBReturned}</span>
-</Col>
-</Row>
-<br />
-<Row gutter={16}>
-<Col span={12}>
-<h4 style={{ color: '#888', marginBottom: '5px' }}>Return of Premium on Survival</h4>
-<span>{formData.returnOfPremiumOnSurvival}</span>
-</Col>
-<Col span={12}>
-<h4 style={{ color: '#888', marginBottom: '5px' }}>Payment Frequency</h4>
-<span>{formData.premiumFrequency}</span>
-</Col>
-</Row>
-<br />
-</div>
-<Divider/>
-</div>
+      {/*----------------------------------Additional Options-----------------------------------------*/}
+      <h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}> Additional Options</h4>
+      <br/>
+      <div>
+      <Row gutter={16}>
+      <Col span={12}>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>Accelerated Critical Illness</h4>
+      <span>{formData.acceleratedCritalIllness}</span>
+      </Col>
+      <br />
+      <Col span={12}>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>Percentage of Premium to be Returned</h4>
+      <span>{formData.percentageOfPremToBReturned}</span>
+      </Col>
+      </Row>
+      <br />
+      <Row gutter={16}>
+      <Col span={12}>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>Return of Premium on Survival</h4>
+      <span>{formData.returnOfPremiumOnSurvival}</span>
+      </Col>
+      <Col span={12}>
+      <h4 style={{ color: '#888', marginBottom: '5px' }}>Payment Frequency</h4>
+      <span>{formData.premiumFrequency}</span>
+      </Col>
+      </Row>
+      <br />
+      </div>
+      <Divider/>
+      </div>
+      <div>
+      <Checkbox
+      onChange={handlePolicyCheckboxChange}>Policy Exclusions</Checkbox>
+      {isModalVisible && (
+      <div style={{ width: '100%', height: '50%', overflowY: 'auto', position: 'relative', border: '1px solid #ccc', padding: '16px', boxSizing: 'border-box' }}>
+      <h3>Policy Exclusions</h3>
+      <p>
+      When considering term life insurance, it's important to be aware of
+      potential policy exclusions that may affect coverage. Common exclusions
+      often include pre-existing conditions, where deaths resulting from undisclosed
+      medical conditions are not covered. Many policies have a suicide exclusion clause,
+      typically within the first two years of the policy, meaning if the policyholder
+      commits suicide during this period, the insurer may not pay out the death benefit.
 
-    <div>
-    <Checkbox
-    onChange={handlePolicyCheckboxChange}>Policy Exclusions</Checkbox>
-    {isModalVisible && (
-    <div style={{ width: '100%', height: '50%', overflowY: 'auto', position: 'relative', border: '1px solid #ccc', padding: '16px', boxSizing: 'border-box' }}>
-    <h3>Policy Exclusions</h3>
-    <p>
-    When considering term life insurance, it's important to be aware of
-    potential policy exclusions that may affect coverage. Common exclusions
-    often include pre-existing conditions, where deaths resulting from undisclosed
-    medical conditions are not covered. Many policies have a suicide exclusion clause,
-    typically within the first two years of the policy, meaning if the policyholder
-    commits suicide during this period, the insurer may not pay out the death benefit.
+      Engaging in hazardous activities, such as extreme sports like skydiving or scuba diving,
+      may also lead to exclusions. Deaths resulting from these activities might not be covered
+      if they were not disclosed during the application process. Similarly, deaths occurring
+      during illegal activities, including drug use or committing a crime, are often excluded from coverage.
 
-    Engaging in hazardous activities, such as extreme sports like skydiving or scuba diving,
-    may also lead to exclusions. Deaths resulting from these activities might not be covered
-    if they were not disclosed during the application process. Similarly, deaths occurring
-    during illegal activities, including drug use or committing a crime, are often excluded from coverage.
+      Acts of war and terrorism can also be excluded from term life insurance policies.
+      This means that if the policyholder dies due to war or terrorism, the insurance company may not pay
+      out the benefit. Additionally, deaths resulting from alcohol or drug abuse are commonly excluded,
 
-    Acts of war and terrorism can also be excluded from term life insurance policies.
-    This means that if the policyholder dies due to war or terrorism, the insurance company may not pay
-    out the benefit. Additionally, deaths resulting from alcohol or drug abuse are commonly excluded,
+      and insurers may deny claims if the death is directly linked to substance misuse.
+      Understanding these exclusions helps policyholders ensure they are adequately covered a
+      nd avoid situations that might invalidate their policy.
+      </p>
+      <Button key="agree" type="primary" onClick={handleOk}>
+      Agree
+      </Button>
+      </div>
+      )}
+      </div>
+      <div>
+      <Row gutter={16}>
+      {Object.entries(reviewData).map(([key, value]) => (
+      <Col span={12} key={key}>
+      <p>
+      <strong>{key.toUpperCase()}:</strong> {typeof value === 'boolean' ? (value ? 'Yes' : 'No') : value}
+      </p>
+      </Col>
+      ))}
+      </Row>
+      </div> 
+      </div>
+  ) 
 
-    and insurers may deny claims if the death is directly linked to substance misuse.
-    Understanding these exclusions helps policyholders ensure they are adequately covered a
-    nd avoid situations that might invalidate their policy.
-    </p>
-    <Button key="agree" type="primary" onClick={handleOk}>
-    Agree
-    </Button>
-    </div>
-    )}
-    </div>
-
-    <div>
-    <Row gutter={16}>
-    {Object.entries(reviewData).map(([key, value]) => (
-    <Col span={12} key={key}>
-    <p>
-    <strong>{key.toUpperCase()}:</strong> {typeof value === 'boolean' ? (value ? 'Yes' : 'No') : value}
-    </p>
-    </Col>
-    ))}
-    </Row>
-    </div>
-
-    {currentStep === 3 && (
-    <Button
-    type="primary"
-    onClick={toggleDivVisibility}
-    style={{ marginRight: 8 }}>
-    Quote
-    </Button>
-    )}
-
-    {/*------------------------------------Quotation Page----------------------------------------------------------------*/}
-    {isDivVisible &&(
-    <div style={{ maxWidth: '800px',marginTop: '30px', padding: '20px',backgroundColor: 'white' ,border: '2px solid black', margin: 'auto'}}>
+  : 
+  
+  (
+  <div 
+    value={{ quoteData, updateQuoteData }} 
+    style={{ maxWidth: '800px',marginTop: '30px', padding: '20px',backgroundColor: 'white' ,border: '2px solid black', margin: 'auto'}}>
     <Row justify="start">
     <Col span={12}>
     <Title
@@ -1119,7 +1072,7 @@ style={{ width: '100%' }}>
     marginBottom: '20px',
     }}/>
     
-  
+
   <Title
   style={{ textAlign: 'start'}} level={4}>
   <span style={{ fontWeight: 'bold', color: 'black' }}>Premium Details</span>
@@ -1167,14 +1120,31 @@ style={{ width: '100%' }}>
     <Title style={{ textAlign: 'start', color: 'black' }} level={4}>
     Tel: 0765000000
     </Title>
-    </div>  
-    )}
-    {/*------------------------------------End of Quotation Page-------------------------------------------*/}
-    </div>
 
- 
-    </>
+  </div>
     )}
+</>
+)}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <Form.Item>
     {currentStep > 0 && (
@@ -1191,9 +1161,17 @@ style={{ width: '100%' }}>
     Next
     </Button>
     )}
+    {currentStep === 3 && (
+      <Button
+      type="primary"
+      onClick={toggleDivVisibility} 
+      style={{ marginRight: 8 }}>
+      Quote
+      </Button>
+    )}
     </Form.Item>
     </Form>
     </div>
-);
+  );
 };
 export default TermLifeQuote;
