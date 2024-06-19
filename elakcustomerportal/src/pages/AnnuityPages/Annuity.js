@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { LeftOutlined } from "@ant-design/icons/";
 import { Steps, Button, Form } from "antd";
 import dayjs from "dayjs";
@@ -9,6 +10,7 @@ import CallBackModal from "../../components/Funeral Expense/modals/CallBackModal
 import ProductParametersForm from "../../components/Annuity/ProductParameters";
 import CoverageForm from "../../components/Annuity/Coverage";
 import ConfirmDetailsForm from "../../components/Annuity/ConfirmDetails";
+import axios from "axios";
 
 const { Step } = Steps;
 
@@ -54,7 +56,9 @@ const getInitialFormData = () => {
 
 const AnnuityPage = () => {
   const navigate = useNavigate();
+  const token = useSelector((state) => state.auth.token);
   const [current, setCurrent] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState(() => {
     const initialData = getInitialFormData();
     return {
@@ -70,6 +74,56 @@ const AnnuityPage = () => {
   useEffect(() => {
     localStorage.setItem("yourAnnuityData", JSON.stringify(formData));
   }, [formData]);
+
+  const params = {
+    annuitant: {
+      name: `${formData.firstName} ${formData.lastName}`,
+      annuitantDOB: formData.birthDate,
+      gender: formData.gender,
+      email: formData.email,
+      tel: `${formData.phoneArea}${formData.phoneNo}`,
+    },
+    spouse: {
+      spouseDOB: formData.segment === "Joint Life" ? formData.spouseDob : null,
+      gender: formData.segment === "Joint Life" ? formData.spouseGender : null,
+    },
+    productConfiguration: {
+      targetType: formData.targetType,
+      annuityType: formData.annuityType,
+      commencementDate: formData.startDate,
+      deferrementPeriod:
+        formData.annuityType === "Deferred Annuity"
+          ? formData.deferrementPeriod
+          : 0,
+      purchasePrice:
+        formData.targetType === "Pre-determined Purchase Price"
+          ? formData.purchasePrice
+          : formData.annuityPerMonth,
+      singleJointLife: formData.segment,
+      spouseReversionaryRate:
+        formData.segment === "Joint Life" ? formData.spouseReversion / 100 : 0,
+      guaranteedPeriod: formData.guaranteedPeriod,
+      annuityEscalationRate: 0.07,
+      annuityPaymentFrequency: formData.paymentFrequency,
+    },
+    optionalBundles: {
+      returnOfResidualPremium: {
+        included: formData.residualPremium === "Yes" ? true : false,
+      },
+      longTermCare: {
+        included: formData.longTermCare === "Yes" ? true : false,
+      },
+      criticalTerminalIllness: {
+        included: formData.criticalIllness === "Yes" ? true : false,
+      },
+      totalPermanentDisability: {
+        included: formData.totalDisability === "Yes" ? true : false,
+      },
+      funeralExpense: {
+        included: formData.funeralExpense === "Yes" ? true : false,
+      },
+    },
+  };
 
   const [form1] = Form.useForm();
   const [form2] = Form.useForm();
@@ -119,12 +173,38 @@ const AnnuityPage = () => {
     console.log("clicked");
   };
 
+  const fetchAnnuityData = async () => {
+    const url = "https://sisos-eu.azurewebsites.net/api/cmd";
+    const dataToPost = {
+      cmd: "ExeChain",
+      data: {
+        chain: "M3TrainingAnnuityCalculator",
+        context: JSON.stringify(params),
+      },
+    };
+    const response = await axios.post(url, dataToPost, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("annuity response: ", response);
+    return response.data.outData;
+  };
+
   const handleSubmit = async () => {
+    setIsLoading(true);
+    let tableData = null;
     try {
       await Promise.all(forms.map((form) => form.validateFields()));
-      console.log("Success:", formData);
+      tableData = await fetchAnnuityData();
     } catch (error) {
       console.log("Validation Failed:", error);
+    } finally {
+      setIsLoading(false);
+      navigate("/home/annuity/quotation-details", {
+        state: { formData, tableData },
+      });
+      localStorage.removeItem("yourAnnuityData");
     }
   };
 
@@ -237,8 +317,9 @@ const AnnuityPage = () => {
                   type="primary"
                   onClick={handleSubmit}
                   className="h-full px-4 py-2 shadow-none text-center"
+                  disabled={isLoading}
                 >
-                  Generate Quotation
+                  {isLoading ? "Submitting..." : "Generate Quotation"}
                 </Button>
               )}
             </div>
