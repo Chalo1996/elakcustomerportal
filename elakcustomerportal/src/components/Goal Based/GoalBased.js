@@ -156,7 +156,13 @@ const dataToPost = {
     }));
   };
 
-
+  const handleGoalTypeChange = (value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      GoalType: value,
+    }));
+  };
+  
   const phoneAreas = [
     { code: "+211", flag: sspFlag, country: "South Sudan" },
     { code: "+243", flag: cdfFlag, country: "DRC" },
@@ -243,7 +249,7 @@ const dataToPost = {
 
       </Steps>
       <div style={{ marginTop: 20 }}>
-        <Form form={form} layout="vertical" onFinish={onFinish}>
+        <Form form={form} layout="vertical" >
           {current === 0 && (
 
             <>
@@ -317,7 +323,7 @@ const dataToPost = {
                           defaultValue="+254"
                           onChange={handleChange}
                         >
-                          {PhoneAreas.map((item) => (
+                          {phoneAreas.map((item) => (
                             <Option value={item.code} key={item.code}>
                               <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <img
