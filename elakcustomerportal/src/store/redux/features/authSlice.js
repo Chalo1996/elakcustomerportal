@@ -37,6 +37,11 @@ const authSlice = createSlice({
     changeTheme(state, action) {
       state.theme = action.payload;
     },
+    logoutUser: (state) => {
+      state.token = null;
+      state.status = "idle";
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -58,5 +63,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setToken, setStatus, changeTheme } = authSlice.actions;
+export const { setToken, setStatus, changeTheme, logoutUser } =
+  authSlice.actions;
 export const { reducer: authReducer } = authSlice;

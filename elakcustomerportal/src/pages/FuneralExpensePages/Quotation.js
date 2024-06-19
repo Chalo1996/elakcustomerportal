@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Card, Row, Col, Table, Button } from "antd";
+import { useEffect, useState } from "react";
+import { Card, Row, Col, Table, Button, Form, Checkbox } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -9,6 +9,9 @@ import { useTheme } from "../../store/context/theme-context";
 
 const FuneralExpenseQuotation = () => {
   const { theme } = useTheme();
+  const [isPolicyChecked, setIsPolicyChecked] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -26,6 +29,16 @@ const FuneralExpenseQuotation = () => {
   };
 
   const policyData = assignKeysToData(tableData);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     dispatch(resetData());
@@ -123,7 +136,7 @@ const FuneralExpenseQuotation = () => {
           {formData.segment} Funeral Expense Quotation Details
         </span>
       </div>
-      <Card style={{ border: "1px solid black" }}>
+      <Card className={`border ${theme === "dark" ? "" : "border-black"}`}>
         <div style={{ width: "90%", margin: "auto" }}>
           <Row justify="space-between">
             <Col>
@@ -169,7 +182,7 @@ const FuneralExpenseQuotation = () => {
             dataSource={customerTableData}
             bordered
             pagination={false}
-            style={{ border: "1px solid black" }}
+            className={`${theme === "dark" ? "" : "border border-black"}`}
             scroll={{ x: "max-content" }}
             showHeader={false}
           />
@@ -195,7 +208,7 @@ const FuneralExpenseQuotation = () => {
                   : "Group Funeral Expense Cover"}
               </p>
             )}
-            style={{ border: "1px solid black" }}
+            className={`${theme === "dark" ? "" : "border border-black"}`}
             scroll={{ x: "max-content" }}
           />
 
@@ -237,11 +250,9 @@ const FuneralExpenseQuotation = () => {
 
           <div className="overflow-x-auto">
             <table
-              style={{
-                borderCollapse: "collapse",
-                border: "1px solid black",
-                width: "100%",
-              }}
+              className={`border ${
+                theme === "dark" ? "" : "border-black"
+              } border-collapse w-[100%]`}
             >
               <thead>
                 <tr
@@ -251,13 +262,25 @@ const FuneralExpenseQuotation = () => {
                     textAlign: "left",
                   }}
                 >
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Category of Member
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Minimum Entry Age
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Maximum Entry Age
                   </th>
                 </tr>
@@ -265,13 +288,25 @@ const FuneralExpenseQuotation = () => {
               <tbody>
                 {ageInfoData.map((row, index) => (
                   <tr key={index}>
-                    <td style={{ border: "1px solid black", padding: "8px" }}>
+                    <td
+                      className={`border ${
+                        theme === "dark" ? "" : "border-black"
+                      } border-collapse p-2`}
+                    >
                       {row.category}
                     </td>
-                    <td style={{ border: "1px solid black", padding: "8px" }}>
+                    <td
+                      className={`border ${
+                        theme === "dark" ? "" : "border-black"
+                      } border-collapse p-2`}
+                    >
                       {row.minAge}
                     </td>
-                    <td style={{ border: "1px solid black", padding: "8px" }}>
+                    <td
+                      className={`border ${
+                        theme === "dark" ? "" : "border-black"
+                      } border-collapse p-2`}
+                    >
                       {row.maxAge}
                     </td>
                   </tr>
@@ -285,25 +320,53 @@ const FuneralExpenseQuotation = () => {
             format
           </p>
           <div className="overflow-x-auto">
-            <table>
+            <table
+              className={`border ${
+                theme === "dark" ? "" : "border-black"
+              } border-collapse w-[100%]`}
+            >
               <thead>
                 <tr>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Name
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Date of Birth
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     ID/Passport Number
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Phone Number
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Main Member
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Relation to Member
                   </th>
                 </tr>
@@ -311,22 +374,34 @@ const FuneralExpenseQuotation = () => {
               <tbody>
                 <tr>
                   <td
-                    style={{ border: "1px solid black", padding: "8px" }}
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
                   ></td>
                   <td
-                    style={{ border: "1px solid black", padding: "8px" }}
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
                   ></td>
                   <td
-                    style={{ border: "1px solid black", padding: "8px" }}
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
                   ></td>
                   <td
-                    style={{ border: "1px solid black", padding: "8px" }}
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
                   ></td>
                   <td
-                    style={{ border: "1px solid black", padding: "8px" }}
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
                   ></td>
                   <td
-                    style={{ border: "1px solid black", padding: "8px" }}
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
                   ></td>
                 </tr>
               </tbody>
@@ -374,17 +449,39 @@ const FuneralExpenseQuotation = () => {
           </p>
         </div>
       </Card>
-      <Row justify="end" align="middle" className="my-5">
+      <Form className="mt-2">
+        <Form.Item name="terms" valuePropName="checked">
+          <Checkbox
+            checked={isPolicyChecked}
+            onChange={(e) => setIsPolicyChecked(e.target.checked)}
+          >
+            I accept the{" "}
+            <a href="#terms" style={{ color: "#A32A29" }}>
+              policy exclusions
+            </a>
+          </Checkbox>
+        </Form.Item>
+      </Form>
+      <Row
+        gutter={[16, 16]}
+        justify="start"
+        align="middle"
+        className="mb-5 max-w-sm"
+      >
+        <Col>
+          <Button
+            type="primary"
+            className="shadow-none"
+            disabled={!isPolicyChecked}
+          >
+            Continue With Payment
+          </Button>
+        </Col>
         <Col className="mr-4 shadow-none">
           <Button>Download Quote</Button>
         </Col>
         <Col>
           <Button className="mr-4 shadow-none">Send To Email</Button>
-        </Col>
-        <Col>
-          <Button type="primary" className="shadow-none">
-            Continue With Payment
-          </Button>
         </Col>
       </Row>
     </div>

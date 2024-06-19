@@ -23,19 +23,15 @@ const Quotation = ({ formData, quotationData }) => {
     termsInMonths,
     frequency,
     installments,
-    retrenchment,
   } = formData;
 
   const {
     annuitantAge,
     TermsInYears,
     AnnualPremiumsPayable,
-    individualRetrenchmentCover,
     GrossInsurancePremium,
     medicalRequirements,
   } = quotationData;
-
-  console.log("QuotationData", quotationData);
 
   const columns = [
     {
@@ -132,14 +128,6 @@ const Quotation = ({ formData, quotationData }) => {
       key: "frequency",
       attribute: "Premium Frequency",
       value: frequency,
-    },
-  ];
-
-  const dataSelectedOptionalBenefitsDetails = [
-    {
-      key: "retrenchment",
-      attribute: "Retrenchment Cover/Job Loss",
-      value: individualRetrenchmentCover ? "Yes" : "No",
     },
   ];
 
@@ -249,23 +237,6 @@ const Quotation = ({ formData, quotationData }) => {
           <Table
             columns={columns}
             dataSource={dataPolicyDetails}
-            pagination={false}
-            bordered
-            showHeader={false}
-            size='middle'
-            style={{
-              border: "2px solid maroon",
-              padding: "20px",
-              marginBottom: "20px",
-            }}
-          />
-
-          <Title style={{ textAlign: "center" }} level={4}>
-            Selected Optional Benefits
-          </Title>
-          <Table
-            columns={columns}
-            dataSource={dataSelectedOptionalBenefitsDetails}
             pagination={false}
             bordered
             showHeader={false}

@@ -1,9 +1,17 @@
-import React from 'react';
-import { Table, Card, Row, Col } from 'antd';
+import React, { useState } from 'react';
+import { Table, Card, Row, Col, Checkbox, Button, Typography } from 'antd';
+import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { resetData } from "../../store/redux/features/goalSlice";
+import { LeftOutlined } from "@ant-design/icons";
+import PolicyExclusionsModal from "../../components/Group Life/Modals/PolicyExclusionsModal";
+
+const { Title } = Typography;
 
 const renderFormattedValue = (value) => Math.round(value).toLocaleString("en-us");
 const formatCurrency = (value) => `KES ${Math.round(value).toLocaleString()}`;
-const formatPercentage = (value) => `${Math.round(value)}%`;
+const formatPercentage = (value) => `${Math.round(value)}%`; 
 
 const detailColumns = [
   { title: "Attribute", dataIndex: "attribute", key: "attribute", width: "50%" },
@@ -11,12 +19,14 @@ const detailColumns = [
 ];
 
 const getClientData = (formData) => {
-  const { name = '', email = '', country = '', telCode = '', tel = '' } = formData || {};
+  const {firstName = '', lastName = '', email = '',  phoneAreas= '', tel = '' } = formData || {};
+  console.log('phoneAreas:', phoneAreas);
+  const name = `${firstName} ${lastName}`;
+
   return [
     { key: "name", attribute: "Name", value: name },
     { key: "email", attribute: "Email", value: email },
-    { key: "country", attribute: "Country", value: country },
-    { key: "tel", attribute: "Tel", value: `${telCode} ${tel}` }
+    { key: "tel", attribute: "Mobile Number", value: tel}
   ];
 };
 
@@ -52,10 +62,49 @@ const getInvestmentData = (cData) => {
   ];
 };
 
-const GoalQuotation = ({ cData = {}, formData = {} }) => {
+const GoalQuotation = () => {
+  const [isPolicyModalVisible, setIsPolicyModalVisible] = useState(false);
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+  const [isPolicyAccepted, setIsPolicyAccepted] = useState(false);
+  
+
+  const handleNavigate = () => {
+    navigate(-1);
+  };
+
+const handleCheckboxChange = (e) => {
+  setIsPolicyModalVisible(true);
+  setIsCheckboxChecked(e.target.checked);
+};
+
+const handleModalAccept = () => {
+  setIsPolicyAccepted(true);
+  setIsPolicyModalVisible(false);
+};
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const { cData = {}, formData = {} } = location.state || {};
+  
+  const parsedCData = JSON.parse(cData);
+  
+  const [acceptedExclusions, setAcceptedExclusions] = useState(false);
+
+  const handleAcceptanceChange = (e) => {
+    setAcceptedExclusions(e.target.checked);
+  };
+
+  const handlePrevClick = () => {
+    console.log('Back button clicked');
+  };
+
+  const handleDownload = () => {
+    console.log('Download button clicked');
+  };
+
   const clientData = getClientData(formData);
   const policyData = getPolicyData(formData);
-  const investmentData = getInvestmentData(cData);
+  const investmentData = getInvestmentData(parsedCData);
 
   const tableColumns = [
     { title: 'Year', dataIndex: 'year', key: 'year' },
@@ -68,6 +117,15 @@ const GoalQuotation = ({ cData = {}, formData = {} }) => {
   ];
 
   return (
+    <>
+      <div className="flex items-center">
+        <button className="mb-5 focus:outline-none hover:text-[#A32A29]">
+          <LeftOutlined className="w-8 h-8" onClick={handleNavigate} />
+        </button>
+        <Title level={5} style={{ marginBottom: '20px' }} className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
+        Goalbased Savings Insurance Cover
+        </Title>
+      </div>
     <Card style={{ border: "1px solid maroon" }}>
       <div style={{ width: "90%", margin: "auto" }}>
         {/* Header */}
@@ -77,7 +135,7 @@ const GoalQuotation = ({ cData = {}, formData = {} }) => {
               EQUITY LIFE ASSURANCE (KENYA) LIMITED
             </h2>
             <h3 style={{ fontWeight: "bold", marginBottom: 0 }}>Quotation</h3>
-            <h3 style={{ fontWeight: "bold", marginBottom: 0 }}>Goal Based Savings Product</h3>
+            <h3 style={{ fontWeight: "bold", marginBottom: 0 }}>Goalbased Savings Product</h3>
           </Col>
           <Col>
             <img
@@ -137,7 +195,7 @@ const GoalQuotation = ({ cData = {}, formData = {} }) => {
         <h4 style={{ fontWeight: "bold", marginTop: "5px" }}>Fund Projections</h4>
         <Table
           columns={tableColumns}
-          dataSource={cData.fundProjections?.details || []}
+          dataSource={parsedCData.fundProjections?.details || []}
           bordered
           pagination={false}
           style={{ marginBottom: "20px", border: "1px solid maroon" }}
@@ -158,8 +216,39 @@ const GoalQuotation = ({ cData = {}, formData = {} }) => {
             <strong>Equity Life Assurance (Kenya) Limited</strong>
           </h3>
         </div>
-      </div>
+      </div> 
     </Card>
+    <div style={{ marginTop: "20px" }}>
+        <Checkbox checked={isCheckboxChecked} onChange={handleCheckboxChange}>
+          I accept the{" "}
+          <span onClick={() => setIsPolicyModalVisible(true)} style={{ textAlign: "right", marginTop: "20px", color: "#A32A29" }}>
+            policy exclusions
+          </span>
+        </Checkbox>
+
+        <div style={{ textAlign: "right", marginTop: "20px", color: "#A32A29" }}>
+          <Button
+            type="primary"
+            style={{ marginRight: "10px" }}
+            disabled={!isPolicyAccepted || !isCheckboxChecked}
+          >
+            Continue with Payment
+          </Button>
+          <Button className="mr-4" style={{ marginRight: "10px" }} onClick={handleDownload}>
+            Download
+          </Button>
+          <Button className="mr-4" style={{ marginRight: "10px" }}>
+            Send to Email
+          </Button>
+        </div>
+
+        <PolicyExclusionsModal
+          visible={isPolicyModalVisible}
+          onCancel={() => setIsPolicyModalVisible(false)}
+          onAccept={handleModalAccept}
+        />
+      </div>
+    </>
   );
 };
 
