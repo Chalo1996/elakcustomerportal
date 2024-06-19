@@ -163,7 +163,6 @@ const GroupLifeAssurance = () => {
   };
 
   const handleSubmit = async () => {
-    // ... your existing logic
     if (authStatus === "succeeded") {
       try {
         await dispatch(fetchData(dataToPost)).unwrap();

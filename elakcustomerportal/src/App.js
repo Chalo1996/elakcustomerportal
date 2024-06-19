@@ -36,7 +36,7 @@ import GCQuotationPageGroup from "./pages/GroupCredit/group/GCQuotationPage";
 import GCQuotationPagePersonal from "./pages/GroupCredit/personal/GCQuotationPage";
 import AnnuityPage from "./pages/AnnuityPages/Annuity";
 import GroupCustomer from "./components/Group Critical Illness/GroupCustomer";
-import UploadDetails from "./components/Group Critical Illness/UploadDetails";
+import UploadDetails from "./components/Group Critical Illness/UploadDetails"
 
 function App() {
   const dispatch = useDispatch();
@@ -119,9 +119,13 @@ function App() {
                       path='customer-type/critical-illness'
                       element={<GroupCriticalIllness />}
                     />
-                    <Route path='customer-type' element={<CustomerType />} />
+                    <Route path="customer-type" element={<CustomerType />} />
                     <Route
-                      path='customer-type/critical-illness/critical-illness-quotation'
+                      path="customer-type/critical-illness/critical-illness-quotation"
+                      element={<CriticalIllnessQuotation />}
+                    />
+                    <Route
+                      path="customer-type/group-customer/critical-illness-quotation"
                       element={<CriticalIllnessQuotation />}
                     />
                     <Route
@@ -154,6 +158,10 @@ function App() {
                       element={<GoalQuotation />}
                     />
                     <Route path='annuity' element={<AnnuityPage />} />
+                    <Route
+                      path="annuity/quotation-details"
+                      element={<AnnuityQuotation />}
+                    />
                     <Route path='*' element={<NotFound />} />
                   </Routes>
                 </PortalLayout>

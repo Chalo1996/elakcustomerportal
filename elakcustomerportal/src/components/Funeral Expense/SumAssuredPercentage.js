@@ -58,7 +58,7 @@ const SumAssuredPercentageForm = ({ form, formData, setFormData }) => {
   return (
     <>
       <div className="w-[710px] h-[76px] mt-3 py-3 flex flex-col gap-1">
-        <p className="font-open-sans text-[20px] font-semibold leading-[28px] text-left">
+        <p className="font-open-sans text-[16px] font-semibold leading-[28px] text-left">
           Please enter the percentage of SA payable for each member.
         </p>
       </div>
