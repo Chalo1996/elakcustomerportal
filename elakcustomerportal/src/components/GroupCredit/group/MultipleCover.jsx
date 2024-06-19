@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Steps, Button, Form } from "antd";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { LeftOutlined } from "@ant-design/icons";
+import { LeftOutlined, SearchOutlined } from "@ant-design/icons";
 import {
   updateUserDetails,
   generateQuotation,
@@ -20,6 +20,19 @@ const MultipleCover = ({ userDetails, quotationData, dispatch }) => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [isQuotationGenerated, setIsQuotationGenerated] = useState(false);
+
+  useEffect(() => {
+    const validateForm = async () => {
+      if (!hasInteracted) return;
+      try {
+        await form.validateFields();
+        setIsNextDisabled(false);
+      } catch {
+        setIsNextDisabled(true);
+      }
+    };
+    validateForm();
+  }, [form, userDetails, hasInteracted]);
 
   const next = async () => {
     try {
@@ -47,23 +60,13 @@ const MultipleCover = ({ userDetails, quotationData, dispatch }) => {
   const handleGenerateQuotation = () => {
     dispatch(generateQuotation(contextObject));
     setIsQuotationGenerated(true);
-    if (isQuotationGenerated && quotationData) {
-      navigate("/home/group-credit/group/quotation");
-    }
   };
 
   useEffect(() => {
-    const validateForm = async () => {
-      if (!hasInteracted) return;
-      try {
-        await form.validateFields();
-        setIsNextDisabled(false);
-      } catch {
-        setIsNextDisabled(true);
-      }
-    };
-    validateForm();
-  }, [form, userDetails, hasInteracted]);
+    if (isQuotationGenerated && quotationData) {
+      navigate("/home/group-credit/group/quotation");
+    }
+  }, [isQuotationGenerated, quotationData, navigate]);
 
   const contextObject = {
     userInfo: {
@@ -154,14 +157,20 @@ const MultipleCover = ({ userDetails, quotationData, dispatch }) => {
             Next
           </Button>
         )}
-        {currentStep === steps.length - 1 && (
-          <Button
-            className='h-full px-4 py-2 shadow-none text-center'
-            type='primary'
-            onClick={handleGenerateQuotation}
-          >
-            Generate Quotation
+        {currentStep === steps.length - 1 && userDetails.loading ? (
+          <Button type='primary' loading iconPosition='end'>
+            Loading
           </Button>
+        ) : (
+          currentStep === steps.length - 1 && (
+            <Button
+              className='h-full px-4 py-2 shadow-none text-center'
+              type='primary'
+              onClick={handleGenerateQuotation}
+            >
+              Generate Quotation
+            </Button>
+          )
         )}
       </div>
     </div>
