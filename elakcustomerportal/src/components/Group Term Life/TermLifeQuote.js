@@ -1,23 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, createContext, useContext } from 'react';
 import { Row, Col, Table, Space,Form, Input,Divider, Button, DatePicker, Select,Steps, Modal, Radio, Checkbox,Typography } from 'antd';
-import Title from 'antd/es/skeleton/Title';
 import {ArrowLeftOutlined} from '@ant-design/icons';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 
 const { Item } = Form;
+const QuotationDataContext = createContext();
+export const useQuotationData = () => useContext(QuotationDataContext);
 
 const TermLifeQuote = () => {
 const { Option } = Select;
 const { Step } = Steps;
 const { Title, Text } = Typography;
 
+const [quoteData, setQuoteData] = useState(null);
+const [refreshKey, setRefreshKey] = useState(0);
 const [quotationData, setQuotationData] = React.useState(null);
 const [isDivVisible, setIsDivVisible] = useState(false);
 const [selectedOption, setSelectedOption] = useState(null);
 const [isModalVisible, setIsModalVisible] = useState(false);
-const [isChecked, setIsChecked] = useState(false);
-const [modalOpen, setModalOpen] = useState(false);
 const [showReviewModal, setShowReviewModal] = useState(false);
 const [reviewData, setReviewData] = useState({});
 const [generateQuoteChecked, setGenerateQuoteChecked] = useState(false);
@@ -52,51 +54,21 @@ returnOfPremiumOnSurvival: '',
 paymentFrequency: ''
 });
 
-const retOfPremSurvival = {
-YES: 'YES',
-NO: 'NO',
-};
-const premiumFrequency = {
-ANNUAL: 'Annual',
-ONEOFF: 'Oneoff',
-};
-const percentPremRet = {
-'20': '20%',
-'50': '50%',
-'80': '80%',
-'100': '100%',
-};
+const retOfPremSurvival = { YES: 'YES', NO: 'NO',};
+const premiumFrequency = { ANNUAL: 'Annual', ONEOFF: 'Oneoff',};
+const percentPremRet = { '20': '20%', '50': '50%','80': '80%', '100': '100%',};
+const benefitEscalation = { LEVEL: 'Stay the same over time', INCREASING: 'Get bigger over time',};
+const loanTyp = { BULLLET: 'Payment at term end', AMORTIZATION: 'Gradual Payment',};
+const singleJoint = { SINGLE: 'Single', JOINT: 'Joint',};
+const isCoverForloan = { YES: 'Loan-Premium', NO: 'Non-LoanPremium',};
+const coverTypes = { INDIVIDUAL: 'Individual', KEYMANRISK: 'Another Key Person',};
+const countryCodes = { Kenya: '+254', Uganda: '+256', Tanzania: '+255', Rwanda: '+250', 'South Sudan': '+211', DRC: '+243' };
 const acceleratedCI = {
-YES: 'YES',
-NO: 'NO',
-};
-const benefitEscalation = {
-LEVEL: 'Stay the same over time',
-INCREASING: 'Get bigger over time',
-};
-const loanTyp = {
-BULLLET: 'Payment at term end',
-AMORTIZATION: 'Gradual Payment',
-};
-const singleJoint = {
-SINGLE: 'Single',
-JOINT: 'Joint',
-};
-const isCoverForloan = {
-YES: 'Loan-Premium',
-NO: 'Non-LoanPremium',
-};
-const coverTypes = {
-INDIVIDUAL: 'Individual',
-KEYMANRISK: 'Another Key Person',
-};
-const countryCodes = {
-Kenya: '+254',
-Uganda: '+256',
-Tanzania: '+255',
-Rwanda: '+250',
-'South Sudan': '+211',
-DRC: '+243'
+  YES: 'YES',
+  NO: 'NO',
+  };
+const updateQuoteData = (data) => {
+  setQuoteData(data);
 };
 const handleChange = (changedValues, allValues) => {
 setFormData(allValues);
@@ -193,6 +165,7 @@ if (value === 'NO') {
 setFormData(prevFormData => ({
 ...prevFormData,
 returnOfPremiumOnSurvival: value,
+
 percentageOfPremToBReturned: 0,
 }));
 } else {
@@ -243,6 +216,11 @@ const getCurrentDate = () => {
     const year = today.getFullYear();
     return `${day}/${month}/${year}`;
 };
+
+const handleRefresh = () => {
+  setRefreshKey((prevKey) => prevKey + 1);
+};
+
 const isCoverLoan = formData.isCoverLoan;            
 const amountCovered = isCoverLoan === 'YES' ? formData.principalAmount : formData.sumAssured;
 const yearsCover = isCoverLoan === 'YES' ? formData.termInYears : formData.termInYearsCover;
@@ -275,9 +253,8 @@ const selectedOPtionalBenefits = [
 ];
 
 const contextObject = {
-//Correct Context
 dateOfBirth: formData.dateOfBirth,
-principalAmount: formData.principalAmount,   //.replace(/,/g, ''),
+principalAmount: formData.principalAmount, //.replace(/,/g, ''),
 termInYears: formData.termInYears,
 annualInterestRate: formData.annualInterestRate,
 installmentsPA: formData.installmentsPerAnnum,
@@ -293,34 +270,10 @@ acceleratedCritalIllness: formData.acceleratedCritalIllness,
 returnOfPremiumOnSurvival: formData.returnOfPremiumOnSurvival,
 percentageOfPremToBReturned: formData.percentageOfPremToBReturned,
 premiumFrequency: formData.premiumFrequency,
-
-
-///Dummy Context
-/*
-dateOfBirth: '1999-01-01',
-principalAmount: 1002000,
-termInYears: 2,
-annualInterestRate: 23,
-installmentsPA: 12,
-sumAssuredCover: 1203020,
-termYearsCover: 9,
-annualEscalationRate: 0,
-percentageOfPremToBReturned: 50,
-loanType: 'BULLET',
-coverType: 'INDIVIDUAL',
-isCoverLoan: 'YES',
-singleJoint: 'SINGLE',
-benefitEscalationCover: 'LEVEL',
-acceleratedCritalIllness: 'YES',
-returnOfPremiumOnSurvival: 'YES',
-premiumFrequency: 'ANNUAL'
-*/
 };
 
-function getOutData(outData) {
-    console.log('Out Data:', outData);
-}
-fetch('https://sisos-eu.azurewebsites.net/api/cmd', {
+
+  fetch('https://sisos-eu.azurewebsites.net/api/cmd', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -342,13 +295,14 @@ fetch('https://sisos-eu.azurewebsites.net/api/cmd', {
     } 
     else{  
       setQuotationData(outData.premiumData[0]);
+      console.log(quotationData);
     }
   })
   .catch(error => {
     console.error('Error:', error.message);
    });
-  console.log('Context:', contextObject);  
- 
+   console.log('ContextObject', contextObject);
+
 
 return (
 <div>
@@ -370,16 +324,16 @@ Term Life Cover
     visible={showModal}
     onCancel={() => setShowModal(false)}
     footer={[
-        <Row justify="start" key="footer-row" className="mt-4">
-        <Button
-            key="submit"
-            type="primary"
-            onClick={handleGenerateQuote}
-            disabled={!selectedOption}
-            className="shadow-none">
-            Continue
-        </Button>
-        </Row>,
+      <Row justify="start" key="footer-row" className="mt-4">
+      <Button
+          key="submit"
+          type="primary"
+          onClick={handleGenerateQuote}
+          disabled={!selectedOption}
+          className="shadow-none">
+          Continue
+      </Button>
+      </Row>,
     ]}>
     <br></br>
     <Radio.Group 
@@ -592,7 +546,7 @@ value={formData.termInYears}
 onChange={(value) => handleSelectChange(value, 'termInYears')}
 style={{ width: '100%' }}>
 {Object.keys(yrsDrpDwnLoan).map((year) => (
-<Option key={year} value={year}>
+<Option key={year} value={parseInt(year)}>
 {year}
 </Option>
 ))}
@@ -600,7 +554,6 @@ style={{ width: '100%' }}>
 </Item>
 
 <Item
-name="installmentsPerAnnum"
 rules={[{ required: true, message: 'This field is required' }]}
 label="Number Of Instalments Per Annum">
 <Select
@@ -610,7 +563,7 @@ value={formData.installmentsPerAnnum}
 onChange={(value) => handleSelectChange(value, 'installmentsPerAnnum')}
 style={{ width: '100%' }}>
 {Object.keys(instPerAnnDropDown).map((year) => (
-<Option key={year} value={year}>
+<Option key={year} value={parseInt(year)}>
 {year}
 </Option>
 ))}
@@ -682,7 +635,7 @@ value={formData.termInYearsCover}
 onChange={(value) => handleSelectChange(value, 'termInYearsCover')}
 style={{ width: '100%' }}>
 {Object.keys(yrsDrpDwnCover).map((year) => (
-<Option key={year} value={year}>
+<Option key={year} value={parseInt(year)}>
 {year}
 </Option>
 ))}
@@ -724,14 +677,15 @@ Please Enter Additional Details
 </h1>
 <Row gutter={16}>
 <Col span={12}>
-<Item
+
+<Item 
 name="acceleratedCritalIllness"
 label="Have you been diagnosed with any critical illness?"
-style={{ marginTop: '22px' }}
-rules={getRequiredRule()}>
+rules={getRequiredRule()}
+style={{ marginTop: '22px' }}>
 <Select
 name="acceleratedCritalIllness"
-placeholder="YES"
+placeholder="NO"
 value={formData.acceleratedCritalIllness}
 onChange={(value) => handleSelectChange(value, 'acceleratedCritalIllness')}
 style={{ width: '100%' }}>
@@ -739,9 +693,9 @@ style={{ width: '100%' }}>
 <Option key={option} value={option}>
 {acceleratedCI[option]}
 </Option>
-))}
-</Select>
+))}</Select>
 </Item>
+
 
 <Item
 rules={getRequiredRule()}
@@ -1025,17 +979,22 @@ style={{ width: '100%' }}>
     </div>
 
     {currentStep === 3 && (
-    <Button
-    type="primary"
-    onClick={toggleDivVisibility}
-    style={{ marginRight: 8 }}>
-    Quote
-    </Button>
+    
+      <Button
+      type="primary"
+      onClick={toggleDivVisibility} 
+      style={{ marginRight: 8 }}>
+      Quote
+      </Button>
+     
     )}
 
     {/*------------------------------------Quotation Page----------------------------------------------------------------*/}
     {isDivVisible &&(
-    <div style={{ maxWidth: '800px',marginTop: '30px', padding: '20px',backgroundColor: 'white' ,border: '2px solid black', margin: 'auto'}}>
+
+  <div 
+      value={{ quoteData, updateQuoteData }} 
+    style={{ maxWidth: '800px',marginTop: '30px', padding: '20px',backgroundColor: 'white' ,border: '2px solid black', margin: 'auto'}}>
     <Row justify="start">
     <Col span={12}>
     <Title
@@ -1167,12 +1126,12 @@ style={{ width: '100%' }}>
     <Title style={{ textAlign: 'start', color: 'black' }} level={4}>
     Tel: 0765000000
     </Title>
-    </div>  
+
+  </div>
+
     )}
     {/*------------------------------------End of Quotation Page-------------------------------------------*/}
     </div>
-
- 
     </>
     )}
 

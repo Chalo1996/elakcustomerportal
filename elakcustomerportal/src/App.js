@@ -35,7 +35,7 @@ import GoalQuotation from "./components/Goal Based/GoalQuotation";
 import GCQuotationPage from "./pages/GroupCredit/GCQuotationPage";
 import AnnuityPage from "./pages/AnnuityPages/Annuity";
 import GroupCustomer from "./components/Group Critical Illness/GroupCustomer";
-import UploadDetails from "./components/Group Critical Illness/UploadDetails"
+import UploadDetails from "./components/Group Critical Illness/UploadDetails";
 
 function App() {
   const dispatch = useDispatch();
