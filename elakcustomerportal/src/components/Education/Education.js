@@ -53,7 +53,7 @@ const Education = () => {
 
 const cData = useSelector((state) => state.education.eduData);
 const authStatus = useSelector((state) => state.auth.status);
-  const isLoading = useSelector((state) => state.education.isLoading);
+const isLoading = useSelector((state) => state.education.isLoading);
   
 
 const dataToPost = {
@@ -72,8 +72,6 @@ const dataToPost = {
   "endDate": formData.endDate,
   "gender": formData.gender,
   };
-
-
   const handleSubmit = async () => {
     if (authStatus === "succeeded") {
       try {
@@ -88,8 +86,6 @@ const dataToPost = {
       message.error('Authentication failed.');
     }
   };
-
-
   useEffect(() => {
     if (isFormSubmitted && !isLoading) {
       const serializableFormData = JSON.parse(JSON.stringify({
@@ -116,7 +112,6 @@ const dataToPost = {
       });
     }
   }, [isFormSubmitted, isLoading, navigate, formData, cData]);
-
   useEffect(() => {
     if (formData.startDate && formData.TermInYears) {
       const calculatedEndDate = calculateEndDate(formData.startDate, formData.TermInYears);
@@ -124,18 +119,15 @@ const dataToPost = {
       form.setFieldsValue({ endDate: calculatedEndDate });
     }
   }, [formData.startDate, formData.TermInYears,form]);
-
   const handleStartDateChange = (date) => {
     setFormData((prevData) => ({
       ...prevData,
       startDate: date ? moment(date).startOf('day') : null,
     }));
   };
-  
   const handleTermInYearsChange = (value) => {
     setFormData((prevData) => ({ ...prevData, TermInYears: value }));
   };
-
   const calculateEndDate = (startDate, years) => {
     const startMoment = moment.utc(startDate); // Parse as UTC date
     const localStartMoment = startMoment.local(); // Convert to local date
@@ -154,8 +146,6 @@ const dataToPost = {
       currency: value,
     }));
   };
-
-
   const phoneAreas = [
     { code: "+211", flag: sspFlag, country: "South Sudan" },
     { code: "+243", flag: cdfFlag, country: "DRC" },
@@ -172,7 +162,6 @@ const dataToPost = {
       phoneAreas: area.code,
     }));
   };
-
   const next = () => {
     form.validateFields().then(() => {
       if (current === 0) {
@@ -223,7 +212,6 @@ const dataToPost = {
       selectedOption: e.target.value,
     }));
   };
-
   const handleModalOk = () => {
     setIsModalOpen(false);
     if (formData.selectedOption === 'quote') {
