@@ -8,11 +8,11 @@ const initialState = {
   firstname: "",
   lastname: "",
   gender: "",
-  country: "",
+  country: "Kenya",
   phone: "",
   dob: null,
   email: "",
-  countryCode: "",
+  countryCode: "+254",
   countryFlag: null,
   termschecked: false,
   sumAssured: 5000000,
@@ -28,18 +28,19 @@ const initialState = {
   quoteSubmitted: false,
   loading: false,
   quotationData: null,
+  numOfPartners: 0,
+  partnerDates: [],
 };
 
 export const groupCreditReducer = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_USER_DETAILS:
+      console.log(state);
       return {
         ...state,
         [action.payload.field]: action.payload.value,
       };
     case SET_QUOTATION_DATA:
-      console.log("FORM DATA", state);
-      console.log("QUOTATION DATA", state.quotationData);
       return {
         ...state,
         quotationData: action.payload,
