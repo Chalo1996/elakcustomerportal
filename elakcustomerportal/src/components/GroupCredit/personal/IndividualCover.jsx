@@ -8,8 +8,8 @@ import {
   generateQuotation,
 } from "../../../store/redux/actions/groupCreditActions";
 import ClientDetailsForm from "../forms/ClientDetailsForm";
-import ProductDetailsForm from "../forms/ProductDetailsForm";
-import ConfirmDetailsForm from "../forms/ConfirmDetailsForm";
+import ProductDetailsForm from "../forms/personal/ProductDetailsForm";
+import ConfirmDetailsForm from "../forms/personal/ConfirmDetailsForm";
 
 const { Step } = Steps;
 
@@ -49,7 +49,7 @@ const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
     setIsQuotationGenerated(true);
     isQuotationGenerated &&
       quotationData &&
-      navigate("/home/group-credit/quotation");
+      navigate("/home/group-credit/personal/quotation");
   };
 
   useEffect(() => {
