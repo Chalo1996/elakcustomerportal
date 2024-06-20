@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Card, Row, Col, Table, Button, Form, Checkbox } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
@@ -8,11 +8,14 @@ import { resetData } from "../../store/redux/features/gleSlice";
 import darkLogo from "../../assets/dark-logo.png";
 import { useTheme } from "../../store/context/theme-context";
 import FuneralExclusionsModal from "../../components/Funeral Expense/modals/Exclusions";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const FuneralExpenseQuotation = () => {
   const { theme } = useTheme();
   const [isPolicyChecked, setIsPolicyChecked] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const printRef = useRef();
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -46,6 +49,74 @@ const FuneralExpenseQuotation = () => {
     } else {
       showModal();
     }
+  };
+
+  const handleGeneratePdf = async () => {
+    const element = printRef.current;
+
+    // Capture the div as a canvas
+    const canvas = await html2canvas(element, {
+      width: element.offsetWidth,
+      height: element.offsetHeight,
+      scale: 2, // Increase the scale for better quality
+    });
+
+    // Initialize jsPDF instance
+    const pdf = new jsPDF("p", "mm", "a4");
+
+    // Get dimensions of the PDF page
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+
+    // Calculate the number of pages
+    const imgWidth = canvas.width;
+    const imgHeight = canvas.height;
+    const ratio = imgWidth / pdfWidth;
+    const pdfImgHeight = pdfHeight * ratio;
+
+    // For each page, calculate the portion of the image to display
+    for (let i = 0; i * pdfImgHeight < imgHeight; i++) {
+      const sourceY = i * pdfImgHeight;
+      const pageHeight = Math.min(pdfImgHeight, imgHeight - sourceY);
+
+      // Create a temporary canvas to hold the current portion of the image
+      const tempCanvas = document.createElement("canvas");
+      tempCanvas.width = imgWidth;
+      tempCanvas.height = pageHeight;
+
+      const tempContext = tempCanvas.getContext("2d");
+      tempContext.drawImage(
+        canvas,
+        0,
+        sourceY,
+        imgWidth,
+        pageHeight,
+        0,
+        0,
+        imgWidth,
+        pageHeight
+      );
+
+      const tempImgData = tempCanvas.toDataURL("image/png");
+
+      // Calculate the height to maintain the aspect ratio
+      const aspectRatioHeight = (pageHeight / imgWidth) * pdfWidth;
+
+      // Add the current portion of the image to the PDF
+      pdf.addImage(tempImgData, "PNG", 0, 0, pdfWidth, aspectRatioHeight);
+
+      // Add a new page if there are more pages to add
+      if (i * pdfImgHeight + pdfImgHeight < imgHeight) {
+        pdf.addPage();
+      }
+    }
+
+    // Create a blob URL for the PDF
+    const blob = pdf.output("blob");
+    const blobUrl = URL.createObjectURL(blob);
+
+    // Open the PDF in a new window/tab
+    window.open(blobUrl, "_blank");
   };
 
   useEffect(() => {
@@ -144,7 +215,10 @@ const FuneralExpenseQuotation = () => {
           {formData.segment} Funeral Expense Quotation Details
         </span>
       </div>
-      <Card className={`border ${theme === "dark" ? "" : "border-black"}`}>
+      <Card
+        className={`border ${theme === "dark" ? "" : "border-black"}`}
+        ref={printRef}
+      >
         <div style={{ width: "90%", margin: "auto" }}>
           <Row justify="space-between">
             <Col>
@@ -486,7 +560,7 @@ const FuneralExpenseQuotation = () => {
           </Button>
         </Col>
         <Col className="mr-4 shadow-none">
-          <Button>Download Quote</Button>
+          <Button onClick={handleGeneratePdf}>Download Quote</Button>
         </Col>
         <Col>
           <Button className="mr-4 shadow-none">Send To Email</Button>

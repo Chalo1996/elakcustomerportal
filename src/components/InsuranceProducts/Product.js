@@ -10,7 +10,7 @@ import Educamodal from "../Education/Educamodal";
 import Goalbasedmodal from "../Goal Based/Goalbasedmodal";
 import GroupTermLifeModal from "../Group Term Life/GroupTermLifeModal";
 import "./Product.css";
-import AnnuityModal from "../Annuity/modals/AnnuityModal";
+import AnnuityModal from "../Annuity/modals/AnnuityModal"
 
 const { Meta } = Card;
 
@@ -116,7 +116,7 @@ const Product = ({ product, index }) => {
           className="h-40 object-cover"
         />
       }
-      className={`m-4 card-hover`} // Apply the hover class
+      className={`m-4 card-hover`}
     >
       <Meta
         title={<span>{product.title}</span>}
