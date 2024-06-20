@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Row, Col, Table, Button, Checkbox, Typography } from "antd";
+import { Card, Row, Col, Table, Button, Checkbox, Typography, message } from "antd";
 import { useLocation } from "react-router-dom";
 import PolicyExclusionsModal from "../../components/Group Life/Modals/PolicyExclusionsModal";
 import Docxtemplater from "docxtemplater";
@@ -86,6 +86,7 @@ const QuotationTable = () => {
 
         const generatedDoc = doc.getZip().generate({ type: "blob" });
         FileSaver.saveAs(generatedDoc, "Quotation.docx");
+        message.success('Quote downloaded successfully!');
       })
       .catch((error) => {
         console.error("Error loading template file:", error);
@@ -257,7 +258,7 @@ const QuotationTable = () => {
           </ol>
         </div>
 
-        <div style={{ width: "100%", backgroundColor: "maroon", textAlign: "center", padding: "6px", marginTop: "20px" }}>
+        <div style={{ width: "100%", backgroundColor: "#A32A29", textAlign: "center", padding: "6px", marginTop: "20px" }}>
           <h3 style={{ color: "white", margin: 0 }}><strong>Equity Life Assurance (Kenya) Limited</strong></h3>
         </div>
       </Card>
