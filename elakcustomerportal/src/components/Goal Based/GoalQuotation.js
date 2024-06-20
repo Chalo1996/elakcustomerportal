@@ -3,7 +3,7 @@ import { Table, Card, Row, Col, Checkbox, Button, Typography } from 'antd';
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { resetData } from "../../store/redux/features/goalSlice";
+import { resetData } from "../../store/redux/features/eduSlice";
 import { LeftOutlined } from "@ant-design/icons";
 import PolicyExclusionsModal from "../Group Life/Modals/PolicyExclusionsModal";
 
@@ -26,6 +26,7 @@ const getClientData = (formData) => {
   return [
     { key: "name", attribute: "Name", value: name },
     { key: "email", attribute: "Email", value: email },
+    
     { key: "tel", attribute: "Mobile Number", value: tel}
   ];
 };
@@ -66,19 +67,7 @@ const GoalQuotation = () => {
   const [isPolicyModalVisible, setIsPolicyModalVisible] = useState(false);
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const [isPolicyAccepted, setIsPolicyAccepted] = useState(false);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const { cData = {}, formData = {} } = location.state || {};
   
-  const [parsedCData, setParsedCData] = useState(() => {
-    try {
-      return typeof cData === 'string' ? JSON.parse(cData) : cData;
-    } catch (error) {
-      console.error("Error parsing cData:", error);
-      return {}; // Fallback to an empty object or handle the error appropriately
-    }
-  });
 
   const handleNavigate = () => {
     navigate(-1);
@@ -93,9 +82,13 @@ const handleModalAccept = () => {
   setIsPolicyAccepted(true);
   setIsPolicyModalVisible(false);
 };
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const { cData = {}, formData = {} } = location.state || {};
   
+  const parsedCData = JSON.parse(cData);
   
- 
   const [acceptedExclusions, setAcceptedExclusions] = useState(false);
 
   const handleAcceptanceChange = (e) => {
