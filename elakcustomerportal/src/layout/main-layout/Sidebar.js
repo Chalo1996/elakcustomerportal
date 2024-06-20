@@ -95,36 +95,36 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
       label: <Divider />,
       className: "non-interactive",
     },
-    {
-      key: "more",
-      icon: <EllipsisOutlined className="rotate-90" />,
-      label: <Link to="/more">More</Link>,
-    },
-    {
-      key: "accounts",
-      icon: <AccountsIcon />,
-      label: <Link to="/accounts">Accounts</Link>,
-    },
-    {
-      key: "transact",
-      icon: <TransactIcon />,
-      label: <Link to="/transact">Transact</Link>,
-    },
-    {
-      key: "borrow",
-      icon: <BorrowIcon />,
-      label: <Link to="/borrow">Borrow</Link>,
-    },
-    {
-      key: "save",
-      icon: <SaveIcon />,
-      label: <Link to="/save">Save</Link>,
-    },
-    {
-      key: "insure",
-      icon: <UmbrellaIcon />,
-      label: <Link to="/insure">Insure</Link>,
-    },
+    // {
+    //   key: "more",
+    //   icon: <EllipsisOutlined className="rotate-90" />,
+    //   label: <Link to="/more">More</Link>,
+    // },
+    // {
+    //   key: "accounts",
+    //   icon: <AccountsIcon />,
+    //   label: <Link to="/accounts">Accounts</Link>,
+    // },
+    // {
+    //   key: "transact",
+    //   icon: <TransactIcon />,
+    //   label: <Link to="/transact">Transact</Link>,
+    // },
+    // {
+    //   key: "borrow",
+    //   icon: <BorrowIcon />,
+    //   label: <Link to="/borrow">Borrow</Link>,
+    // },
+    // {
+    //   key: "save",
+    //   icon: <SaveIcon />,
+    //   label: <Link to="/save">Save</Link>,
+    // },
+    // {
+    //   key: "insure",
+    //   icon: <UmbrellaIcon />,
+    //   label: <Link to="/insure">Insure</Link>,
+    // },
     {
       key: "theme",
       icon: theme === "dark" ? <MoonOutlined /> : <SunOutlined />,
@@ -139,11 +139,11 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
         </div>
       ),
     },
-    {
-      key: "english",
-      icon: <GlobalOutlined />,
-      label: <Link to="/english">English</Link>,
-    },
+    // {
+    //   key: "english",
+    //   icon: <GlobalOutlined />,
+    //   label: <Link to="/english">English</Link>,
+    // },
     {
       key: "signout",
       icon: <LogoutOutlined />,
