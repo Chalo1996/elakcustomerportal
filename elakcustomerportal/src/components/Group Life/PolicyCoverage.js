@@ -12,6 +12,8 @@ const PolicyCoverage = ({ form, formData, setFormData }) => {
   const [showSpouseFields, setShowSpouseFields] = useState(false);
   const [showChildrenFields, setShowChildrenFields] = useState(false);
   const [showParentsFields, setShowParentsFields] = useState(false);
+  const [isFlatAmount, setIsFlatAmount] = useState(false);
+  const [levelOfCover, setLevelOfCover] = useState("pleaseSelect");
 
   const handleInputChange = useCallback((value, field) => {
     setFormData(prevData => ({ ...prevData, [field]: value }));
@@ -51,6 +53,12 @@ const PolicyCoverage = ({ form, formData, setFormData }) => {
     form.setFieldsValue({ policyEndDate: newPolicyEndDate });
   }, [formData, form, setFormData, handleStartDateChange]);
 
+  const handleCoverChange = (value) => {
+    setLevelOfCover(value);
+    setIsFlatAmount(value === 'flatAmount');
+    handleInputChange(value, 'multipleOfAnnualSalary');
+  };
+
   return (
     <Form form={form} layout="vertical" initialValues={formData}>
       <Row gutter={[16, 16]}>
@@ -61,28 +69,28 @@ const PolicyCoverage = ({ form, formData, setFormData }) => {
         </Col>
       </Row>
       <Row gutter={[16, 16]}>
-      <Col xs={24} sm={12}>
-            <Form.Item
-              label="Specify amount beneficiary will get in the event of death of the main member?"
-              name="mainMemberLastExpense"
-              rules={[{ required: true, message: "Please enter spouse last expense!" }]}
-            >
-              <InputNumber
-                className="w-full custom-input-number"
-                addonBefore={formData.currencySymbol}
-                placeholder="Enter spouse last expense"
-                value={formData.mainMemberLastExpense}
-                onChange={(value) => handleInputChange(value, "mainMemberLastExpense")}
-                onKeyPress={preventTextInput}
-                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                parser={(value) => value.replace(/(,*)/g, "")}
-              />
-            </Form.Item>
-          </Col>
+        <Col xs={24} sm={12}>
+          <Form.Item
+            label="Specify amount beneficiary will get in the event of death of the main member?"
+            name="mainMemberLastExpense"
+            rules={[{ required: true, message: "Please enter spouse last expense!" }]}
+          >
+            <InputNumber
+              className="w-full custom-input-number"
+              addonBefore={formData.currencySymbol}
+              placeholder="Enter spouse last expense"
+              value={formData.mainMemberLastExpense}
+              onChange={(value) => handleInputChange(value, "mainMemberLastExpense")}
+              onKeyPress={preventTextInput}
+              formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              parser={(value) => value.replace(/(,*)/g, "")}
+            />
+          </Form.Item>
+        </Col>
       </Row>
       <Row gutter={16} style={{ marginBottom: '20px' }}>
-        <p tooltip="Toggle ON if YES">Would you like to cover employee spouses?</p>
         <Col span={24} title='Would you like to cover your employees spouses?'>
+          <p tooltip="Toggle ON if YES">Would you like to cover employees spouses?</p>
           <Switch
             checked={showSpouseFields}
             onChange={(checked) => setShowSpouseFields(checked)}
@@ -132,14 +140,14 @@ const PolicyCoverage = ({ form, formData, setFormData }) => {
         </Row>
       )}
       <Col span={12} style={{ marginBottom: '20px' }}>
-        <p>Would you like to cover employee children?</p>
-          <Switch
-            checked={showChildrenFields}
-            onChange={(checked) => setShowChildrenFields(checked)}
-            checkedChildren
-            unCheckedChildren
-          />
-        </Col>
+        <p>Would you like to cover employees children?</p>
+        <Switch
+          checked={showChildrenFields}
+          onChange={(checked) => setShowChildrenFields(checked)}
+          checkedChildren
+          unCheckedChildren
+        />
+      </Col>
       {showChildrenFields && (
         <Row gutter={16} style={{ marginBottom: '20px' }}>
           <Col xs={24} sm={12}>
@@ -180,9 +188,11 @@ const PolicyCoverage = ({ form, formData, setFormData }) => {
         </Row>
       )}
 
+      <Row gutter={[16, 16]}></Row>
+
       <Row gutter={16} style={{ marginBottom: '20px' }}>
-      <p>Would you like to cover employee parents and in-laws?</p>
         <Col span={24}>
+          <p>Would you like to cover employees parents and in-laws?</p>
           <Switch
             checked={showParentsFields}
             onChange={(checked) => setShowParentsFields(checked)}
@@ -254,7 +264,7 @@ const PolicyCoverage = ({ form, formData, setFormData }) => {
             />
           </Form.Item>
           {formData.policyStartDate && (
-            <p className="flex items-center mb-[35px]">
+            <p className="flex items-center mb-[20px]">
               <InfoCircleOutlined
                 style={{
                   color: '#D93E3E',
@@ -280,17 +290,18 @@ const PolicyCoverage = ({ form, formData, setFormData }) => {
           >
             <Select
               placeholder="Select a level of cover"
-              onChange={(value) => handleInputChange(value, 'multipleOfAnnualSalary')}
+              onChange={handleCoverChange}
             >
               <Option value="1">1x Salary</Option>
               <Option value="2">2x Salary</Option>
               <Option value="3">3x Salary</Option>
               <Option value="4">4x Salary</Option>
               <Option value="5">5x Salary</Option>
+              <Option value="6">6x Salary</Option>
             </Select>
           </Form.Item>
           <br />
-          {formData.flatAmount && (
+          {isFlatAmount && (
             <Form.Item
               label="Specify Flat Amount"
               name="flatAmount"
@@ -305,7 +316,7 @@ const PolicyCoverage = ({ form, formData, setFormData }) => {
                 className="w-full"
                 placeholder="Enter flat amount"
                 min={0}
-                addonBefore="KSh"
+                addonBefore={formData.currencySymbol}
                 value={formData.flatAmount}
                 onChange={(value) => handleInputChange(value, 'flatAmount')}
                 formatter={(value) =>

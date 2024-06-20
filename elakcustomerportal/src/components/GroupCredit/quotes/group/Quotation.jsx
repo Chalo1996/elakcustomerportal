@@ -29,19 +29,15 @@ const Quotation = ({ formData, quotationData }) => {
     termsInMonths,
     frequency,
     installments,
-    retrenchment,
   } = formData;
 
   const {
     annuitantAge,
     TermsInYears,
     AnnualPremiumsPayable,
-    individualRetrenchmentCover,
     GrossInsurancePremium,
     medicalRequirements,
   } = quotationData;
-
-  console.log("QuotationData", quotationData);
 
   const columns = [
     {
@@ -138,14 +134,6 @@ const Quotation = ({ formData, quotationData }) => {
       key: "frequency",
       attribute: "Premium Frequency",
       value: frequency,
-    },
-  ];
-
-  const dataSelectedOptionalBenefitsDetails = [
-    {
-      key: "retrenchment",
-      attribute: "Retrenchment Cover/Job Loss",
-      value: individualRetrenchmentCover ? "Yes" : "No",
     },
   ];
 
@@ -267,23 +255,6 @@ const Quotation = ({ formData, quotationData }) => {
           />
 
           <Title style={{ textAlign: "center" }} level={4}>
-            Selected Optional Benefits
-          </Title>
-          <Table
-            columns={columns}
-            dataSource={dataSelectedOptionalBenefitsDetails}
-            pagination={false}
-            bordered
-            showHeader={false}
-            size='middle'
-            style={{
-              border: "2px solid maroon",
-              padding: "20px",
-              marginBottom: "20px",
-            }}
-          />
-
-          <Title style={{ textAlign: "center" }} level={4}>
             Premium Details
           </Title>
           <Table
@@ -317,16 +288,6 @@ const Quotation = ({ formData, quotationData }) => {
           <Text strong style={{ color: "red" }}>
             Medical Requirements
           </Text>
-          {/* <br />
-            <Text>1. Medical Examiner's Report</Text>
-            <br />
-            <Text>
-              2. Blood Profile (ESR, CBC) and Blood Chemistry Studies (FBS,
-              Cholesterol, SGPT, SGOT, Creatinine or Serum Urea)
-            </Text>
-            <br />
-            <Text>3. Urinalysis Report</Text>
-            <br /> */}
           <br />
           <Text>1. {medicalRequirements}</Text>
           <br />

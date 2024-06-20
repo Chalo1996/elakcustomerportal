@@ -110,6 +110,7 @@ const GroupCriticalIllness = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [formData, setFormData] = useState({});
   const [ setShowHiddenFields] = useState(false);
+  const [loading, setLoading]= useState(false);
 
   const authStatus = useSelector((state) => state.auth.status);
   const isLoading = useSelector((state) => state.groupCriticalIllness.isLoading);
@@ -746,10 +747,12 @@ const formatPercentage = (value) => {
     console.log('Form Data: ', formData);
     if (authStatus === "succeeded") {
       try {
+        setLoading(true); 
         await dispatch(fetchData(dataToPost)).unwrap();
         message.success('Quote generated successfully!');
         setIsFormSubmitted(true);
       } catch (error) {
+        setLoading(false); 
         message.error('Failed to submit form data.');
       }
     } else {
@@ -1283,6 +1286,7 @@ const formatPercentage = (value) => {
           <Button
             type="primary"
             onClick={handleSubmit}
+            loading={loading}
           >
             Generate Quote
           </Button>

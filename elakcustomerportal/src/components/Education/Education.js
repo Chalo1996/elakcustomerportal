@@ -1,5 +1,6 @@
 import React, {useState,useEffect} from "react";
 import {Steps,Form,Input,Radio,message, Divider,Typography,Card,Space,DatePicker,Button,Row,Col,Select,Modal,InputNumber,Checkbox} from "antd";
+import { LeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../../store/redux/features/eduSlice";
@@ -15,6 +16,7 @@ import ugxFlag from '../../assets/flags/ugx.png';
 
 const { Step } = Steps;
 const { Option } = Select;
+const { Title } = Typography;
 
 
 const Education = () => {
@@ -51,7 +53,7 @@ const Education = () => {
 
 const cData = useSelector((state) => state.education.eduData);
 const authStatus = useSelector((state) => state.auth.status);
-  const isLoading = useSelector((state) => state.education.isLoading);
+const isLoading = useSelector((state) => state.education.isLoading);
   
 
 const dataToPost = {
@@ -70,8 +72,6 @@ const dataToPost = {
   "endDate": formData.endDate,
   "gender": formData.gender,
   };
-
-
   const handleSubmit = async () => {
     if (authStatus === "succeeded") {
       try {
@@ -86,8 +86,6 @@ const dataToPost = {
       message.error('Authentication failed.');
     }
   };
-
-
   useEffect(() => {
     if (isFormSubmitted && !isLoading) {
       const serializableFormData = JSON.parse(JSON.stringify({
@@ -114,7 +112,6 @@ const dataToPost = {
       });
     }
   }, [isFormSubmitted, isLoading, navigate, formData, cData]);
-
   useEffect(() => {
     if (formData.startDate && formData.TermInYears) {
       const calculatedEndDate = calculateEndDate(formData.startDate, formData.TermInYears);
@@ -122,18 +119,15 @@ const dataToPost = {
       form.setFieldsValue({ endDate: calculatedEndDate });
     }
   }, [formData.startDate, formData.TermInYears,form]);
-
   const handleStartDateChange = (date) => {
     setFormData((prevData) => ({
       ...prevData,
       startDate: date ? moment(date).startOf('day') : null,
     }));
   };
-  
   const handleTermInYearsChange = (value) => {
     setFormData((prevData) => ({ ...prevData, TermInYears: value }));
   };
-
   const calculateEndDate = (startDate, years) => {
     const startMoment = moment.utc(startDate); // Parse as UTC date
     const localStartMoment = startMoment.local(); // Convert to local date
@@ -152,8 +146,6 @@ const dataToPost = {
       currency: value,
     }));
   };
-
-
   const phoneAreas = [
     { code: "+211", flag: sspFlag, country: "South Sudan" },
     { code: "+243", flag: cdfFlag, country: "DRC" },
@@ -170,7 +162,6 @@ const dataToPost = {
       phoneAreas: area.code,
     }));
   };
-
   const next = () => {
     form.validateFields().then(() => {
       if (current === 0) {
@@ -184,6 +175,9 @@ const dataToPost = {
     }).catch(errorInfo => {
       console.log('Validation Failed:', errorInfo);
     });
+  };
+  const handleNavigate = () => {
+    navigate(-1); // Navigates to the previous page
   };
   const back = () => {
     setCurrent(current - 1);
@@ -218,7 +212,6 @@ const dataToPost = {
       selectedOption: e.target.value,
     }));
   };
-
   const handleModalOk = () => {
     setIsModalOpen(false);
     if (formData.selectedOption === 'quote') {
@@ -229,10 +222,17 @@ const dataToPost = {
   };
     
   return (
-    <>
-     <br></br>
-     <br></br>
-     <h1 style={{ textAlign: 'left', fontWeight: 'bold', fontSize: '20px', marginBottom: '20px' }}>Education Savings Insurance Cover</h1>
+    <div>
+      <div className="flex items-center">
+        <button className="mb-5 focus:outline-none hover:text-[#A32A29]">
+          <LeftOutlined className="w-8 h-8" onClick={handleNavigate} />
+        </button>
+        <Title level={5} style={{ marginBottom: '20px' }} className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
+        Education Savings Insurance Cover
+        </Title>
+      </div>
+      <br />
+    
       <Steps current={current}>
         <Step title="Personal Details" />
         <Step title="Product Details" />
@@ -278,6 +278,50 @@ const dataToPost = {
           />
         </Form.Item>
       </Col>
+    </Row>
+    <br></br>
+    <Row gutter={16}>
+    <Col span={12}>
+      <Form.Item
+  label="Gender"
+  name="gender"
+  rules={[{ required: true, message: "Please select gender." }]}
+>
+  <Select
+    id="gender"
+    placeholder="Select Gender"
+    value={formData.gender}
+    onChange={(value) =>
+      setFormData((prevData) => ({
+        ...prevData,
+        gender: value,
+      }))
+    }
+    style={{ width: "100%" }}
+  >
+    <Select.Option value="Male">Male</Select.Option>
+    <Select.Option value="Female">Female</Select.Option>
+  </Select>
+</Form.Item>
+
+</Col>
+    <Col span={12}>
+        <Form.Item label="Date of Birth" name="DOB" rules={[{ required: true, message: 'Please enter your date of birth' }]}>
+          <DatePicker 
+          style={{ width: '100%' }} 
+          disabledDate={disabledDate}
+          value={formData.DOB}
+          onChange={(date) =>
+            setFormData((prevData) => ({
+              ...prevData,
+              DOB: date,
+            }))
+          }
+          />
+        </Form.Item>
+      </Col>
+
+
     </Row>
     <br></br>
     <Row gutter={16}>
@@ -349,49 +393,7 @@ const dataToPost = {
 
     </Row>
     <br></br>
-    <Row gutter={16}>
-    <Col span={12}>
-        <Form.Item label="Date of Birth" name="DOB" rules={[{ required: true, message: 'Please enter your date of birth' }]}>
-          <DatePicker 
-          style={{ width: '100%' }} 
-          disabledDate={disabledDate}
-          value={formData.DOB}
-          onChange={(date) =>
-            setFormData((prevData) => ({
-              ...prevData,
-              DOB: date,
-            }))
-          }
-          />
-        </Form.Item>
-      </Col>
-      <Col span={12}>
-      <Form.Item
-  label="Gender"
-  name="gender"
-  rules={[{ required: true, message: "Please select gender." }]}
->
-  <Select
-    id="gender"
-    placeholder="Select Gender"
-    value={formData.gender}
-    onChange={(value) =>
-      setFormData((prevData) => ({
-        ...prevData,
-        gender: value,
-      }))
-    }
-    style={{ width: "100%" }}
-  >
-    <Select.Option value="Male">Male</Select.Option>
-    <Select.Option value="Female">Female</Select.Option>
-  </Select>
-</Form.Item>
-
-</Col>
-
-    </Row>
-    <br></br>
+   
     <Row gutter={16}>
       <Col span={24}>
         <Form.Item
@@ -453,12 +455,9 @@ const dataToPost = {
     <Row gutter={16}>
       <Col span={12}>
         <Form.Item
-          label="Target Type"
-          tooltip="Understand your choice:
-Investment Premium 
-With this option, you can comfortably set a specific sum for your regular insurance payments. 
-Fund value
-By selecting this option, you have the flexibility to set a specific fund value that you aspire 
+          label="What is your intended Target?"
+          tooltip="Investment Premium:You can comfortably set a specific sum for your regular insurance payments. 
+Fund value: You have the flexibility to set a specific fund value that you aspire 
 to achieve over time."
           name="targetType"
           id="targetType"
@@ -541,7 +540,7 @@ to achieve over time."
       <Col span={12}>
         <Form.Item
           name="frequency"
-          label="Premium Frequency"
+          label="How frequently do you want to make your contributions?"
           style={{ width: "100%" }}
         >
           <Select
@@ -642,22 +641,20 @@ to achieve over time."
 )}
       
       {current === 2 && (
-  <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
-    <h4 style={{ marginBottom: '20px' }}>Please, Review and confirm Your Information details to continue</h4>
-    <div>
-      <br />
-      <Card>
+  <Card className="mb-10">
+
+    <p>Please, Review and confirm Your Information details to continue</p>
+    
+      <Card title="Product" className="mb-10">
       <div>
         <Row gutter={16}>
           <Col span={12}>
-            <h5 style={{ color: '#888', marginBottom: '5px' }}>Product</h5>
             <span>Education savings</span>
           </Col>
         </Row>
       </div>
       </Card>
-      
-      <Card title={<h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Personal Information</h4>}>
+      <Card title="Personal Information" className="mb-10">
       <div>
         <Row gutter={16}>
           <Col span={12}>
@@ -695,8 +692,7 @@ to achieve over time."
         <br />
       </div>
       </Card>
-      
-      <Card title={<h4 style={{ marginBottom: '10px', fontSize: '18px', fontWeight: 'bold' }}>Policy Information</h4>}>
+      <Card title="Policy Information" className="mb-10">
       
       <Row gutter={16}>
         <Col span={12}>
@@ -735,21 +731,19 @@ to achieve over time."
       
       </Card>
       <br />
-    </div>
-  
-      </div>
-      
+   
+      </Card>
 )}
 
           <div style={{ marginTop: 20 }}>
             {current > 0 && (
               <Button style={{ marginRight: 8 }} onClick={back}>
-                Back
+                Go Back
               </Button>
             )}
             {current < 2 &&  (
               <Button type="primary" onClick={next}>
-                Next
+              Continue
               </Button>
             )}
   {current === 2 && (
@@ -777,7 +771,7 @@ to achieve over time."
       >
         <p>Privacy policy content goes here...</p>
       </Modal>
-    </>
+    </div>
   );
 };
 
