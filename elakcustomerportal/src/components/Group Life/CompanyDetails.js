@@ -70,7 +70,7 @@ const CompanyDetails = ({form, formData, setFormData }) => {
       <Row gutter={16} style={{ marginBottom: '25px' }}>
         <Col xs={24} sm={12}>
           <Form.Item
-            label="How many employees are to be covered by this cover?"
+            label="How many employees are to be covered by this policy?"
             name="numberOfEmployees"
             rules={[
                   {
