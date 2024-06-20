@@ -806,7 +806,7 @@ const formatPercentage = (value) => {
                     </Select>
                   }
                   id="firstName"
-                  placeholder="Please type a customer name"
+                  placeholder="FirstName"
                 />
               </Form.Item>
 
@@ -966,6 +966,7 @@ const formatPercentage = (value) => {
           max={1}
           style={{ width: "100%" }}
           readOnly
+          disabled
         />
       </Form.Item>
                </Col>

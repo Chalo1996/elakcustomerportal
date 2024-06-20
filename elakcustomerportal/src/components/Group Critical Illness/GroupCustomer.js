@@ -54,18 +54,20 @@ const RequestCallbackModal = ({
 
   const handleSecondModalCancel = () => {
     setIsSecondModalVisible(false);
+    setSelectedOption('enterDetails');
   };
 
   const handleUploadDetails = () => {
     setIsSecondModalVisible(false); // Close the second modal
     setShowUploadDetails(true); // Set state to show the UploadDetails component
+    setSelectedOption('uploadDetails');
   };
 
   const handleEnterDetails = () => {
     setIsSecondModalVisible(false);
-    onContinue(); // Trigger onContinue action if needed
-    // Handle navigation or any other action for "Enter Details"
+    onContinue(); 
   };
+  
 
   return (
     <>
@@ -116,25 +118,21 @@ const RequestCallbackModal = ({
       >
         <div style={{ width: '100%' }}>
           <Space direction="vertical" size="small" style={{ width: '100%' }}>
-          <Button type="primary" block onClick={handleEnterDetails}>
+          <Button type="primary" block onClick={handleEnterDetails} value="enterDetails">
               Enter Member Details
             </Button>
             <Divider style={{ margin: '8px 0', width: '100%' }} />
-            <Button type="primary" block onClick={handleUploadDetails}>
+            <Button type="primary" block onClick={handleUploadDetails} value="uploadDetails">
               Upload Member Details
             </Button>
           </Space>
         </div>
       </Modal>
-
-      {showUploadDetails && (
-        <UploadDetails />
-      )}
     </>
   );
 };
   
-  const GroupCustomer = () => {
+  const GroupCustomer = ({ handleEnterDetails, handleUploadDetails }) => {
   const [current, setCurrent] = useState(0);
   const [form] = Form.useForm();
   const [policyTerm, setPolicyTerm] = useState();
@@ -149,10 +147,7 @@ const RequestCallbackModal = ({
   const [phoneArea, setPhoneArea] = React.useState("+254");
   const [principalNumber, setPrincipalNumber] = React.useState();
   const [spouseNumber, setSpouseNumber] = useState();
-  const [spouse, setSpouse] = useState(false);
-  // const [spouseDOB, setSpouseDOB] = useState();
   const [childrenNumber, setChildrenNumber] = useState();
-  const [childrenVisible, setChildrenVisible] = useState(false);
   const [SAPrincipal, setSAPrincipal] = useState();
   const [SASpouse, setSASpouse] = useState();
   const [SAChildren, setSAChildren] = useState();
@@ -161,9 +156,8 @@ const RequestCallbackModal = ({
   const [coverExpiryDate, setCoverExpiryDate] = useState();
   const [callbackModalVisible, setCallbackModalVisible] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState('enterDetails');
   const [formData, setFormData] = useState({});
-  const [ setShowHiddenFields] = useState(false);
   // const [showUploadDetails, setShowUploadDetails] = useState(false);
 
   const authStatus = useSelector((state) => state.auth.status);
@@ -279,16 +273,19 @@ const RequestCallbackModal = ({
         name: "PRINCIPAL",
         individualLives: formData.principalNumber,
         sumAssuredPercentage: formData.SAPrincipal,
+        age: formData.principalAverage,
       },
       {
         name: "SPOUSE",
         individualLives: formData.spouseNumber,
         sumAssuredPercentage: formData.SASpouse,
+        age: formData.spouseAverage,
       },
       {
         name: "CHILDREN",
         individualLives: formData.childrenNumber,
         sumAssuredPercentage: formData.SAChildren,
+        age: formData.childrenAverage,
       },
     ],
 
@@ -1101,179 +1098,209 @@ const RequestCallbackModal = ({
     {
       title: "Insured Members",
       content: (
-        <Form
-          form={form}
-          layout="vertical"
-        >
-          <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 mt-3 flex flex-col gap-4">
-        <p className="font-open-sans text-[15px] font-semibold leading-[28px] text-left">
-          Please enter the number of family members to be covered
-        </p>
+        <div>
+           <div className="selectedOption">
+        <button onClick={handleEnterDetails}>Enter Details</button>
+        <button onClick={handleUploadDetails}>Upload Details</button>
       </div>
-          <Row gutter={16}>
-            <Col
-              xs={24}
-              sm={24}
-              md={12}
-              lg={12}
-              xl={12}
-              style={{ marginBottom: "16px" }}
-            >
-              <Form.Item
-      label="How many principal members do you want to cover?"
-      name="principalNumber"
-      rules={[
-        {
-          required: true,
-          message: "Please enter the number of principal members.",
-        },
-      ]}
-    >
-      <InputNumber
-        id="principalNumber"
-        value={principalNumber}
-        onChange={(value) => setPrincipalNumber(parseFloat(value))}
-        style={{ width: '100%' }} 
-      />
-    </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={24}
-              md={12}
-              lg={12}
-              xl={12}
-              style={{ marginBottom: "16px" }}
-            >
-               <Form.Item
-      label="What is the average age of the principal members?"
-      name="principalAverage"
-      rules={[
-        {
-          required: true,
-          message: "Please enter the average age of principal members.",
-        },
-      ]}
-    >
-      <InputNumber
-        id="principalAverage"
-        value={principalAverage}
-        onChange={(value) => setPrincipalAverage(parseFloat(value))}
-        style={{ width: '100%' }} 
-      />
-    </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col
-              xs={24}
-              sm={24}
-              md={12}
-              lg={12}
-              xl={12}
-              style={{ marginBottom: "16px" }}
-            >
-              <Form.Item
-      label="How many spouses do you want to cover?"
-      name="spouseNumber"
-      rules={[
-        {
-          required: true,
-          message: "Please enter the number of spouses.",
-        },
-      ]}
-    >
-      <InputNumber
-        id="spouseNumber"
-        value={spouseNumber}
-        onChange={(value) => setSpouseNumber(parseFloat(value))}
-        style={{ width: '100%' }} 
-      />
-    </Form.Item>
-
-            </Col>
-            <Col
-              xs={24}
-              sm={24}
-              md={12}
-              lg={12}
-              xl={12}
-              style={{ marginBottom: "16px" }}
-            >
-              <Form.Item
-      label="What is the average age of the spouses?"
-      name="spouseAverage"
-      rules={[
-        {
-          required: true,
-          message: "Please enter the average age of spouses.",
-        },
-      ]}
-    >
-      <InputNumber
-        id="spouseAverage"
-        value={spouseAverage}
-        onChange={(value) => setSpouseAverage(parseFloat(value))}
-        style={{ width: '100%' }} 
-      />
-    </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col
-              xs={24}
-              sm={24}
-              md={12}
-              lg={12}
-              xl={12}
-              style={{ marginBottom: "16px" }}
-            >
-              <Form.Item
-      label="How many children do you want to cover?"
-      name="childrenNumber"
-      rules={[
-        {
-          required: true,
-          message: "Please enter the number of children.",
-        },
-      ]}
-    >
-      <InputNumber
-        id="childrenNumber"
-        value={childrenNumber}
-        onChange={(value) => setChildrenNumber(parseFloat(value))}
-        style={{ width: '100%' }} 
-      />
-    </Form.Item>
-            </Col>
-            <Col
-              xs={24}
-              sm={24}
-              md={12}
-              lg={12}
-              xl={12}
-              style={{ marginBottom: "16px" }}
-            >
-               <Form.Item
-      label="What is the average age of the children?"
-      name="childrenAverage"
-      rules={[
-        {
-          required: true,
-          message: "Please enter the average age of children.",
-        },
-      ]}
-    >
-      <InputNumber
-        id="childrenAverage"
-        value={childrenAverage}
-        onChange={(value) => setChildrenAverage(parseFloat(value))}
-        style={{ width: '100%' }} 
-      />
-    </Form.Item>
-            </Col>
-          </Row>
-        </Form>
+        {selectedOption === 'enterDetails' ? (
+          <Form form={form} layout="vertical">
+            <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 mt-3 flex flex-col gap-4">
+              <p className="font-open-sans text-[15px] font-semibold leading-[28px] text-left">
+                Please enter the number of family members to be covered
+              </p>
+            </div>
+            <Row gutter={16}>
+              <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: "16px" }}>
+                <Form.Item
+                  label="How many principal members do you want to cover?"
+                  name="principalNumber"
+                  rules={[{ required: true, message: "Please enter the number of principal members." }]}
+                >
+                  <InputNumber
+                    id="principalNumber"
+                    value={principalNumber}
+                    onChange={(value) => setPrincipalNumber(parseFloat(value))}
+                    style={{ width: '100%' }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: "16px" }}>
+                <Form.Item
+                  label="What is the average age of the principal members?"
+                  name="principalAverage"
+                  rules={[{ required: true, message: "Please enter the average age of principal members." }]}
+                >
+                  <InputNumber
+                    id="principalAverage"
+                    value={principalAverage}
+                    onChange={(value) => setPrincipalAverage(parseFloat(value))}
+                    style={{ width: '100%' }}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: "16px" }}>
+                <Form.Item
+                  label="How many spouses do you want to cover?"
+                  name="spouseNumber"
+                  rules={[{ required: true, message: "Please enter the number of spouses." }]}
+                >
+                  <InputNumber
+                    id="spouseNumber"
+                    value={spouseNumber}
+                    onChange={(value) => setSpouseNumber(parseFloat(value))}
+                    style={{ width: '100%' }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: "16px" }}>
+                <Form.Item
+                  label="What is the average age of the spouses?"
+                  name="spouseAverage"
+                  rules={[{ required: true, message: "Please enter the average age of spouses." }]}
+                >
+                  <InputNumber
+                    id="spouseAverage"
+                    value={spouseAverage}
+                    onChange={(value) => setSpouseAverage(parseFloat(value))}
+                    style={{ width: '100%' }}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: "16px" }}>
+                <Form.Item
+                  label="How many children do you want to cover?"
+                  name="childrenNumber"
+                  rules={[{ required: true, message: "Please enter the number of children." }]}
+                >
+                  <InputNumber
+                    id="childrenNumber"
+                    value={childrenNumber}
+                    onChange={(value) => setChildrenNumber(parseFloat(value))}
+                    style={{ width: '100%' }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: "16px" }}>
+                <Form.Item
+                  label="What is the average age of the children?"
+                  name="childrenAverage"
+                  rules={[{ required: true, message: "Please enter the average age of children." }]}
+                >
+                  <InputNumber
+                    id="childrenAverage"
+                    value={childrenAverage}
+                    onChange={(value) => setChildrenAverage(parseFloat(value))}
+                    style={{ width: '100%' }}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        ) :  (
+          <Form form={form} layout="vertical">
+            <div className="w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 mt-3 flex flex-col gap-4">
+              <p className="font-open-sans text-[15px] font-semibold leading-[28px] text-left">
+                Please enter the number of family members to be covered
+              </p>
+            </div>
+            <Row gutter={16}>
+              <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: "16px" }}>
+                <Form.Item
+                  label="How many principal members do you want to cover?"
+                  name="principalNumber"
+                  rules={[{ required: true, message: "Please enter the number of principal members." }]}
+                >
+                  <InputNumber
+                    id="principalNumber"
+                    value={principalNumber}
+                    onChange={(value) => setPrincipalNumber(parseFloat(value))}
+                    style={{ width: '100%' }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: "16px" }}>
+                <Form.Item
+                  label="What is the average age of the principal members?"
+                  name="principalAverage"
+                  rules={[{ required: true, message: "Please enter the average age of principal members." }]}
+                >
+                  <InputNumber
+                    id="principalAverage"
+                    value={principalAverage}
+                    onChange={(value) => setPrincipalAverage(parseFloat(value))}
+                    style={{ width: '100%' }}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: "16px" }}>
+                <Form.Item
+                  label="How many spouses do you want to cover?"
+                  name="spouseNumber"
+                  rules={[{ required: true, message: "Please enter the number of spouses." }]}
+                >
+                  <InputNumber
+                    id="spouseNumber"
+                    value={spouseNumber}
+                    onChange={(value) => setSpouseNumber(parseFloat(value))}
+                    style={{ width: '100%' }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: "16px" }}>
+                <Form.Item
+                  label="What is the average age of the spouses?"
+                  name="spouseAverage"
+                  rules={[{ required: true, message: "Please enter the average age of spouses." }]}
+                >
+                  <InputNumber
+                    id="spouseAverage"
+                    value={spouseAverage}
+                    onChange={(value) => setSpouseAverage(parseFloat(value))}
+                    style={{ width: '100%' }}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: "16px" }}>
+                <Form.Item
+                  label="How many children do you want to cover?"
+                  name="childrenNumber"
+                  rules={[{ required: true, message: "Please enter the number of children." }]}
+                >
+                  <InputNumber
+                    id="childrenNumber"
+                    value={childrenNumber}
+                    onChange={(value) => setChildrenNumber(parseFloat(value))}
+                    style={{ width: '100%' }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ marginBottom: "16px" }}>
+                <Form.Item
+                  label="What is the average age of the children?"
+                  name="childrenAverage"
+                  rules={[{ required: true, message: "Please enter the average age of children." }]}
+                >
+                  <InputNumber
+                    id="childrenAverage"
+                    value={childrenAverage}
+                    onChange={(value) => setChildrenAverage(parseFloat(value))}
+                    style={{ width: '100%' }}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        )}
+      </div>
       ),
     },
     {
