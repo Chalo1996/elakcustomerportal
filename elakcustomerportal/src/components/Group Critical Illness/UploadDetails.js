@@ -1,5 +1,5 @@
 import React, { useState, useContext, createContext, useEffect } from 'react';
-import { Button, Card, Col, Divider, Form, message, notification, Upload, Table, Row, Input } from "antd";
+import { Button, Col, Form, Input, message, notification, Upload, Table, Row } from "antd";
 import { useNavigate } from 'react-router-dom';
 
 const { Dragger } = Upload;
@@ -9,7 +9,6 @@ const UploadDetails = () => {
   const [dataToBeSubmitted, setDataToBeSubmitted] = useState();
   const [tableData, setTableData] = useState([]);
   const [tableColumns, setTableColumns] = useState([]);
-
   const navigate = useNavigate();
 
   const EditableRow = ({ index, ...props }) => {
@@ -104,82 +103,15 @@ const UploadDetails = () => {
     });
 
     return (
-      <div style={{ border: "1px solid black" }}>
-        <Table
-          components={components}
-          rowClassName={() => "editable-row"}
-          bordered
-          dataSource={dataSource}
-          columns={columns}
-        />
-      </div>
+      <Table
+        components={components}
+        rowClassName={() => "editable-row"}
+        bordered
+        dataSource={dataSource}
+        columns={columns}
+        pagination={false}
+      />
     );
-  };
-
-  const newContext = {
-    parameters: {
-      benefitAmount: 1000000,
-      policyTerm: 3,
-      expenseSumAssured: 100000,
-      marketingLoading: 8,
-      expenseLoading: 10,
-      profitLoading: 5,
-      morbidityLoading: 5,
-      segment: "Group Customer",
-      TISelector: "Yes",
-    },
-    members: [
-      {
-        name: "PRINCIPAL",
-        sumAssuredPercentage: 100,
-      },
-      {
-        name: "SPOUSE",
-        sumAssuredPercentage: 75,
-      },
-      {
-        name: "CHILDREN",
-        sumAssuredPercentage: 50,
-      },
-    ],
-    lookupTable: [
-      {
-        Min: 0,
-        Max: 29,
-        CIMultiplier: 30,
-        TIMultiplier: 30,
-      },
-      {
-        Min: 30,
-        Max: 39,
-        CIMultiplier: 40,
-        TIMultiplier: 40,
-      },
-      {
-        Min: 40,
-        Max: 49,
-        CIMultiplier: 60,
-        TIMultiplier: 60,
-      },
-      {
-        Min: 50,
-        Max: 59,
-        CIMultiplier: 80,
-        TIMultiplier: 80,
-      },
-      {
-        Min: 60,
-        Max: 69,
-        CIMultiplier: 150,
-        TIMultiplier: 150,
-      },
-      {
-        Min: 70,
-        Max: 100,
-        CIMultiplier: 200,
-        TIMultiplier: 200,
-      },
-    ],
   };
 
   const handleFileUpload = (info) => {
@@ -234,25 +166,85 @@ const UploadDetails = () => {
         groupMemberData.push(memberData);
       }
 
-      console.log("Members:", groupMemberData);
-      console.log("Relation Counts:", relationCounts);
-
       const individualLives = {
         PRINCIPAL: relationCounts["Self"] || 0,
         SPOUSE: relationCounts["Spouse"] || 0,
         CHILDREN: relationCounts["Child"] || 0,
       };
 
-      console.log("Individual Lives:", individualLives);
-
-      newContext.groupMemberData = groupMemberData.map((member) =>
-        Object.fromEntries(
-          Object.entries(member).map(([key, value]) => [key, value.replace(/"/g, '')])
-        )
-      );
-      newContext.members[0].individualLives = individualLives.PRINCIPAL;
-      newContext.members[1].individualLives = individualLives.SPOUSE;
-      newContext.members[2].individualLives = individualLives.CHILDREN;
+      const newContext = {
+        parameters: {
+          benefitAmount: 1000000,
+          policyTerm: 3,
+          expenseSumAssured: 100000,
+          marketingLoading: 8,
+          expenseLoading: 10,
+          profitLoading: 5,
+          morbidityLoading: 5,
+          segment: "Group Customer",
+          TISelector: "Yes",
+        },
+        members: [
+          {
+            name: "PRINCIPAL",
+            sumAssuredPercentage: 100,
+            individualLives: individualLives.PRINCIPAL,
+          },
+          {
+            name: "SPOUSE",
+            sumAssuredPercentage: 75,
+            individualLives: individualLives.SPOUSE,
+          },
+          {
+            name: "CHILDREN",
+            sumAssuredPercentage: 50,
+            individualLives: individualLives.CHILDREN,
+          },
+        ],
+        lookupTable: [
+          {
+            Min: 0,
+            Max: 29,
+            CIMultiplier: 30,
+            TIMultiplier: 30,
+          },
+          {
+            Min: 30,
+            Max: 39,
+            CIMultiplier: 40,
+            TIMultiplier: 40,
+          },
+          {
+            Min: 40,
+            Max: 49,
+            CIMultiplier: 60,
+            TIMultiplier: 60,
+          },
+          {
+            Min: 50,
+            Max: 59,
+            CIMultiplier: 80,
+            TIMultiplier: 80,
+          },
+          {
+            Min: 60,
+            Max: 69,
+            CIMultiplier: 150,
+            TIMultiplier: 150,
+          },
+          {
+            Min: 70,
+            Max: 100,
+            CIMultiplier: 200,
+            TIMultiplier: 200,
+          },
+        ],
+        groupMemberData: groupMemberData.map((member) =>
+          Object.fromEntries(
+            Object.entries(member).map(([key, value]) => [key, value.replace(/"/g, '')])
+          )
+        ),
+      };
 
       message.success("File uploaded and data extracted successfully.");
       setDataToBeSubmitted(newContext);
@@ -267,7 +259,6 @@ const UploadDetails = () => {
       setTableData(
         groupMemberData.map((member, index) => ({ ...member, key: index }))
       );
-      console.log("Context:", newContext);
     };
 
     reader.readAsText(file);
@@ -307,42 +298,59 @@ const UploadDetails = () => {
     message.success(`${file.name} file deleted.`);
   };
 
-  // const handleQuoteButtonClick = () => {
-  //   if (!dataToBeSubmitted) {
-  //     console.error(
-  //       "Error: No data to submit. Please upload a CSV file first."
-  //     );
-  //     return;
-  //   }
-  //   console.log("Data to be submitted:", dataToBeSubmitted);
-  //   // Handle submission logic here, e.g., sending data to a server
-  // };
+  const handleQuoteButtonClick = () => {
+    if (!dataToBeSubmitted) {
+      console.error(
+        "Error: No data to submit. Please upload a CSV file first."
+      );
+      return;
+    }
+    console.log("Data to be submitted:", dataToBeSubmitted);
+    // Handle submission logic here, e.g., sending data to a server
+  };
+
+  const handleDownloadHeaders = () => {
+    const headers = ["Name", "Date Of Birth", "Relation To Member", "Main Member"];
+
+    const csvContent =
+      "data:text/csv;charset=utf-8," + headers.join(",") + "\n";
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "csv_headers.csv");
+    document.body.appendChild(link);
+
+    link.click();
+  };
 
   return (
     <div>
-      <Card>
-        <Dragger
-          name="file"
-          beforeUpload={() => false} // Prevent automatic upload
-          onChange={handleFileUpload}
-          onRemove={handleRemove}
-          accept=".csv"
-        >
-          <p className="ant-upload-drag-icon">
-            <i className="fas fa-upload" />
-          </p>
-          <p className="ant-upload-text">Click or drag file to this area to upload</p>
-          <p className="ant-upload-hint">Support for a single .csv file only.</p>
-        </Dragger>
-      </Card>
-      <Divider />
+      <Row justify="center" style={{ margin: "20px 0" }}>
+        <Button onClick={() => navigate(-1)}>Go Back</Button>
+      </Row>
+      <Dragger
+        name="file"
+        multiple={false}
+        accept=".csv"
+        customRequest={({ onSuccess }) => setTimeout(() => onSuccess("ok"), 0)}
+        onChange={handleFileUpload}
+        onRemove={handleRemove}
+      >
+        <p className="ant-upload-drag-icon"></p>
+        <p className="ant-upload-text">Drag & Drop your Members file or Browse</p>
+        <p className="ant-upload-hint">Note: Only files with a .csv extension are accepted.</p>
+      </Dragger>
       {tableData.length > 0 && (
         <EditableTable
           dataSource={tableData}
-          handleSave={handleSave}
           tableColumns={tableColumns}
+          handleSave={handleSave}
         />
       )}
+      <Row justify="center" style={{ margin: "20px 0" }}>
+        <Button onClick={handleDownloadHeaders}>Download CSV Headers</Button>
+      </Row>
     </div>
   );
 };

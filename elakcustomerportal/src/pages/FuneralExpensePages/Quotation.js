@@ -1,14 +1,22 @@
-import { useEffect } from "react";
-import { Card, Row, Col, Table, Button } from "antd";
+import { useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
+import { Card, Row, Col, Table, Button, Form, Checkbox } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { resetData } from "../../store/redux/features/gleSlice";
 import darkLogo from "../../assets/dark-logo.png";
 import { useTheme } from "../../store/context/theme-context";
+import FuneralExclusionsModal from "../../components/Funeral Expense/modals/Exclusions";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const FuneralExpenseQuotation = () => {
   const { theme } = useTheme();
+  const [isPolicyChecked, setIsPolicyChecked] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const printRef = useRef();
+
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -26,6 +34,90 @@ const FuneralExpenseQuotation = () => {
   };
 
   const policyData = assignKeysToData(tableData);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCheckbox = (e) => {
+    if (isPolicyChecked) {
+      setIsPolicyChecked(e.target.value);
+    } else {
+      showModal();
+    }
+  };
+
+  const handleGeneratePdf = async () => {
+    const element = printRef.current;
+
+    // Capture the div as a canvas
+    const canvas = await html2canvas(element, {
+      width: element.offsetWidth,
+      height: element.offsetHeight,
+      scale: 2, // Increase the scale for better quality
+    });
+
+    // Initialize jsPDF instance
+    const pdf = new jsPDF("p", "mm", "a4");
+
+    // Get dimensions of the PDF page
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+
+    // Calculate the number of pages
+    const imgWidth = canvas.width;
+    const imgHeight = canvas.height;
+    const ratio = imgWidth / pdfWidth;
+    const pdfImgHeight = pdfHeight * ratio;
+
+    // For each page, calculate the portion of the image to display
+    for (let i = 0; i * pdfImgHeight < imgHeight; i++) {
+      const sourceY = i * pdfImgHeight;
+      const pageHeight = Math.min(pdfImgHeight, imgHeight - sourceY);
+
+      // Create a temporary canvas to hold the current portion of the image
+      const tempCanvas = document.createElement("canvas");
+      tempCanvas.width = imgWidth;
+      tempCanvas.height = pageHeight;
+
+      const tempContext = tempCanvas.getContext("2d");
+      tempContext.drawImage(
+        canvas,
+        0,
+        sourceY,
+        imgWidth,
+        pageHeight,
+        0,
+        0,
+        imgWidth,
+        pageHeight
+      );
+
+      const tempImgData = tempCanvas.toDataURL("image/png");
+
+      // Calculate the height to maintain the aspect ratio
+      const aspectRatioHeight = (pageHeight / imgWidth) * pdfWidth;
+
+      // Add the current portion of the image to the PDF
+      pdf.addImage(tempImgData, "PNG", 0, 0, pdfWidth, aspectRatioHeight);
+
+      // Add a new page if there are more pages to add
+      if (i * pdfImgHeight + pdfImgHeight < imgHeight) {
+        pdf.addPage();
+      }
+    }
+
+    // Create a blob URL for the PDF
+    const blob = pdf.output("blob");
+    const blobUrl = URL.createObjectURL(blob);
+
+    // Open the PDF in a new window/tab
+    window.open(blobUrl, "_blank");
+  };
 
   useEffect(() => {
     dispatch(resetData());
@@ -123,7 +215,10 @@ const FuneralExpenseQuotation = () => {
           {formData.segment} Funeral Expense Quotation Details
         </span>
       </div>
-      <Card style={{ border: "1px solid black" }}>
+      <Card
+        className={`border ${theme === "dark" ? "" : "border-black"}`}
+        ref={printRef}
+      >
         <div style={{ width: "90%", margin: "auto" }}>
           <Row justify="space-between">
             <Col>
@@ -169,7 +264,7 @@ const FuneralExpenseQuotation = () => {
             dataSource={customerTableData}
             bordered
             pagination={false}
-            style={{ border: "1px solid black" }}
+            className={`${theme === "dark" ? "" : "border border-black"}`}
             scroll={{ x: "max-content" }}
             showHeader={false}
           />
@@ -195,7 +290,7 @@ const FuneralExpenseQuotation = () => {
                   : "Group Funeral Expense Cover"}
               </p>
             )}
-            style={{ border: "1px solid black" }}
+            className={`${theme === "dark" ? "" : "border border-black"}`}
             scroll={{ x: "max-content" }}
           />
 
@@ -237,11 +332,9 @@ const FuneralExpenseQuotation = () => {
 
           <div className="overflow-x-auto">
             <table
-              style={{
-                borderCollapse: "collapse",
-                border: "1px solid black",
-                width: "100%",
-              }}
+              className={`border ${
+                theme === "dark" ? "" : "border-black"
+              } border-collapse w-[100%]`}
             >
               <thead>
                 <tr
@@ -251,13 +344,25 @@ const FuneralExpenseQuotation = () => {
                     textAlign: "left",
                   }}
                 >
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Category of Member
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Minimum Entry Age
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Maximum Entry Age
                   </th>
                 </tr>
@@ -265,13 +370,25 @@ const FuneralExpenseQuotation = () => {
               <tbody>
                 {ageInfoData.map((row, index) => (
                   <tr key={index}>
-                    <td style={{ border: "1px solid black", padding: "8px" }}>
+                    <td
+                      className={`border ${
+                        theme === "dark" ? "" : "border-black"
+                      } border-collapse p-2`}
+                    >
                       {row.category}
                     </td>
-                    <td style={{ border: "1px solid black", padding: "8px" }}>
+                    <td
+                      className={`border ${
+                        theme === "dark" ? "" : "border-black"
+                      } border-collapse p-2`}
+                    >
                       {row.minAge}
                     </td>
-                    <td style={{ border: "1px solid black", padding: "8px" }}>
+                    <td
+                      className={`border ${
+                        theme === "dark" ? "" : "border-black"
+                      } border-collapse p-2`}
+                    >
                       {row.maxAge}
                     </td>
                   </tr>
@@ -285,25 +402,53 @@ const FuneralExpenseQuotation = () => {
             format
           </p>
           <div className="overflow-x-auto">
-            <table>
+            <table
+              className={`border ${
+                theme === "dark" ? "" : "border-black"
+              } border-collapse w-[100%]`}
+            >
               <thead>
                 <tr>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Name
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Date of Birth
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     ID/Passport Number
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Phone Number
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Main Member
                   </th>
-                  <th style={{ border: "1px solid black", padding: "8px" }}>
+                  <th
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
+                  >
                     Relation to Member
                   </th>
                 </tr>
@@ -311,22 +456,34 @@ const FuneralExpenseQuotation = () => {
               <tbody>
                 <tr>
                   <td
-                    style={{ border: "1px solid black", padding: "8px" }}
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
                   ></td>
                   <td
-                    style={{ border: "1px solid black", padding: "8px" }}
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
                   ></td>
                   <td
-                    style={{ border: "1px solid black", padding: "8px" }}
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
                   ></td>
                   <td
-                    style={{ border: "1px solid black", padding: "8px" }}
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
                   ></td>
                   <td
-                    style={{ border: "1px solid black", padding: "8px" }}
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
                   ></td>
                   <td
-                    style={{ border: "1px solid black", padding: "8px" }}
+                    className={`border ${
+                      theme === "dark" ? "" : "border-black"
+                    } border-collapse p-2`}
                   ></td>
                 </tr>
               </tbody>
@@ -374,19 +531,48 @@ const FuneralExpenseQuotation = () => {
           </p>
         </div>
       </Card>
-      <Row justify="end" align="middle" className="my-5">
+      <Form className="mt-2">
+        <Form.Item name="terms" valuePropName="checked">
+          <span>
+            <Checkbox checked={isPolicyChecked} onChange={handleCheckbox} />
+            <span className="ml-2">
+              I accept the{" "}
+              <Link onClick={showModal} style={{ color: "#A32A29" }}>
+                policy exclusions
+              </Link>
+            </span>
+          </span>
+        </Form.Item>
+      </Form>
+      <Row
+        gutter={[16, 16]}
+        justify="start"
+        align="middle"
+        className="mb-5 max-w-sm"
+      >
+        <Col>
+          <Button
+            type="primary"
+            className="shadow-none"
+            disabled={!isPolicyChecked}
+          >
+            Continue With Payment
+          </Button>
+        </Col>
         <Col className="mr-4 shadow-none">
-          <Button>Download Quote</Button>
+          <Button onClick={handleGeneratePdf}>Download Quote</Button>
         </Col>
         <Col>
           <Button className="mr-4 shadow-none">Send To Email</Button>
         </Col>
-        <Col>
-          <Button type="primary" className="shadow-none">
-            Continue With Payment
-          </Button>
-        </Col>
       </Row>
+
+      <FuneralExclusionsModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        onCancel={handleCancel}
+        setIsPolicyChecked={setIsPolicyChecked}
+      />
     </div>
   );
 };

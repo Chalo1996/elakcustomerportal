@@ -45,6 +45,7 @@ const funeralExpenseSlice = createSlice({
   reducers: {
     resetData: (state) => {
       state.isLoading = true;
+      state.gleData = [];
     },
   },
   extraReducers: (builder) => {

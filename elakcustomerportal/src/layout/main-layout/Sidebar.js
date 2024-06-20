@@ -16,15 +16,26 @@ import {
   UmbrellaIcon,
 } from "../icons/icons";
 import { useTheme } from "../../store/context/theme-context";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import imgLogo from "../../assets/Equity_Group_Logo.png";
 import darkLogo from "../../assets/dark-logo.png";
 import { Link } from "react-router-dom";
+import { logoutUser } from "../../store/redux/features/authSlice";
 
 const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
   const { theme, toggleTheme } = useTheme();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleClick = (e) => {
     onSelect(e.key);
+  };
+
+  const handleSignOut = () => {
+    localStorage.clear();
+    dispatch(logoutUser());
+    navigate("/");
   };
 
   const items = [
@@ -136,7 +147,8 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
     {
       key: "signout",
       icon: <LogoutOutlined />,
-      label: <Link to="/">Sign Out</Link>,
+      label: "Sign Out",
+      onClick: handleSignOut,
     },
   ];
 

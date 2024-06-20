@@ -39,7 +39,15 @@ const ContactDetails = ({ form, formData, setFormData }) => {
     <Form layout="vertical" form={form} initialValues={formData}>
       <Row gutter={[16, 16]} >
         <Col span={24}>
-          <Title level={5} style={{ marginBottom: '20px' }}>Please enter details of contact person</Title>
+          <Title level={5}>Please confirm your details</Title>
+          <p>            
+          <span className="text-[#929497]">
+            These are the details our agent will use to contact you
+            </span>
+          </p>
+        </Col>
+        <Col span={24}>
+
         </Col>
       </Row>
       <Row gutter={[16, 16]} style={{ marginBottom: '20px' }} >

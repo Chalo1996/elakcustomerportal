@@ -1,74 +1,80 @@
-//glaSlice
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const url = "https://sisos-eu.azurewebsites.net/api/cmd";
 
+// Initial state with added error field and isLoading set to false initially
 const initialState = {
-  glaData: [],
+  goalbasedData: [],
   isLoading: false,
   error: null,
 };
 
+// Async thunk for fetching data
 export const fetchData = createAsyncThunk(
-  "groupLifeAssurance/fetchData",
+  "goalbased/fetchData",
   async (data, thunkAPI) => {
-    const { getState, rejectWithValue } = thunkAPI;
-    const { token } = getState().auth;
+    console.log("Fetching data...");
+    const state = thunkAPI.getState();
+    const token = state.auth.token;
 
     if (!token) {
-      return rejectWithValue("No token found");
+      return thunkAPI.rejectWithValue("No token found");
     }
 
     try {
       const dataToPost = {
         cmd: "ExeChain",
         data: {
-          chain: "M3TrainingCostingScheduleGLA",
+          chain: "M3TrainingGOALBASED",
           context: JSON.stringify(data),
         },
       };
       const response = await axios.post(url, dataToPost, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
         },
       });
-      console.log("groupLifeAssurance response: ", response.data);
+      console.log("goalbased response: ", response);
       return response.data.outData;
-    }
-    catch (error) {
-      console.error("fetchData error:", error);
-      return rejectWithValue(error.message || error.response.data);
+    } catch (error) {
+      // Handling error response
+      return thunkAPI.rejectWithValue(error.response?.data || "An error occurred");
     }
   }
 );
 
-const groupLifeAssuranceSlice = createSlice({
-  name: "groupLifeAssurance",
+// Slice definition
+const goalbasedSlice = createSlice({
+  name: "goalbased",
   initialState: initialState,
   reducers: {
     resetData: (state) => {
+      // Reset state values
       state.isLoading = false;
+      state.goalbasedData = [];
       state.error = null;
-      state.glaData = [];
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchData.pending, (state) => {
         state.isLoading = true;
+        state.error = null; // Reset error state when starting a new fetch
       })
       .addCase(fetchData.fulfilled, (state, action) => {
+        console.log("Data fetched successfully:", action.payload);
         state.isLoading = false;
-        state.glaData = action.payload;
+        state.goalbasedData = action.payload;
       })
       .addCase(fetchData.rejected, (state, action) => {
+        console.log("Failed to fetch data:", action.payload);
         state.isLoading = false;
-        state.error = action.payload;
+        state.error = action.payload; // Set error state
       });
   },
 });
 
-export const { resetData } = groupLifeAssuranceSlice.actions;
-export const groupLifeAssuranceReducer = groupLifeAssuranceSlice.reducer;
+export const { resetGoalbasedData } = goalbasedSlice.actions;
+
+export const { reducer: goalbasedReducer } = goalbasedSlice;

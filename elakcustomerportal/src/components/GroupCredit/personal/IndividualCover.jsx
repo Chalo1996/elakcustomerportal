@@ -8,8 +8,8 @@ import {
   generateQuotation,
 } from "../../../store/redux/actions/groupCreditActions";
 import ClientDetailsForm from "../forms/ClientDetailsForm";
-import ProductDetailsForm from "../forms/ProductDetailsForm";
-import ConfirmDetailsForm from "../forms/ConfirmDetailsForm";
+import ProductDetailsForm from "../forms/personal/ProductDetailsForm";
+import ConfirmDetailsForm from "../forms/personal/ConfirmDetailsForm";
 
 const { Step } = Steps;
 
@@ -19,13 +19,26 @@ const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
   const [hasInteracted, setHasInteracted] = useState(false);
   const [form] = Form.useForm();
   const navigate = useNavigate();
-
   const [isQuotationGenerated, setIsQuotationGenerated] = useState(false);
+
+  useEffect(() => {
+    const validateForm = async () => {
+      if (!hasInteracted) return;
+      try {
+        await form.validateFields();
+        setIsNextDisabled(false);
+      } catch {
+        setIsNextDisabled(true);
+      }
+    };
+    validateForm();
+  }, [form, userDetails, hasInteracted]);
 
   const next = async () => {
     try {
       await form.validateFields();
       setCurrentStep(currentStep + 1);
+      setHasInteracted(false);
     } catch (errorInfo) {
       console.error("Failed:", errorInfo);
     }
@@ -47,35 +60,25 @@ const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
   const handleGenerateQuotation = () => {
     dispatch(generateQuotation(contextObject));
     setIsQuotationGenerated(true);
-    isQuotationGenerated &&
-      quotationData &&
-      navigate("/home/group-credit/quotation");
   };
 
   useEffect(() => {
-    const validateForm = async () => {
-      if (!hasInteracted) return;
-      try {
-        await form.validateFields();
-        setIsNextDisabled(false);
-      } catch {
-        setIsNextDisabled(true);
-      }
-    };
-    validateForm();
-  }, [form, userDetails, hasInteracted]);
+    if (isQuotationGenerated && quotationData) {
+      navigate("/home/group-credit/personal/quotation");
+    }
+  }, [isQuotationGenerated, quotationData, navigate]);
 
   const contextObject = {
     userInfo: {
-      memberName: `${userDetails.firstname}${userDetails.lastname}`,
+      memberName: `${userDetails.firstname} ${userDetails.lastname}`,
       sumAssured: userDetails.sumAssured,
       termsInMonths: userDetails.termsInMonths,
       individualRetrenchmentCover:
         userDetails.retrenchment === true ? "Yes" : "No",
       annuitantDoB: userDetails.dob,
-      numberOfPartners: 1,
-      partnersDatesOfBirths: [],
-      coverType: "Single",
+      numberOfPartners: userDetails.numOfPartners,
+      partnersDatesOfBirths: userDetails.partnerDates,
+      coverType: "Multiple",
       frequency: userDetails.frequency,
       retRate: userDetails.retRate,
       gcRate: userDetails.gcRate,
@@ -94,7 +97,6 @@ const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
           formData={userDetails}
           handleFormChange={handleFormChange}
           form={form}
-          validateTrigger='onSubmit'
         />
       ),
     },
@@ -106,7 +108,6 @@ const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
           formData={userDetails}
           handleFormChange={handleFormChange}
           form={form}
-          validateTrigger='onSubmit'
         />
       ),
     },
@@ -156,14 +157,20 @@ const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
             Next
           </Button>
         )}
-        {currentStep === steps.length - 1 && (
-          <Button
-            className='h-full px-4 py-2 shadow-none text-center'
-            type='primary'
-            onClick={handleGenerateQuotation}
-          >
-            Generate Quotation
+        {currentStep === steps.length - 1 && userDetails.loading ? (
+          <Button type='primary' loading iconPosition='end'>
+            Loading
           </Button>
+        ) : (
+          currentStep === steps.length - 1 && (
+            <Button
+              className='h-full px-4 py-2 shadow-none text-center'
+              type='primary'
+              onClick={handleGenerateQuotation}
+            >
+              Generate Quotation
+            </Button>
+          )
         )}
       </div>
     </div>
