@@ -3,9 +3,9 @@ import { Form, Select, DatePicker, InputNumber } from "antd";
 
 const { Option } = Select;
 
-const segments = ["Single Life", "Joint Life"];
+const segments = ["Just me", "Me and my partner"];
 const Genders = ["Male", "Female"];
-const AnnuityTypes = ["Immediate Annuity", "Deferred Annuity"];
+const AnnuityTypes = ["I would like the cover to commence immediately", "I would like the cover to commence at a later date"];
 const TargetTypes = [
   "Pre-determined Purchase Price",
   "Pre-determined Annuity Amount",
@@ -25,13 +25,13 @@ const ProductParametersForm = ({ form, formData, setFormData }) => {
   }, [form, formData]);
 
   const handleSegmentChange = (value) => {
-    if (value === "Single Life") {
+    if (value === "Just me") {
       setFormData((prevData) => ({
         ...prevData,
         segment: value,
         isSingleLife: true,
       }));
-    } else if (value === "Joint Life") {
+    } else if (value === "Me and my partner") {
       setFormData((prevData) => ({
         ...prevData,
         segment: value,
@@ -49,13 +49,13 @@ const ProductParametersForm = ({ form, formData, setFormData }) => {
   };
 
   const handleAnnuityTypeChange = (value) => {
-    if (value === "Immediate Annuity") {
+    if (value === "I would like the cover to commence immediately") {
       setFormData((prevData) => ({
         ...prevData,
         annuityType: value,
         isDeferredAnnuity: false,
       }));
-    } else if (value === "Deferred Annuity") {
+    } else if (value === "I would like the cover to commence at a later date") {
       setFormData((prevData) => ({
         ...prevData,
         annuityType: value,
@@ -125,7 +125,7 @@ const ProductParametersForm = ({ form, formData, setFormData }) => {
 
     // Calculate minimum and maximum dates
     const minDate = new Date(
-      today.getFullYear() - 60,
+      today.getFullYear() - 75,
       today.getMonth(),
       today.getDate()
     );
@@ -142,7 +142,7 @@ const ProductParametersForm = ({ form, formData, setFormData }) => {
 
     // Reject with appropriate error message
     if (selectedDate < maxDate) {
-      return Promise.reject(new Error("Maximum required age is 60 years."));
+      return Promise.reject(new Error("Maximum required age is 75 years."));
     } else {
       return Promise.reject(new Error("Minimum required age is 18 years."));
     }
@@ -169,7 +169,7 @@ const ProductParametersForm = ({ form, formData, setFormData }) => {
       if (age < 50) {
         return Promise.reject(
           new Error(
-            "Applicant must be 50 years or older to receive the first annuity."
+            "You must be 50 years or older to receive the first annuity. Consider starting cover at a later date"
           )
         );
       } else {
@@ -241,15 +241,15 @@ const ProductParametersForm = ({ form, formData, setFormData }) => {
       <Form form={form} layout="vertical">
         <div className="mb-2">
           <span>
-            <strong>Spouse Details {">"}</strong>
+            <strong>Partners' Details {">"}</strong>
             <span className="text-[#A32A29]">
-              <em>*Applicable to joint life annuities only</em>
+              <em>*Applicable when the cover is for you and your partner</em>
             </span>
           </span>
         </div>
         <div className="grid md:grid-cols-2 gap-4">
           <Form.Item
-            label="Single/Joint Life"
+            label="Who would you like to cover?"
             rules={[
               {
                 required: true,
@@ -268,7 +268,7 @@ const ProductParametersForm = ({ form, formData, setFormData }) => {
           {!formData.isSingleLife && (
             <>
               <Form.Item
-                label="Spouse Date of Birth"
+                label="What is your partners' Date of Birth?"
                 name="spouseDob"
                 rules={[
                   {
@@ -297,6 +297,7 @@ const ProductParametersForm = ({ form, formData, setFormData }) => {
                 ]}
               >
                 <Select
+                  disabled
                   value={formData.spouseGender}
                   onChange={handleSpouseGenderChange}
                 >
@@ -308,7 +309,7 @@ const ProductParametersForm = ({ form, formData, setFormData }) => {
                 </Select>
               </Form.Item>
               <Form.Item
-                label="Spouse's Reversionary Rate"
+                label="What percentage should your spouse receive in the event of your death?"
                 rules={[
                   {
                     required: true,
@@ -340,7 +341,7 @@ const ProductParametersForm = ({ form, formData, setFormData }) => {
         </div>
         <div className="grid md:grid-cols-2 gap-4">
           <Form.Item
-            label="Annuity Type"
+            label="Would you like the cover to commence immediately or at a later date?"
             rules={[
               {
                 required: true,
@@ -362,8 +363,8 @@ const ProductParametersForm = ({ form, formData, setFormData }) => {
           <Form.Item
             label={
               formData.isDeferredAnnuity
-                ? "Contract Start Date"
-                : "Commencement Date"
+                ? "When would you like the contract to start?"
+                : "When would you like the cover to commence?"
             }
             name="startDate"
             rules={[
@@ -385,7 +386,8 @@ const ProductParametersForm = ({ form, formData, setFormData }) => {
           </Form.Item>
           {formData.isDeferredAnnuity && (
             <Form.Item
-              label="Deferrement Period"
+              label="How long in months would you like to defer the cover"
+              tooltip="Defer the cover to a date when you are 50 years to recieve first payment"
               name="deferrementPeriod"
               rules={[
                 {
@@ -401,7 +403,7 @@ const ProductParametersForm = ({ form, formData, setFormData }) => {
             >
               <InputNumber
                 value={formData.deferrementPeriod}
-                placeholder="180"
+                placeholder="Enter period in months"
                 step={1}
                 min={1}
                 onChange={(value) =>
@@ -498,7 +500,7 @@ const ProductParametersForm = ({ form, formData, setFormData }) => {
             </Form.Item>
           )}
           <Form.Item
-            label="Payment Frequency"
+            label="Please select a frequency you would like to recieve payment"
             rules={[
               {
                 required: true,
