@@ -147,7 +147,7 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
               placeholder='Select frequency'
               onChange={handleFrequencyChange}
               options={[
-                { value: "Single", label: "Single" },
+                { value: "Single", label: "One-Off" },
                 { value: "Annually", label: "Annually" },
                 { value: "SemiAnnually", label: "Semi-Annually" },
                 { value: "Quarterly", label: "Quarterly" },
