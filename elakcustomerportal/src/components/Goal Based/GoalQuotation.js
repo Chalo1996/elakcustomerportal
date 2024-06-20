@@ -66,7 +66,19 @@ const GoalQuotation = () => {
   const [isPolicyModalVisible, setIsPolicyModalVisible] = useState(false);
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const [isPolicyAccepted, setIsPolicyAccepted] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const { cData = {}, formData = {} } = location.state || {};
   
+  const [parsedCData, setParsedCData] = useState(() => {
+    try {
+      return typeof cData === 'string' ? JSON.parse(cData) : cData;
+    } catch (error) {
+      console.error("Error parsing cData:", error);
+      return {}; // Fallback to an empty object or handle the error appropriately
+    }
+  });
 
   const handleNavigate = () => {
     navigate(-1);
@@ -81,13 +93,9 @@ const handleModalAccept = () => {
   setIsPolicyAccepted(true);
   setIsPolicyModalVisible(false);
 };
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const { cData = {}, formData = {} } = location.state || {};
   
-  const parsedCData = JSON.parse(cData);
   
+ 
   const [acceptedExclusions, setAcceptedExclusions] = useState(false);
 
   const handleAcceptanceChange = (e) => {
