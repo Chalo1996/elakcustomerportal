@@ -73,12 +73,12 @@ const PolicyCoverage = ({ form, formData, setFormData }) => {
           <Form.Item
             label="Specify amount beneficiary will get in the event of death of the main member?"
             name="mainMemberLastExpense"
-            rules={[{ required: true, message: "Please enter spouse last expense!" }]}
+            rules={[{ required: true, message: "Please enter employee last expense!" }]}
           >
             <InputNumber
               className="w-full custom-input-number"
               addonBefore={formData.currencySymbol}
-              placeholder="Enter spouse last expense"
+              placeholder="Enter employee last expense"
               value={formData.mainMemberLastExpense}
               onChange={(value) => handleInputChange(value, "mainMemberLastExpense")}
               onKeyPress={preventTextInput}

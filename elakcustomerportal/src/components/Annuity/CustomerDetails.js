@@ -54,12 +54,12 @@ const CustomerDetailsForm = ({ form, formData, setFormData }) => {
 
     // Calculate minimum and maximum dates
     const minDate = new Date(
-      today.getFullYear() - 60,
+      today.getFullYear() - 75,
       today.getMonth(),
       today.getDate()
     );
     const maxDate = new Date(
-      today.getFullYear() - 18,
+      today.getFullYear() - 35,
       today.getMonth(),
       today.getDate()
     );
@@ -71,9 +71,9 @@ const CustomerDetailsForm = ({ form, formData, setFormData }) => {
 
     // Reject with appropriate error message
     if (selectedDate < maxDate) {
-      return Promise.reject(new Error("Maximum required age is 60 years."));
+      return Promise.reject(new Error("Maximum required age is 75 years."));
     } else {
-      return Promise.reject(new Error("Minimum required age is 18 years."));
+      return Promise.reject(new Error("Minimum required age is 35 years."));
     }
   };
 

@@ -262,7 +262,7 @@ const QuotationTable = () => {
         </div>
       </Card>
       <div style={{ marginTop: "20px" }}>
-        <Checkbox checked={isCheckboxChecked} onChange={handleCheckboxChange}>
+        <Checkbox checked={isCheckboxChecked} onChange={handleCheckboxChange} >
           I accept the{" "}
           <span onClick={() => setIsPolicyModalVisible(true)} style={{ textAlign: "right", marginTop: "20px", color: "#A32A29" }}>
             policy exclusions
