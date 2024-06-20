@@ -167,7 +167,7 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
           >
             <Space direction='vertical' wrap style={{ width: "100%" }}>
               <Input
-                readOnly
+                disabled
                 value={formData.installments}
                 onChange={handlePremiumInstallmentsChange}
               />
@@ -177,6 +177,7 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
       </Row>
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+          <Text>How many partners would you like to cover?</Text>
           <Item
             label={<Text>Other Partner Details</Text>}
             name='partners'
