@@ -251,7 +251,7 @@ const columns = [
 ];
 const personalCredentials = [
 { key: 'name', attribute: 'Name', value: formData.name },
-{ key: 'country', attribute: 'Country', value: formData.country},
+//{ key: 'country', attribute: 'Country', value: formData.country},
 { key: 'phone', attribute: 'Phone', value: formData.phoneNumber},
 { key: 'email', attribute: 'Email', value: formData.email },
 ];
