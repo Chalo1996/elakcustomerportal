@@ -176,7 +176,7 @@ const Quotation = ({ formData, quotationData }) => {
           </button>
         </span>
         <span className='font-open-sans text-[16px] font-semibold leading-[24px] text-left'>
-          Get Group Credit Cover
+          Get Credit Cover(Group)
         </span>
       </div>
       <div
