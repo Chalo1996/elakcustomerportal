@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { LeftOutlined } from "@ant-design/icons/";
@@ -71,9 +71,9 @@ const AnnuityPage = () => {
   const [showCallback, setShowCallback] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  useEffect(() => {
-    localStorage.setItem("yourAnnuityData", JSON.stringify(formData));
-  }, [formData]);
+  // useEffect(() => {
+  //   localStorage.setItem("yourAnnuityData", JSON.stringify(formData));
+  // }, [formData]);
 
   const params = {
     annuitant: {
