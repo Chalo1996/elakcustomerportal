@@ -428,17 +428,16 @@ const dataToPost = {
       >
         <br></br>
         <Radio.Group onChange={handleRadioChange} value={formData.selectedOption} style={{ width: '100%' }}>
-          <div className="w-full flex items-center justify-between">
-            <Typography.Text>Generate Quote</Typography.Text>
-            <Radio value="quote"></Radio>
-          </div>
- 
-          <Divider />
-          <div className="w-full flex items-center justify-between">
-            <Typography.Text>Request a Call Back</Typography.Text>
-            <Radio value="callback"></Radio>
-          </div>
-        </Radio.Group>
+  <div className="w-full flex items-center justify-between" onClick={() => handleRadioChange({ target: { value: 'quote' } })}>
+    <Typography.Text>Generate Quote</Typography.Text>
+    <Radio value="quote"></Radio>
+  </div>
+  <Divider />
+  <div className="w-full flex items-center justify-between" onClick={() => handleRadioChange({ target: { value: 'callback' } })}>
+    <Typography.Text>Request a Call Back</Typography.Text>
+    <Radio value="callback"></Radio>
+  </div>
+</Radio.Group>
       </Modal>
   </>
 )}
