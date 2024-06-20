@@ -12,7 +12,7 @@ const initialState = {
 
 // Async thunk for fetching data
 export const fetchData = createAsyncThunk(
-  "goalbased/fetchData",
+  "goalBased/fetchData",
   async (data, thunkAPI) => {
     console.log("Fetching data...");
     const state = thunkAPI.getState();
@@ -46,7 +46,7 @@ export const fetchData = createAsyncThunk(
 
 // Slice definition
 const goalbasedSlice = createSlice({
-  name: "goalbased",
+  name: "goalBased",
   initialState: initialState,
   reducers: {
     resetData: (state) => {

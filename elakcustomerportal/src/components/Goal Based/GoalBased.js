@@ -3,7 +3,7 @@ import {Steps,Form,Input,Radio,message, Divider,Typography,Card,Space,DatePicker
 import { LeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchData } from "../../store/redux/features/eduSlice";
+import { fetchData } from "../../store/redux/features/goalSlice";
 import moment from "moment";
 import 'tailwindcss/tailwind.css';
 
@@ -53,9 +53,9 @@ const Goalbased = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-const cData = useSelector((state) => state.goalbasedData);
+const cData = useSelector((state) => state.goalBased.goalbasedData);
 const authStatus = useSelector((state) => state.auth.status);
-const isLoading = useSelector((state) => state.isLoading);
+const isLoading = useSelector((state) => state.goalBased.isLoading);
   
 
 const dataToPost = {
@@ -424,37 +424,36 @@ const dataToPost = {
             </Row>
             
             <Modal
-                title="What would you like to do?"
-                open={isModalOpen}
-                onCancel={() => setIsModalOpen(false)}
-                footer={[
-                  <Row justify="start" key="footer-row" className="mt-4">
-                    <Button
-                      key="submit"
-                      type="primary"
-                      onClick={handleModalOk}
-                      disabled={!formData.selectedOption}
-                      className="shadow-none"
-                    >
-                      Continue
-                    </Button>
-                  </Row>,
-                ]}
-              >
-                <br></br>
-                <Radio.Group onChange={handleRadioChange} value={formData.selectedOption} style={{ width: '100%' }}>
-                  <div className="w-full flex items-center justify-between">
-                    <Typography.Text>Generate Quote</Typography.Text>
-                    <Radio value="quote"></Radio>
-                  </div>
-         
-                  <Divider />
-                  <div className="w-full flex items-center justify-between">
-                    <Typography.Text>Request a Call Back</Typography.Text>
-                    <Radio value="callback"></Radio>
-                  </div>
-                </Radio.Group>
-              </Modal>
+        title="What would you like to do?"
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        footer={[
+          <Row justify="start" key="footer-row" className="mt-4">
+            <Button
+              key="submit"
+              type="primary"
+              onClick={handleModalOk}
+              disabled={!formData.selectedOption}
+              className="shadow-none"
+            >
+              Continue
+            </Button>
+          </Row>,
+        ]}
+      >
+        <br></br>
+        <Radio.Group onChange={handleRadioChange} value={formData.selectedOption} style={{ width: '100%' }}>
+  <div className="w-full flex items-center justify-between" onClick={() => handleRadioChange({ target: { value: 'quote' } })}>
+    <Typography.Text>Generate Quote</Typography.Text>
+    <Radio value="quote"></Radio>
+  </div>
+  <Divider />
+  <div className="w-full flex items-center justify-between" onClick={() => handleRadioChange({ target: { value: 'callback' } })}>
+    <Typography.Text>Request a Call Back</Typography.Text>
+    <Radio value="callback"></Radio>
+  </div>
+</Radio.Group>
+      </Modal>
           </>
         )}
         <br></br>
@@ -591,22 +590,22 @@ const dataToPost = {
               }))
             }
           >
-            <Option key="Weekly" value="Weekly">
+            <Option key="weekly" value="weekly">
               Weekly
             </Option>
-            <Option key="Monthly" value="Monthly">
+            <Option key="monthly" value="monthly">
               Monthly
             </Option>
-            <Option key="Quarterly" value="Quarterly">
+            <Option key="quarterly" value="quarterly">
               Quarterly
             </Option>
-            <Option key="Semi Annual" value="SemiAnnual">
+            <Option key="semiAnnually" value="semiAnnually">
               Semi Annual
             </Option>
-            <Option key="Annual" value="Annual">
+            <Option key="annually" value="annually">
               Annual
             </Option>
-            <Option key="One off" value="One off">
+            <Option key="oneOff" value="oneOff">
               One off
             </Option>
           </Select>

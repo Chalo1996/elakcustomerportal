@@ -29,7 +29,7 @@ const initialState = {
   quoteSubmitted: false,
   loading: false,
   quotationData: null,
-  numOfPartners: 0,
+  numOfPartners: "",
   partnerDates: [],
 };
 
