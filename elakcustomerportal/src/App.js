@@ -156,7 +156,7 @@ function App() {
                       element={<EducQuotation />}
                     />
                     <Route
-                      path="Goal-based/Goal-Quotation"
+                      path="Goal-based/goal-quotation"
                       element={<GoalQuotation />}
                     />
                     <Route path="annuity" element={<AnnuityPage />} />
