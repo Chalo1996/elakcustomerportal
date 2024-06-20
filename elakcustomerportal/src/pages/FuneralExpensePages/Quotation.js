@@ -505,8 +505,8 @@ const FuneralExpenseQuotation = () => {
             </em>
           </p>
 
-          <div style={{ marginBottom: "10px", marginTop: "15px" }}>
-            <h4 style={{ fontWeight: "bold" }}>Contacts</h4>
+          <div className="mb-[10px] mt-[15px] overflow-x-auto">
+            <p style={{ fontWeight: "bold" }}>Contacts</p>
             <p>
               Email:
               <a href="mailto:businessdevelopment@equityinsurance.co.ke">
@@ -531,26 +531,22 @@ const FuneralExpenseQuotation = () => {
           </p>
         </div>
       </Card>
-      <Form className="mt-2">
-        <Form.Item name="terms" valuePropName="checked">
-          <span>
-            <Checkbox checked={isPolicyChecked} onChange={handleCheckbox} />
-            <span className="ml-2">
-              I accept the{" "}
-              <Link onClick={showModal} style={{ color: "#A32A29" }}>
-                policy exclusions
-              </Link>
+
+      <div className="flex justify-between items-start md:items-center mt-4 gap-4">
+        <Form className="mt-4">
+          <Form.Item name="terms" valuePropName="checked">
+            <span>
+              <Checkbox checked={isPolicyChecked} onChange={handleCheckbox} />
+              <span className="ml-2">
+                I accept the{" "}
+                <Link onClick={showModal} style={{ color: "#A32A29" }}>
+                  policy exclusions
+                </Link>
+              </span>
             </span>
-          </span>
-        </Form.Item>
-      </Form>
-      <Row
-        gutter={[16, 16]}
-        justify="start"
-        align="middle"
-        className="mb-5 max-w-sm"
-      >
-        <Col>
+          </Form.Item>
+        </Form>
+        <div className="flex flex-col items-start justify-center md:flex-row md:items-center md:justify-between gap-2">
           <Button
             type="primary"
             className="shadow-none"
@@ -558,14 +554,13 @@ const FuneralExpenseQuotation = () => {
           >
             Continue With Payment
           </Button>
-        </Col>
-        <Col className="mr-4 shadow-none">
-          <Button onClick={handleGeneratePdf}>Download Quote</Button>
-        </Col>
-        <Col>
-          <Button className="mr-4 shadow-none">Send To Email</Button>
-        </Col>
-      </Row>
+
+          <Button className="shadow-none" onClick={handleGeneratePdf}>
+            Download Quote
+          </Button>
+          <Button className="shadow-none">Send To Email</Button>
+        </div>
+      </div>
 
       <FuneralExclusionsModal
         isModalOpen={isModalOpen}

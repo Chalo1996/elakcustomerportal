@@ -1,5 +1,6 @@
-import { Card, Row, Col, Button, message } from "antd";
+import { Card, Row, Col, Button, message, Form, Checkbox } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "../../store/context/theme-context";
 import darkLogo from "../../assets/dark-logo.png";
@@ -592,21 +593,29 @@ const AnnuityQuotation = () => {
         </Card>
       </div>
 
-      <Row justify="end" align="middle" className="my-5">
-        <Col className="mr-4 shadow-none">
-          <Button onClick={generatePdfAndNotify} target="_blank">
-            Download Quote
-          </Button>
-        </Col>
-        <Col>
-          <Button className="mr-4 shadow-none">Send To Email</Button>
-        </Col>
-        <Col>
+      <div className="flex justify-between items-start md:items-center mt-4 gap-4">
+        <Form className="mt-4">
+          <Form.Item name="terms" valuePropName="checked">
+            <span>
+              <Checkbox />
+              <span className="ml-2">
+                I accept the{" "}
+                <Link style={{ color: "#A32A29" }}>policy exclusions</Link>
+              </span>
+            </span>
+          </Form.Item>
+        </Form>
+        <div className="flex flex-col items-start justify-center md:flex-row md:items-center md:justify-between gap-2">
           <Button type="primary" className="shadow-none">
             Continue With Payment
           </Button>
-        </Col>
-      </Row>
+
+          <Button onClick={generatePdfAndNotify} target="_blank">
+            Download Quote
+          </Button>
+          <Button className="shadow-none">Send To Email</Button>
+        </div>
+      </div>
     </div>
   );
 };
