@@ -1,9 +1,11 @@
 import React, { useState, createContext, useContext } from 'react';
-import { Row, Col, Table,Space,Form, Input,Divider, Button, DatePicker, Select,Steps, Modal, Radio, Checkbox,Typography } from 'antd';
+import { Row, Col, Table,Space,Form, Input,Divider,Tooltip,Button, DatePicker, Select,Steps, Modal, Radio, Checkbox,Typography } from 'antd';
 import {ArrowLeftOutlined} from '@ant-design/icons';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import { NavLink } from "react-router-dom";
+import { InfoCircleOutlined,QuestionCircleOutlined } from '@ant-design/icons';
+
 import sspFlag from '../../assets/flags/ssp.png';
 import cdfFlag from '../../assets/flags/cdf.png';
 import rwfFlag from '../../assets/flags/rwf.png';
@@ -83,6 +85,9 @@ const phoneAreas = [
   { code: "+256", flag: ugxFlag, country: "Uganda" },
 ];
 
+const handleCustomerClick = () =>{
+  navigate('/home'); 
+};
 //Terms&Conditions Consts
 const showTermsModal = () => {
   setIsTermsModalVisible(true);
@@ -392,12 +397,15 @@ Term Life Cover
     </Radio.Group>
     </Modal>
 
-<Steps current={currentStep} style={{ marginTop: '50px' }}>
-<Step title="Personal Details"/>
-<Step title="Cover Details"/>
-<Step title="Additional Options"/>
-<Step title="Review"/>
-</Steps>
+    {(!isDivVisible &&
+        <Steps  
+        current={currentStep} style={{ marginTop: '50px' }}>
+        <Step title="Personal Details"/>
+        <Step title="Cover Details"/>
+        <Step title="Additional Options"/>
+        <Step title="Review"/>
+        </Steps>
+    )}
 
 <Form
 form={form}
@@ -587,21 +595,38 @@ style={{ width: '100%' }}>
 </Col>
 
 <Col span={12}>
-<Item
-name="coverType"
-rules={[{ required: true, message: 'This field is required' }]}
-label="Do you want a cover for individual protection?">
-<Select
-placeholder="Individual"
-value={formData.coverType}
-onChange={(value) => handleSelectChange(value, 'coverType')}>
-{Object.keys(coverTypes).map((type) => (
-<Option key={type} value={type}>
-{coverTypes[type]}
-</Option>
-))}
-</Select>
-</Item>
+
+<Form.Item
+  name="coverType"
+  rules={[{ required: true, message: 'This field is required' }]}
+  label={<span>Do you want a cover for individual protection&nbsp;
+      <Tooltip title="Choose whether you want a cover for yourself or for another important person">
+        <QuestionCircleOutlined />
+      </Tooltip>
+    </span>}
+    >
+  <Select
+    placeholder="Individual"
+    value={formData.coverType}
+    onChange={(value) => handleSelectChange(value, 'coverType')}
+    // Tooltip for the Select component itself
+    dropdownRender={(menu) => (
+      <div>
+        {menu}
+        <Tooltip title="Individual cover in insurance to coverage designed to protect an individual against specific risks.It  provides financial compensation to the insured person in case of covered events such as illness, injury, disability, or death whereas
+                        Keyman-risk insurance is a policy taken out by a business on the life of a key employee or employees whose skills, knowledge, or leadership are crucial to the company's operations and profitability.">
+          <QuestionCircleOutlined style={{ marginLeft: '8px' }} />
+        </Tooltip>
+      </div>
+    )}
+  >
+    {Object.keys(coverTypes).map((type) => (
+      <Option key={type} value={type}>
+        {coverTypes[type]}
+      </Option>
+    ))}
+  </Select>
+</Form.Item>
 </Col>
 </Row>
 
@@ -610,9 +635,8 @@ onChange={(value) => handleSelectChange(value, 'coverType')}>
 <div>
 <Row gutter={16}>
 <Col span={12}>
-
 <Item
-label="Insured Amount"
+label="How much would you like to pay for the cover ?"
 value={formatNumberWithCommas(formData.principalAmount)}>
 <Input
 name="principalAmount"
@@ -626,7 +650,7 @@ onChange={handlePrincipalChange}/>
 <Item
 name="termInYears"
 rules={[{ required: true, message: 'This field is required' }]}
-label="How  many years  will the cover take?">
+label="How  many years  will the cover take ?">
 <Select
 name="termInYears"
 placeholder="7"
@@ -643,7 +667,7 @@ style={{ width: '100%' }}>
 
 <Item
 rules={[{ required: true, message: 'This field is required' }]}
-label="Number Of Instalments Per Annum">
+label="What's the preferred number of payments per year for you ?">
 <Select
 name="installmentsPerAnnum"
 placeholder="12"
@@ -677,22 +701,39 @@ onChange={(value) => handleSelectChange(value, 'singleJoint')}>
 </Select>
 </Item>
 
-<Item
-name="loanType"
-rules={getRequiredRule()}
-label="Preferred Repayment Schedule">
-<Select
-name="loanType"
-placeholder="Gradual Payment"
-value={formData.loanType}
-onChange={(value) => handleSelectChange(value, 'loanType')}>
-{Object.keys(loanTyp).map((type) => (
-<Option key={type} value={type}>
-{loanTyp[type]}
-</Option>
-))}
-</Select>
-</Item>
+<Form.Item
+  name="loanType"
+  rules={getRequiredRule()} // Assuming getRequiredRule() returns the required validation rule
+  label={<span>
+      Preferred Repayment Schedule&nbsp;
+      <Tooltip title="What way  better  suits  you  in terms  of the manner  of repaying.">
+        <QuestionCircleOutlined />
+      </Tooltip>
+    </span>}>
+  <Select
+    name="loanType"
+    placeholder="Gradual Payment"
+    value={formData.loanType}
+    onChange={(value) => handleSelectChange(value, 'loanType')}
+    dropdownRender={(menu) => (
+      <div>
+        {menu}
+        <Tooltip title="Bullet payments refer to a type of loan repayment structure where the borrower pays off the entire principal amount in one lump sum at the end of the loan term.
+                        whereas Amortization refers to a loan repayment schedule where both principal and interest are paid off gradually over the loan term.">
+          <QuestionCircleOutlined style={{ marginLeft: '8px' }} />
+        </Tooltip>
+      </div>
+    )}
+  >
+    {Object.keys(loanTyp).map((type) => (
+      <Select.Option key={type} value={type}>
+        {loanTyp[type]}
+      </Select.Option>
+    ))}
+  </Select>
+</Form.Item>
+
+
 </Col>
 </Row>
 </div>
@@ -802,17 +843,6 @@ disabled={formData.returnOfPremiumOnSurvival === 'NO'}>
 ))}
 </Select>
 </Item>
-
-<Form.Item
-label="What is your  preferred cover start date?"
-name="coverStartDate"
-rules={[{ required: true, message: 'Please select the cover start date!' }]}>
-<DatePicker
-format="YYYY-MM-DD"
-placeholder="Select Cover Start Date"
-style={{ width: '100%' }}
-disabledDate={(current) => current && current < moment().startOf('day')}/>
-</Form.Item>
 </Col>
 
 <Col span={12}>
@@ -857,7 +887,7 @@ style={{ width: '100%' }}>
 </>
 )}
 
-{currentStep === 3 &&(
+{currentStep === 3 && (
 <>
 {/*------------------------------------Review Page----------------------------------------------------------------*/}
   {!isDivVisible ? (
@@ -1040,144 +1070,146 @@ style={{ width: '100%' }}>
 
   : 
   
-  (
-  <div 
-    value={{ quoteData, updateQuoteData }} 
-    style={{ maxWidth: '800px',marginTop: '30px', padding: '20px',backgroundColor: 'white' ,border: '2px solid black', margin: 'auto'}}>
-    <Row justify="start">
-    <Col span={12}>
-    <Title
-    style={{ textAlign: 'start', marginTop: '20px',}} level={4}>
-    <span style={{ fontWeight: 'bold', color: 'black' }}>Equity Life Assurance (Kenya) Limited</span>
-    </Title>
-    
-    <Title
-    style={{ textAlign: 'start', marginTop: '20px' }}
-    level={4}>
-    <span style={{ fontWeight: 'bold', color: 'black' }}>Term Life Product Quotation </span>
-    </Title>
-    </Col>
-    
-    <Col span={12} style={{ textAlign: 'end'}}>
-    <img
-    src="https://equitygroupholdings-ke-uat.azurewebsites.net/ke/templates/equity/assets/img/equity-bank-logo.png"
-    alt="Company Logo"
-    style={{
-    maxWidth: '140px',
-    maxHeight: '140px',
-    marginTop: '0px',
-    marginRight: '45px',
-    marginLeft: 'auto',
-    }} />
-    <Title
-    style={{ marginTop: '5px', marginRight: '60px' }} level={4}>
-    <span style={{ fontWeight: 'bold', color: 'black' }}>{getCurrentDate()}</span>
-    </Title>
-    </Col>
-    </Row>
-    
-    <Title
-    style={{ textAlign: 'start', marginTop: '20px', fontSize: '17px'}}
-    level={4}>
-    <span style={{ fontWeight: 'bold', color: 'black' }}>Customer Details</span>
-    </Title>
-    <Table
-    columns={columns}
-    dataSource={personalCredentials}
-    pagination={false}
-    bordered
-    size="middle"
-    style={{
-    border: '2px solid black',
-    padding: '20px',
-    marginBottom: '20px',
-    }}/>
-    
-    <Title
-    style={{ textAlign: 'start'}} level={4}>
-    <span style={{ fontWeight: 'bold', color: 'black' }}>Policy Details</span>
-    </Title>
-    <Table
-    columns={columns}
-    dataSource={policyCredentials}
-    pagination={false}
-    bordered
-    size="middle"
-    style={{
-    border: '2px solid black',
-    padding: '20px',
-    marginBottom: '20px',
-    }}/>
-    
-    <Title
-    style={{ textAlign: 'start'}} level={4}>
-    <span style={{ fontWeight: 'bold', color: 'black'}}>
-    Selected Optional Benefits
-    </span>
-    </Title>
-    <Table
-    columns={columns}
-    dataSource={selectedOPtionalBenefits}
-    pagination={false}
-    bordered
-    size="middle"
-    style={{
-    border: '2px solid black',
-    padding: '20px',
-    marginBottom: '20px',
-    }}/>
-    
+  ( 
+    <div 
+        value={{ quoteData, updateQuoteData }} 
+        style={{ maxWidth: '800px',marginTop: '30px', padding: '20px',backgroundColor: 'white' ,border: '2px solid black', margin: 'auto'}}>
+        
+        <Row justify="start">
+        <Col span={12}>
+        <Title
+        style={{ textAlign: 'start', marginTop: '20px',}} level={4}>
+        <span style={{ fontWeight: 'bold', color: 'black' }}>Equity Life Assurance (Kenya) Limited</span>
+        </Title>
+        
+        <Title
+        style={{ textAlign: 'start', marginTop: '20px' }}
+        level={4}>
+        <span style={{ fontWeight: 'bold', color: 'black' }}>Term Life Product Quotation </span>
+        </Title>
+        </Col>
+        
+        <Col span={12} style={{ textAlign: 'end'}}>
+        <img
+        src="https://equitygroupholdings-ke-uat.azurewebsites.net/ke/templates/equity/assets/img/equity-bank-logo.png"
+        alt="Company Logo"
+        style={{
+        maxWidth: '140px',
+        maxHeight: '140px',
+        marginTop: '0px',
+        marginRight: '45px',
+        marginLeft: 'auto',
+        }} />
+        <Title
+        style={{ marginTop: '5px', marginRight: '60px' }} level={4}>
+        <span style={{ fontWeight: 'bold', color: 'black' }}>{getCurrentDate()}</span>
+        </Title>
+        </Col>
+        </Row>
+        
+        <Title
+        style={{ textAlign: 'start', marginTop: '20px', fontSize: '17px'}}
+        level={4}>
+        <span style={{ fontWeight: 'bold', color: 'black' }}>Customer Details</span>
+        </Title>
+        <Table
+        columns={columns}
+        dataSource={personalCredentials}
+        pagination={false}
+        bordered
+        size="middle"
+        style={{
+        border: '2px solid black',
+        padding: '20px',
+        marginBottom: '20px',
+        }}/>
+        
+        <Title
+        style={{ textAlign: 'start'}} level={4}>
+        <span style={{ fontWeight: 'bold', color: 'black' }}>Policy Details</span>
+        </Title>
+        <Table
+        columns={columns}
+        dataSource={policyCredentials}
+        pagination={false}
+        bordered
+        size="middle"
+        style={{
+        border: '2px solid black',
+        padding: '20px',
+        marginBottom: '20px',
+        }}/>
+        
+        <Title
+        style={{ textAlign: 'start'}} level={4}>
+        <span style={{ fontWeight: 'bold', color: 'black'}}>
+        Selected Optional Benefits
+        </span>
+        </Title>
+        <Table
+        columns={columns}
+        dataSource={selectedOPtionalBenefits}
+        pagination={false}
+        bordered
+        size="middle"
+        style={{
+        border: '2px solid black',
+        padding: '20px',
+        marginBottom: '20px',
+        }}/>
+        
 
-  <Title
-  style={{ textAlign: 'start'}} level={4}>
-  <span style={{ fontWeight: 'bold',  width: '100%' ,color: 'black' }}>Premium Details</span>
-  </Title>
-  <div style={{ border: '1px solid #ccc', padding: '16px', borderRadius: '8px', weight: 800}}>
-  <Row gutter={[16, 16]} style={{ flexDirection: 'column' }}>
-    {Object.keys(quotationData).map((key) => (
-      <Col span={24} key={key} style={{ marginBottom: '16px' }}>
-        <Text strong style={{ display: 'inline-block', width: '450px' }}>{key}:</Text>
-        <Text>
-          {numberFormatter.format(quotationData[key])}
-        </Text>
-      </Col>
-    ))}
-  </Row>
-  </div>
-    
-    <Title
-    style={{ textAlign: 'start'}} level={4}>
-    <span style={{ fontWeight: 'bold', color: 'black' }}>Notes:</span>
-    </Title>
-    <Title
-    style={{ textAlign: 'start'}} level={4}>
-    Quotation is valid for 90 days since the date of issue <br />
-    Medical underwriting will be required for a Sum Assured (SA) above KShs 5 million Term & Conditions
-    </Title>
-    <Title style={{ textAlign: 'start' }} level={4}>
-    <span style={{ fontWeight: 'bold', color: 'black' }}>Terms and Conditions</span>
-    </Title>
-    <Title style={{ textAlign: 'start' }} level={4}>
-    <span style={{ color: 'maroon', textDecoration: 'underline' }}>
-    https://www.equity.co.ke/insurance/termlife
-    </span>
-    </Title>
-    <Title style={{ textAlign: 'start' }} level={4}>
-    <span style={{ fontWeight: 'bold', color: 'black' }}>Contacts</span>
-    </Title>
-    <Title style={{ textAlign: 'start', color: 'blue', textDecoration: 'underline' }} level={4}>
-    Email: <span style={{ color: 'blue', textDecoration: 'underline' }}>quotations@equityinsurance.co.ke</span>
-    </Title>
-    <Title style={{ textAlign: 'start', color: 'black' }} level={4}>
-    Tel: 0765000000
-    </Title>
+      <Title
+      style={{ textAlign: 'start'}} level={4}>
+      <span style={{ fontWeight: 'bold',  width: '100%' ,color: 'black' }}>Premium Details</span>
+      </Title>
+      <div style={{ border: '1px solid #ccc', padding: '16px', borderRadius: '8px', weight: 800}}>
+      <Row gutter={[16, 16]} style={{ flexDirection: 'column' }}>
+        {Object.keys(quotationData).map((key) => (
+          <Col span={24} key={key} style={{ marginBottom: '16px' }}>
+            <Text strong style={{ display: 'inline-block', width: '450px' }}>{key}:</Text>
+            <Text>
+              {numberFormatter.format(quotationData[key])}
+            </Text>
+          </Col>
+        ))}
+      </Row>
+      </div>
+        
+        <Title
+        style={{ textAlign: 'start'}} level={4}>
+        <span style={{ fontWeight: 'bold', color: 'black' }}>Notes:</span>
+        </Title>
+        <Title
+        style={{ textAlign: 'start'}} level={4}>
+        Quotation is valid for 90 days since the date of issue <br />
+        Medical underwriting will be required for a Sum Assured (SA) above KShs 5 million Term & Conditions
+        </Title>
+        <Title style={{ textAlign: 'start' }} level={4}>
+        <span style={{ fontWeight: 'bold', color: 'black' }}>Terms and Conditions</span>
+        </Title>
+        <Title style={{ textAlign: 'start' }} level={4}>
+        <span style={{ color: 'maroon', textDecoration: 'underline' }}>
+        https://www.equity.co.ke/insurance/termlife
+        </span>
+        </Title>
+        <Title style={{ textAlign: 'start' }} level={4}>
+        <span style={{ fontWeight: 'bold', color: 'black' }}>Contacts</span>
+        </Title>
+        <Title style={{ textAlign: 'start', color: 'blue', textDecoration: 'underline' }} level={4}>
+        Email: <span style={{ color: 'blue', textDecoration: 'underline' }}>quotations@equityinsurance.co.ke</span>
+        </Title>
+        <Title style={{ textAlign: 'start', color: 'black' }} level={4}>
+        Tel: 0765000000
+        </Title>
 
-  </div>
+    </div>
     )}
 </>
 )}
-    <Form.Item>
-    {currentStep > 0 && (
+{(!isDivVisible &&
+  <Form.Item>
+    {currentStep > 0 && (   
     <Button
     style={{ marginRight: 8 }}
     onClick={handlePrev}>
@@ -1192,20 +1224,19 @@ style={{ width: '100%' }}>
     </Button>
     )}
     {currentStep === 3 && (
+      <>    
       <Button
       type="primary"
       onClick={toggleDivVisibility} 
       style={{ marginRight: 8,marginLeft: 10 , marginTop: '20px'}}>
-      Quote
-      </Button>    
-    )}
-    </Form.Item>
+        Quote
+      </Button> 
 
       <div>
       <Checkbox
       onChange={handlePolicyCheckboxChange}>Policy Exclusions</Checkbox>
       {isModalVisible && (
-      <div style={{ width: '100%', height: '50%', overflowY: 'auto', position: 'relative', border: '1px solid #ccc', padding: '16px', boxSizing: 'border-box' }}>
+      <div style={{ width: '100%', height: '50%',marginTop: '10px', overflowY: 'auto', position: 'relative', border: '1px solid #ccc', padding: '16px', boxSizing: 'border-box' }}>
       <h3>Policy Exclusions</h3>
       <p>
       When considering term life insurance, it's important to be aware of
@@ -1234,6 +1265,10 @@ style={{ width: '100%' }}>
       </div>
       )}
       </div>
+      </>
+    )}
+   </Form.Item>
+ )}
     </Form>
     </div>
   );
