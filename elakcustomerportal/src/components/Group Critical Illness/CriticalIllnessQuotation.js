@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { jsPDF } from "jspdf";
-import { Table, Typography, Row, Col, Button, Checkbox } from 'antd';
+import { Table, Typography, Row, Col, Button, Checkbox, Card } from 'antd';
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { resetData } from "../../store/redux/features/gciSlice";
+import { LeftOutlined } from "@ant-design/icons";
 
 
 const CriticalIllnessQuotation = () => {
@@ -44,6 +45,10 @@ const CriticalIllnessQuotation = () => {
     const handleAcceptanceChange = (e) => {
         setAcceptedExclusions(e.target.checked);
     };
+
+    const handleNavigate = () => {
+        navigate(-1);
+      };
 
     const generateQuotationContent = () => {
         // Construct the content of the quotation here
@@ -498,14 +503,23 @@ const CriticalIllnessQuotation = () => {
           ];      
 
     return (
-        <>
+        <div className="pt-5 pl-4">
+      <div className="flex items-center" style={{ marginBottom: "20px", marginTop: "10px" }} >
+          <button className="mb-1.5 focus:outline-none hover:text-[#A32A29]" >
+            <LeftOutlined className="w-8 h-8" onClick={handleNavigate}/>
+          </button>
+          <Title level={5} className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
+            Critical Illness Cover
+          </Title>
+      </div>
+      <Card style={{ border: "1px solid maroon" }}>
             <div
                 style={{
-                    border: "2px solid black",
                     maxWidth: "800px",
                     margin: "auto",
                     position: "relative",
                     paddingBottom: "60px",
+                    width: "90%"
                 }}
             >
                 <div style={{ maxWidth: "750px", margin: "auto" }}>
@@ -711,12 +725,13 @@ const CriticalIllnessQuotation = () => {
                         width: "100%",
                         textAlign: "center",
                         color: "white",
-                        padding: "5px 0",
+                        padding: "6px",
                     }}
                 >
                     Equity Life Assurance (Kenya) Limited
                 </div>
             </div>
+            </Card>
     
             {/* Checkbox for accepting policy exclusions */}
             <div style={{ margin: '20px 0', textAlign: 'left' }}>
@@ -732,12 +747,22 @@ const CriticalIllnessQuotation = () => {
             </div>
     
             {/* Buttons */}
-            <div style={{ textAlign: 'right', marginTop: '20px' }}>
-                <Button style={{ marginRight: '10px' }} >Proceed with Payment</Button>
-                <Button type="primary" style={{ marginRight: '10px' }} onClick={handleDownload}>Download</Button>
-                <Button type="primary" style={{ marginRight: '10px' }}>Send to Email</Button>
-            </div>
-        </>
+            <div style={{ textAlign: "right", marginTop: "20px", color: "#A32A29" }}>
+          <Button
+            type="primary"
+            style={{ marginRight: "10px" }}
+             disabled={!acceptedExclusions}
+          >
+            Continue with Payment
+          </Button>
+          <Button className="mr-4" style={{ marginRight: "10px" }} onClick={handleDownload}>
+            Download
+          </Button>
+          <Button className="mr-4" style={{ marginRight: "10px" }}>
+            Send to Email
+          </Button>
+        </div>
+        </div>
     );    
 };
 
