@@ -77,9 +77,9 @@ const IndividualCustomer = () => {
     };
   });
 
-  useEffect(() => {
-    localStorage.setItem("yourGLEData", JSON.stringify(formData));
-  }, [formData]);
+  // useEffect(() => {
+  //   localStorage.setItem("yourGLEData", JSON.stringify(formData));
+  // }, [formData]);
 
   const dataToPost = {
     inputData: {
