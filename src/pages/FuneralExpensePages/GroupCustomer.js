@@ -76,9 +76,9 @@ const GroupCustomer = () => {
     };
   });
 
-  useEffect(() => {
-    localStorage.setItem("groupGLEData", JSON.stringify(formData));
-  }, [formData]);
+  // useEffect(() => {
+  //   localStorage.setItem("groupGLEData", JSON.stringify(formData));
+  // }, [formData]);
 
   const dataToPost = {
     inputData: {
