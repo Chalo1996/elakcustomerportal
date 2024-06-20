@@ -1,5 +1,5 @@
 import React, { useState, createContext, useContext } from 'react';
-import { Row, Col, Table, Space,Form, Input,Divider, Button, DatePicker, Select,Steps, Modal, Radio, Checkbox,Typography } from 'antd';
+import { Row, Col, Table,Space,Form, Input,Divider, Button, DatePicker, Select,Steps, Modal, Radio, Checkbox,Typography } from 'antd';
 import {ArrowLeftOutlined} from '@ant-design/icons';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
@@ -18,8 +18,10 @@ export const useQuotationData = () => useContext(QuotationDataContext);
 const TermLifeQuote = () => {
 const { Option } = Select;
 const { Step } = Steps;
-const { Title, Text } = Typography;
+const { Title, Text,Link } = Typography;
 
+const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
+const [isConditionsModalVisible, setIsConditionsModalVisible] = useState(false);
 const [isFirstDivVisible, setFirstDivVisible] = useState(true);
 const [quoteData, setQuoteData] = useState(null);
 const [refreshKey, setRefreshKey] = useState(0);
@@ -81,6 +83,26 @@ const phoneAreas = [
   { code: "+256", flag: ugxFlag, country: "Uganda" },
 ];
 
+//Terms&Conditions Consts
+const showTermsModal = () => {
+  setIsTermsModalVisible(true);
+};
+const showConditionsModal = () => {
+  setIsConditionsModalVisible(true);
+};
+const handleTermsOk = () => {
+  setIsTermsModalVisible(false);
+};
+const handleTermsCancel = () => {
+  setIsTermsModalVisible(false);
+};
+const handleConditionsOk = () => {
+  setIsConditionsModalVisible(false);
+};
+const handleConditionsCancel = () => {
+  setIsConditionsModalVisible(false);
+};
+//end 
 const toggleVisibility = () => {
   setFirstDivVisible(!isFirstDivVisible);
 };
@@ -243,6 +265,7 @@ const amountCovered = isCoverLoan === 'YES' ? formData.principalAmount : formDat
 const yearsCover = isCoverLoan === 'YES' ? formData.termInYears : formData.termInYearsCover;
 
 //Beginning  of Quotation Functions 
+const numberFormatter = new Intl.NumberFormat('en-US');
 const columns = [
 {title: '', dataIndex: 'attribute', key: 'attribute', width: '30%', render: (text) => <Text strong>{text}</Text>,},
 { title: '', dataIndex: 'value', key: 'value', width: '0%', render: (text) => (
@@ -258,7 +281,7 @@ const personalCredentials = [
 const policyCredentials = [
 { key: 'coverType', attribute: 'Cover Type', value: formData.coverType },
 { key: 'termsInYrs', attribute: 'Term In Years', value: yearsCover},
-{ key: 'sumAssured', attribute: 'Sum Assured', value: amountCovered},  
+{ key: 'sumAssured', attribute: 'Sum Assured', value: amountCovered.toLocaleString()},  
 { key: 'annBenEscRate', attribute: 'Annual Benefit EScalation Rate', value: 0},
 { key: 'frequency', attribute: 'Frequency', value: formData.premiumFrequency },
 ];
@@ -496,11 +519,42 @@ onChange={handleInputChange}/>
 
 <Row gutter={16}>
 <Col span={12}>
-<Form.Item
-style={{ marginTop: '30px', marginLeft: '0px' }}
-valuePropName="checked">
-<Checkbox style={{ color: '#8B4513', checkboxStyle: { color: '#8B4513' } }}>I accept the Terms and Conditions</Checkbox>
-</Form.Item>
+    
+<>
+      <Form.Item
+        style={{ marginTop: '30px', marginLeft: '0px' }}
+        valuePropName="checked"
+      >
+        <Checkbox style={{ color: 'black' }}>
+          <span style={{ color: 'black' }}>I accept </span>
+          <Link onClick={showTermsModal} style={{ color: '#8B4513' }}>
+            Terms
+          </Link>
+          <span style={{ color: 'black' }}> and </span>
+          <Link onClick={showConditionsModal} style={{ color: '#8B4513' }}>
+            Conditions
+          </Link>
+        </Checkbox>
+      </Form.Item>
+
+      <Modal
+        title="Terms"
+        visible={isTermsModalVisible}
+        onOk={handleTermsOk}
+        onCancel={handleTermsCancel}
+      >
+        <p>Your terms content goes here...</p>
+      </Modal>
+
+      <Modal
+        title="Conditions"
+        visible={isConditionsModalVisible}
+        onOk={handleConditionsOk}
+        onCancel={handleConditionsCancel}
+      >
+        <p>Your conditions content goes here...</p>
+      </Modal>
+    </>
 </Col>
 </Row>
 </div>
@@ -629,7 +683,7 @@ rules={getRequiredRule()}
 label="Preferred Repayment Schedule">
 <Select
 name="loanType"
-placeholder="BULLET"
+placeholder="Gradual Payment"
 value={formData.loanType}
 onChange={(value) => handleSelectChange(value, 'loanType')}>
 {Object.keys(loanTyp).map((type) => (
@@ -783,7 +837,7 @@ style={{ width: '100%' }}>
 
 <Item
 name="premiumFrequency"
-label="Payment Frequency"
+label="What Payment Frequency Suits You?"
 rules={getRequiredRule()}>
 <Select
 name="premiumFrequency"
@@ -1079,14 +1133,16 @@ style={{ width: '100%' }}>
   <span style={{ fontWeight: 'bold',  width: '100%' ,color: 'black' }}>Premium Details</span>
   </Title>
   <div style={{ border: '1px solid #ccc', padding: '16px', borderRadius: '8px', weight: 800}}>
-    <Row gutter={[16, 16]} style={{ flexDirection: 'column' }}>
-      {Object.keys(quotationData).map((key) => (
-        <Col span={24} key={key} style={{ marginBottom: '16px' }}>
-          <Text strong style={{ display: 'inline-block', width: '450px' }}>{key}:</Text> {/* Adjust width as needed */}
-          <Text>{quotationData[key]}</Text>
-        </Col>
-      ))}
-    </Row>
+  <Row gutter={[16, 16]} style={{ flexDirection: 'column' }}>
+    {Object.keys(quotationData).map((key) => (
+      <Col span={24} key={key} style={{ marginBottom: '16px' }}>
+        <Text strong style={{ display: 'inline-block', width: '450px' }}>{key}:</Text>
+        <Text>
+          {numberFormatter.format(quotationData[key])}
+        </Text>
+      </Col>
+    ))}
+  </Row>
   </div>
     
     <Title
