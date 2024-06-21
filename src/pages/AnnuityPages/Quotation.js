@@ -1,10 +1,12 @@
+import { useState } from "react";
 import { Card, Row, Col, Button, message, Form, Checkbox } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "../../store/context/theme-context";
 import darkLogo from "../../assets/dark-logo.png";
 import generatePDF, { Resolution, Margin } from "react-to-pdf";
+import AnnuityExclusionsModal from "../../components/Annuity/modals/Exclusions";
+import ErrorPage from "../../shared/ErrorPage";
 
 const options = {
   method: "open",
@@ -50,13 +52,44 @@ const generatePdfAndNotify = async () => {
 
 const AnnuityQuotation = () => {
   const { theme } = useTheme();
+  const [isPolicyChecked, setIsPolicyChecked] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
   const { formData = {}, tableData = [] } = location.state || {};
   const data = tableData;
+
   const handleNavigate = () => {
     navigate("/home");
   };
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCheckbox = (e) => {
+    if (isPolicyChecked) {
+      setIsPolicyChecked(e.target.checked);
+    } else {
+      showModal();
+    }
+  };
+
+  if (formData.length === 0 || tableData.length === 0) {
+    return (
+      <ErrorPage
+        status="404"
+        title="Quotation Details Unavailable"
+        subtitle="Please select annuity product in the home page and fill in your details to generate a quotation."
+        onRetry={handleNavigate}
+      />
+    );
+  }
 
   return (
     <div className="pt-5 pl-4">
@@ -224,8 +257,11 @@ const AnnuityQuotation = () => {
                     </td>
                     <td style={{ textAlign: "left", padding: "10px" }}>
                       Ksh{" "}
-                      {Math.round(formData.purchasePrice).toLocaleString() ||
-                        "-"}
+                      {Math.round(
+                        formData.targetType === "Pre-determined Purchase Price"
+                          ? formData.purchasePrice
+                          : formData.annuityPerMonth
+                      ).toLocaleString() || "-"}
                     </td>
                   </tr>
                   <tr>
@@ -597,25 +633,41 @@ const AnnuityQuotation = () => {
         <Form className="mt-4">
           <Form.Item name="terms" valuePropName="checked">
             <span>
-              <Checkbox />
+              <Checkbox checked={isPolicyChecked} onChange={handleCheckbox} />
               <span className="ml-2">
                 I accept the{" "}
-                <Link style={{ color: "#A32A29" }}>policy exclusions</Link>
+                <span
+                  onClick={showModal}
+                  className="text-[#A32A29] cursor-pointer"
+                >
+                  policy exclusions
+                </span>
               </span>
             </span>
           </Form.Item>
         </Form>
         <div className="flex flex-col items-start justify-center md:flex-row md:items-center md:justify-between gap-2">
-          <Button type="primary" className="shadow-none">
+          <Button
+            type="primary"
+            className="shadow-none"
+            disabled={!isPolicyChecked}
+          >
             Continue With Payment
           </Button>
 
-          <Button onClick={generatePdfAndNotify} target="_blank">
+          <Button className="shadow-none" onClick={generatePdfAndNotify}>
             Download Quote
           </Button>
           <Button className="shadow-none">Send To Email</Button>
         </div>
       </div>
+
+      <AnnuityExclusionsModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        onCancel={handleCancel}
+        setIsPolicyChecked={setIsPolicyChecked}
+      />
     </div>
   );
 };

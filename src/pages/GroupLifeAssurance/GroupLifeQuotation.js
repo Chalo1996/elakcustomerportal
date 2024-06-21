@@ -44,7 +44,7 @@ const QuotationTable = () => {
       lastExpenseSA: formatCurrency(data.mainMemberLastExpense),
       benefitName: data.gla.benefits[0].benefitDescriptionGla,
       level: data.gla.benefits[0].benefitLevel,
-      insuredSum: formatCurrency(data.gla.benefits[0].derivedSumAssured),
+      insuredSum: formatCurrency(data.gla.benefits[0].appliedSumAssured),
       premium: formatCurrency(data.gla.benefits[0].premium),
       annualPremiumGLA: formatCurrency(data.glaPremium),
       FCL: formatCurrency(
@@ -93,6 +93,10 @@ const QuotationTable = () => {
       });
   };
 
+  const NumberFormat = {
+    formatter: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    parser: (value) => value.replace(/(,*)/g, ""),
+  };
 
   const location = useLocation();
   const { data = {}, formData = {} } = location.state || {};
@@ -100,12 +104,12 @@ const QuotationTable = () => {
   const proposedClientDetails = [
     { key: "nameOfClient", attribute: "Name of Client", value: data.proposedClientDetails.nameOfClient },
     { key: "totalAnnualSalaries", attribute: "Total Annual Salaries", value: formatCurrency(data.proposedClientDetails.totalAnnualSalaries) },
-    { key: "totalNumberOfStaff", attribute: "Total Number of Staff", value: data.proposedClientDetails.totalNumberOfStaff },
+    { key: "totalNumberOfStaff", attribute: "Total Number of Staff", value: NumberFormat.formatter(data.proposedClientDetails.totalNumberOfStaff) },
     { key: "mobileNumber", attribute: "Mobile Number", value: `${formData.phoneArea} ${formData.mobileNumber}` },
     { key: "email", attribute: "Email Address", value: formData.email },
     { key: "glaAsMultipleofAnnualSalary", attribute: "GLA Benefit Level as Multiple of Annual Salary", value: data.gla.benefits[0].benefitLevel },
     { key: "criticalIllnessBenefitPercentage", attribute: "Critical Illness Benefit Percentage", value: `${data.criticalIllnessBenefitPercentage}%` },
-    { key: "mainMemberLastExpense", attribute: "Main Member Last Expense SA", value: formatCurrency(data.mainMemberLastExpense) },
+    { key: "mainMemberLastExpense", attribute: "Main Member Last Expense Sum Assured", value: formatCurrency(data.mainMemberLastExpense) },
   ];
 
   const illnessNaturalCausesAccidents = [];
@@ -155,9 +159,9 @@ const QuotationTable = () => {
           Group Life Assurance Cover
         </Title>
       </div>
-      <Card style={{ border: "1px solid maroon" }}>
+      <Card style={{ border: "1px solid #A32A29" }}>
         <div style={{ width: "90%", margin: "auto" }}>
-          <Row justify="space-between" style={{ border: "1px solid maroon", padding: "10px" }}>
+          <Row justify="space-between" style={{ border: "1px solid #A32A29", padding: "10px" }}>
             <Col>
               <h3 style={{ fontWeight: "bold", marginBottom: 0 }}>EQUITY LIFE ASSURANCE (KENYA) LIMITED</h3>
               <h4 style={{ fontWeight: "bold", marginBottom: 0 }}>Group Life Assurance - Combined Solution</h4>
@@ -176,7 +180,7 @@ const QuotationTable = () => {
             bordered
             pagination={false}
             showHeader={false}
-            style={{ marginBottom: "20px", border: "1px solid maroon" }}
+            style={{ marginBottom: "20px", border: "1px solid #A32A29" }}
           />
 
           <h4 style={{ fontWeight: "bold", marginBottom: 0 }}>Group Life Assurance – (Illness, Natural Causes or Accidental Causes)</h4>
@@ -193,7 +197,7 @@ const QuotationTable = () => {
                 <Table.Summary.Cell index={3}>{formatCurrency(data.glaPremium)}</Table.Summary.Cell>
               </Table.Summary.Row>
             )}
-            style={{ marginBottom: "20px", border: "1px solid maroon" }}
+            style={{ marginBottom: "20px", border: "1px solid #A32A29" }}
           />
 
           <Table
@@ -205,7 +209,7 @@ const QuotationTable = () => {
               { dataIndex: "label", key: "label", render: (text) => <strong>{text}</strong> },
               { dataIndex: "value", key: "value", align: "right", render: (text) => <strong>{text}</strong> },
             ]}
-            style={{ marginBottom: "20px", border: "1px solid maroon" }}
+            style={{ marginBottom: "20px", border: "1px solid #A32A29" }}
           />
 
           <Table
@@ -217,7 +221,7 @@ const QuotationTable = () => {
               { dataIndex: "label", key: "label", render: (text) => <strong>{text}</strong> },
               { dataIndex: "value", key: "value", align: "right", render: (text) => <strong>{text}</strong> },
             ]}
-            style={{ marginBottom: "20px", border: "1px solid maroon" }}
+            style={{ marginBottom: "20px", border: "1px solid #A32A29" }}
           />
 
           <h4 style={{ fontWeight: "bold", marginBottom: 0 }}>Accidental/Occupational Causes Only</h4>
@@ -234,7 +238,7 @@ const QuotationTable = () => {
                 <Table.Summary.Cell index={3}>{formatCurrency(data.gpaWibaglaPremium)}</Table.Summary.Cell>
               </Table.Summary.Row>
             )}
-            style={{ marginBottom: "20px", border: "1px solid maroon" }}
+            style={{ marginBottom: "20px", border: "1px solid #A32A29" }}
           />
 
           <Table
@@ -246,15 +250,15 @@ const QuotationTable = () => {
               { dataIndex: "label", key: "label", render: (text) => <strong>{text}</strong> },
               { dataIndex: "value", key: "value", align: "right", render: (text) => <strong>{text}</strong> },
             ]}
-            style={{ marginBottom: "20px", border: "1px solid maroon" }}
+            style={{ marginBottom: "20px", border: "1px solid #A32A29" }}
           />
 
-          <h4 style={{ fontWeight: "bold", marginTop: "20px" }}>Notes</h4>
+          <h4 style={{ fontWeight: "bold", marginTop: "20px" }}>Notes:</h4>
           <ol>
-            <li>Our Quotation is valid for a period of 90 days from the date of issue</li>
-            <li>Passive terrorism included</li>
-            <li>We reserve the right to review our quotation should the basis against which the quotation has been done vary significantly</li>
-            <li>Terms and Conditions of ELAK's Group Life Assurance policy apply and will be availed on scheme admission</li>
+            <li>1. Our Quotation is valid for a period of 90 days from the date of issue</li>
+            <li>2. Passive terrorism included</li>
+            <li>3. We reserve the right to review our quotation should the basis against which the quotation has been done vary significantly</li>
+            <li>4. Terms and Conditions of ELAK's Group Life Assurance policy apply and will be availed on scheme admission</li>
           </ol>
         </div>
 
