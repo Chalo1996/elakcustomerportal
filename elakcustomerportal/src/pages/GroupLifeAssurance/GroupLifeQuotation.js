@@ -44,7 +44,7 @@ const QuotationTable = () => {
       lastExpenseSA: formatCurrency(data.mainMemberLastExpense),
       benefitName: data.gla.benefits[0].benefitDescriptionGla,
       level: data.gla.benefits[0].benefitLevel,
-      insuredSum: formatCurrency(data.gla.benefits[0].derivedSumAssured),
+      insuredSum: formatCurrency(data.gla.benefits[0].appliedSumAssured),
       premium: formatCurrency(data.gla.benefits[0].premium),
       annualPremiumGLA: formatCurrency(data.glaPremium),
       FCL: formatCurrency(
