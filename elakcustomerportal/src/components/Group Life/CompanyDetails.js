@@ -22,6 +22,7 @@ const CompanyDetails = ({form, formData, setFormData }) => {
       throw new Error("Average age must be between 20 and 60.");
     }
   };
+  
 
   return (
     <Form  form={form} layout="vertical" initialValues={formData}>
