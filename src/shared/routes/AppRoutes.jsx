@@ -44,7 +44,7 @@ import PoliciesRoutes from '../../components/Routes/PoliciesRoutes';
 import GroupCreditRoutes from '../../components/Routes/GroupCreditRoutes';
 import Claims from '../../components/Claims/Claims';
 import Payments from '../../components/Payments/Payments';
-import MotorQuotation from '../../pages/MotorVehicleInsurance/MotorQuotation';
+import Policy from '../../components/Policies/Policy';
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
@@ -183,10 +183,6 @@ const AppRoutes = () => {
                       path="motor-vehicle"
                       element={<HandleMotorSelection />}
                     />
-                    <Route
-                      path="motor-vehicle/quotation"
-                      element={<MotorQuotation />}
-                    />
                   </Routes>
                 </PortalLayout>
               }
@@ -198,7 +194,8 @@ const AppRoutes = () => {
               element={
                 <InnerLayout>
                   <Routes>
-                    <Route path="policies/*" element={<PoliciesRoutes />} />
+                    <Route path="/policies" element={<PoliciesRoutes />} />
+                    <Route path="/policies/:policyId" element={<Policy />} />
                     <Route path="claims" element={<Claims />} />
                     <Route path="payments" element={<Payments />} />
                     <Route path="*" element={<NotFound />} />
